@@ -1,0 +1,53 @@
+.post-row__title {
+	font-size: 16px;
+	text-transform: capitalize;
+	font-weight: bold;
+	margin-bottom: 10px;
+	margin-top: 10px;
+
+	@media (min-width: 1024px) {
+		margin-top: 0;
+	}
+}
+
+.post-row__description {
+	font-size: 14px;
+}
+
+.post-row {
+	margin-bottom: 10px;
+
+	.post-row__image {
+		@include ratio(3/4);
+	}
+}
+
+.post-row__button .text {
+	color: var(--white);
+}
+
+.post-row__button {
+	@include button-style-primary;
+	@include button-large;
+	display: inline-block;
+}
+
+.post-row__wrapper {
+	margin-right: -5px;
+	margin-left: -5px;
+
+	@media (min-width: 1024px) {
+		margin-right: calc(-0.5 * var(--bs-gutter-x));
+		margin-left: calc(-0.5 * var(--bs-gutter-x));
+	}
+
+	&>div {
+		padding-right: 5px;
+		padding-left: 5px;
+
+		@media (min-width: 1024px) {
+			padding-right: calc(0.5 * var(--bs-gutter-x));
+			padding-left: calc(0.5 * var(--bs-gutter-x));
+		}
+	}
+}

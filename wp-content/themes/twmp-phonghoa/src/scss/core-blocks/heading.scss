@@ -1,0 +1,48 @@
+.heading {
+    text-align: left;
+
+    &__title {
+        padding: 6px 30px 6px 30px;
+        background-color: var(--primary);
+        border-radius: 0;
+        color: var(--black);
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+        display: inline-block;
+        margin-bottom: 0;
+    }
+
+    a:hover {
+        color: var(--black);
+    }
+}
+
+.common-header-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 49px;
+        left: 0;
+        height: 1px;
+        width: 100%;
+        background-color: var(--primary);
+    }
+
+    .product-view-more {
+        &:hover {
+            color: var(--primary) !important;
+
+            path {
+                fill: var(--primary);
+            }
+        }
+
+        path {
+            fill: var(--title);
+        }
+    }
+}

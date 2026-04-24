@@ -1,0 +1,42 @@
+.collection-grid {
+	padding: 1.25em 0;
+	overflow: hidden;
+}
+
+.collection-card {
+	position: relative;
+	text-align: center;
+	overflow: hidden;
+}
+
+.collection-card__image {
+	width: 100%;
+	height: auto;
+}
+
+.collection-card__content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--white);
+	padding: 0.625em 1.25em;
+	text-align: center;
+}
+
+.collection-card__content__tag {
+	font-size: 12px;
+	color: var(--hidden);
+	text-transform: uppercase;
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+.collection-card__content__title {
+	font-weight: bold;
+	color: var(--title);
+}
+
+.collection-card__item:hover .collection-card__image {
+	transform: scale(1.1);
+}

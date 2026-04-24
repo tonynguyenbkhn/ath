@@ -1,0 +1,40 @@
+{
+  "name": "twmp",
+  "scripts": {
+    "dev-phonghoa": "webpack --env theme=twmp-phonghoa --env woo=yes --mode development --watch",
+    "build-phonghoa": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --env theme=twmp-phonghoa --env woo=yes --mode production"
+  },
+  "engines": {
+    "node": "20.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7",
+    "@babel/preset-env": "^7",
+    "babel-loader": "^9",
+    "browser-sync-webpack-plugin": "^2",
+    "clean-webpack-plugin": "^4",
+    "copy-webpack-plugin": "^11",
+    "css-loader": "^6",
+    "css-minimizer-webpack-plugin": "^7.0.2",
+    "image-minimizer-webpack-plugin": "^4",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-webp": "^7",
+    "mini-css-extract-plugin": "^2",
+    "sass": "^1.66.1",
+    "sass-loader": "^13",
+    "webpack": "^5",
+    "webpack-cli": "^5",
+    "webpack-dev-server": "^4"
+  },
+  "dependencies": {
+    "@fancyapps/ui": "^5.0.36",
+    "body-scroll-lock": "^4.0.0-beta.0",
+    "bootstrap": "^5.3.6",
+    "es6-promise": "^4.2.8",
+    "gsap": "^3.13.0",
+    "swiper": "^11.2.6",
+    "three": "^0.176.0",
+    "tweezer.js": "^1.5.0",
+    "whatwg-fetch": "^3.6.20"
+  }
+}

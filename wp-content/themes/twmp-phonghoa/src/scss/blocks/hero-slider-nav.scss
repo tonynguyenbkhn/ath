@@ -1,0 +1,98 @@
+.hero-slider-nav {
+    margin-top: 10px;
+    .swiper-button-next {
+        background-color: transparent;
+        opacity: 1;
+    }
+
+    .swiper-button-prev {
+        background-color: transparent;
+        opacity: 1;
+    }
+
+    .swiper-pagination {
+        position: unset;
+    }
+
+    .swiper-pagination-bullet {
+        border: 1px solid #111111;
+    }
+
+    .swiper-button-next {
+        height: 32px;
+        width: 32px;
+        background-color: var(--white);
+        opacity: 1;
+        box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3), 0 6px 12px -2px rgba(50, 50, 93, .25);
+    }
+
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 16px;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        height: 32px;
+        width: 32px;
+        background-color: var(--white);
+        opacity: 1;
+        box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3), 0 6px 12px -2px rgba(50, 50, 93, .25);
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+
+    .swiper-button-next {
+        right: 0;
+    }
+
+    .swiper-button-prev {
+        left: 0;
+    }
+}
+
+.thumbs-slider__wrapper {
+    color: #404040;
+    padding: 10px 0 0 0;
+
+    .thumbs-slider__title {
+        font-size: 16px;
+        box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3), 0 6px 12px -2px rgba(50, 50, 93, .25);
+        border-radius: 6px;
+        border: 1px solid #E5E5E5;
+        padding: 9px;
+        text-align: center;
+        font-weight: 500;
+        font-size: 14px;
+        color: #404040;
+        line-height: 17px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        transition: all 0.4s;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+
+        &:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+    }
+
+    .swiper-slide {
+        border-right: 1px solid #ffffff;
+    }
+
+    .swiper-slide-thumb-active .thumbs-slider__title {
+        background-color: var(--primary);
+        color: var(--white);
+        border-color: var(--primary);
+    }
+}

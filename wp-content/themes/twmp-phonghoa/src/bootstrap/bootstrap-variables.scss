@@ -1,0 +1,52 @@
+$enable-dark-mode: false;
+$enable-important-utilities: false;
+$enable-cssgrid: false;
+
+$body-text-align: left;
+$body-bg: #fff;
+$body-color: #161616;
+
+$primary: #14c4d1;
+$secondary: #8a7574;
+$dark: #333;
+
+$border-width: 1px;
+$btn-color: #fff;
+$btn-padding-y: 10px;
+$btn-padding-x: 20px;
+$btn-border-radius: 20px;
+$btn-font-size: 16px;
+$btn-font-weight: 400;
+
+$headings-margin-bottom: 20px;
+
+$grid-gutter-x: 0.5em;
+$grid-gutter-y: 1em;
+
+$spacer: 1em;
+$spacers: (
+	0: 0,
+	1: $spacer * 1,
+	2: $spacer * 2,
+	3: $spacer * 3,
+	4: $spacer * 4,
+	5: $spacer * 5
+);
+
+$container-max-widths: (
+	sm: 540px,
+	md: 720px,
+	lg: 960px,
+	xl: 1040px,
+	xxl: 1180px
+);
+
+$grid-breakpoints: (
+	xs: 0,
+	sm: 600px,
+	md: 782px,
+	lg: 960px,
+	xl: 1080px,
+	xxl: 1280px,
+	xxxl: 1440px
+);

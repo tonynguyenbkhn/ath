@@ -1,0 +1,39 @@
+.instagram-gallery {
+    &__row {
+        padding: 0;
+
+        &>div {
+            padding: 0;
+        }
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .overlay-common {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    &__link {
+        &:hover {
+            svg {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .overlay-common {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+}

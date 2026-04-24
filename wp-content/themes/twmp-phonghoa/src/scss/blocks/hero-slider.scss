@@ -1,0 +1,151 @@
+.hero-slider {
+	overflow: unset !important;
+
+	.swiper-slide {
+		width: 100% !important;
+	}
+
+	.swiper-button-next {
+		height: 32px;
+		width: 32px;
+		background-color: var(--white);
+		opacity: 1;
+		box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3), 0 6px 12px -2px rgba(50, 50, 93, .25);
+	}
+
+	.swiper-button-next:after,
+	.swiper-button-prev:after {
+		font-size: 16px;
+	}
+
+	.swiper-button-next,
+	.swiper-button-prev {
+		height: 32px;
+		width: 32px;
+		background-color: var(--white);
+		opacity: 1;
+		box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3), 0 6px 12px -2px rgba(50, 50, 93, .25);
+		border-radius: 0;
+		transition: transform 0.3s ease;
+	}
+
+	.swiper-button-next {
+		right: -16px;
+	}
+
+	.swiper-button-prev {
+		left: -16px;
+	}
+
+	.hero-slider-item {
+		// a {
+		// 	width: 100%;
+		// }
+
+		// img {
+		// 	border-radius: 0;
+		// 	width: 100%;
+		// 	height: auto;
+		// 	object-fit: cover;
+
+		// 	@media (min-width: 1080px) {
+		// 		max-width: 2048px;
+		// 		width: 100%;
+		// 		height: 762px;
+		// 	}
+		// }
+
+		img {
+			aspect-ratio: 2048 / 762;
+			border-radius: 0;
+			object-fit: cover;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.hero-slider-item__content-inner {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.hero-slider-item__description {
+		font-size: 14px;
+		opacity: 0;
+		text-transform: uppercase;
+
+		@media (min-width: 768px) {
+			font-size: 18px;
+		}
+	}
+
+	.hero-slider-item__title {
+		font-size: 16px;
+		font-weight: 700;
+		opacity: 0;
+
+		@media (min-width: 768px) {
+			font-size: 56px;
+		}
+	}
+
+	.hero-slider-item__button {
+		@include button-style-dark;
+
+		@include flex-center;
+
+		width: 140px;
+		height: 34px;
+		margin-top: 10px;
+		opacity: 0;
+
+		@media (min-width: 768px) {
+			width: 190px;
+			height: 48px;
+			margin-top: 30px;
+		}
+
+		svg {
+			margin-left: 10px;
+		}
+	}
+
+	.swiper-slide-active {
+		.hero-slider-item__description {
+			animation: fadeInLeft 0.6s ease-out 0.3s forwards;
+		}
+
+		.hero-slider-item__title {
+			animation: fadeInLeft 0.6s ease-out 0.6s forwards;
+		}
+
+		.hero-slider-item__button {
+			animation: fadeInLeft 0.6s ease-out 0.9s forwards;
+		}
+	}
+}
+
+.section.hero-slider {
+	.swiper-button-next {
+		right: 15px;
+	}
+
+	.swiper-button-prev {
+		left: 15px;
+	}
+
+	.swiper-button-next,
+	.swiper-button-prev {
+		background-color: var(--primary);
+
+		&::after {
+			color: var(--black);
+		}
+
+		&:hover {
+			transform: scale(1.2);
+		}
+	}
+}

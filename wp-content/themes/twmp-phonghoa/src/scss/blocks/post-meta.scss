@@ -1,0 +1,20 @@
+.post-meta {
+	& .post-meta__item {
+		margin-right: 0.625em;
+
+		& .icon {
+			margin-right: 0.4em;
+			height: 16px;
+			display: flex;
+		}
+
+		& .text {
+			text-transform: capitalize;
+		}
+
+		& svg {
+			@include icon(16px);
+			stroke: var(--primary);
+		}
+	}
+}

@@ -1,0 +1,35 @@
+a.cart-icon {
+	position: relative;
+	display: inline-flex;
+	color: var(--dark);
+}
+
+.cart-icon__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	svg {
+		@include icon(27px)
+	}
+
+	span {
+		display: none;
+	}
+}
+
+.cart-icon__count {
+	position: absolute;
+	right: -5px;
+	top: -5px;
+	color: var(--black);
+	background-color: var(--primary);
+	border-radius: 50%;
+	text-align: center;
+	width: 20px;
+	height: 20px;
+	font-size: 11px;
+	line-height: 11px;
+	text-align: center;
+	line-height: 20px;
+}

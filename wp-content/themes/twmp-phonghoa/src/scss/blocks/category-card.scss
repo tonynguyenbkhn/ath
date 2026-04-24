@@ -1,0 +1,78 @@
+.category-card__category-list {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+
+	@include list-reset;
+
+	margin-top: 10px;
+}
+
+.category-card__title {
+	font-size: 36px;
+	font-weight: 700;
+	margin-bottom: 10px;
+}
+
+.category-card__description p {
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: normal;
+	color: white;
+	background-color: #333333;
+	padding: 5px;
+	width: auto;
+	margin-bottom: 10px;
+	display: inline-block;
+}
+
+.category-card__header {
+	text-align: left;
+}
+
+.category-card__category-item {
+	a {
+		display: flex;
+		align-items: center;
+	}
+	svg {
+		margin-right: 10px;
+	}
+	path {
+		fill: #333333;
+	}
+}
+
+.category-card__category-link {
+	text-decoration: none;
+	color: var(--title);
+
+}
+
+.category-card__category-link:hover {
+	color: var(--primary);
+}
+
+.category-card__category-link--active {
+	color: var(--primary);
+	font-weight: bold;
+}
+
+/* Element: View More */
+.category-card__view-more {
+	margin-top: 1.25em;
+}
+
+.category-card__view-more-link {
+	@include button-style-outline-dark;
+	width: 100%;
+	padding: 10px 0;
+	display: block;
+	text-align: center;
+}
+
+// style 2
+
+#style-2.category-card .row {
+	flex-direction: row-reverse;
+}

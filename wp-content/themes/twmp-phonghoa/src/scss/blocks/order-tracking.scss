@@ -1,0 +1,433 @@
+.order-lookup,
+.warranty-lookup {
+    background: var(--white);
+    box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3), 0 6px 12px -2px rgba(50, 50, 93, .25);
+    border-radius: 12px;
+    padding: 40px 32px;
+
+    @media (max-width: 575px) {
+        padding: 10px
+    }
+}
+
+.order-lookup h3.title-lookup,
+.warranty-lookup h3.title-lookup {
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--black);
+    margin-bottom: 36px;
+
+    @media (max-width: 575px) {
+        margin-bottom: 10px;
+    }
+}
+
+.order-lookup .form-warranty-lookup,
+.warranty-lookup .form-warranty-lookup {
+    display: flex;
+    justify-content: center
+}
+
+.order-lookup .form-warranty-lookup>*,
+.warranty-lookup .form-warranty-lookup>* {
+    width: 505px;
+    display: flex;
+    flex-wrap: wrap
+}
+
+.order-lookup .form-warranty-lookup .input,
+.warranty-lookup .form-warranty-lookup .input {
+    width: calc(100% - 130px);
+    width: -moz-calc(100% - 130px);
+    width: -webkit-calc(100% - 130px)
+}
+
+.order-lookup .form-warranty-lookup .button,
+.warranty-lookup .form-warranty-lookup .button {
+    width: 110px;
+    margin-left: 20px
+}
+
+.order-lookup .form-warranty-lookup input,
+.warranty-lookup .form-warranty-lookup input {
+    width: 100%;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+    border-radius: 6px;
+    border: 1px solid #E5E5E5;
+    background: var(--white);
+    color: var(--title);
+    ;
+    padding: 7px 12px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px
+}
+
+.order-lookup .form-warranty-lookup input::placeholder,
+.warranty-lookup .form-warranty-lookup input::placeholder {
+    color: #979797
+}
+
+.order-lookup .form-warranty-lookup input:focus,
+.warranty-lookup .form-warranty-lookup input:focus {
+    border-color: var(--primary)
+}
+
+.order-lookup .form-warranty-lookup button,
+.warranty-lookup .form-warranty-lookup button {
+    background: var(--primary);
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 12px 6px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+
+.order-lookup .form-warranty-lookup button span,
+.warranty-lookup .form-warranty-lookup button span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, .3)
+}
+
+.show-search-order-lookup,
+.show-search-warranty-lookup {
+    box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3), 0 6px 12px -2px rgba(50, 50, 93, .25);
+    border-radius: 12px;
+    background: var(--white);
+    padding: 32px 32px 40px;
+    margin-top: 24px;
+    display: none;
+
+    p {
+        margin-top: 0 !important;
+    }
+
+    @media (max-width: 575px) {
+        padding: 10px
+    }
+}
+
+.slider-related-products {
+    padding: 0 7px
+}
+
+.show-search-order-lookup .name-search,
+.show-search-warranty-lookup .name-search {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--title);
+    ;
+    margin-bottom: 30px
+}
+
+.show-search-order-lookup table {
+    width: 100%;
+}
+
+.show-search-warranty-lookup table {
+    margin-bottom: 0;
+    border-top: none;
+    border-right: none;
+    width: 100%;
+}
+
+.site-main .entry-content .show-search-warranty-lookup table {
+    margin-bottom: 0;
+    border-top: none;
+    border-right: none;
+    width: 100%;
+    @include table-border;
+}
+
+.site-main .entry-content .show-search-warranty-lookup table {
+    thead {
+        background-color: var(--primary);
+
+        th {
+            color: white;
+        }
+    }
+}
+
+.show-search-warranty-lookup table tr>td,
+.show-search-warranty-lookup table tr>th {
+    border-left: none;
+    border-bottom-color: #C7C7C7;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center
+}
+
+.show-search-warranty-lookup table tr>th {
+    padding-top: 11px;
+    padding-bottom: 31px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: uppercase;
+    color: var(--title);
+}
+
+.show-search-warranty-lookup table tr>td:first-child,
+.show-search-warranty-lookup table tr>th:first-child {
+    text-align: left;
+    padding-left: 0
+}
+
+.show-search-warranty-lookup table tr>td {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: var(--title);
+}
+
+.show-search-warranty-lookup table tr>td a {
+    color: #5D96EC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative
+}
+
+.show-search-warranty-lookup table tr>td a span.load {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1
+}
+
+.show-search-warranty-lookup table tr>td a .icons {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px
+}
+
+.show-search-warranty-lookup table tr>td a i {
+    line-height: 0;
+    position: relative;
+    top: -4px
+}
+
+.show-search-warranty-lookup table tr:first-child>td {
+    padding: 10px 0;
+}
+
+.show-search-warranty-lookup table tr:last-child>td {
+    border-bottom: none
+}
+
+
+.modal-warranty-lookup .title-guarantee {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    color: var(--black);
+    margin-bottom: 20px
+}
+
+.modal-warranty-lookup .album-guarantee {
+    margin-bottom: 40px
+}
+
+.modal-warranty-lookup .row-images {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    grid-template-columns: repeat(3, 1fr)
+}
+
+.modal-warranty-lookup .row-images .item-img {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden
+}
+
+.modal-warranty-lookup .row-images .item-img img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transition: 0.2s all;
+    transform: translate(-50%, -50%) scale(1)
+}
+
+.modal-warranty-lookup .content-description {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px
+}
+
+.modal-warranty-lookup .modal-body {
+    padding: 24px
+}
+
+.modal-warranty-lookup .modal-body button.btn-close {
+    width: 20px;
+    height: 20px;
+    top: 12px;
+    right: 12px;
+    border-radius: 0
+}
+
+.modal-warranty-lookup .modal-content {
+    box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3), 0 6px 12px -2px rgba(50, 50, 93, .25);
+    border-radius: 8px
+}
+
+.modal-warranty-lookup .modal-dialog.modal-lg {
+    max-width: 610px;
+    margin-top: 100px
+}
+
+.show-search-order-lookup .thumbnail {
+    width: 90px;
+
+    @media (max-width: 575px) {
+        width: 60px;
+    }
+}
+
+.show-search-order-lookup .total {
+    width: 150px;
+    text-align: center;
+
+    @media (max-width: 575px) {
+        width: 100px;
+    }
+}
+
+.show-search-order-lookup .total .amount {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--primary);
+
+    @media (max-width: 575px) {
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+.show-search-order-lookup .quantity {
+    width: 50px;
+    text-align: center
+}
+
+.show-search-order-lookup table {
+    margin-bottom: 0
+}
+
+.show-search-order-lookup .overflows {
+    margin-bottom: 15px
+}
+
+.show-search-order-lookup table,
+.show-search-order-lookup table td,
+.show-search-order-lookup table th {
+    border-color: #E5E5E5 !important;
+}
+
+.show-search-order-lookup table td {
+    padding: 8px !important;
+}
+
+.show-search-order-lookup table th span {
+    display: inline-block;
+    font-weight: 400
+}
+
+.show-search-order-lookup table th {
+    background-color: var(--primary) !important;
+    color: var(--white)
+}
+
+.warranty-lookup .form-warranty-lookup button,
+.order-lookup .form-warranty-lookup button {
+    @include flex-center;
+}
+
+.warranty-lookup .form-warranty-lookup button svg,
+.order-lookup .form-warranty-lookup button svg {
+    @include icon(20px);
+    margin-left: 5px;
+    display: none;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.button-loading svg {
+    display: flex !important;
+    animation: spin 1s linear infinite;
+}
+
+@media (max-width: 768px) {
+    .show-search-warranty-lookup {
+        .overflows table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 0;
+        }
+
+        .overflows thead {
+            display: none;
+        }
+
+        .overflows tbody tr {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .overflows td {
+            padding: 0.25rem 0.5rem;
+            border-bottom: 1px solid #eee !important;
+            display: flex;
+        }
+
+        .overflows td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            min-width: 120px;
+            display: inline-block;
+            text-align: right;
+            padding-left: 10px;
+            margin-right: 10px;
+        }
+
+    }
+}

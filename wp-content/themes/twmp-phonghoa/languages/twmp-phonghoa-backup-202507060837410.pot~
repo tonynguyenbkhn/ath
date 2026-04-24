@@ -1,0 +1,1038 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Twmp Phonghoa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-28 09:17+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.0; wp-6.8.1; php-7.4.33\n"
+"X-Domain: twmp-phonghoa"
+
+#: inc/helpers/utility.php:60
+#, php-format
+msgid "%1$s"
+msgstr ""
+
+#. %1$s Action name, %2$s Order number.
+#: woocommerce/order/order-details.php:105
+#, php-format
+msgid "%1$s order number %2$s"
+msgstr ""
+
+#. %1$s: Item name, %2$d: Item quantity.
+#: inc/woocommerces/warranty-tracking.php:77
+#, php-format
+msgid "%1$s x %2$d"
+msgstr ""
+
+#: inc/woocommerces/cart.php:114 template-parts/headers/icon-cart.php:24
+msgid "%d"
+msgid_plural "%d"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %s: Quantity.
+#: woocommerce/global/quantity-input.php:25
+#, php-format
+msgid "%s quantity"
+msgstr ""
+
+#: inc/helpers/template-functions.php:359
+msgid "&laquo;"
+msgstr ""
+
+#: inc/helpers/template-functions.php:360
+msgid "&raquo;"
+msgstr ""
+
+#. %s location.
+#: woocommerce/cart/cart-totals.php:80
+#, php-format
+msgid "(estimated for %s)"
+msgstr ""
+
+#: functions.php:472
+msgid "(no title)"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:32
+msgid "- Order value does not include shipping costs."
+msgstr ""
+
+#: templates/blocks/product-grid-slider-flashsale.php:110
+#: templates/blocks/product-grid-slider-flashsale.php:115
+#: templates/blocks/product-grid-slider-flashsale.php:115
+#: templates/blocks/product-grid-slider-flashsale.php:120
+#: templates/blocks/product-grid-slider-flashsale.php:120
+#: templates/blocks/product-grid-slider-flashsale.php:125
+#: templates/blocks/product-grid-slider-flashsale.php:125
+msgid "0"
+msgstr ""
+
+#: 404.php:18
+msgid "404"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:171
+msgid "404 Not Found"
+msgstr ""
+
+#: inc/helpers/utility.php:56
+#, php-format
+msgid "<cite class=\"fn\">%s</cite> <span class=\"says\">says:</span>"
+msgstr ""
+
+#. %s the current username
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:177
+#, php-format
+msgctxt "[Frontend] Logged user info"
+msgid "Logged in as %s."
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:179
+msgctxt "[Frontend] Logout form link"
+msgid "Logout"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:63
+msgctxt "[Frontend] Reply content form field"
+msgid "Your reply"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:56
+msgctxt "[Frontend] Reply title form field"
+msgid "Reply title"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:63
+msgctxt "[Frontend] Review content form field"
+msgid "Your review"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:56
+msgctxt "[Frontend] Review title form field"
+msgid "Review title"
+msgstr ""
+
+#. %1$s number of images, %2$s number of videos
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:84
+#, php-format
+msgctxt "[Frontend] Review upload field file label"
+msgid "You can upload a maximum of %1$s images and %2$s videos."
+msgstr ""
+
+#. %s number of items
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:76
+#, php-format
+msgctxt "[Frontend] Review upload field file label"
+msgid "You can upload a maximum of %s images."
+msgstr ""
+
+#. %s number of items
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:80
+#, php-format
+msgctxt "[Frontend] Review upload field file label"
+msgid "You can upload a maximum of %s videos."
+msgstr ""
+
+#. %1$s image size, %2$s video size
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:101
+#, php-format
+msgctxt "[Frontend] Review upload field file size label"
+msgid "Maximum file size: %1$sMB for images and %2$sMB for videos."
+msgstr ""
+
+#. %s file size
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:93
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:97
+#, php-format
+msgctxt "[Frontend] Review upload field file size label"
+msgid "Maximum file size: %sMB."
+msgstr ""
+
+#. %s list of allowed file formats
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:88
+#, php-format
+msgctxt "[Frontend] Review upload field file types label"
+msgid "Allowed file types: %s."
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:70
+msgctxt "[Frontend] Review upload field label"
+msgid "Upload files"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:48
+msgctxt "[Frontend] User email form field"
+msgid "Your Email"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:44
+msgctxt "[Frontend] User name form field"
+msgid "Your Name"
+msgstr ""
+
+#: woocommerce/order/order-details.php:97
+msgid "Actions"
+msgstr ""
+
+#: inc/woocommerces/single.php:457 templates/blocks/add-to-cart-button.php:21
+#: templates/blocks/add-to-cart-button.php:31
+msgid "Add to cart"
+msgstr ""
+
+#: functions.php:538
+msgid "All Categories"
+msgstr ""
+
+#: woocommerce/checkout/form-coupon.php:30
+msgid "Apply coupon"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:172
+msgid "Archives"
+msgstr ""
+
+#: woocommerce/cart/cart.php:106
+msgid "Available on backorder"
+msgstr ""
+
+#: 404.php:21
+msgid "Back to Home"
+msgstr ""
+
+#: inc/woocommerces/thank-you.php:81
+msgid "Back to home page"
+msgstr ""
+
+#: inc/woocommerces/api.php:23 inc/woocommerces/api.php:107
+msgid "Bad request. Missing parameters."
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:169
+msgctxt "breadcrumbs aria label"
+msgid "Breadcrumbs"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:168
+msgid "Browse:"
+msgstr ""
+
+#: templates/blocks/quick-buy.php:9
+msgid "Buy Now"
+msgstr ""
+
+#: inc/helpers/template-functions.php:322
+msgid "by"
+msgstr ""
+
+#: template-parts/headers/icon-cart.php:17
+#: template-parts/headers/icon-cart.php:28
+msgid "Cart"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:26
+msgid "Cart total"
+msgstr ""
+
+#: inc/woocommerces/single.php:119
+msgid "Category"
+msgid_plural "Categories"
+msgstr[0] ""
+msgstr[1] ""
+
+#: woocommerce/checkout/form-checkout.php:33
+msgid "Checkout"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:66 inc/woocommerces/checkout.php:72
+msgid "City"
+msgstr ""
+
+#: template-parts/footers/slideout-menu.php:4
+msgid "Close"
+msgstr ""
+
+#: template-parts/footers/mini-cart.php:20
+msgid "Close a mini cart"
+msgstr ""
+
+#: template-parts/footers/modal-search-form.php:36
+msgid "Close a modal"
+msgstr ""
+
+#: template-parts/footers/modal-search-form.php:24
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:31
+msgid "Close a search form modal"
+msgstr ""
+
+#: comments.php:20 comments.php:43
+msgid "Comment navigation"
+msgstr ""
+
+#. %s is the page number.
+#: inc/classes/class-breadcrumbs.php:178
+#, php-format
+msgid "Comment Page %s"
+msgstr ""
+
+#: comments.php:60
+msgid "Comments are closed."
+msgstr ""
+
+#: templates/blocks/shop-steps.php:32
+msgid "Complete order"
+msgstr ""
+
+#: templates/core-blocks/content-load-more.php:9
+msgctxt "content load more button"
+msgid "Collapse"
+msgstr ""
+
+#: templates/core-blocks/content-load-more.php:8
+msgctxt "content load more button"
+msgid "View more"
+msgstr ""
+
+#. %s: Name of current post. Only visible to screen readers
+#: template-parts/content-theme.php:42 template-parts/content.php:34
+#, php-format
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr ""
+
+#: woocommerce/checkout/form-coupon.php:26
+msgid "Coupon code"
+msgstr ""
+
+#: woocommerce/checkout/form-coupon.php:23
+#: woocommerce/checkout/form-coupon.php:25
+msgid "Coupon:"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:29
+msgid "Customer Name"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:72
+msgid "Customer Name:"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:703 inc/classes/class-breadcrumbs.php:1141
+msgctxt "daily archives date format"
+msgid "j"
+msgstr ""
+
+#: inc/woocommerces/single.php:282 inc/woocommerces/single.php:283
+#: templates/blocks/product-grid-slider-flashsale.php:111
+msgid "Day"
+msgstr ""
+
+#: woocommerce/cart/cart.php:131
+msgid "Delete"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:34
+#: woocommerce/single-product/tabs/description.php:23
+msgid "Description"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:85
+msgid "Description:"
+msgstr ""
+
+#: functions.php:532
+msgid "Display post date?"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:122 inc/woocommerces/checkout.php:127
+msgid "District"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:215
+msgid "Download Error"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:240
+msgid "Download hash does not match."
+msgstr ""
+
+#: inc/classes/class-download-theme.php:230
+msgid "Download ID is undefined."
+msgstr ""
+
+#: inc/classes/class-download-theme.php:245
+msgid "Download is not available."
+msgstr ""
+
+#. %s: Name of current post. Only visible to screen readers
+#: template-parts/content-page.php:33
+#, php-format
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:67
+msgid "Email"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:68
+msgid "Expired Warranty"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:156
+msgid "File does not exist. Error code: "
+msgstr ""
+
+#: inc/classes/class-download-theme.php:252
+msgid "File URL is not defined."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:63 inc/woocommerces/checkout.php:69
+msgid "First name"
+msgstr ""
+
+#. Name of the template
+#: templates/page-flexible.php:3
+msgid "Flexible"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:63
+msgid "Footer Absolute"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:51
+msgid "Footer Primary"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:39
+msgid "Footer Top"
+msgstr ""
+
+#. Name of the template
+#: templates/page-fullwidth.php:3
+msgid "Full Width"
+msgstr ""
+
+#. Name of the template
+#: templates/page-fullwidth-without-title.php:3
+msgid "Full Width Without Title"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:284
+msgid "Go to homepage &raquo;"
+msgstr ""
+
+#: inc/classes/class-menus-theme.php:27
+msgid "Header Menu"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:75
+msgid "Header Top"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:170
+msgid "Home"
+msgstr ""
+
+#: templates/blocks/quick-buy.php:10
+msgid "Home delivery (COD) or pick up at store"
+msgstr ""
+
+#: templates/blocks/product-grid-slider-flashsale.php:116
+msgid "Hour"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:684
+msgctxt "hour archives time format"
+msgid "g a"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:155
+msgid "How do you feel about this product? (choose a star):"
+msgstr ""
+
+#: inc/woocommerces/single.php:286 inc/woocommerces/single.php:287
+msgid "Hrs"
+msgstr ""
+
+#. URI of the theme
+msgid "https://taiwebmienphi.com/celano"
+msgstr ""
+
+#. Author URI of the theme
+msgid "https://taiwebmienphi.com/nguyenvanviet"
+msgstr ""
+
+#: inc/woocommerces/single.php:302
+msgid "Hurry up! The sale will end after less than a hour."
+msgstr ""
+
+#: inc/classes/class-views-theme.php:108
+msgid "Image"
+msgstr ""
+
+#: inc/helpers/template-functions.php:345
+msgid "in"
+msgstr ""
+
+#: inc/woocommerces/single.php:108
+msgid "In stock"
+msgstr ""
+
+#: inc/woocommerces/archive.php:549
+msgid "Introduce"
+msgstr ""
+
+#: template-parts/content-none.php:33
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: searchform.php:3 searchform.php:4
+msgctxt "label"
+msgid "Search for:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:64 inc/woocommerces/checkout.php:70
+msgid "Last name"
+msgstr ""
+
+#: template-parts/headers/icon-login.php:12
+msgid "Log In"
+msgstr ""
+
+#: template-parts/footers/slideout-menu.php:3
+msgid "Menu"
+msgstr ""
+
+#: inc/woocommerces/single.php:290 inc/woocommerces/single.php:291
+msgid "Min"
+msgstr ""
+
+#: templates/blocks/product-grid-slider-flashsale.php:121
+msgid "Minute"
+msgstr ""
+
+#. Minute archive title. %s is the minute time format.
+#: inc/classes/class-breadcrumbs.php:180
+#, php-format
+msgid "Minute %s"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:648
+msgctxt "minute and hour archives time format"
+msgid "g:i a"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:666
+msgctxt "minute archives time format"
+msgid "i"
+msgstr ""
+
+#: inc/woocommerces/single.php:141
+msgid "Missing timestamp parameter"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:702 inc/classes/class-breadcrumbs.php:760
+#: inc/classes/class-breadcrumbs.php:1137
+msgctxt "monthly archives date format"
+msgid "F"
+msgstr ""
+
+#: comments.php:24 comments.php:47
+msgid "Newer Comments"
+msgstr ""
+
+#: inc/woocommerces/archive.php:394
+msgid "News contains"
+msgstr ""
+
+#: template-parts/singles/prev-next-post.php:35
+msgid "Next"
+msgstr ""
+
+#: template-parts/singles/prev-next-post.php:36
+msgid "Next post:"
+msgstr ""
+
+#. Author of the theme
+msgid "nguyenvanviet"
+msgstr ""
+
+#: comments.php:54
+msgid "No comments posted yet."
+msgstr ""
+
+#: inc/classes/class-assets-theme.php:94
+msgid "No order found."
+msgstr ""
+
+#: template-parts/footers/wcs-mini-cart.php:72
+msgid "No products in the cart."
+msgstr ""
+
+#: woocommerce/order/order-details.php:130
+msgid "Note:"
+msgstr ""
+
+#: template-parts/content-none.php:3
+msgid "Nothing Found"
+msgstr ""
+
+#: functions.php:526
+msgid "Number of posts to show:"
+msgstr ""
+
+#: comments.php:23 comments.php:46
+msgid "Older Comments"
+msgstr ""
+
+#: 404.php:19
+msgid "Oops! The page you are looking for doesn’t exist."
+msgstr ""
+
+#: template-parts/headers/icon-search.php:17
+msgid "Open a search form"
+msgstr ""
+
+#: inc/woocommerces/order-tracking.php:29
+msgid "Order code"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:117
+msgid "Order Confirmation"
+msgstr ""
+
+#: woocommerce/order/order-details.php:57
+msgid "Order details"
+msgstr ""
+
+#: inc/woocommerces/order-tracking.php:19
+#: inc/woocommerces/warranty-tracking.php:19
+msgid "Order not found."
+msgstr ""
+
+#. %s is the page number.
+#: inc/classes/class-breadcrumbs.php:176
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+#. Name of the template
+#: templates/page-blog.php:3
+msgid "Page Blog"
+msgstr ""
+
+#: template-parts/content-page.php:19 template-parts/content-theme.php:55
+#: template-parts/content.php:47
+msgid "Pages:"
+msgstr ""
+
+#: woocommerce/checkout/form-checkout.php:56
+msgid "Payment method"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:65 inc/woocommerces/checkout.php:71
+msgid "Phone"
+msgstr ""
+
+#: inc/helpers/utility.php:38
+msgid "Pingback:"
+msgstr ""
+
+#: templates/blocks/sticky-mobile-checkout.php:15
+msgid "Place order"
+msgstr ""
+
+#: searchform.php:4
+msgctxt "placeholder"
+msgid "Search &hellip;"
+msgstr ""
+
+#: inc/woocommerces/order-tracking.php:9
+#: inc/woocommerces/warranty-tracking.php:9
+msgid "Please enter phone number."
+msgstr ""
+
+#: inc/woocommerces/thank-you.php:66
+#, php-format
+msgid ""
+"Please pay the amount %s to the delivery staff upon receipt of the goods."
+msgstr ""
+
+#: template-parts/singles/prev-next-post.php:20
+msgid "Previous"
+msgstr ""
+
+#: template-parts/singles/prev-next-post.php:21
+msgid "Previous post:"
+msgstr ""
+
+#: woocommerce/cart/cart.php:34
+msgid "Price"
+msgstr ""
+
+#: inc/woocommerces/order-tracking.php:34
+#: inc/woocommerces/warranty-tracking.php:31 woocommerce/cart/cart.php:33
+#: woocommerce/cart/cart.php:86 woocommerce/order/order-details.php:63
+msgid "Product"
+msgstr ""
+
+#: woocommerce/global/quantity-input.php:47
+msgid "Product quantity"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:74
+msgid "Product:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:95 inc/woocommerces/checkout.php:100
+#: inc/woocommerces/checkout.php:110
+msgid "Province/City"
+msgstr ""
+
+#: template-parts/singles/author-bio.php:18
+msgid "Published %d posts"
+msgstr ""
+
+#: inc/woocommerces/order-tracking.php:35 woocommerce/cart/cart.php:35
+#: woocommerce/global/quantity-input.php:25
+#: woocommerce/global/quantity-input.php:37
+msgid "Quantity"
+msgstr ""
+
+#: inc/woocommerces/single.php:596
+msgid "Rate now"
+msgstr ""
+
+#: inc/woocommerces/archive.php:200
+#, php-format
+msgid "Rated %s out of 5"
+msgstr ""
+
+#: inc/woocommerces/single.php:543
+msgid "Rating for"
+msgstr ""
+
+#: templates/core-blocks/button.php:6
+msgid "Read More"
+msgstr ""
+
+#: archive.php:30 search.php:38
+msgid "Read More..."
+msgstr ""
+
+#. 1: link to WP admin new post page.
+#: template-parts/content-none.php:13
+#, php-format
+msgid ""
+"Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:32
+msgid "Received Date"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:82
+msgid "Received Date:"
+msgstr ""
+
+#: functions.php:404
+msgid "Recent Posts"
+msgstr ""
+
+#: single.php:70 templates/page-blog.php:77
+msgid "Related Articles"
+msgstr ""
+
+#: inc/woocommerces/archive.php:522
+msgid "Related News"
+msgstr ""
+
+#: woocommerce/single-product/related.php:27
+msgid "Related products"
+msgstr ""
+
+#. %s is the product name
+#: woocommerce/cart/cart.php:134
+#, php-format
+msgid "Remove %s from cart"
+msgstr ""
+
+#: woocommerce/cart/cart.php:31
+msgid "Remove item"
+msgstr ""
+
+#: template-parts/footers/wcs-mini-cart.php:28
+msgid "Remove this item"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:294
+msgid "Return to previous page &#10550;"
+msgstr ""
+
+#: inc/woocommerces/single.php:298
+msgid "Sale begins after"
+msgstr ""
+
+#: inc/woocommerces/single.php:299
+msgid "Sale ended after"
+msgstr ""
+
+#: templates/blocks/page-title.php:48
+msgid "Search"
+msgstr ""
+
+#: templates/blocks/page-title.php:46
+msgid "Search for templates"
+msgstr ""
+
+#. %s is the search query.
+#: inc/classes/class-breadcrumbs.php:174
+#, php-format
+msgid "Search Results for: %s"
+msgstr ""
+
+#: inc/woocommerces/single.php:294 inc/woocommerces/single.php:295
+msgid "Sec"
+msgstr ""
+
+#: templates/blocks/product-grid-slider-flashsale.php:126
+msgid "Second"
+msgstr ""
+
+#: functions.php:536
+msgid "Select Category:"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:125
+msgid "Send real photos"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:60 woocommerce/cart/cart-totals.php:61
+msgid "Shipping"
+msgstr ""
+
+#: template-parts/footers/mini-cart.php:18
+msgid "Shopping cart"
+msgstr ""
+
+#: templates/blocks/show-less.php:18
+msgid "Show less"
+msgstr ""
+
+#: templates/blocks/show-less.php:17
+msgid "Show more"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:98
+msgid "Sidebar Archive Woocommerce"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:87
+msgid "Sidebar Category"
+msgstr ""
+
+#: inc/woocommerces/single.php:95
+msgid "SKU: "
+msgstr ""
+
+#: inc/woocommerces/archive.php:268 inc/woocommerces/single.php:389
+msgid "Sold"
+msgstr ""
+
+#: template-parts/content-none.php:26
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: inc/classes/class-assets-theme.php:89
+#: inc/classes/class-rest-api-theme.php:164
+#: inc/classes/class-views-theme.php:169
+msgid "Sorry, something went wrong. Please refresh this page and try again!"
+msgstr ""
+
+#: inc/woocommerces/single.php:501
+msgid "Specifications"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:33
+msgid "Status"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:84
+msgid "Status:"
+msgstr ""
+
+#: inc/woocommerces/single.php:107
+msgid "Stock"
+msgstr ""
+
+#: searchform.php:9
+msgctxt "submit button"
+msgid "Search"
+msgstr ""
+
+#: templates/blocks/checkout-total.php:9 woocommerce/cart/cart-totals.php:38
+#: woocommerce/cart/cart-totals.php:39 woocommerce/cart/cart.php:36
+#: woocommerce/cart/cart.php:110
+msgid "Subtotal"
+msgstr ""
+
+#: inc/woocommerces/single.php:514
+msgid "Suggestions for you"
+msgstr ""
+
+#: inc/classes/class-assets-theme.php:95
+msgid "System error, please try again."
+msgstr ""
+
+#: inc/woocommerces/thank-you.php:61
+#, php-format
+msgid "Thank you %1$s for shopping at Phong Hoa!"
+msgstr ""
+
+#: inc/woocommerces/single.php:300
+msgid "The sale has ended."
+msgstr ""
+
+#: inc/woocommerces/single.php:301
+msgid "The sale will end after less than a day."
+msgstr ""
+
+#: woocommerce/cart/cart.php:27
+msgid "There are %d products in your cart"
+msgstr ""
+
+#: inc/woocommerces/api.php:80 inc/woocommerces/api.php:81
+#: inc/woocommerces/api.php:190 inc/woocommerces/api.php:191
+msgid "There is no product to display."
+msgstr ""
+
+#: templates/blocks/product-tabs-category.php:100
+#: templates/blocks/product-tabs-slider.php:125
+#: templates/blocks/product-tabs.php:100
+msgid "There is no products available for this category."
+msgstr ""
+
+#: inc/classes/class-rest-api-theme.php:146
+#: inc/classes/class-rest-api-theme.php:147
+msgid "There is no theme to display."
+msgstr ""
+
+#. Description of the theme
+msgid ""
+"This is a modern and customizable theme for blogs and personal websites."
+msgstr ""
+
+#: woocommerce/cart/cart.php:32
+msgid "Thumbnail image"
+msgstr ""
+
+#: search.php:3
+msgid "Tin tức"
+msgstr ""
+
+#: functions.php:521
+msgid "Title:"
+msgstr ""
+
+#: inc/woocommerces/order-tracking.php:36
+#: templates/blocks/checkout-total.php:57
+#: templates/blocks/sticky-mobile-checkout.php:5
+#: woocommerce/cart/cart-totals.php:108 woocommerce/cart/cart-totals.php:109
+#: woocommerce/order/order-details.php:64
+msgid "Total"
+msgstr ""
+
+#. Name of the theme
+msgid "Twmp Phonghoa"
+msgstr ""
+
+#: template-parts/footers/modal-search-form.php:23
+msgid "Type to search"
+msgstr ""
+
+#: inc/helpers/template-functions.php:343
+msgctxt "Used before category names."
+msgid "Categories"
+msgstr ""
+
+#: templates/blocks/category-card.php:91
+msgid "View all"
+msgstr ""
+
+#. 1: Author name
+#: inc/helpers/template-functions.php:325
+#, php-format
+msgid "View all posts by %s"
+msgstr ""
+
+#: templates/blocks/product-tabs-category.php:113
+#: templates/blocks/product-tabs-slider.php:137
+#: templates/blocks/product-tabs.php:113
+msgid "View all products"
+msgstr ""
+
+#: templates/blocks/product-tabs-category.php:114
+#: templates/blocks/product-tabs-slider.php:138
+#: templates/blocks/product-tabs.php:114
+#, php-format
+msgid "View all products in %s"
+msgstr ""
+
+#: inc/woocommerces/archive.php:407 templates/blocks/post-card.php:11
+#: templates/blocks/post-row.php:11
+msgid "View more"
+msgstr ""
+
+#: inc/classes/class-views-theme.php:102
+msgid "View W"
+msgstr ""
+
+#: inc/classes/class-views-theme.php:96
+msgid "View Y"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:30
+msgid "Warranty Code"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:73
+msgid "Warranty Code:"
+msgstr ""
+
+#. Weekly archive title. %s is the week date format.
+#: inc/classes/class-breadcrumbs.php:182
+#, php-format
+msgid "Week %s"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:732
+msgctxt "weekly archives date format"
+msgid "W"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:701 inc/classes/class-breadcrumbs.php:731
+#: inc/classes/class-breadcrumbs.php:759 inc/classes/class-breadcrumbs.php:787
+#: inc/classes/class-breadcrumbs.php:1133
+msgctxt "yearly archives date format"
+msgid "Y"
+msgstr ""
+
+#: woocommerce/checkout/form-checkout.php:27
+msgid "You must be logged in to checkout."
+msgstr ""
+
+#: inc/helpers/utility.php:76
+msgid "Your comment is awaiting moderation."
+msgstr ""

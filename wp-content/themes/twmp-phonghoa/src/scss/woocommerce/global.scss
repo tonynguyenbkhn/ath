@@ -1,0 +1,303 @@
+@mixin style-price {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 0;
+	width: 50%;
+	order: 2;
+
+	@media (min-width: 576px) {
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: flex-end;
+	}
+
+	ins {
+		text-decoration: none;
+		order: 1;
+	}
+
+	span bdi {
+		color: var(--price-color);
+		font-weight: bold;
+		font-size: 14px;
+
+		@media (min-width: 576px) {
+			font-size: 16px;
+		}
+	}
+
+	ins span {
+		color: var(--price-color);
+		font-weight: bold;
+		font-size: 14px;
+
+		@media (min-width: 576px) {
+			font-size: 16px;
+		}
+	}
+
+	del {
+		margin-left: 0.25em;
+		opacity: 1;
+		text-decoration: none;
+		order: 2;
+
+		span {
+			bdi {
+				color: var(--body-text-color);
+				font-weight: 400;
+				text-decoration: line-through;
+				font-size: 14px;
+			}
+		}
+	}
+}
+
+.woocommerce-shop .woocommerce-breadcrumb {
+	margin-bottom: 10px;
+}
+
+.woocommerce-breadcrumb {
+	width: 100%;
+	background-color: transparent;
+
+	.woocommerce-breadcrumb__container {
+		padding-top: 0.625em;
+		padding-bottom: 0.625em;
+
+		@media (max-width: 576px) {
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+
+		a {
+			color: var(--primary);
+		}
+	}
+}
+
+.added_to_cart {
+	display: none !important;
+}
+
+.woocommerce .star-rating,
+.woocommerce p.stars [class^='star-'],
+.woocommerce p.stars [class*=' star-'] {
+	font-family: WooCommerce;
+	speak: none;
+	font-weight: 400;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	font-size: 1em;
+}
+
+.woocommerce .star-rating {
+	overflow: hidden;
+	position: relative;
+	height: 1em;
+	width: 5em;
+}
+
+.woocommerce .star-rating:before {
+	content: '☆☆☆☆☆';
+	float: left;
+	top: 0;
+	left: 0;
+	position: absolute;
+	// color: #999;
+}
+
+.woocommerce .star-rating span {
+	overflow: hidden;
+	float: left;
+	top: 0;
+	left: 0;
+	position: absolute;
+	padding-top: 1.5em;
+}
+
+.woocommerce .star-rating span:before {
+	content: '★★★★★';
+	top: 0;
+	position: absolute;
+	left: 0;
+	color: #f90;
+}
+
+/* rating block specific to single product summary area */
+.woocommerce .woocommerce-product-rating {
+	display: block;
+	width: 100%;
+}
+
+.woocommerce .woocommerce-product-rating .star-rating {
+	margin: 0 auto;
+	float: left;
+	font-size: 1em;
+}
+
+/* rating block specific to review submit form */
+.woocommerce p.stars {
+	position: relative;
+	padding: 0.75em;
+}
+
+.woocommerce p.stars a {
+	display: inline-block;
+	margin-right: 1em;
+	text-indent: -9999px;
+	position: relative;
+	border-bottom: 0 !important;
+	outline: 0;
+	color: #999;
+}
+
+.woocommerce p.stars a:hover,
+.woocommerce p.stars a.active {
+	color: #f90;
+}
+
+.woocommerce p.stars a:last-child {
+	border-right: 0;
+}
+
+.woocommerce p.stars [class^='star-'],
+.woocommerce p.stars [class*=' star-'] {
+	border-right: 1px solid #ccc;
+}
+
+.woocommerce p.stars [class^='star-']:after,
+.woocommerce p.stars [class*=' star-']:after {
+	text-indent: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.woocommerce p.stars a.star-1 {
+	width: 2em;
+}
+
+.woocommerce p.stars a.star-1:after {
+	content: '☆';
+}
+
+.woocommerce p.stars a.star-1.active:after,
+.woocommerce p.stars a.star-1:hover:after {
+	content: '★';
+}
+
+.woocommerce p.stars a.star-2 {
+	width: 3em;
+}
+
+.woocommerce p.stars a.star-2:after {
+	content: '☆☆';
+}
+
+.woocommerce p.stars a.star-2.active:after,
+.woocommerce p.stars a.star-2:hover:after {
+	content: '★★';
+}
+
+.woocommerce p.stars a.star-3 {
+	width: 4em;
+}
+
+.woocommerce p.stars a.star-3:after {
+	content: '☆☆☆';
+}
+
+.woocommerce p.stars a.star-3.active:after,
+.woocommerce p.stars a.star-3:hover:after {
+	content: '★★★';
+}
+
+.woocommerce p.stars a.star-4 {
+	width: 5em;
+}
+
+.woocommerce p.stars a.star-4:after {
+	content: '☆☆☆☆';
+}
+
+.woocommerce p.stars a.star-4.active:after,
+.woocommerce p.stars a.star-4:hover:after {
+	content: '★★★★';
+}
+
+.woocommerce p.stars a.star-5 {
+	width: 6em;
+}
+
+.woocommerce p.stars a.star-5:after {
+	content: '☆☆☆☆☆';
+}
+
+.woocommerce p.stars a.star-5.active:after,
+.woocommerce p.stars a.star-5:hover:after {
+	content: '★★★★★';
+}
+
+/* rating block specific to product listing */
+.woocommerce ul.products li.product .star-rating {
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+}
+
+/* rating block specific to sidebar widgets */
+.woocommerce ul.cart_list li .star-rating,
+.woocommerce ul.product_list_widget li .star-rating {
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+}
+
+/* end of review stars */
+
+// css message
+
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error,
+.woocommerce-noreviews,
+p.no-comments {
+	background-color: var(--white);
+	clear: both;
+	margin-left: 0;
+	margin-bottom: 20px;
+	box-shadow: 0px 3px 7px 1px rgba(0, 0, 0, 0.3), 0px 6px 12px -2px rgba(50, 50, 93, 0.25);
+	padding: 10px 20px;
+	list-style: none;
+	border-radius: 4px;
+	display: flex;
+
+	position: relative;
+	padding-left: 40px;
+
+	flex-direction: column;
+	align-items: flex-start;
+
+	@media (min-width: 576px) {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&::before {
+		content: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIGZpbGw9IiMwMDAwMDAiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0wIDI1Mi4xMThWNDhDMCAyMS40OSAyMS40OSAwIDQ4IDBoMjA0LjExOGE0OCA0OCAwIDAgMSAzMy45NDEgMTQuMDU5bDIxMS44ODIgMjExLjg4MmMxOC43NDUgMTguNzQ1IDE4Ljc0NSA0OS4xMzcgMCA2Ny44ODJMMjkzLjgyMyA0OTcuOTQxYy0xOC43NDUgMTguNzQ1LTQ5LjEzNyAxOC43NDUtNjcuODgyIDBMMTQuMDU5IDI4Ni4wNTlBNDggNDggMCAwIDEgMCAyNTIuMTE4ek0xMTIgNjRjLTI2LjUxIDAtNDggMjEuNDktNDggNDhzMjEuNDkgNDggNDggNDggNDgtMjEuNDkgNDgtNDgtMjEuNDktNDgtNDgtNDh6Ii8+PC9zdmc+);
+		position: absolute;
+		left: 15px;
+		top: 12px;
+		margin-right: 10px;
+		display: inline-block;
+	}
+}
+
+.checkout-inline-error-message {
+	color: red;
+	margin-top: 5px !important;
+}

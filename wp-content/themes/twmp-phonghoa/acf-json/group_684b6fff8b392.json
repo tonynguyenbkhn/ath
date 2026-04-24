@@ -1,0 +1,164 @@
+{
+    "key": "group_684b6fff8b392",
+    "title": "Thông tin sản phẩm",
+    "fields": [
+        {
+            "key": "field_684b6fff88ebf",
+            "label": "Bảo hành",
+            "name": "guarantee",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "<div>\r\n<ul>\r\n \t<li>Bảo hành 12 tháng, Lỗi 1 đổi 1 trong 15 ngày<\/li>\r\n \t<li>Hàng chính hãng, fullbox, nguyên seal 100%<\/li>\r\n \t<li>Giao hàng toàn quốc<\/li>\r\n \t<li>Có hướng dẫn sử dụng<\/li>\r\n<\/ul>\r\n<\/div>",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_684b72f588ec0",
+            "label": "Quà tặng",
+            "name": "gift",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "<div>\r\n<ul>\r\n \t<li>Tặng <a href=\"https:\/\/namlinh.vn\/\">Quạt Để bàn Five<\/a><\/li>\r\n \t<li>Tặng 1 chai nước lau sàn<\/li>\r\n \t<li>Miễn phí giao hàng toàn quốc<\/li>\r\n \t<li>Quà tặng hấp dẫn lên đến 2.890.000Đ(<a href=\"https:\/\/namlinh.vn\/\">xem chi tiết<\/a>)<\/li>\r\n<\/ul>\r\n<\/div>",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_684b79ce88ec1",
+            "label": "Sản phẩm tương tự",
+            "name": "related_product",
+            "aria-label": "",
+            "type": "relationship",
+            "instructions": "Chọn tối đa 5 sản phẩm. Nếu để trống sẽ hiển thị các sản phẩm cùng danh mục",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "product"
+            ],
+            "post_status": [
+                "publish"
+            ],
+            "taxonomy": "",
+            "filters": [
+                "search",
+                "post_type",
+                "taxonomy"
+            ],
+            "return_format": "id",
+            "min": "",
+            "max": 5,
+            "allow_in_bindings": 0,
+            "elements": "",
+            "bidirectional": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_684b79eb88ec2",
+            "label": "Thông số kỹ thuật",
+            "name": "information",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "<table border=\"0\">\r\n<tbody>\r\n<tr>\r\n<th>Thương hiệu<\/th>\r\n<td>Mijia<\/td>\r\n<\/tr>\r\n<tr>\r\n<th>Model<\/th>\r\n<td>C107<\/td>\r\n<\/tr>\r\n<tr>\r\n<th>Lực hút<\/th>\r\n<td>7000Pa<\/td>\r\n<\/tr>\r\n<tr>\r\n<th>Dung lượng pin<\/th>\r\n<td>5200mAh<\/td>\r\n<\/tr>\r\n<tr>\r\n<th>Dung tích bể nước<\/th>\r\n<td>4L và 4L<\/td>\r\n<\/tr>\r\n<tr>\r\n<th>Kiểu lau<\/th>\r\n<td>Lau xoay 360, tốc độ 180 vòng\/phút<\/td>\r\n<\/tr>\r\n<tr>\r\n<th>Leo vật cản<\/th>\r\n<td>2cm<\/td>\r\n<\/tr>\r\n<tr>\r\n<th>Độ ồn<\/th>\r\n<td>65dB<\/td>\r\n<\/tr>\r\n<tr>\r\n<th>Kích thước<\/th>\r\n<td>400x490x584mm<\/td>\r\n<\/tr>\r\n<\/tbody>\r\n<\/table>",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_6870d0bad4e91",
+            "label": "Đã bán",
+            "name": "sold",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 741,
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_691337d3fd92b",
+            "label": "Đặt hàng trước",
+            "name": "contact",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "product"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1762867242
+}

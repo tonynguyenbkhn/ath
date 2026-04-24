@@ -1,0 +1,27 @@
+.post-card__image {
+	@include ratio(9/16);
+}
+
+.post-card__title {
+	font-size: 14px;
+	line-height: 24px;
+	text-transform: uppercase;
+	font-weight: bold;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.post-card__description {
+	font-size: 14px;
+}
+
+.post-card {
+	margin-bottom: 1.25em;
+	@media (min-width: 1024px) {
+		margin-bottom: 0;
+	}
+}
+
+.post-card__overlay-link {
+	border-radius: 0;
+}

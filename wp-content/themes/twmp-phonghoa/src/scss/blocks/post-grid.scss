@@ -1,0 +1,7 @@
+.post-grid {
+	& .row {
+		& > article.post {
+			@include col(4, 12px);
+		}
+	}
+}

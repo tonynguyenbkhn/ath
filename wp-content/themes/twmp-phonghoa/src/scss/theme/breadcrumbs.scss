@@ -1,0 +1,40 @@
+.breadcrumbs {
+	display: block;
+	padding: 5px 0;
+	background: var(--light);
+	margin: 10px 0;
+
+	& ul {
+		@include list-reset;
+
+		display: flex;
+		flex-wrap: wrap;
+
+		& li {
+			display: inline-flex;
+			font-size: 14px;
+			color: var(--gray);
+
+			&::after {
+				content: ' / ';
+				display: flex;
+				padding: 0 3px;
+			}
+
+			&.breadcrumbs__item--end {
+				&::after {
+					content: none;
+				}
+			}
+		}
+	}
+
+	& a {
+
+		color: var(--primary);
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

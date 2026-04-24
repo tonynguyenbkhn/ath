@@ -1,0 +1,1078 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Twmp Phonghoa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-28 09:17+0000\n"
+"PO-Revision-Date: 2025-07-07 13:18+0000\n"
+"Last-Translator: \n"
+"Language-Team: Tiếng Việt\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.0; wp-6.8.1; php-7.4.33\n"
+"X-Domain: twmp-phonghoa"
+
+#: inc/helpers/utility.php:60
+#, php-format
+msgid "%1$s"
+msgstr ""
+
+#. %1$s Action name, %2$s Order number.
+#: woocommerce/order/order-details.php:105
+#, php-format
+msgid "%1$s order number %2$s"
+msgstr "%1$s Số đơn hàng %2$s"
+
+#. %1$s: Item name, %2$d: Item quantity.
+#: inc/woocommerces/warranty-tracking.php:77
+#: inc/woocommerces/warranty-tracking.php:184
+#, php-format
+msgid "%1$s x %2$d"
+msgstr ""
+
+#: inc/woocommerces/cart.php:114 template-parts/headers/icon-cart.php:24
+msgid "%d"
+msgid_plural "%d"
+msgstr[0] ""
+
+#. %s: Quantity.
+#: woocommerce/global/quantity-input.php:25
+#, php-format
+msgid "%s quantity"
+msgstr "%s số lượng"
+
+#: inc/helpers/template-functions.php:359
+msgid "&laquo;"
+msgstr ""
+
+#: inc/helpers/template-functions.php:360
+msgid "&raquo;"
+msgstr ""
+
+#. %s location.
+#: woocommerce/cart/cart-totals.php:80
+#, php-format
+msgid "(estimated for %s)"
+msgstr "(ước tính cho %s)"
+
+#: functions.php:472
+msgid "(no title)"
+msgstr "(không có tiêu đề)"
+
+#: woocommerce/cart/cart-totals.php:32
+msgid "- Order value does not include shipping costs."
+msgstr "- Giá trị đơn hàng được tính trước khi cộng phí vận chuyển."
+
+#: templates/blocks/product-grid-slider-flashsale.php:111
+#: templates/blocks/product-grid-slider-flashsale.php:116
+#: templates/blocks/product-grid-slider-flashsale.php:116
+#: templates/blocks/product-grid-slider-flashsale.php:121
+#: templates/blocks/product-grid-slider-flashsale.php:121
+#: templates/blocks/product-grid-slider-flashsale.php:126
+#: templates/blocks/product-grid-slider-flashsale.php:126
+msgid "0"
+msgstr ""
+
+#: 404.php:18
+msgid "404"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:171
+msgid "404 Not Found"
+msgstr "404 Không tìm thấy"
+
+#: inc/helpers/utility.php:56
+#, php-format
+msgid "<cite class=\"fn\">%s</cite> <span class=\"says\">says:</span>"
+msgstr "<cite class=\"fn\">%s</cite> <span class=\"says\">viết:</span>"
+
+#. %s the current username
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:177
+#, php-format
+msgctxt "[Frontend] Logged user info"
+msgid "Logged in as %s."
+msgstr "Đã đăng nhập với tư cách %s."
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:179
+msgctxt "[Frontend] Logout form link"
+msgid "Logout"
+msgstr "Đăng xuất"
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:63
+msgctxt "[Frontend] Reply content form field"
+msgid "Your reply"
+msgstr "Trả lời của bạn"
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:56
+msgctxt "[Frontend] Reply title form field"
+msgid "Reply title"
+msgstr "Tiêu đề trả lời"
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:63
+msgctxt "[Frontend] Review content form field"
+msgid "Your review"
+msgstr "Đánh giá của bạn"
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:56
+msgctxt "[Frontend] Review title form field"
+msgid "Review title"
+msgstr "Tiêu đề đánh giá"
+
+#. %1$s number of images, %2$s number of videos
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:84
+#, php-format
+msgctxt "[Frontend] Review upload field file label"
+msgid "You can upload a maximum of %1$s images and %2$s videos."
+msgstr "Bạn có thể tải lên tối đa %1$s hình ảnh và %2$s video."
+
+#. %s number of items
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:76
+#, php-format
+msgctxt "[Frontend] Review upload field file label"
+msgid "You can upload a maximum of %s images."
+msgstr "Bạn có thể tải lên tối đa %s hình ảnh."
+
+#. %s number of items
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:80
+#, php-format
+msgctxt "[Frontend] Review upload field file label"
+msgid "You can upload a maximum of %s videos."
+msgstr "Bạn có thể tải lên tối đa %s video."
+
+#. %1$s image size, %2$s video size
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:101
+#, php-format
+msgctxt "[Frontend] Review upload field file size label"
+msgid "Maximum file size: %1$sMB for images and %2$sMB for videos."
+msgstr "Kích thước tệp tối đa: %1$sMB cho ảnh và %2$sMB cho video."
+
+#. %s file size
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:93
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:97
+#, php-format
+msgctxt "[Frontend] Review upload field file size label"
+msgid "Maximum file size: %sMB."
+msgstr "Kích thước tệp tối đa: %sMB."
+
+#. %s list of allowed file formats
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:88
+#, php-format
+msgctxt "[Frontend] Review upload field file types label"
+msgid "Allowed file types: %s."
+msgstr "Các loại tệp được cho phép: %s."
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:70
+msgctxt "[Frontend] Review upload field label"
+msgid "Upload files"
+msgstr "Tải lên các tập tin"
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:48
+msgctxt "[Frontend] User email form field"
+msgid "Your Email"
+msgstr "Email của bạn"
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:44
+msgctxt "[Frontend] User name form field"
+msgid "Your Name"
+msgstr "Tên của bạn"
+
+#: woocommerce/order/order-details.php:97
+msgid "Actions"
+msgstr "Hành động"
+
+#: inc/woocommerces/single.php:476 templates/blocks/add-to-cart-button.php:21
+#: templates/blocks/add-to-cart-button.php:31
+msgid "Add to cart"
+msgstr "Thêm vào giỏ"
+
+#: functions.php:538
+msgid "All Categories"
+msgstr "Tất cả danh mục"
+
+#: woocommerce/checkout/form-coupon.php:30
+msgid "Apply coupon"
+msgstr "Áp dụng"
+
+#: inc/classes/class-breadcrumbs.php:172
+msgid "Archives"
+msgstr "Lưu trữ"
+
+#: woocommerce/cart/cart.php:106
+msgid "Available on backorder"
+msgstr "Có sẵn theo đơn đặt trước"
+
+#: 404.php:21
+msgid "Back to Home"
+msgstr "Quay về Trang chủ"
+
+#: inc/woocommerces/thank-you.php:85
+msgid "Back to home page"
+msgstr "Quay về trang chủ"
+
+#: inc/woocommerces/api.php:23 inc/woocommerces/api.php:107
+msgid "Bad request. Missing parameters."
+msgstr "Yêu cầu không hợp lệ. Thiếu tham số."
+
+#: search.php:3
+msgid "Blog"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:169
+msgctxt "breadcrumbs aria label"
+msgid "Breadcrumbs"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:168
+msgid "Browse:"
+msgstr "Duyệt:"
+
+#: templates/blocks/quick-buy.php:9
+msgid "Buy Now"
+msgstr "Mua ngay"
+
+#: inc/helpers/template-functions.php:322
+msgid "by"
+msgstr "bởi"
+
+#: template-parts/headers/icon-cart.php:17
+#: template-parts/headers/icon-cart.php:28
+msgid "Cart"
+msgstr "Giỏ hàng"
+
+#: woocommerce/cart/cart-totals.php:26
+msgid "Cart total"
+msgstr "Tổng giỏ hàng"
+
+#: inc/woocommerces/single.php:119
+msgid "Category"
+msgid_plural "Categories"
+msgstr[0] "Danh mục"
+
+#: woocommerce/checkout/form-checkout.php:33
+msgid "Checkout"
+msgstr "Thanh toán"
+
+#: inc/woocommerces/checkout.php:66 inc/woocommerces/checkout.php:72
+msgid "City"
+msgstr "Thành phố"
+
+#: template-parts/footers/slideout-menu.php:4
+msgid "Close"
+msgstr "Đóng"
+
+#: template-parts/footers/mini-cart.php:20
+msgid "Close a mini cart"
+msgstr "Đóng giỏ hàng"
+
+#: template-parts/footers/modal-search-form.php:36
+msgid "Close a modal"
+msgstr "Đóng hộp thoại"
+
+#: template-parts/footers/modal-search-form.php:24
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:31
+msgid "Close a search form modal"
+msgstr "Đóng hộp thoại tìm kiếm"
+
+#: comments.php:20 comments.php:43
+msgid "Comment navigation"
+msgstr "Điều hướng bình luận"
+
+#. %s is the page number.
+#: inc/classes/class-breadcrumbs.php:178
+#, php-format
+msgid "Comment Page %s"
+msgstr "Trang bình luận %s"
+
+#: comments.php:60
+msgid "Comments are closed."
+msgstr "Bình luận đã bị đóng."
+
+#: templates/blocks/shop-steps.php:32
+msgid "Complete order"
+msgstr "Hoàn tất đơn hàng"
+
+#: templates/core-blocks/content-load-more.php:9
+msgctxt "content load more button"
+msgid "Collapse"
+msgstr "Thu gọn"
+
+#: templates/core-blocks/content-load-more.php:8
+msgctxt "content load more button"
+msgid "View more"
+msgstr "Xem thêm"
+
+#. %s: Name of current post. Only visible to screen readers
+#: template-parts/content-theme.php:42 template-parts/content.php:34
+#, php-format
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr "Đọc tiếp<span class=\"screen-reader-text\"> \"%s\"</span>"
+
+#: woocommerce/checkout/form-coupon.php:26
+msgid "Coupon code"
+msgstr "Mã giảm giá"
+
+#: woocommerce/checkout/form-coupon.php:23
+#: woocommerce/checkout/form-coupon.php:25
+msgid "Coupon:"
+msgstr "Mã giảm giá:"
+
+#: inc/woocommerces/warranty-tracking.php:29
+#: inc/woocommerces/warranty-tracking.php:137
+msgid "Customer Name"
+msgstr "Tên khách hàng"
+
+#: inc/woocommerces/warranty-tracking.php:72
+msgid "Customer Name:"
+msgstr "Tên khách hàng:"
+
+#: inc/classes/class-breadcrumbs.php:703 inc/classes/class-breadcrumbs.php:1141
+msgctxt "daily archives date format"
+msgid "j"
+msgstr ""
+
+#: inc/woocommerces/single.php:282 inc/woocommerces/single.php:283
+#: templates/blocks/product-grid-slider-flashsale.php:112
+msgid "Day"
+msgstr "Ngày"
+
+#: woocommerce/cart/cart.php:131
+msgid "Delete"
+msgstr "Xóa"
+
+#: inc/woocommerces/warranty-tracking.php:34
+#: inc/woocommerces/warranty-tracking.php:142
+#: woocommerce/single-product/tabs/description.php:23
+msgid "Description"
+msgstr "Mô tả"
+
+#: inc/woocommerces/warranty-tracking.php:85
+msgid "Description:"
+msgstr "Mô tả:"
+
+#: functions.php:532
+msgid "Display post date?"
+msgstr "Hiển thị ngày đăng bài?"
+
+#: inc/woocommerces/checkout.php:122 inc/woocommerces/checkout.php:127
+msgid "District"
+msgstr "Quận/Huyện"
+
+#: inc/classes/class-download-theme.php:215
+msgid "Download Error"
+msgstr "Lỗi tải xuống"
+
+#: inc/classes/class-download-theme.php:240
+msgid "Download hash does not match."
+msgstr "Mã băm của tệp tải xuống không khớp."
+
+#: inc/classes/class-download-theme.php:230
+msgid "Download ID is undefined."
+msgstr "ID tải xuống không xác định."
+
+#: inc/classes/class-download-theme.php:245
+msgid "Download is not available."
+msgstr "Tệp tải xuống không khả dụng."
+
+#. %s: Name of current post. Only visible to screen readers
+#: template-parts/content-page.php:33
+#, php-format
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr "Chỉnh sửa <span class=\"screen-reader-text\">%s</span>"
+
+#: inc/woocommerces/checkout.php:67
+msgid "Email"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:68
+#: inc/woocommerces/warranty-tracking.php:176
+msgid "Expired Warranty"
+msgstr "Hết hạn bảo hành"
+
+#: inc/classes/class-download-theme.php:156
+msgid "File does not exist. Error code: "
+msgstr "Tệp không tồn tại. Mã lỗi:"
+
+#: inc/classes/class-download-theme.php:252
+msgid "File URL is not defined."
+msgstr "URL tệp không được định nghĩa."
+
+#: inc/woocommerces/checkout.php:63 inc/woocommerces/checkout.php:69
+msgid "First name"
+msgstr "Tên"
+
+#. Name of the template
+#: templates/page-flexible.php:3
+msgid "Flexible"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:63
+msgid "Footer Absolute"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:51
+msgid "Footer Primary"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:39
+msgid "Footer Top"
+msgstr ""
+
+#. Name of the template
+#: templates/page-fullwidth.php:3
+msgid "Full Width"
+msgstr ""
+
+#. Name of the template
+#: templates/page-fullwidth-without-title.php:3
+msgid "Full Width Without Title"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:284
+msgid "Go to homepage &raquo;"
+msgstr "Quay về trang chủ &raquo;"
+
+#: inc/classes/class-menus-theme.php:27
+msgid "Header Menu"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:75
+msgid "Header Top"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:170
+msgid "Home"
+msgstr "Trang chủ"
+
+#: templates/blocks/quick-buy.php:10
+msgid "Home delivery (COD) or pick up at store"
+msgstr "Giao tận nhà (COD) hoặc nhận tại cửa hàng"
+
+#: templates/blocks/product-grid-slider-flashsale.php:117
+msgid "Hour"
+msgstr "Giờ"
+
+#: inc/classes/class-breadcrumbs.php:684
+msgctxt "hour archives time format"
+msgid "g a"
+msgstr ""
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:155
+msgid "How do you feel about this product? (choose a star):"
+msgstr "Bạn cảm thấy thế nào về sản phẩm này? (chọn số sao):"
+
+#: inc/woocommerces/single.php:286 inc/woocommerces/single.php:287
+msgid "Hrs"
+msgstr "Giờ"
+
+#. URI of the theme
+msgid "https://taiwebmienphi.com/celano"
+msgstr ""
+
+#. Author URI of the theme
+msgid "https://taiwebmienphi.com/nguyenvanviet"
+msgstr ""
+
+#: inc/woocommerces/single.php:302
+msgid "Hurry up! The sale will end after less than a hour."
+msgstr "Nhanh lên! Khuyến mãi sẽ kết thúc trong chưa đầy một giờ nữa."
+
+#: inc/classes/class-views-theme.php:108
+msgid "Image"
+msgstr "Hình ảnh"
+
+#: inc/helpers/template-functions.php:345
+msgid "in"
+msgstr "trong"
+
+#: inc/woocommerces/single.php:108
+msgid "In stock"
+msgstr "Còn hàng"
+
+#: inc/woocommerces/archive.php:549
+msgid "Introduce"
+msgstr "Giới thiệu"
+
+#: template-parts/content-none.php:33
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+"Có vẻ chúng tôi không tìm thấy thứ bạn đang tìm. Có thể tìm kiếm sẽ giúp bạn."
+
+#: searchform.php:3 searchform.php:4
+msgctxt "label"
+msgid "Search for:"
+msgstr "Tìm kiếm:"
+
+#: inc/woocommerces/checkout.php:64 inc/woocommerces/checkout.php:70
+msgid "Last name"
+msgstr "Họ"
+
+#: template-parts/headers/icon-login.php:12
+msgid "Log In"
+msgstr "Đăng nhập"
+
+#: template-parts/footers/slideout-menu.php:3
+msgid "Menu"
+msgstr ""
+
+#: inc/woocommerces/single.php:420
+msgid "Message Discount this product"
+msgstr "Nhắn tin Giảm Giá sản phẩm này"
+
+#: inc/woocommerces/single.php:290 inc/woocommerces/single.php:291
+msgid "Min"
+msgstr "Phút"
+
+#: templates/blocks/product-grid-slider-flashsale.php:122
+msgid "Minute"
+msgstr "Phút"
+
+#. Minute archive title. %s is the minute time format.
+#: inc/classes/class-breadcrumbs.php:180
+#, php-format
+msgid "Minute %s"
+msgstr "Phút %s"
+
+#: inc/classes/class-breadcrumbs.php:648
+msgctxt "minute and hour archives time format"
+msgid "g:i a"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:666
+msgctxt "minute archives time format"
+msgid "i"
+msgstr ""
+
+#: inc/woocommerces/single.php:141
+msgid "Missing timestamp parameter"
+msgstr "Thiếu tham số dấu thời gian"
+
+#: inc/classes/class-breadcrumbs.php:702 inc/classes/class-breadcrumbs.php:760
+#: inc/classes/class-breadcrumbs.php:1137
+msgctxt "monthly archives date format"
+msgid "F"
+msgstr ""
+
+#: header.php:45
+msgid "Most searched:"
+msgstr "Tìm kiếm nhiều nhất"
+
+#: comments.php:24 comments.php:47
+msgid "Newer Comments"
+msgstr "Bình luận mới hơn"
+
+#: inc/woocommerces/archive.php:394
+msgid "News contains"
+msgstr "Tin tức có chứa “Tivi\""
+
+#: template-parts/singles/prev-next-post.php:35
+msgid "Next"
+msgstr "Tiếp theo"
+
+#: template-parts/singles/prev-next-post.php:36
+msgid "Next post:"
+msgstr "Bài tiếp theo:"
+
+#. Author of the theme
+msgid "nguyenvanviet"
+msgstr ""
+
+#: comments.php:54
+msgid "No comments posted yet."
+msgstr "Chưa có bình luận nào được đăng."
+
+#: inc/classes/class-assets-theme.php:94
+msgid "No order found."
+msgstr "Không tìm thấy đơn hàng nào."
+
+#: template-parts/footers/wcs-mini-cart.php:72
+msgid "No products in the cart."
+msgstr "Không có sản phẩm nào trong giỏ hàng."
+
+#: woocommerce/order/order-details.php:130
+msgid "Note:"
+msgstr "Ghi chú:"
+
+#: template-parts/content-none.php:3
+msgid "Nothing Found"
+msgstr "Không tìm thấy kết quả nào"
+
+#: functions.php:526
+msgid "Number of posts to show:"
+msgstr "Số bài viết hiển thị:"
+
+#: comments.php:23 comments.php:46
+msgid "Older Comments"
+msgstr "Bình luận cũ hơn"
+
+#: 404.php:19
+msgid "Oops! The page you are looking for doesn’t exist."
+msgstr "Ồ! Trang bạn đang tìm kiếm không tồn tại."
+
+#: template-parts/headers/icon-search.php:17
+msgid "Open a search form"
+msgstr "Mở hộp thoại tìm kiếm"
+
+#: inc/woocommerces/order-tracking.php:29
+msgid "Order code"
+msgstr "Mã đơn hàng"
+
+#: woocommerce/cart/cart-totals.php:117
+msgid "Order Confirmation"
+msgstr "Xác nhận đơn hàng"
+
+#: woocommerce/order/order-details.php:57
+msgid "Order details"
+msgstr "Chi tiết đơn hàng"
+
+#: inc/woocommerces/order-tracking.php:19
+#: inc/woocommerces/warranty-tracking.php:19
+#: inc/woocommerces/warranty-tracking.php:128
+msgid "Order not found."
+msgstr "Không tìm thấy đơn hàng."
+
+#. %s is the page number.
+#: inc/classes/class-breadcrumbs.php:176
+#, php-format
+msgid "Page %s"
+msgstr "Trang %s"
+
+#. Name of the template
+#: templates/page-blog.php:3
+msgid "Page Blog"
+msgstr ""
+
+#: template-parts/content-theme.php:55 template-parts/content-page.php:19
+#: template-parts/content.php:47
+msgid "Pages:"
+msgstr "Các trang:"
+
+#: woocommerce/checkout/form-checkout.php:56
+msgid "Payment method"
+msgstr "Phương thức thanh toán"
+
+#: inc/woocommerces/checkout.php:65 inc/woocommerces/checkout.php:71
+msgid "Phone"
+msgstr "Điện thoại"
+
+#: inc/helpers/utility.php:38
+msgid "Pingback:"
+msgstr ""
+
+#: templates/blocks/sticky-mobile-checkout.php:15
+msgid "Place order"
+msgstr "Đặt hàng"
+
+#: searchform.php:4
+msgctxt "placeholder"
+msgid "Search &hellip;"
+msgstr "Tìm kiếm &hellip;"
+
+#: inc/woocommerces/order-tracking.php:9
+#: inc/woocommerces/warranty-tracking.php:9
+#: inc/woocommerces/warranty-tracking.php:115
+msgid "Please enter phone number."
+msgstr "Vui lòng nhập số điện thoại."
+
+#: inc/woocommerces/thank-you.php:70
+#, php-format
+msgid ""
+"Please pay the amount %s to the delivery staff upon receipt of the goods."
+msgstr ""
+"Vui lòng thanh toán số tiền %s cho nhân viên giao hàng khi nhận được hàng."
+
+#: template-parts/singles/prev-next-post.php:20
+msgid "Previous"
+msgstr "Trước"
+
+#: template-parts/singles/prev-next-post.php:21
+msgid "Previous post:"
+msgstr "Bài viết trước:"
+
+#: woocommerce/cart/cart.php:34
+msgid "Price"
+msgstr "Giá"
+
+#: inc/woocommerces/order-tracking.php:34
+#: inc/woocommerces/warranty-tracking.php:31
+#: inc/woocommerces/warranty-tracking.php:139 woocommerce/cart/cart.php:33
+#: woocommerce/cart/cart.php:86 woocommerce/order/order-details.php:63
+msgid "Product"
+msgstr "Sản phẩm"
+
+#: woocommerce/global/quantity-input.php:47
+msgid "Product quantity"
+msgstr "Số lượng sản phẩm"
+
+#: inc/woocommerces/warranty-tracking.php:74
+msgid "Product:"
+msgstr "Sản phẩm:"
+
+#: inc/woocommerces/checkout.php:95 inc/woocommerces/checkout.php:100
+msgid "Province/City"
+msgstr "Tỉnh/Thành phố"
+
+#: template-parts/singles/author-bio.php:18
+msgid "Published %d posts"
+msgstr "Đã xuất bản %d bài viết"
+
+#: inc/woocommerces/order-tracking.php:35
+#: woocommerce/global/quantity-input.php:25
+#: woocommerce/global/quantity-input.php:37 woocommerce/cart/cart.php:35
+msgid "Quantity"
+msgstr "Số lượng"
+
+#: inc/woocommerces/single.php:615
+msgid "Rate now"
+msgstr "Đánh giá ngay"
+
+#: inc/woocommerces/archive.php:200
+#, php-format
+msgid "Rated %s out of 5"
+msgstr "Đánh giá %s trên 5"
+
+#: inc/woocommerces/single.php:562
+msgid "Rating for"
+msgstr "Đánh giá cho"
+
+#: templates/core-blocks/button.php:6
+msgid "Read More"
+msgstr "Đọc thêm"
+
+#: home.php:24 archive.php:24 search.php:38
+msgid "Read More..."
+msgstr "Đọc thêm..."
+
+#. 1: link to WP admin new post page.
+#: template-parts/content-none.php:13
+#, php-format
+msgid ""
+"Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+"Bạn đã sẵn sàng đăng bài viết đầu tiên chưa? <a href=\"%1$s\">Bắt đầu tại "
+"đây</a>."
+
+#: inc/woocommerces/warranty-tracking.php:32
+#: inc/woocommerces/warranty-tracking.php:140
+msgid "Received Date"
+msgstr "Ngày nhận"
+
+#: inc/woocommerces/warranty-tracking.php:82
+msgid "Received Date:"
+msgstr "Ngày nhận:"
+
+#: functions.php:404
+msgid "Recent Posts"
+msgstr "Bài viết gần đâyBài viết gần đây"
+
+#: single.php:70 templates/page-blog.php:77
+msgid "Related Articles"
+msgstr "Bài viết liên quan"
+
+#: inc/woocommerces/archive.php:522
+msgid "Related News"
+msgstr "Tin tức liên quan"
+
+#: woocommerce/single-product/related.php:27
+msgid "Related products"
+msgstr "Sản phẩm liên quan"
+
+#. %s is the product name
+#: woocommerce/cart/cart.php:134
+#, php-format
+msgid "Remove %s from cart"
+msgstr "Xóa %s khỏi giỏ hàng"
+
+#: woocommerce/cart/cart.php:31
+msgid "Remove item"
+msgstr "Xóa mục"
+
+#: template-parts/footers/wcs-mini-cart.php:28
+msgid "Remove this item"
+msgstr "Xóa mục này"
+
+#: inc/classes/class-download-theme.php:294
+msgid "Return to previous page &#10550;"
+msgstr "Quay lại trang trước &#10550;"
+
+#: inc/woocommerces/single.php:298
+msgid "Sale begins after"
+msgstr "Bán bắt đầu sau"
+
+#: inc/woocommerces/single.php:299
+msgid "Sale ended after"
+msgstr "Bán kết thúc sau"
+
+#: templates/blocks/page-title.php:48
+msgid "Search"
+msgstr "Tìm kiếm"
+
+#: templates/blocks/page-title.php:46
+msgid "Search for templates"
+msgstr "Tìm kiếm mẫu"
+
+#. %s is the search query.
+#: inc/classes/class-breadcrumbs.php:174
+#, php-format
+msgid "Search Results for: %s"
+msgstr "Kết quả tìm kiếm cho: %s"
+
+#: inc/woocommerces/single.php:294 inc/woocommerces/single.php:295
+msgid "Sec"
+msgstr "Giây"
+
+#: templates/blocks/product-grid-slider-flashsale.php:127
+msgid "Second"
+msgstr "Giây"
+
+#: functions.php:536
+msgid "Select Category:"
+msgstr "Chọn danh mục:"
+
+#: yith-woocommerce-advanced-reviews/views/frontend/edit-form/edit-form.php:125
+msgid "Send real photos"
+msgstr "Gửi ảnh thật"
+
+#: templates/blocks/share-icon.php:17
+msgid "Share on Facebook"
+msgstr ""
+
+#: templates/blocks/share-icon.php:27
+msgid "Share on LinkedIn"
+msgstr ""
+
+#: templates/blocks/share-icon.php:22
+msgid "Share on Twitter"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:60 woocommerce/cart/cart-totals.php:61
+msgid "Shipping"
+msgstr "Vận chuyển"
+
+#: template-parts/footers/mini-cart.php:18
+msgid "Shopping cart"
+msgstr "Giỏ hàng"
+
+#: templates/blocks/show-less.php:18
+msgid "Show less"
+msgstr "Thu gọn"
+
+#: templates/blocks/show-less.php:17
+msgid "Show more"
+msgstr "Xem thêm"
+
+#: inc/classes/class-sidebars-theme.php:98
+msgid "Sidebar Archive Woocommerce"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:87
+msgid "Sidebar Category"
+msgstr ""
+
+#: inc/woocommerces/single.php:95
+msgid "SKU: "
+msgstr "Mã sản phẩm:"
+
+#: inc/woocommerces/archive.php:268 inc/woocommerces/single.php:390
+msgid "Sold"
+msgstr "Đã bán"
+
+#: inc/woocommerces/archive.php:575
+msgid "Sold "
+msgstr "Đã bán"
+
+#: template-parts/content-none.php:26
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+"Xin lỗi, nhưng không có kết quả nào khớp với từ khóa tìm kiếm của bạn. Vui "
+"lòng thử lại với một số từ khóa khác."
+
+#: inc/classes/class-rest-api-theme.php:164
+#: inc/classes/class-views-theme.php:169 inc/classes/class-assets-theme.php:89
+msgid "Sorry, something went wrong. Please refresh this page and try again!"
+msgstr "Xin lỗi, có lỗi xảy ra. Vui lòng làm mới trang này và thử lại!"
+
+#: inc/woocommerces/single.php:520
+msgid "Specifications"
+msgstr "Thông số kỹ thuật"
+
+#: inc/woocommerces/warranty-tracking.php:33
+#: inc/woocommerces/warranty-tracking.php:141
+msgid "Status"
+msgstr "Trạng thái"
+
+#: inc/woocommerces/warranty-tracking.php:84
+msgid "Status:"
+msgstr "Trạng thái:"
+
+#: inc/woocommerces/single.php:107
+msgid "Stock"
+msgstr "Cổ phần"
+
+#: searchform.php:9
+msgctxt "submit button"
+msgid "Search"
+msgstr "Tìm kiếm"
+
+#: woocommerce/cart/cart.php:36 woocommerce/cart/cart.php:110
+#: woocommerce/cart/cart-totals.php:38 woocommerce/cart/cart-totals.php:39
+#: templates/blocks/checkout-total.php:9
+msgid "Subtotal"
+msgstr "Tạm tính"
+
+#: inc/woocommerces/single.php:533
+msgid "Suggestions for you"
+msgstr "Gợi ý cho bạn"
+
+#: inc/classes/class-assets-theme.php:95
+msgid "System error, please try again."
+msgstr "Lỗi hệ thống, vui lòng thử lại."
+
+#: inc/woocommerces/thank-you.php:65
+#, php-format
+msgid "Thank you %1$s for shopping at Phong Hoa!"
+msgstr "Cảm ơn bạn %1$s đã mua sắm tại Phong Hoa!"
+
+#: inc/woocommerces/single.php:300
+msgid "The sale has ended."
+msgstr "Việc bán hàng đã kết thúc."
+
+#: inc/woocommerces/single.php:301
+msgid "The sale will end after less than a day."
+msgstr "Chương trình khuyến mại sẽ kết thúc sau chưa đầy một ngày."
+
+#: woocommerce/cart/cart.php:27
+msgid "There are %d products in your cart"
+msgstr "Có %d sản phẩm trong giỏ hàng của bạn"
+
+#: inc/woocommerces/api.php:80 inc/woocommerces/api.php:81
+#: inc/woocommerces/api.php:190 inc/woocommerces/api.php:191
+msgid "There is no product to display."
+msgstr "Không có sản phẩm nào để hiển thị."
+
+#: templates/blocks/product-tabs-slider.php:125
+#: templates/blocks/product-tabs.php:100
+#: templates/blocks/product-tabs-category.php:114
+msgid "There is no products available for this category."
+msgstr "Không có sản phẩm nào có sẵn trong danh mục này."
+
+#: inc/classes/class-rest-api-theme.php:146
+#: inc/classes/class-rest-api-theme.php:147
+msgid "There is no theme to display."
+msgstr "Không có chủ đề để hiển thị."
+
+#. Description of the theme
+msgid ""
+"This is a modern and customizable theme for blogs and personal websites."
+msgstr ""
+"Đây là chủ đề hiện đại và có thể tùy chỉnh dành cho blog và trang web cá "
+"nhân."
+
+#: woocommerce/cart/cart.php:32
+msgid "Thumbnail image"
+msgstr ""
+
+#: functions.php:521
+msgid "Title:"
+msgstr "Tiêu đề:"
+
+#: inc/woocommerces/order-tracking.php:36 woocommerce/cart/cart-totals.php:108
+#: woocommerce/cart/cart-totals.php:109 woocommerce/order/order-details.php:64
+#: templates/blocks/checkout-total.php:57
+#: templates/blocks/sticky-mobile-checkout.php:5
+msgid "Total"
+msgstr "Tổng cộng"
+
+#. Name of the theme
+msgid "Twmp Phonghoa"
+msgstr ""
+
+#: template-parts/footers/modal-search-form.php:23
+msgid "Type to search"
+msgstr "Nhập để tìm kiếm"
+
+#: inc/helpers/template-functions.php:343
+msgctxt "Used before category names."
+msgid "Categories"
+msgstr ""
+
+#: templates/blocks/category-card.php:91
+msgid "View all"
+msgstr "Xem tất cả"
+
+#. 1: Author name
+#: inc/helpers/template-functions.php:325
+#, php-format
+msgid "View all posts by %s"
+msgstr "Xem tất cả bài viết của %s"
+
+#: templates/blocks/product-tabs-slider.php:137
+#: templates/blocks/product-tabs.php:113
+#: templates/blocks/product-tabs-category.php:127
+msgid "View all products"
+msgstr "Xem tất cả sản phẩm"
+
+#: templates/blocks/product-tabs-slider.php:138
+#: templates/blocks/product-tabs.php:114
+#: templates/blocks/product-tabs-category.php:128
+#, php-format
+msgid "View all products in %s"
+msgstr "Xem tất cả sản phẩm trong %s"
+
+#: inc/woocommerces/archive.php:407 templates/blocks/post-row.php:11
+#: templates/blocks/post-card.php:11
+msgid "View more"
+msgstr "Xem nhiều"
+
+#: inc/classes/class-views-theme.php:102
+msgid "View W"
+msgstr ""
+
+#: inc/classes/class-views-theme.php:96
+msgid "View Y"
+msgstr ""
+
+#: inc/woocommerces/warranty-tracking.php:30
+#: inc/woocommerces/warranty-tracking.php:138
+msgid "Warranty Code"
+msgstr "Mã bảo hành"
+
+#: inc/woocommerces/warranty-tracking.php:73
+msgid "Warranty Code:"
+msgstr "Mã bảo hành:"
+
+#. Weekly archive title. %s is the week date format.
+#: inc/classes/class-breadcrumbs.php:182
+#, php-format
+msgid "Week %s"
+msgstr "Tuần %s"
+
+#: inc/classes/class-breadcrumbs.php:732
+msgctxt "weekly archives date format"
+msgid "W"
+msgstr ""
+
+#: templates/blocks/post-grid-slider.php:87
+msgid "Xem thêm"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:701 inc/classes/class-breadcrumbs.php:731
+#: inc/classes/class-breadcrumbs.php:759 inc/classes/class-breadcrumbs.php:787
+#: inc/classes/class-breadcrumbs.php:1133
+msgctxt "yearly archives date format"
+msgid "Y"
+msgstr ""
+
+#: woocommerce/checkout/form-checkout.php:27
+msgid "You must be logged in to checkout."
+msgstr "Bạn phải đăng nhập để thanh toán."
+
+#: inc/helpers/utility.php:76
+msgid "Your comment is awaiting moderation."
+msgstr "Bình luận của bạn đang chờ kiểm duyệt."
