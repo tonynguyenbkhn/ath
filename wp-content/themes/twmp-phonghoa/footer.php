@@ -32,7 +32,7 @@ $dataStickyContact['items'] = get_field('sticky_links', 'option') ? get_field('s
 get_template_part('templates/blocks/back-to-top', null, []);
 get_template_part('templates/blocks/sticky-contact', null, $dataStickyContact);
 get_template_part('template-parts/footers/th-mobile-menu', null, []);
-get_template_part('template-parts/footers/mini-cart', null, []);
+// get_template_part('template-parts/footers/mini-cart', null, []);
 get_template_part('templates/blocks/menu-mobile-footer', null, []);
 ?>
 <?php wp_footer(); ?>

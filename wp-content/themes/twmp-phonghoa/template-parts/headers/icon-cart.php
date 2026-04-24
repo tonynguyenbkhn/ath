@@ -1,5 +1,7 @@
 <?php
 
+if (class_exists('WooCommerce')):
+
 $data = wp_parse_args($args, [
 	'link' => class_exists('WooCommerce') && function_exists('wc_get_cart_url') ? wc_get_cart_url() : null,
 ]);
@@ -27,3 +29,6 @@ $_col_class .= !empty($data['col_class']) ? esc_attr(' ' . $data['col_class']) :
 	<?php endif; ?>
 	<span class="screen-reader-text"><?php echo esc_html__('Cart', 'twmp-phonghoa') ?></span>
 </a>
+
+<?php
+endif;
