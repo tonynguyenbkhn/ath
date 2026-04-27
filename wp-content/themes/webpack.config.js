@@ -3,6 +3,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
+const glob = require('glob');
 
 module.exports = (env, argv) => {
   const theme = env.theme;
@@ -15,8 +17,7 @@ module.exports = (env, argv) => {
 	const entry = {
 		frontend: path.resolve(srcPath, 'frontend.js'),
 		critical_frontend: path.resolve(srcPath, 'critical_frontend.js'),
-		admin: path.resolve(srcPath, 'admin.js'),
-		bootstrap: path.resolve(srcPath, 'bootstrap.js'),
+		admin: path.resolve(srcPath, 'admin.js')
 	}
 
 	if (env.woo === 'yes') {
@@ -91,6 +92,14 @@ module.exports = (env, argv) => {
       new MiniCssExtractPlugin({
         filename: isProd ? 'css/[name].min.css' : 'css/[name].css'
       }),
+      ...(isProd ? [new PurgeCSSPlugin({
+        paths: glob.sync(`${themePath}/**/*.php`, { nodir: true }),
+        safelist: {
+          standard: ['body', 'html', /^wp-/],
+          deep: [/^is-/, /^has-/],
+          greedy: [/^twmp-/, /^woocommerce-/]
+        }
+      })] : []),
       new CopyWebpackPlugin({
         patterns: [
           { from: path.resolve(srcPath, 'fonts'), to: 'fonts' },
@@ -99,8 +108,16 @@ module.exports = (env, argv) => {
       })
     ],
     optimization: {
-      minimize: isProd,
-      minimizer: [new CssMinimizerPlugin()],
+      minimize: true,
+      minimizer: [
+        new CssMinimizerPlugin({
+          minimizerOptions: {
+            preset: ['default', {
+              discardComments: { removeAll: true }
+            }]
+          }
+        })
+      ],
     },
     devtool: isProd ? false : 'source-map'
   };

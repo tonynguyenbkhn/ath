@@ -1,0 +1,185 @@
+$bold: 700;
+$semibold: 600;
+$medium: 500;
+$regular: 400;
+
+html {
+	font-size: var(--html);
+}
+
+body,
+input,
+button,
+option,
+textarea,
+label,
+select,
+legend,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+	font-family: var(--font-inter);
+	font-size: 16px;
+	color: var(--body-text-color);
+	line-height: 24px;
+	font-weight: $regular;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+	color: var(--title);
+}
+
+@mixin type-token($size, $line-height, $weight: 400) {
+	font-size: #{$size}px;
+	line-height: #{$line-height}px;
+	font-weight: $weight;
+}
+
+.typo-display-xl-bold {
+	@include type-token(96, 100, $bold);
+}
+
+.typo-display-xl-semibold {
+	@include type-token(96, 100, $semibold);
+}
+
+.typo-display-xl-regular {
+	@include type-token(96, 100, $regular);
+}
+
+.typo-display-lg-bold {
+	@include type-token(80, 120, $bold);
+}
+
+.typo-display-lg-semibold {
+	@include type-token(80, 120, $semibold);
+}
+
+.typo-display-lg-regular {
+	@include type-token(80, 120, $regular);
+}
+
+.typo-display-md-bold {
+	@include type-token(60, 42, $bold);
+}
+
+.typo-display-md-semibold {
+	@include type-token(60, 40, $semibold);
+}
+
+.typo-display-md-regular {
+	@include type-token(60, 80, $regular);
+}
+
+.typo-display-sm-regular {
+	@include type-token(36, 48, $regular);
+}
+
+.typo-display-sm-medium {
+	@include type-token(36, 48, $medium);
+}
+
+.typo-display-sm-bold {
+	@include type-token(36, 36, $bold);
+}
+
+.typo-display-xs-bold {
+	@include type-token(22, 30, $bold);
+}
+
+.typo-display-xs-medium {
+	@include type-token(22, 30, $medium);
+}
+
+.typo-display-xs-regular {
+	@include type-token(22, 30, $regular);
+}
+
+.typo-text-lg-bold {
+	@include type-token(18, 28, $bold);
+}
+
+.typo-text-lg-semibold {
+	@include type-token(18, 28, $semibold);
+}
+
+.typo-text-lg-medium {
+	@include type-token(18, 28, $medium);
+}
+
+.typo-text-lg-regular {
+	@include type-token(18, 28, $regular);
+}
+
+.typo-text-md-bold {
+	@include type-token(16, 24, $bold);
+}
+
+.typo-text-md-medium {
+	@include type-token(16, 24, $medium);
+}
+
+.typo-text-md-regular {
+	@include type-token(16, 24, $regular);
+}
+
+.typo-text-sm-bold {
+	@include type-token(14, 20, $bold);
+}
+
+.typo-text-sm-medium {
+	@include type-token(14, 20, $medium);
+}
+
+.typo-text-sm-regular {
+	@include type-token(14, 20, $regular);
+}
+
+.typo-mobile-title {
+	@include type-token(40, 48, $regular);
+}
+
+.typo-mobile-header {
+	@include type-token(30, 48, $regular);
+}
+
+/* We infer weights for system tokens because the screenshots only show size/line-height. */
+.typo-system-money {
+	@include type-token(32, 48, $regular);
+}
+
+.typo-system-button {
+	@include type-token(18, 24, $regular);
+}
+
+.typo-system-button-2 {
+	@include type-token(18, 24, $regular);
+}
+
+.typo-system-description-1 {
+	@include type-token(12, 20, $regular);
+}
+
+.typo-system-description-2 {
+	@include type-token(12, 20, $regular);
+}

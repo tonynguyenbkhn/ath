@@ -1,8 +1,8 @@
 {
   "name": "twmp",
   "scripts": {
-    "dev-phonghoa": "webpack --env theme=twmp-phonghoa --env woo=yes --mode development --watch",
-    "build-phonghoa": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --env theme=twmp-phonghoa --env woo=yes --mode production"
+    "dev": "webpack --env theme=twmp-ath --env woo=yes --mode development --watch",
+    "build": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --env theme=twmp-ath --env woo=yes --mode production"
   },
   "engines": {
     "node": "20.13.1"
@@ -32,6 +32,7 @@
     "bootstrap": "^5.3.6",
     "es6-promise": "^4.2.8",
     "gsap": "^3.13.0",
+    "purgecss-webpack-plugin": "^8.0.0",
     "swiper": "^11.2.6",
     "three": "^0.176.0",
     "tweezer.js": "^1.5.0",
