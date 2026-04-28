@@ -173,6 +173,10 @@
             "radius": true,
             "style": true,
             "width": true
+        },
+        "layout": {
+            "contentSize": "1200px",
+            "wideSize": "1440px"
         }
     },
     "styles": {

@@ -55,131 +55,171 @@ h6 a {
 	font-weight: $weight;
 }
 
+// $theme-font-family-typo: (
+// 	default: --font-default,
+// 	playfair-display: --font-playfair-display,
+// 	archivo: --font-archivo,
+// 	beautique-display: --font-beautique-display,
+// 	inter: --font-inter
+// );
+
 .typo-display-xl-bold {
 	@include type-token(96, 100, $bold);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-xl-semibold {
 	@include type-token(96, 100, $semibold);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-xl-regular {
 	@include type-token(96, 100, $regular);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-lg-bold {
 	@include type-token(80, 120, $bold);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-lg-semibold {
 	@include type-token(80, 120, $semibold);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-lg-regular {
 	@include type-token(80, 120, $regular);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-md-bold {
 	@include type-token(60, 42, $bold);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-md-semibold {
 	@include type-token(60, 40, $semibold);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-md-regular {
 	@include type-token(60, 80, $regular);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-sm-regular {
 	@include type-token(36, 48, $regular);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-sm-medium {
 	@include type-token(36, 48, $medium);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-sm-bold {
 	@include type-token(36, 36, $bold);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-xs-bold {
 	@include type-token(22, 30, $bold);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-xs-medium {
 	@include type-token(22, 30, $medium);
+	font-family: var(--font-playfair-display);
 }
 
 .typo-display-xs-regular {
 	@include type-token(22, 30, $regular);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-lg-bold {
 	@include type-token(18, 28, $bold);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-lg-semibold {
 	@include type-token(18, 28, $semibold);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-lg-medium {
 	@include type-token(18, 28, $medium);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-lg-regular {
 	@include type-token(18, 28, $regular);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-md-bold {
 	@include type-token(16, 24, $bold);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-md-medium {
 	@include type-token(16, 24, $medium);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-md-regular {
 	@include type-token(16, 24, $regular);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-sm-bold {
 	@include type-token(14, 20, $bold);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-sm-medium {
 	@include type-token(14, 20, $medium);
+	font-family: var(--font-archivo);
 }
 
 .typo-text-sm-regular {
 	@include type-token(14, 20, $regular);
+	font-family: var(--font-archivo);
 }
 
 .typo-mobile-title {
 	@include type-token(40, 48, $regular);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-mobile-header {
 	@include type-token(30, 48, $regular);
+	font-family: var(--font-beautique-display);
 }
 
 /* We infer weights for system tokens because the screenshots only show size/line-height. */
 .typo-system-money {
 	@include type-token(32, 48, $regular);
+	font-family: var(--font-archivo);
 }
 
 .typo-system-button {
 	@include type-token(18, 24, $regular);
+	font-family: var(--font-archivo);
 }
 
 .typo-system-button-2 {
 	@include type-token(18, 24, $regular);
+	font-family: var(--font-archivo);
 }
 
 .typo-system-description-1 {
 	@include type-token(12, 20, $regular);
+	font-family: var(--font-archivo);
 }
 
 .typo-system-description-2 {
 	@include type-token(12, 20, $regular);
+	font-family: var(--font-archivo);
 }

@@ -1,4 +1,7 @@
 @import './mixins/index';
 @import './global/index';
-@import './core-blocks/index';
 @import './theme/critical_index';
+.flexible-content {
+    margin-top: -86px;
+}
+@import './sections/hero-banner/style';
