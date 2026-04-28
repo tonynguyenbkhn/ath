@@ -46,19 +46,6 @@ add_action('wp', function () {
     remove_action('woocommerce_sidebar', 'woocommerce_get_sidebar', 10);
 });
 
-// 3. woocommerce_before_add_to_cart_quantity - woocommerce_after_add_to_cart_quantity
-add_action('woocommerce_before_add_to_cart_quantity', function () {
-?>
-    <div class="quantity-wrapper" data-block="quantity">
-    <?php
-});
-
-add_action('woocommerce_after_add_to_cart_quantity', function () {
-    ?>
-    </div>
-    <?php
-});
-
 // 4. remove product meta default
 remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40);
 
@@ -166,27 +153,55 @@ add_filter('woocommerce_product_description_heading', '__return_empty_string');
 // remove title
 remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_title', 5);
 
-add_action('woocommerce_before_single_product_summary', function () {
-    global $product;
+add_action('woocommerce_single_product_summary', function () {
     ?>
     <div class="single__header">
         <div class="row align-items-center">
-            <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="col-12">
+                <?php
+                global $product;
+                if ( isset($product) && $product ) {
+                    $product_id = $product->get_id();
+                    $badges = function_exists('get_field') ? get_field('ath_badges', $product_id) : false;
+                    if (!empty($badges) && is_array($badges)) {
+                        echo '<div class="product-badges">';
+                        foreach ($badges as $badge) {
+                            $text = isset($badge['text']) ? $badge['text'] : '';
+                            $style = isset($badge['style']) ? $badge['style'] : 'orange';
+                            $class = 'ath-badge ath-badge--' . esc_attr($style);
+                            if ($text) {
+                                printf('<span class="%s">%s</span>', esc_attr($class), esc_html($text));
+                            }
+                        }
+                        echo '</div>';
+                    }
+                }
+                ?>
                 <?php wc_get_template('single-product/title.php'); ?>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="d-flex justify-content-xl-end justify-content-start">
-                    <?php
-                    woocommerce_template_single_rating();
-                    $sold = (int) get_field('sold', $product->get_id()) > 0 ? get_field('sold', $product->get_id()) : '741';
-                    ?>
-                    <span class="total-sales"><?php echo esc_html__('Sold', 'twmp-ath') . ' ' . $sold; ?></span>
-                </div>
+                <?php
+                if ( isset( $product ) && $product ) {
+                    $product_id = $product->get_id();
+                    $subtitle = function_exists('get_field') ? get_field('ath_subtitle', $product_id) : false;
+                    if ( $subtitle ) {
+                        printf('<p class="product-subtitle">%s</p>', esc_html($subtitle));
+                    }
+
+                    $description = get_the_excerpt($product_id);
+                    if ( $description ) {
+                        echo '<div class="product-description">' . wp_kses_post( wpautop( $description ) ) . '</div>';
+                    }
+                }
+                ?>
             </div>
         </div>
     </div>
 <?php
-}, 6);
+}, 1);
+
+add_action('woocommerce_single_product_summary', function () {
+    global $product;
+    
+}, 15);
 
 // remove rating
 remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10);
@@ -198,62 +213,6 @@ remove_action('woocommerce_single_product_summary', 'woocommerce_template_single
 remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30);
 
 // add thong tin bao hanh
-add_action('woocommerce_single_product_summary', function () {
-    global $product;
-    $dataStickyContact = get_field('sticky_links', 'option') ? get_field('sticky_links', 'option') : [];
-    $zalo = '';
-    foreach ($dataStickyContact as $item) {
-        if ($item['type'] === 'zalo') {
-            $zalo = $item;
-        }
-    }
-    $zalo_woo = get_field('zalo_woo', 'option') ? get_field('zalo_woo', 'option') : $zalo['url'];
-?>
-    <div class="box-sale-mifan">
-        <p style="font-weight: 600;font-size: 16px;">
-            <a href="<?php echo esc_url($zalo_woo) ?>" style="display: flex;align-items: center;">
-                <img src="https://mivietnam.vn/wp-content/uploads/2024/10/zalo-icon.png" style="height: 24px;margin-right: 5px;" />
-                <?php echo esc_html__('Message Discount this product', 'twmp-ath') ?>
-            </a>
-        </p>
-    </div>
-    <?php
-    if ($product->is_type('simple')) {
-
-        $promotions = get_posts([
-            'post_type'      => 'manage-promotions',
-            'posts_per_page' => -1,
-            'post_status'    => 'publish',
-            'meta_query'     => [
-                [
-                    'key'     => 'products',
-                    'value'   => '"' . $product->get_id() . '"',
-                    'compare' => 'LIKE',
-                ]
-            ]
-        ]);
-
-        $guarantee = get_field('guarantee', $product->get_id());
-        // $gift = get_field('gift', $product->get_id()); 
-    ?>
-        <div class="woocommerce_single_product_summary__guarantee">
-            <?php echo wp_kses_post($guarantee); ?>
-        </div>
-        <?php
-
-        if ($promotions) {
-            foreach ($promotions as $promotion) {
-                echo '<div class="woocommerce_single_product_summary__gift">';
-                echo wp_kses_post(get_field('content', $promotion->ID));
-                echo '</div>';
-            }
-        }
-        ?>
-    <?php
-    }
-
-    echo do_shortcode('[contact-form-7 id="dd97541" title="Nhận thêm ưu đãi"]');
-}, 70);
 
 add_action('woocommerce_after_variations_table', function () {
     global $product;
@@ -284,15 +243,15 @@ add_action('woocommerce_after_variations_table', function () {
 // 	]);
 // }, 80);
 
-add_action('woocommerce_single_product_summary', function () {
-    global $product;
-    $contact_before = get_field('contact', $product->get_id());
-    if ($contact_before) {
-        get_template_part('templates/blocks/quick-contact', null, []);
-    } else {
-        woocommerce_template_single_add_to_cart();
-    }
-}, 80);
+// add_action('woocommerce_single_product_summary', function () {
+//     global $product;
+//     $contact_before = get_field('contact', $product->get_id());
+//     if ($contact_before) {
+//         get_template_part('templates/blocks/quick-contact', null, []);
+//     } else {
+//         woocommerce_template_single_add_to_cart();
+//     }
+// }, 80);
 
 add_filter('woocommerce_product_single_add_to_cart_text', 'custom_add_to_cart_button_text_with_icon');
 function custom_add_to_cart_button_text_with_icon($text)

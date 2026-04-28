@@ -16,7 +16,7 @@ class TWMP_THEME
 		Assets_Theme::get_instance();
 		Views_Theme::get_instance();
 		Admin_Theme::get_instance();
-		// Woo_Theme::get_instance();
+		Woo_Theme::get_instance();
 		$this->setup_hooks();
 	}
 

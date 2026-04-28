@@ -14,7 +14,7 @@
 
 <body <?php body_class(); ?>>
 	<?php wp_body_open(); ?>
-	<header data-block="header-main" id="header-sticky">
+	<header id="header-sticky">
 		<div class="header__main position-relative">
 			<div class="container header__container">
 				<div class="row header__row">

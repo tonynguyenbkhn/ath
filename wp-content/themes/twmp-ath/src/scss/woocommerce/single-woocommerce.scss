@@ -6,67 +6,26 @@
 	flex-flow: row wrap;
 
 	.woocommerce-product-gallery {
-		@include col(12, 10px);
+		@include col(12, 0);
 		order: 1;
 		position: relative;
 
 		@media (min-width: 1024px) {
 			order: 1;
-			@include col(5, 10px);
-		}
-
-		.wpgs-thumb .slick-prev:before,
-		.wpgs-thumb .slick-next:before {
-			transform: translate(-50%, -50%);
-			left: 50%;
-			margin: 0;
-		}
-
-		.wpgs-thumb .slick-prev,
-		.wpgs-thumb .slick-next {
-			width: 30px;
-			height: 30px;
-		}
-
-		.slick-slide img {
-			display: block;
-			width: 100%;
-			height: auto;
-			object-fit: cover;
-		}
-	}
-
-	.images {
-		@include col(12, 10px);
-		order: 1;
-		position: relative;
-
-		@media (min-width: 1024px) {
-			order: 1;
-			@include col(5, 10px);
-		}
-
-		.slick-slide img {
-			display: block;
-			width: 100%;
-			height: auto;
-			object-fit: cover;
+			@include col(5, 0);
 		}
 	}
 
 	.summary.entry-summary {
-		@include col(12, 10px);
+		@include col(12, 0);
 		order: 2;
 
 		@media (min-width: 1024px) {
-			@include col(7, 10px);
+			@include col(7, 0);
 			order: 1;
 		}
 
 		.entry-summary-wrapper {
-			background-color: var(--white);
-			box-shadow: 0 3px 7px 1px rgba(0, 0, 0, .3),
-				0 6px 12px -2px rgba(50, 50, 93, .25);
 			border-radius: 0;
 			padding: 15px;
 			display: flex;
@@ -83,7 +42,7 @@
 	}
 
 	.woocommerce_after_single_product_summary {
-		@include col(12, 10px);
+		@include col(12, 0);
 		margin-top: 0;
 		order: 3;
 
@@ -101,12 +60,40 @@
 }
 
 /*----------------------------------------*/
+/*  Product Badges
+/*----------------------------------------*/
+
+.product-badges {
+	display: flex;
+	gap: 16px;
+}
+
+.ath-badge {
+	display: inline-block;
+	padding: 10px 18px;
+	font-size: 18px;
+	font-weight: 600;
+	color: #fff;
+	border-radius: 6px;
+	line-height: 1;
+}
+
+/* Orange */
+.ath-badge--orange {
+	background-color: #f04e23;
+}
+
+/* Green */
+.ath-badge--green {
+	background-color: #3a8f00;
+}
+
+/*----------------------------------------*/
 /*  02. Product Thumbnail
 /*----------------------------------------*/
 .woocommerce div.product div.images .flex-control-thumbs {
 	display: flex;
 	flex-wrap: wrap;
-	overflow-y: auto;
 	white-space: nowrap;
 	margin-top: 1em;
 	justify-content: space-between;
