@@ -92,7 +92,7 @@ function wcs_cart_update_cart_item_price($price, $cart_item, $cart_item_key)
     $sale_price = $product->get_sale_price();
 
     if ($product->is_on_sale() && ! empty($sale_price)) {
-        $percentage = wcs_get_price_discount_percentage($product, 'percentage');
+        $percentage = twmp_get_price_discount_percentage($product, 'percentage');
 
         $price = '<span class="percentage">'.$percentage.'</span>';
 

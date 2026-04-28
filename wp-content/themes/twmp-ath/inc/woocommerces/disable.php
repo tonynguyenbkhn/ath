@@ -58,3 +58,10 @@ add_filter('woocommerce_product_tabs', function ($tabs) {
 
 // 8. Tối ưu single product
 remove_action('woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15);
+
+// 9. Tắt marketing features ở admin
+add_filter( 'woocommerce_admin_features', function( $features ) {
+    return array_filter( $features, function( $feature ) {
+        return $feature !== 'marketing';
+    });
+});

@@ -275,6 +275,94 @@
             }
         },
         {
+            "key": "field_ath_performance_schedule",
+            "label": "Performance Schedule",
+            "name": "ath_performance_schedule",
+            "type": "repeater",
+            "instructions": "Danh sách ngày/giờ biểu diễn hiển thị ở checkout dưới dạng radio.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "layout": "row",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Performance",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_ath_performance_datetime",
+                    "label": "Performance Date Time",
+                    "name": "performance_datetime",
+                    "type": "date_time_picker",
+                    "required": 1,
+                    "display_format": "d/m/Y H:i",
+                    "return_format": "Y-m-d H:i:s",
+                    "first_day": 1,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    }
+                }
+            ]
+        },
+        {
+            "key": "field_ath_ticket_price_options",
+            "label": "Ticket Price Options",
+            "name": "ath_ticket_price_options",
+            "type": "repeater",
+            "instructions": "Các mức giá hiển thị ở checkout. Gợi ý: On the spot / Standard / Group / Student.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "layout": "row",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Ticket Price",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_ath_ticket_option_label",
+                    "label": "Label",
+                    "name": "label",
+                    "type": "text",
+                    "required": 1,
+                    "wrapper": {
+                        "width": "60",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_ath_ticket_option_price",
+                    "label": "Price",
+                    "name": "price",
+                    "type": "number",
+                    "required": 1,
+                    "min": 0,
+                    "step": 1000,
+                    "prepend": "VND",
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    }
+                }
+            ]
+        },
+        {
             "key": "field_ath_format",
             "label": "Format",
             "name": "ath_format",

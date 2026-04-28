@@ -12,10 +12,11 @@ add_filter('woocommerce_breadcrumb_defaults', function ($args) {
     return $args;
 }, 10);
 
+add_action('wp_enqueue_scripts', 'remove_woocommerce_styles', 99);
+
 function remove_woocommerce_styles()
 {
     wp_dequeue_style('woocommerce-general');
     wp_dequeue_style('woocommerce-layout');
     wp_dequeue_style('woocommerce-smallscreen');
 }
-add_action('wp_enqueue_scripts', 'remove_woocommerce_styles', 99);

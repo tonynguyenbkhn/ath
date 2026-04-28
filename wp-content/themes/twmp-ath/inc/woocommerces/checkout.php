@@ -21,15 +21,7 @@ add_action('woocommerce_before_checkout_form', 'wcs_checkout_page_open', 5);
 
 function wcs_checkout_page_open()
 {
-  $block_attributes = array(
-    'endpoint' => [
-      'get_tinh_tp',
-      'get_quan_huyen',
-      'get_xa_phuong',
-    ],
-    'nonce' => wp_create_nonce('twmp_checkout_nonce')
-  );
-  echo '<div class="page-block page-block--checkout" data-settings="' . esc_attr(json_encode($block_attributes)) . '" data-block="checkout-custom">';
+  echo '<div class="page-block page-block--checkout" data-block="checkout-custom" data-blocks="checkout-custom">';
 }
 
 add_action('woocommerce_after_checkout_form', 'wcs_checkout_page_close', 100);
@@ -150,6 +142,389 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
   // );
   return $fields;
 });
+
+function twmp_checkout_get_ticket_product_data($product_id = 0)
+{
+  $product_id = absint($product_id);
+  if (!$product_id && function_exists('get_the_ID')) {
+    $product_id = absint(get_the_ID());
+  }
+
+  $data = array(
+    'product_id'   => $product_id,
+    'performances'  => array(),
+    'ticket_prices' => array(),
+  );
+
+  if (!$product_id || !function_exists('get_field')) {
+    return $data;
+  }
+
+  $performance_rows = (array) get_field('ath_performance_schedule', $product_id);
+  foreach ($performance_rows as $row) {
+    $datetime_raw = isset($row['performance_datetime']) ? trim((string) $row['performance_datetime']) : '';
+    if ($datetime_raw === '') {
+      continue;
+    }
+
+    $timestamp = strtotime($datetime_raw);
+    if (!$timestamp) {
+      continue;
+    }
+
+    $key = 'performance-' . md5($datetime_raw);
+    $day = wp_date('l', $timestamp);
+    $date = wp_date('d M Y', $timestamp);
+    $time = wp_date('H:i', $timestamp);
+
+    $data['performances'][$key] = array(
+      'key'          => $key,
+      'datetime'     => $datetime_raw,
+      'timestamp'    => $timestamp,
+      'day'          => $day,
+      'date'         => $date,
+      'time'         => $time,
+      'display'      => sprintf('%s | %s %s', $day, $date, $time),
+      'display_short'=> sprintf('%s %s', $date, $time),
+    );
+  }
+
+  $price_rows = (array) get_field('ath_ticket_price_options', $product_id);
+  foreach ($price_rows as $row) {
+    $label = isset($row['label']) ? trim((string) $row['label']) : '';
+    $price_raw = isset($row['price']) ? $row['price'] : '';
+    $price = (float) wc_format_decimal($price_raw);
+
+    if ($label === '' || $price <= 0) {
+      continue;
+    }
+
+    $key = 'price-' . md5($label . '|' . $price);
+    $data['ticket_prices'][$key] = array(
+      'key'   => $key,
+      'label' => $label,
+      'price' => $price,
+    );
+  }
+
+  return $data;
+}
+
+function twmp_checkout_get_ticket_product_id()
+{
+  if (!function_exists('WC') || !WC()->cart) {
+    return 0;
+  }
+
+  foreach (WC()->cart->get_cart() as $cart_item) {
+    $product_id = !empty($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+    if (!$product_id) {
+      continue;
+    }
+
+    $ticket_data = twmp_checkout_get_ticket_product_data($product_id);
+    if (!empty($ticket_data['performances']) || !empty($ticket_data['ticket_prices'])) {
+      return $product_id;
+    }
+  }
+
+  return 0;
+}
+
+function twmp_checkout_get_ticket_selection_defaults($product_id = 0)
+{
+  $ticket_data = twmp_checkout_get_ticket_product_data($product_id);
+  $performance_key = '';
+  $price_key = '';
+
+  if (!empty($ticket_data['performances'])) {
+    $performance_key = array_key_first($ticket_data['performances']);
+  }
+
+  if (!empty($ticket_data['ticket_prices'])) {
+    $price_key = array_key_first($ticket_data['ticket_prices']);
+  }
+
+  return array(
+    'product_id'      => absint($ticket_data['product_id']),
+    'performance_key' => $performance_key,
+    'price_key'       => $price_key,
+  );
+}
+
+function twmp_checkout_resolve_ticket_selection($product_id, $selection)
+{
+  $ticket_data = twmp_checkout_get_ticket_product_data($product_id);
+  $defaults = twmp_checkout_get_ticket_selection_defaults($product_id);
+
+  $performance_key = isset($selection['performance_key']) ? sanitize_key($selection['performance_key']) : '';
+  $price_key = isset($selection['price_key']) ? sanitize_key($selection['price_key']) : '';
+
+  if (empty($ticket_data['performances']) || empty($ticket_data['performances'][$performance_key])) {
+    $performance_key = $defaults['performance_key'];
+  }
+
+  if (empty($ticket_data['ticket_prices']) || empty($ticket_data['ticket_prices'][$price_key])) {
+    $price_key = $defaults['price_key'];
+  }
+
+  return array(
+    'product_id'      => absint($product_id),
+    'performance_key' => $performance_key,
+    'price_key'       => $price_key,
+  );
+}
+
+function twmp_checkout_get_ticket_selection_state($product_id = 0)
+{
+  $defaults = twmp_checkout_get_ticket_selection_defaults($product_id);
+  $state = $defaults;
+
+  if (function_exists('WC') && WC()->session) {
+    $stored = (array) WC()->session->get('twmp_ticket_selection', array());
+    $state = array_merge($state, array_filter($stored, 'strlen'));
+
+    if (empty($state['product_id'])) {
+      $state['product_id'] = $defaults['product_id'];
+    }
+
+    if (empty($state['performance_key']) && !empty($defaults['performance_key'])) {
+      $state['performance_key'] = $defaults['performance_key'];
+    }
+
+    if (empty($state['price_key']) && !empty($defaults['price_key'])) {
+      $state['price_key'] = $defaults['price_key'];
+    }
+
+    WC()->session->set('twmp_ticket_selection', $state);
+  }
+
+  return $state;
+}
+
+function twmp_checkout_render_ticket_detail_section()
+{
+  $product_id = twmp_checkout_get_ticket_product_id();
+  if (!$product_id) {
+    return;
+  }
+
+  $ticket_data = twmp_checkout_get_ticket_product_data($product_id);
+  if (empty($ticket_data['performances']) && empty($ticket_data['ticket_prices'])) {
+    return;
+  }
+
+  $state = twmp_checkout_get_ticket_selection_state($product_id);
+  ?>
+  <section class="twmp-checkout-ticket-detail">
+    <input type="hidden" name="twmp_ticket_product_id" value="<?php echo esc_attr($product_id); ?>">
+
+    <header class="twmp-checkout-ticket-detail__header">
+      <h3 class="twmp-checkout-ticket-detail__title"><?php echo esc_html__('Ticket detail', 'twmp-ath'); ?></h3>
+    </header>
+
+    <?php if (!empty($ticket_data['performances'])) : ?>
+      <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--performance">
+        <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Select Performance date *', 'twmp-ath'); ?></p>
+        <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--performance">
+          <?php foreach ($ticket_data['performances'] as $option) : ?>
+            <label class="twmp-ticket-option <?php echo esc_attr($state['performance_key'] === $option['key'] ? 'is-selected' : ''); ?>">
+              <input
+                type="radio"
+                name="twmp_ticket_performance"
+                value="<?php echo esc_attr($option['key']); ?>"
+                <?php checked($state['performance_key'], $option['key']); ?>
+                required
+              >
+              <span class="twmp-ticket-option__main">
+                <span class="twmp-ticket-option__day"><?php echo esc_html($option['day']); ?></span>
+                <span class="twmp-ticket-option__date"><?php echo esc_html($option['date']); ?></span>
+              </span>
+              <span class="twmp-ticket-option__time"><?php echo esc_html($option['time']); ?></span>
+            </label>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    <?php endif; ?>
+
+    <?php if (!empty($ticket_data['ticket_prices'])) : ?>
+      <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--price">
+        <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Select type of ticket', 'twmp-ath'); ?></p>
+        <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--price">
+          <?php foreach ($ticket_data['ticket_prices'] as $option) : ?>
+            <label class="twmp-ticket-price-option <?php echo esc_attr($state['price_key'] === $option['key'] ? 'is-selected' : ''); ?>">
+              <input
+                type="radio"
+                name="twmp_ticket_price_option"
+                value="<?php echo esc_attr($option['key']); ?>"
+                <?php checked($state['price_key'], $option['key']); ?>
+                required
+              >
+              <span class="twmp-ticket-price-option__label"><?php echo esc_html($option['label']); ?></span>
+              <span class="twmp-ticket-price-option__price"><?php echo wp_kses_post(wc_price($option['price'])); ?></span>
+              <span class="twmp-ticket-price-option__unit"><?php echo esc_html__('/ Ticket', 'twmp-ath'); ?></span>
+            </label>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    <?php endif; ?>
+  </section>
+  <?php
+}
+
+add_action('woocommerce_checkout_before_customer_details', 'twmp_checkout_render_ticket_detail_section', 20);
+
+add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
+  if (!function_exists('WC') || !WC()->session) {
+    return;
+  }
+
+  parse_str($posted_data, $data);
+
+  $product_id = !empty($data['twmp_ticket_product_id']) ? absint($data['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
+  if (!$product_id) {
+    return;
+  }
+
+  $selection = twmp_checkout_resolve_ticket_selection($product_id, array(
+    'performance_key' => isset($data['twmp_ticket_performance']) ? sanitize_key($data['twmp_ticket_performance']) : '',
+    'price_key'       => isset($data['twmp_ticket_price_option']) ? sanitize_key($data['twmp_ticket_price_option']) : '',
+  ));
+
+  WC()->session->set('twmp_ticket_selection', $selection);
+});
+
+add_action('woocommerce_checkout_process', function () {
+  $product_id = !empty($_POST['twmp_ticket_product_id']) ? absint($_POST['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
+  if (!$product_id) {
+    return;
+  }
+
+  $ticket_data = twmp_checkout_get_ticket_product_data($product_id);
+  if (empty($ticket_data['performances']) && empty($ticket_data['ticket_prices'])) {
+    return;
+  }
+
+  $performance_key = isset($_POST['twmp_ticket_performance']) ? sanitize_key(wp_unslash($_POST['twmp_ticket_performance'])) : '';
+  $price_key = isset($_POST['twmp_ticket_price_option']) ? sanitize_key(wp_unslash($_POST['twmp_ticket_price_option'])) : '';
+
+  if (!empty($ticket_data['performances']) && empty($performance_key)) {
+    wc_add_notice(__('Please select a performance date.', 'twmp-ath'), 'error');
+  } elseif (!empty($ticket_data['performances']) && empty($ticket_data['performances'][$performance_key])) {
+    wc_add_notice(__('The selected performance date is invalid.', 'twmp-ath'), 'error');
+  }
+
+  if (!empty($ticket_data['ticket_prices']) && empty($price_key)) {
+    wc_add_notice(__('Please select a ticket type.', 'twmp-ath'), 'error');
+  } elseif (!empty($ticket_data['ticket_prices']) && empty($ticket_data['ticket_prices'][$price_key])) {
+    wc_add_notice(__('The selected ticket type is invalid.', 'twmp-ath'), 'error');
+  }
+});
+
+add_action('woocommerce_checkout_create_order', function ($order, $data) {
+  $product_id = !empty($_POST['twmp_ticket_product_id']) ? absint($_POST['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
+  if (!$product_id) {
+    return;
+  }
+
+  $ticket_data = twmp_checkout_get_ticket_product_data($product_id);
+  if (empty($ticket_data['performances']) && empty($ticket_data['ticket_prices'])) {
+    return;
+  }
+
+  $selection = twmp_checkout_resolve_ticket_selection($product_id, array(
+    'performance_key' => isset($_POST['twmp_ticket_performance']) ? sanitize_key(wp_unslash($_POST['twmp_ticket_performance'])) : '',
+    'price_key'       => isset($_POST['twmp_ticket_price_option']) ? sanitize_key(wp_unslash($_POST['twmp_ticket_price_option'])) : '',
+  ));
+
+  $order->update_meta_data('_twmp_ticket_product_id', $product_id);
+
+  if (!empty($selection['performance_key']) && !empty($ticket_data['performances'][$selection['performance_key']])) {
+    $performance = $ticket_data['performances'][$selection['performance_key']];
+    $order->update_meta_data('_twmp_ticket_performance_key', $performance['key']);
+    $order->update_meta_data('_twmp_ticket_performance_label', $performance['display']);
+    $order->update_meta_data('_twmp_ticket_performance_datetime', $performance['datetime']);
+  }
+
+  if (!empty($selection['price_key']) && !empty($ticket_data['ticket_prices'][$selection['price_key']])) {
+    $price_option = $ticket_data['ticket_prices'][$selection['price_key']];
+    $order->update_meta_data('_twmp_ticket_price_key', $price_option['key']);
+    $order->update_meta_data('_twmp_ticket_price_label', $price_option['label']);
+    $order->update_meta_data('_twmp_ticket_price_amount', $price_option['price']);
+  }
+}, 20, 2);
+
+add_action('woocommerce_before_calculate_totals', function ($cart) {
+  if (is_admin() && !defined('DOING_AJAX')) {
+    return;
+  }
+
+  if (!function_exists('WC') || !WC()->session || !WC()->cart) {
+    return;
+  }
+
+  $selection = (array) WC()->session->get('twmp_ticket_selection', array());
+  $product_id = !empty($selection['product_id']) ? absint($selection['product_id']) : twmp_checkout_get_ticket_product_id();
+  if (!$product_id) {
+    return;
+  }
+
+  $ticket_data = twmp_checkout_get_ticket_product_data($product_id);
+  if (empty($ticket_data['ticket_prices'])) {
+    return;
+  }
+
+  $price_key = !empty($selection['price_key']) ? sanitize_key($selection['price_key']) : '';
+  if (empty($price_key) || empty($ticket_data['ticket_prices'][$price_key])) {
+    $defaults = twmp_checkout_get_ticket_selection_defaults($product_id);
+    $price_key = $defaults['price_key'];
+    if (empty($price_key) || empty($ticket_data['ticket_prices'][$price_key])) {
+      return;
+    }
+
+    $selection['product_id'] = $product_id;
+    $selection['price_key'] = $price_key;
+    WC()->session->set('twmp_ticket_selection', $selection);
+  }
+
+  $price = (float) $ticket_data['ticket_prices'][$price_key]['price'];
+  foreach ($cart->get_cart() as $cart_item) {
+    $cart_item_product_id = !empty($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+    if ($cart_item_product_id !== $product_id || empty($cart_item['data'])) {
+      continue;
+    }
+
+    $cart_item['data']->set_price($price);
+  }
+}, 20);
+
+add_action('woocommerce_admin_order_data_after_billing_address', function ($order) {
+  $ticket_product_id = $order->get_meta('_twmp_ticket_product_id');
+  $ticket_performance = $order->get_meta('_twmp_ticket_performance_label');
+  $ticket_price_label = $order->get_meta('_twmp_ticket_price_label');
+  $ticket_price_amount = $order->get_meta('_twmp_ticket_price_amount');
+
+  if (!$ticket_product_id && !$ticket_performance && !$ticket_price_label) {
+    return;
+  }
+
+  echo '<div class="address">';
+  echo '<h3>' . esc_html__('Ticket detail', 'twmp-ath') . '</h3>';
+
+  if ($ticket_performance) {
+    echo '<p><strong>' . esc_html__('Performance:', 'twmp-ath') . '</strong> ' . esc_html($ticket_performance) . '</p>';
+  }
+
+  if ($ticket_price_label) {
+    echo '<p><strong>' . esc_html__('Ticket type:', 'twmp-ath') . '</strong> ' . esc_html($ticket_price_label);
+    if ($ticket_price_amount !== '') {
+      echo ' - ' . wp_kses_post(wc_price((float) $ticket_price_amount));
+    }
+    echo '</p>';
+  }
+
+  echo '</div>';
+}, 20);
 
 add_filter('woocommerce_form_field_billing_sexy_custom', function ($field, $key, $args, $value) {
 
@@ -281,165 +656,11 @@ function twmp_display_custom_fields_in_admin($order) {
 //   return $fields;
 // });
 
-
-add_action('wp_enqueue_scripts', function () {
-  if (is_checkout()) {
-    wp_dequeue_style('select2');
-    wp_dequeue_script('select2');
-
-    wp_dequeue_style('selectWoo');
-    wp_dequeue_script('selectWoo');
-
-    wp_dequeue_script('wc-enhanced-select');
-  }
-}, 100);
-
-add_action('woocommerce_after_checkout_form', function () {
-?>
-  <script>
-    jQuery(function($) {
-      $('.select2-hidden-accessible').each(function() {
-        if ($(this).hasClass('select2-hidden-accessible')) {
-          $(this).select2('destroy');
-        }
-      });
-    });
-  </script>
-<?php
-});
-
-add_action('wp_ajax_get_tinh_tp_by_matp', 'load_tinh_tp_ajax');
-add_action('wp_ajax_nopriv_get_tinh_tp_by_matp', 'load_tinh_tp_ajax');
-function load_tinh_tp_ajax()
-{
-  // Verify nonce for security
-  $nonce = isset($_POST['nonce']) ? sanitize_text_field($_POST['nonce']) : '';
-  if (!wp_verify_nonce($nonce, 'twmp_checkout_nonce')) {
-    wp_send_json_error(['message' => 'Security check failed'], 403);
-  }
-
-  $data = get_tinh_thanh_pho();
-  wp_send_json_success($data);
-}
-
-add_action('wp_ajax_get_quan_huyen_by_matp', 'load_quan_huyen_ajax');
-add_action('wp_ajax_nopriv_get_quan_huyen_by_matp', 'load_quan_huyen_ajax');
-function load_quan_huyen_ajax()
-{
-  // Verify nonce for security
-  $nonce = isset($_POST['nonce']) ? sanitize_text_field($_POST['nonce']) : '';
-  if (!wp_verify_nonce($nonce, 'twmp_checkout_nonce')) {
-    wp_send_json_error(['message' => 'Security check failed'], 403);
-  }
-
-  // Validate and sanitize matp parameter
-  if (empty($_POST['matp'])) {
-    wp_send_json_error(['message' => 'Missing required parameter: matp'], 400);
-  }
-
-  $matp = sanitize_text_field($_POST['matp']);
-  $data = get_quan_huyen();
-  $result = [];
-
-  foreach ($data as $item) {
-    if ($item['matp'] === $matp) {
-      $result[] = $item;
-    }
-  }
-
-  wp_send_json_success($result);
-}
-
-add_action('wp_ajax_get_xa_phuong_by_maqh', 'load_xa_phuong_ajax');
-add_action('wp_ajax_nopriv_get_xa_phuong_by_maqh', 'load_xa_phuong_ajax');
-function load_xa_phuong_ajax()
-{
-  // Verify nonce for security
-  $nonce = isset($_POST['nonce']) ? sanitize_text_field($_POST['nonce']) : '';
-  if (!wp_verify_nonce($nonce, 'twmp_checkout_nonce')) {
-    wp_send_json_error(['message' => 'Security check failed'], 403);
-  }
-
-  // Validate and sanitize maqh parameter
-  if (empty($_POST['maqh'])) {
-    wp_send_json_error(['message' => 'Missing required parameter: maqh'], 400);
-  }
-
-  $maqh = sanitize_text_field($_POST['maqh']);
-  $data = get_xa_phuong_thi_tran();
-  $result = [];
-
-  foreach ($data as $item) {
-    if ($item['maqh'] === $maqh) {
-      $result[] = $item;
-    }
-  }
-
-  wp_send_json_success($result);
-}
-
-
-add_action('rest_api_init', function () {
-  register_rest_route('twmp/v1', '/get_tinh_tp', [
-    'methods'             => 'GET',
-    'callback'            => 'twmp_rest_get_tinh_tp',
-    'permission_callback' => '__return_true',
-  ]);
-
-  register_rest_route('twmp/v1', '/get_quan_huyen', [
-    'methods'             => 'GET',
-    'callback'            => 'twmp_rest_get_quan_huyen',
-    'permission_callback' => '__return_true',
-  ]);
-
-  register_rest_route('twmp/v1', '/get_xa_phuong', [
-    'methods'             => 'GET',
-    'callback'            => 'twmp_rest_get_xa_phuong',
-    'permission_callback' => '__return_true',
-  ]);
-});
-
-function twmp_rest_get_tinh_tp(WP_REST_Request $request)
-{
-  $data = get_tinh_thanh_pho();
-  return new WP_REST_Response($data, 200);
-}
-
-function twmp_rest_get_quan_huyen(WP_REST_Request $request)
-{
-  $matp = $request->get_param('matp');
-  if (empty($matp)) {
-    return new WP_REST_Response([], 200);
-  }
-
-  $data = get_quan_huyen();
-  $result = array_filter($data, function ($item) use ($matp) {
-    return isset($item['matp']) && $item['matp'] === $matp;
-  });
-
-  return new WP_REST_Response(array_values($result), 200);
-}
-
-function twmp_rest_get_xa_phuong(WP_REST_Request $request)
-{
-  $maqh = $request->get_param('maqh');
-  if (empty($maqh)) {
-    return new WP_REST_Response([], 200);
-  }
-
-  $data = get_xa_phuong_thi_tran();
-  $result = array_filter($data, function ($item) use ($maqh) {
-    return isset($item['maqh']) && $item['maqh'] === $maqh;
-  });
-
-  return new WP_REST_Response(array_values($result), 200);
-}
-
 add_filter('woocommerce_add_to_cart_redirect', function ($url) {
-  // Nếu đang add to cart từ quick-buy (không phải từ page giỏ hàng)
-  if (!is_cart()) {
-    return wc_get_checkout_url(); // Chuyển luôn đến trang checkout
+  if (!empty($_REQUEST['twmp_buy_now'])) {
+    return wc_get_cart_url();
   }
+
   return $url;
 });
 
