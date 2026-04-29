@@ -45,9 +45,9 @@ function twmp_render_cart_button()
 
     $product_id = $product->get_id();
     $cart_url = twmp_get_cart_url();
-    $button_classes = 'bg-primary-500 text-white typo-system-button button-default cart-redirect-btn';
-    $button_text = esc_html__('Go to Checkout', 'twmp-ath');
-    $button_html = twmp_get_svg_icon('book-tiket');
+    $button_classes = 'bg-primary-500 text-system-white typo-system-button button-default cart-redirect-btn';
+    $button_text = esc_html__('Book Tiket', 'twmp-ath');
+    $button_html = twmp_get_svg_icon('book-ticket');
 
     printf(
         '<form class="twmp-buy-now-form" action="%1$s" method="post"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
@@ -55,8 +55,23 @@ function twmp_render_cart_button()
         absint($product_id),
         esc_attr($button_classes),
         esc_html($button_text),
-        $button_html ? '<span class="icon pe-none" aria-hidden="true">' . wp_kses_post($button_html) . '</span>' : ''
+        $button_html ? '<span class="icon pe-none" aria-hidden="true">' . $button_html . '</span>' : ''
     );
+}
+
+/**
+ * Render contact us button
+ */
+function twmp_render_contact_us_button()
+{
+    $button_text = esc_html__('Contact Us', 'twmp-ath');
+    $button_link = get_permalink(get_page_by_path('contact'));
+    get_template_part('templates/components/button', null, [
+        'class' => 'bg-system-white text-system-black typo-system-button button-default contact-us-btn',
+        'button_text' => $button_text,
+        'button_url' => $button_link,
+        'button_link_target' => '_self',
+    ]);
 }
 
 /**
@@ -210,12 +225,12 @@ add_action('woocommerce_single_product_summary', function () {
     $product_id = $product->get_id();
 
     $fields = [
-        'field_ath_start_datetime' => 'time',
-        'field_ath_location_detail' => 'pin',
-        'field_ath_language' => 'globe',
-        'field_ath_format' => 'selection',
-        'field_ath_age_display' => 'stack',
-        'field_ath_demonstration' => 'users',
+        'field_ath_start_datetime' => ['time', 'Time'],
+        'field_ath_location_detail' => ['pin', 'Location'],
+        'field_ath_language' => ['globe', 'Language'],
+        'field_ath_format' => ['selection', 'Format'],
+        'field_ath_age_display' => ['stack', 'Age'],
+        'field_ath_demonstration' => ['users', 'Demonstration'],
     ];
 
     echo '<div class="product-details-meta">';
@@ -228,8 +243,8 @@ add_action('woocommerce_single_product_summary', function () {
         }
 
         echo '<div class="product-details-meta__item">';
-        echo twmp_get_svg_icon($icon);
-        echo '<span>' . esc_html(twmp_field_to_string($value)) . '</span>';
+        echo twmp_get_svg_icon($icon[0]);
+        echo '<div><span class="product-details-meta__item-label">' . esc_html($icon[1]) . '</span>: <span class="product-details-meta__item-text">' . esc_html(twmp_field_to_string($value)) . '</span></div>';
         echo '</div>';
     }
 
@@ -241,7 +256,10 @@ add_action('woocommerce_single_product_summary', function () {
 //////////////////////////////
 
 add_action('woocommerce_single_product_summary', function () {
+    echo '<div class="product-action-buttons d-flex items-center gap-16">';
     twmp_render_cart_button();
+    twmp_render_contact_us_button();
+    echo '</div>';
 }, 16);
 
 //////////////////////////////

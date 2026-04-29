@@ -737,3 +737,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+@mixin type-token($size, $line-height, $weight: 400) {
+	font-size: #{$size}px;
+	line-height: #{$line-height}px;
+	font-weight: $weight;
+}

@@ -2,6 +2,7 @@
   "name": "twmp",
   "scripts": {
     "dev": "webpack --env theme=twmp-ath --env woo=yes --mode development --watch",
+    "start": "webpack --env theme=twmp-ath --env woo=yes --mode development --watch",
     "build": "node --max-old-space-size=4096 ./node_modules/webpack/bin/webpack.js --env theme=twmp-ath --env woo=yes --mode production"
   },
   "engines": {

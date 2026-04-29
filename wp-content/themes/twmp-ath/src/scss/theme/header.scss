@@ -156,6 +156,13 @@ $header--main-height-mobile: 60px;
 		}
 	}
 }
+
+body:not(.home) {
+	.header__main {
+		background-color: #000000;
+		opacity: 1;
+	}	
+}
 /*----------------------------------------*/
 /*  Button Contact
 /*----------------------------------------*/
