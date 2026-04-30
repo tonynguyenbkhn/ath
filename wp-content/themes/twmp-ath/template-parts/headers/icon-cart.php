@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if (class_exists('WooCommerce')):
 
 $data = wp_parse_args($args, [

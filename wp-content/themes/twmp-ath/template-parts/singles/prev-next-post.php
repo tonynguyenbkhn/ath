@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $data = wp_parse_args($args, [
     'next_post' => get_next_post(),
 	'previous_post' => get_previous_post()

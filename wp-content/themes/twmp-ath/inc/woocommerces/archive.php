@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 add_action('wp', function () {
     // remove sidebar default
     remove_action('woocommerce_sidebar', 'generate_construct_sidebars');

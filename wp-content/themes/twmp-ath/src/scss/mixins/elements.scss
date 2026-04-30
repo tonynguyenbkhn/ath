@@ -272,9 +272,9 @@
   & figure,
   & .wp-block-image,
   & p {
-    margin-top: 1em;
-    overflow-wrap: anywhere;
-    font-size: 14px;
+    @include type-token(18, 28, 400);
+    font-family: var(--font-archivo);
+    color: var(--system-content-1);
   }
 
   & h1,
@@ -442,22 +442,22 @@
 @mixin button-default {
   display: inline-block;
   height: auto;
-  padding: 16px 20px;
+  padding: 15px 20px;
   font-size: 1rem;
   text-align: center;
   text-decoration: none;
 }
 
 @mixin button-small {
-  padding: .375em .625em;
+  padding: 15px 20px;
 }
 
 @mixin button-normal {
-  padding: .5em 1em;
+  padding: 15px 40px;
 }
 
 @mixin button-large {
-  padding: .625em 1.25em;
+  padding: 15px 80px;
 }
 
 @mixin button-style-primary {
@@ -739,7 +739,159 @@
 }
 
 @mixin type-token($size, $line-height, $weight: 400) {
+  font-size: #{$size}px;
+  line-height: #{$line-height}px;
+  font-weight: $weight;
+}
+
+// Clearfix
+@mixin clearfix {
+	&::after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+// Typo
+
+$bold: 700;
+$semibold: 600;
+$medium: 500;
+$regular: 400;
+
+html {
+	font-size: var(--html);
+}
+
+body,
+input,
+button,
+option,
+textarea,
+label,
+select,
+legend,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+	font-family: var(--font-inter);
+	font-size: 16px;
+	color: var(--body-text-color);
+	line-height: 24px;
+	font-weight: $regular;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+	color: var(--title);
+}
+
+@mixin type-token($size, $line-height, $weight: 400) {
 	font-size: #{$size}px;
 	line-height: #{$line-height}px;
 	font-weight: $weight;
+}
+
+$theme-font-family-typo: (
+	default: --font-default,
+	playfair-display: --font-playfair-display,
+	archivo: --font-archivo,
+	beautique-display: --font-beautique-display,
+	inter: --font-inter
+);
+
+// Generic typography token mixin
+@mixin typography-style($size, $line-height, $weight, $font-family) {
+	@include type-token($size, $line-height, $weight);
+	font-family: $font-family;
+}
+
+// Display XL
+@mixin typo-display-xl($weight) {
+	@include typography-style(96, 100, $weight, var(--font-playfair-display));
+}
+
+// Display LG
+@mixin typo-display-lg($weight) {
+	@include typography-style(80, 120, $weight, var(--font-playfair-display));
+}
+
+// Display MD
+@mixin typo-display-md($weight, $line-height) {
+	@include typography-style(60, $line-height, $weight, var(--font-playfair-display));
+}
+
+// Display SM
+@mixin typo-display-sm($weight, $line-height) {
+	@include typography-style(36, $line-height, $weight, var(--font-playfair-display));
+}
+
+// Display XS
+@mixin typo-display-xs($weight) {
+	@include typography-style(22, 30, $weight, var(--font-archivo));
+}
+
+// Text LG
+@mixin typo-text-lg($weight) {
+	@include typography-style(18, 28, $weight, var(--font-archivo));
+}
+
+// Text MD
+@mixin typo-text-md($weight) {
+	@include typography-style(16, 24, $weight, var(--font-archivo));
+}
+
+// Text SM
+@mixin typo-text-sm($weight) {
+	@include typography-style(14, 20, $weight, var(--font-archivo));
+}
+
+// Mobile
+@mixin typo-mobile-title {
+	@include typography-style(40, 48, $regular, var(--font-beautique-display));
+}
+
+@mixin typo-mobile-header {
+	@include typography-style(30, 48, $regular, var(--font-beautique-display));
+}
+
+// System
+@mixin typo-system-money {
+	@include typography-style(32, 48, $regular, var(--font-archivo));
+}
+
+@mixin typo-system-button {
+	@include typography-style(18, 24, $regular, var(--font-archivo));
+}
+
+@mixin typo-system-button-2 {
+	@include typography-style(18, 24, $regular, var(--font-archivo));
+}
+
+@mixin typo-system-description-1 {
+	@include typography-style(12, 20, $regular, var(--font-archivo));
+}
+
+@mixin typo-system-description-2 {
+	@include typography-style(12, 20, $regular, var(--font-archivo));
 }

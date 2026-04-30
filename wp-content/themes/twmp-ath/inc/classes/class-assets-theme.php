@@ -63,6 +63,9 @@ class Assets_Theme
 		// if (is_product()) {
 		// 	wp_enqueue_script('twmp-woocommerce-product', get_stylesheet_directory_uri() . '/custom/product.js', ['jquery'], $this->theme_version);
 		// }
+
+		// Enqueue artists template styles on single product page.
+
 		// $locale_settings = array(
 		// 	'woocommerce' => array(
 		// 		'checkoutUrl'    => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : '',

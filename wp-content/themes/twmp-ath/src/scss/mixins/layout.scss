@@ -28,10 +28,10 @@
 /*  02. Absolute Center
 /*----------------------------------------*/
 @mixin abs-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /*----------------------------------------*/
@@ -47,8 +47,8 @@
 /*  04. Container
 /*----------------------------------------*/
 @mixin container {
-	--bs-gutter-x: 1.5rem;
-	--bs-gutter-y: 0;
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
 
   width: 100%;
   padding-right: calc(var(--bs-gutter-x) * 0.5);
@@ -56,25 +56,25 @@
   margin-right: auto;
   margin-left: auto;
 
-	@media (min-width: 782px) {
-		max-width: var(--container-max-sm);
-	}
+  @media (min-width: 782px) {
+    max-width: var(--container-max-sm);
+  }
 
-	@media (--md) {
-		max-width: var(--container-max-md);
-	}
+  @media (--md) {
+    max-width: var(--container-max-md);
+  }
 
-	@media (--lg) {
-		max-width: var(--container-max-lg);
-	}
+  @media (--lg) {
+    max-width: var(--container-max-lg);
+  }
 
-	@media (min-width: 1600px) {
-		max-width: var(--container-max-xl);
-	}
+  @media (min-width: 1600px) {
+    max-width: var(--container-max-xl);
+  }
 
-	@media (--xxl) {
-		max-width: var(--container-max-xxl);
-	}
+  @media (--xxl) {
+    max-width: var(--container-max-xxl);
+  }
 }
 
 /*----------------------------------------*/
@@ -82,7 +82,7 @@
 /*----------------------------------------*/
 @mixin row ($space) {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   margin-left: $space;
   margin-right: $space;
 }

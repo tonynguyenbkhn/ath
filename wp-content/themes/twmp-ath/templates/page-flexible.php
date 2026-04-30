@@ -4,6 +4,11 @@
  * Template Name: Flexible
  * Template Post Type: page
  */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 get_header();
 
 ?>

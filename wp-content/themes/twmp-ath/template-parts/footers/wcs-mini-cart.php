@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 do_action('woocommerce_before_mini_cart');
 
 if (!WC()->cart->is_empty()) {

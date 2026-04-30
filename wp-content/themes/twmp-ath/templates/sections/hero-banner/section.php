@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Hero Banner section template
  * Expects ACF fields (either via get_sub_field() when used inside a flexible content loop,

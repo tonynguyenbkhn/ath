@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 add_action('woocommerce_before_thankyou', 'wcs_thank_you_icon');
 
 function wcs_thank_you_icon()

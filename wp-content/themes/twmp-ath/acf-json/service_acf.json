@@ -398,6 +398,50 @@
             }
         },
         {
+            "key": "field_ath_artists",
+            "label": "Artists",
+            "name": "ath_artists",
+            "type": "post_object",
+            "instructions": "Chọn nghệ sĩ cho sự kiện",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "artists"
+            ],
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 1,
+            "ui": 1
+        },
+        {
+            "key": "field_ath_similar_show_event",
+            "label": "Similar Service",
+            "name": "ath_similar_service",
+            "type": "post_object",
+            "instructions": "Chọn sự kiện tương tự",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "product"
+            ],
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 1,
+            "ui": 1
+        },
+        {
             "key": "field_ath_short_info",
             "label": "Card Short Info",
             "name": "ath_short_info",
@@ -482,5 +526,5 @@
     "active": true,
     "description": "Custom fields for WooCommerce event/show product listing filters and single product detail.",
     "show_in_rest": 1,
-    "modified": 1777360124
+    "modified": 1777526467
 }

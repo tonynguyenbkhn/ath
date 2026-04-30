@@ -24,9 +24,10 @@ class Woo_Theme
      */
     protected function setup_hooks()
     {
+        require_once get_theme_file_path('/inc/woocommerces/helpers/helper.php');
+        require_once get_theme_file_path('/inc/woocommerces/helpers/artists.php');
         require_once get_theme_file_path('/inc/woocommerces/disable.php');
         require_once get_theme_file_path('/inc/woocommerces/global.php');
-        require_once get_theme_file_path('/inc/woocommerces/helper.php');
         require_once get_theme_file_path('/inc/woocommerces/single.php');
         // require_once get_theme_file_path('/inc/woocommerces/archive.php');
         // require_once get_theme_file_path('/inc/woocommerces/cart.php');

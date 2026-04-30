@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 add_action('woocommerce_before_account_navigation', function() {
     echo '<div class="page-block page-block--account">';
 });

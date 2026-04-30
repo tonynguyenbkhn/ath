@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 get_header();
 get_template_part('templates/blocks/page-title', null, ['show_title'=> false]);
 global $wp_query;

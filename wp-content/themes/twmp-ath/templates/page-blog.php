@@ -1,10 +1,12 @@
 <?php
-
 /**
  * Template Name: Page Blog
  * Template Post Type: page
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 get_header();
 get_template_part('templates/blocks/page-title', null, ['class' => 'single__page-title', 'show_breadcrumbs' => false]);

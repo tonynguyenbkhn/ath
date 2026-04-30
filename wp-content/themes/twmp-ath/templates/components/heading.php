@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $data = wp_parse_args($args, [
     'title_class' => '',
     'description_class' => '',
@@ -29,7 +33,7 @@ $_description_class .= !empty($data['description_class']) ? esc_attr(' ' . $data
         </h2>
         <?php if (!empty($data['description'])) : ?>
             <div class="<?php echo esc_attr($_description_class); ?>">
-                <?php echo esc_html($data['description']); ?>
+                <?php echo wp_kses_post($data['description']); ?>
             </div>
         <?php endif; ?>
     </div>

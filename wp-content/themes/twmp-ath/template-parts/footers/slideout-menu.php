@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $menu_title             = __('Menu', 'twmp-ath');
 $close_menu_button_text = __('Close', 'twmp-ath');
 

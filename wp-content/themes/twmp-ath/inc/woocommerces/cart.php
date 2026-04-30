@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 remove_action('woocommerce_before_cart', 'woocommerce_output_all_notices', 10);
 
 remove_action('woocommerce_before_cart', 'woocommerce_output_all_notices', 10);

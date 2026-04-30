@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if (! defined('TWMP_DIR_PATH')) {
     define('TWMP_DIR_PATH', untrailingslashit(get_theme_file_path()));
 }

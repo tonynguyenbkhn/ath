@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if (have_rows('sections')) {
     $base_fields = [
         'id' => 'section_id',

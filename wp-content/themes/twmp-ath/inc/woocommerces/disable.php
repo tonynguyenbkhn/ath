@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 // 1. Tắt WooCommerce assets ở page không cần
 add_action('wp_enqueue_scripts', function () {
     if (

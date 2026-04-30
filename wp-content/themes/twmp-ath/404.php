@@ -8,6 +8,10 @@
  * @package taiwebmienphi
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 get_header();
 ?>
 

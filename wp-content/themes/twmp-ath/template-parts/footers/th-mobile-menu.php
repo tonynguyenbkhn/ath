@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $menu_class     = \TWMP_THEME\Inc\Menus_Theme::get_instance();
 $header_menu_id = $menu_class->get_menu_id('primary');
 $header_menus   = wp_get_nav_menu_items($header_menu_id);

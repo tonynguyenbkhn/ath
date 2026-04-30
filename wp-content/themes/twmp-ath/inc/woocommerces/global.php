@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 // add_filter('woocommerce_coupons_enabled', 'no');
 
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10);

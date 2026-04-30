@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if (is_object(WC()->cart) && !empty(WC()->cart)) :
 $data = wp_parse_args($args, [
 

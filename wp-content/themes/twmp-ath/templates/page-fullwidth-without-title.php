@@ -5,6 +5,10 @@
  * Template Post Type: page
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 get_header();
 get_template_part('templates/blocks/page-title', null, ['class' => 'reverse-title', 'show_title'=>false]);
 ?>

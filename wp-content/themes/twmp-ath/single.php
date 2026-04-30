@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 get_header();
 if ('post' === get_post_type()) :
 	get_template_part('templates/blocks/post-meta', null, [

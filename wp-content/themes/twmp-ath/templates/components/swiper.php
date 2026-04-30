@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 $data = wp_parse_args(
 	$args,
 	array(
@@ -54,22 +58,26 @@ if (!empty($data['items'])) :
 	<?php endif; ?>
 	<?php if (!empty($_settings['prevNextButtons'])) : ?>
 		<div class="swiper-button swiper-button-prev">
-			<?php if ( !empty($data['settings']['prevSvgButton']) ) { echo twmp_get_svg_icon($data['settings']['prevSvgButton']); } ?>
+			<?php if (!empty($data['settings']['prevSvgButton'])) {
+				echo twmp_get_svg_icon($data['settings']['prevSvgButton']);
+			} ?>
 		</div>
 		<div class="swiper-button swiper-button-next">
-			<?php if ( !empty($data['settings']['nextSvgButton']) ) { echo twmp_get_svg_icon($data['settings']['nextSvgButton']); } ?>
+			<?php if (!empty($data['settings']['nextSvgButton'])) {
+				echo twmp_get_svg_icon($data['settings']['nextSvgButton']);
+			} ?>
 		</div>
 	<?php endif; ?>
 	<?php
 	$slide_html = ob_get_clean();
 	?>
-	<div class="<?php echo esc_attr($_class); ?>" data-settings='<?php echo json_encode($_settings); ?>' <?php if (!empty($data['data_block'])) : ?> data-block="<?php echo esc_attr($data['data_block']); ?>"<?php endif; ?>>
+	<div class="<?php echo esc_attr($_class); ?>" data-settings='<?php echo json_encode($_settings); ?>' <?php if (!empty($data['data_block'])) : ?> data-block="<?php echo esc_attr($data['data_block']); ?>" <?php endif; ?>>
 		<?php if (!empty($data['enable_container'])) : ?>
 			<div class="<?php echo esc_attr($data['container_class']); ?>">
-				<?php echo wp_kses_post( $slide_html ); ?>
+				<?php echo wp_kses_post($slide_html); ?>
 			</div>
 		<?php else : ?>
-			<?php echo wp_kses_post( $slide_html ); ?>
+			<?php echo wp_kses_post($slide_html); ?>
 		<?php endif; ?>
 	</div>
 <?php else : ?>

@@ -91,9 +91,25 @@ function twmp_field_to_string($value)
 //////////////////////////////
 
 add_filter('woocommerce_product_tabs', function ($tabs) {
-    unset($tabs['additional_information']);
-    return $tabs;
+	// Rename Description tab
+	if (isset($tabs['description'])) {
+		$tabs['description']['title'] = __('About', 'twmp-ath');
+	}
+
+	// Add custom Section tab
+	$tabs['section'] = [
+		'title'    => __('Section', 'twmp-ath'),
+		'priority' => 25,
+		'callback' => 'render_product_section_tab',
+	];
+
+	return $tabs;
 }, 98);
+
+function render_product_section_tab() {
+	echo '<h2>' . esc_html__('Section', 'twmp-ath') . '</h2>';
+	echo '<p>' . esc_html__('Your section content here.', 'twmp-ath') . '</p>';
+}
 
 add_action('wp', function () {
     remove_action('woocommerce_sidebar', 'woocommerce_get_sidebar', 10);

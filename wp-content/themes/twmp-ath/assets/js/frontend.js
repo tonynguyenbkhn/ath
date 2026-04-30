@@ -19,10 +19,10 @@ const t=(t,e=1e4)=>(t=parseFloat(t+"")||0,Math.round((t+Number.EPSILON)*e)/e),e=
 
 /***/ },
 
-/***/ "./twmp-ath/src/js/blocks/checkout-custom.js"
-/*!***************************************************!*\
-  !*** ./twmp-ath/src/js/blocks/checkout-custom.js ***!
-  \***************************************************/
+/***/ "./twmp-ath/src/js/blocks/about-couter.js"
+/*!************************************************!*\
+  !*** ./twmp-ath/src/js/blocks/about-couter.js ***!
+  \************************************************/
 (__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32,88 +32,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lib_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lib/dom */ "./twmp-ath/src/js/lib/dom.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
-  const checkoutForm = (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('form.checkout', el);
-  if (!checkoutForm) {
+const getCounterTarget = value => {
+  const text = (value || '').trim();
+  const target = parseInt(text.replace(/[^\d]/g, ''), 10);
+  return Number.isNaN(target) ? 0 : target;
+};
+const animateCount = (el, target, prefix = '') => {
+  if (!el || target <= 0) {
     return;
   }
-  let refreshTimer = null;
-  let loadingOverlay = null;
-  const getCartForm = () => (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.woocommerce-cart-form');
-  const setLoadingState = isLoading => {
-    if (isLoading) {
-      if (!loadingOverlay) {
-        loadingOverlay = document.createElement('div');
-        loadingOverlay.className = 'twmp-checkout-ticket-detail__loading';
-        loadingOverlay.setAttribute('aria-hidden', 'true');
-        loadingOverlay.style.cssText = ['position:absolute', 'inset:0', 'z-index:999', 'cursor:wait', 'background:rgba(255,255,255,.45)'].join(';');
-        el.style.position = el.style.position || 'relative';
-        el.appendChild(loadingOverlay);
+  const duration = 2000;
+  const startTime = performance.now();
+  const updateCounter = currentTime => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const currentValue = Math.round(target * progress);
+    el.textContent = `${prefix}${currentValue}`;
+    if (progress < 1) {
+      window.requestAnimationFrame(updateCounter);
+      return;
+    }
+    el.textContent = `${prefix}${target}`;
+  };
+  window.requestAnimationFrame(updateCounter);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  const statsSection = el && el.classList && el.classList.contains('about-us__stats') ? el : (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.about-us__stats', el);
+  const values = (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.selectAll)('.about-us__stat-value', el);
+  if (!statsSection || !values.length || typeof IntersectionObserver === 'undefined') {
+    return;
+  }
+  console.log('About Counter block loaded');
+  let hasRun = false;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting || hasRun) {
+        return;
       }
-      el.setAttribute('aria-busy', 'true');
-      el.classList.add('is-loading');
-      return;
-    }
-    el.removeAttribute('aria-busy');
-    el.classList.remove('is-loading');
-    if (loadingOverlay && loadingOverlay.parentNode) {
-      loadingOverlay.parentNode.removeChild(loadingOverlay);
-    }
-    loadingOverlay = null;
-  };
-  const serializeForm = form => {
-    const formData = new FormData(form);
-    return new URLSearchParams(formData).toString();
-  };
-  const updateCheckoutSession = () => {
-    if (typeof window.wc_checkout_params === 'undefined' || !window.wc_checkout_params || !window.wc_checkout_params.wc_ajax_url) {
-      return Promise.resolve();
-    }
-    const body = new URLSearchParams();
-    body.append('security', window.wc_checkout_params.update_order_review_nonce || '');
-    body.append('post_data', serializeForm(checkoutForm));
-    const url = window.wc_checkout_params.wc_ajax_url.replace('%%endpoint%%', 'update_order_review');
-    return fetch(url, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      body: body.toString()
-    }).then(() => undefined);
-  };
-  const submitCartUpdate = () => {
-    const cartForm = getCartForm();
-    if (!cartForm) {
-      window.location.reload();
-      return Promise.resolve();
-    }
-    const body = new URLSearchParams(serializeForm(cartForm));
-    body.set('update_cart', '1');
-    return fetch(cartForm.action, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      body: body.toString()
-    }).then(() => {
-      window.location.reload();
-    });
-  };
-  (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.on)('change', e => {
-    const target = e.target;
-    if (!target || !['twmp_ticket_price_option', 'twmp_ticket_performance'].includes(target.name)) {
-      return;
-    }
-    window.clearTimeout(refreshTimer);
-    setLoadingState(true);
-    refreshTimer = window.setTimeout(() => {
-      updateCheckoutSession().then(() => submitCartUpdate()).catch(() => submitCartUpdate()).finally(() => {
-        setLoadingState(false);
+      hasRun = true;
+      values.forEach(valueEl => {
+        const text = valueEl.textContent || '';
+        const prefix = text.trim().charAt(0) === '+' ? '+' : '';
+        const target = getCounterTarget(text);
+        animateCount(valueEl, target, prefix);
       });
-    }, 100);
-  }, el);
+      observer.unobserve(statsSection);
+    });
+  }, {
+    threshold: 0.5
+  });
+  observer.observe(statsSection);
 });
 
 /***/ },
@@ -2586,7 +2554,7 @@ var Tweezer = function () {
 (module, __unused_webpack_exports, __webpack_require__) {
 
 var map = {
-	"./checkout-custom.js": "./twmp-ath/src/js/blocks/checkout-custom.js",
+	"./about-couter.js": "./twmp-ath/src/js/blocks/about-couter.js",
 	"./show-less.js": "./twmp-ath/src/js/blocks/show-less.js"
 };
 
@@ -2713,8 +2681,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fancyapps_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fancyapps/ui */ "./node_modules/@fancyapps/ui/dist/index.esm.js");
 /* harmony import */ var _fancyapps_ui_dist_fancybox_fancybox_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fancyapps/ui/dist/fancybox/fancybox.css */ "./node_modules/@fancyapps/ui/dist/fancybox/fancybox.css");
 /* harmony import */ var lib_init_blocks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lib/init-blocks */ "./twmp-ath/src/js/lib/init-blocks.js");
-/* harmony import */ var lib_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lib/utils */ "./twmp-ath/src/js/lib/utils.js");
-
 
 
 
@@ -2724,14 +2690,6 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener('DOMContentLoaded', () => {
   _fancyapps_ui__WEBPACK_IMPORTED_MODULE_4__.Fancybox.bind("[data-fancybox]", {});
-  const selectors = [['.mobile-scroll .row', ':scope > div .mobile-same-height'], ['.product-scroll-wrapper .products', ':scope > li'], ['.yith-similar-products .products', ':scope > li']];
-  function applyAllMatchHeight() {
-    selectors.forEach(([container, target]) => {
-      (0,lib_utils__WEBPACK_IMPORTED_MODULE_7__.matchHeightMobile)(container, target);
-    });
-  }
-  window.addEventListener('DOMContentLoaded', applyAllMatchHeight);
-  window.addEventListener('resize', applyAllMatchHeight);
   (0,lib_init_blocks__WEBPACK_IMPORTED_MODULE_6__["default"])({
     block: 'blocks'
   }).mount();

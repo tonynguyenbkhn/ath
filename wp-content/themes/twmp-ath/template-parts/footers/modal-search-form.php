@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $data = wp_parse_args($args, [
     'class' => '',
     'id' => '',

@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $author_id = get_the_author_meta('ID');
 $author_name = get_the_author();
 $author_desc = get_the_author_meta('description');

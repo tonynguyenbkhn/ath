@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Search results are contained within a div.relevanssi-live-search-results
  * which you can style accordingly as you would any other element on your site.
