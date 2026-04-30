@@ -31,8 +31,9 @@ if (!empty($data['items'])) :
 	ob_start();
 ?>
 	<div class="swiper-wrapper">
-		<?php foreach ($data['items'] as $item) :
+		<?php foreach ($data['items'] as $index => $item) :
 			$_item_class = 'swiper-slide';
+			$_item_class .= 0 === ($index % 2) ? ' is-even' : ' is-odd';
 
 			if (!empty($item['class'])) :
 				$_item_class .= esc_attr(' ' . $item['class']);

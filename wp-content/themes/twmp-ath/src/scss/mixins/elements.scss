@@ -272,7 +272,7 @@
   & figure,
   & .wp-block-image,
   & p {
-    @include type-token(18, 28, 400);
+    @include typo-token(18, 28, 400);
     font-family: var(--font-archivo);
     color: var(--system-content-1);
   }
@@ -738,7 +738,7 @@
   text-overflow: ellipsis;
 }
 
-@mixin type-token($size, $line-height, $weight: 400) {
+@mixin typo-token($size, $line-height, $weight: 400) {
   font-size: #{$size}px;
   line-height: #{$line-height}px;
   font-weight: $weight;
@@ -806,7 +806,7 @@ h6 a {
 	color: var(--title);
 }
 
-@mixin type-token($size, $line-height, $weight: 400) {
+@mixin typo-token($size, $line-height, $weight: 400) {
 	font-size: #{$size}px;
 	line-height: #{$line-height}px;
 	font-weight: $weight;
@@ -822,7 +822,7 @@ $theme-font-family-typo: (
 
 // Generic typography token mixin
 @mixin typography-style($size, $line-height, $weight, $font-family) {
-	@include type-token($size, $line-height, $weight);
+	@include typo-token($size, $line-height, $weight);
 	font-family: $font-family;
 }
 

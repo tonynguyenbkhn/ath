@@ -39,6 +39,9 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr($data['id']); ?>" <?php endif; ?>>
+    	<div class="about-us__light">
+		<img width="1018px" height="508px" src="<?php echo esc_url(TWMP_IMG_URI . '/about-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
+	</div>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
@@ -125,8 +128,8 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
                                 'image_id'    => $data['image_id'],
                                 'image_size'  => $data['image_size'],
                                 'lazyload'    => $data['lazyload'],
-                                'class'       => 'about-us__image-wrap about-us__image-wrap--primary',
-                                'image_class' => 'about-us__image about-us__image--primary image--cover',
+                                'class'       => 'about-us__image-wrap about-us__image-wrap--primary image--cover image--default',
+                                'image_class' => 'about-us__image about-us__image--primary',
                                 'alt'         => $data['title'],
                             ]
                         );
@@ -144,8 +147,8 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
                                 'image_id'    => $data['secondary_image_id'],
                                 'image_size'  => $data['secondary_image_size'],
                                 'lazyload'    => $data['lazyload'],
-                                'class'       => 'about-us__image-wrap about-us__image-wrap--secondary',
-                                'image_class' => 'about-us__image about-us__image--secondary image--cover',
+                                'class'       => 'about-us__image-wrap about-us__image-wrap--secondary image--cover image--default',
+                                'image_class' => 'about-us__image about-us__image--secondary',
                                 'alt'         => $data['title'],
                             ]
                         );

@@ -23,11 +23,11 @@ $_class .= !empty($data['svg_icon_after']) ? ' has-icon has-after-icon' : '';
 
 ob_start(); ?>
 <?php if (!empty($data['svg_icon_before'])) : ?>
-	<span class="icon pe-none" aria-hidden="true"><?php echo wp_kses($data['svg_icon_before'], ['svg' => ['class' => [], 'width' => [], 'height' => [], 'viewbox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'circle' => ['cx' => [], 'cy' => [], 'r' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'rect' => ['x' => [], 'y' => [], 'width' => [], 'height' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'polygon' => ['points' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'polyline' => ['points' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'line' => ['x1' => [], 'y1' => [], 'x2' => [], 'y2' => [], 'stroke' => [], 'stroke-width' => []], 'text' => ['x' => [], 'y' => [], 'fill' => [], 'font-size' => [], 'text-anchor' => []], 'g' => ['fill' => [], 'stroke' => [], 'stroke-width' => []], 'defs' => [], 'use' => ['href' => [], 'x' => [], 'y' => [], 'width' => [], 'height' => []]]); ?></span>
+	<span class="icon pe-none" aria-hidden="true"><?php echo $data['svg_icon_before']; ?></span>
 <?php endif; ?>
 <span class="text pe-none"><?php echo esc_html($data['button_text']); ?></span>
 <?php if (!empty($data['svg_icon_after'])) : ?>
-	<span class="icon pe-none" aria-hidden="true"><?php echo wp_kses($data['svg_icon_after'], ['svg' => ['class' => [], 'width' => [], 'height' => [], 'viewbox' => [], 'fill' => [], 'xmlns' => []], 'path' => ['d' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'circle' => ['cx' => [], 'cy' => [], 'r' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'rect' => ['x' => [], 'y' => [], 'width' => [], 'height' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'polygon' => ['points' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'polyline' => ['points' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []], 'line' => ['x1' => [], 'y1' => [], 'x2' => [], 'y2' => [], 'stroke' => [], 'stroke-width' => []], 'text' => ['x' => [], 'y' => [], 'fill' => [], 'font-size' => [], 'text-anchor' => []], 'g' => ['fill' => [], 'stroke' => [], 'stroke-width' => []], 'defs' => [], 'use' => ['href' => [], 'x' => [], 'y' => [], 'width' => [], 'height' => []]]); ?></span>
+	<span class="icon pe-none" aria-hidden="true"><?php echo $data['svg_icon_after']; ?></span>
 <?php endif; ?>
 <?php $button_html = ob_get_clean();
 
@@ -38,11 +38,11 @@ if (!empty($data['button_url'])) : ?>
 		href="<?php echo esc_url($data['button_url']); ?>"
 		target="<?php echo esc_attr($data['button_link_target']); ?>"
 		<?php if (!empty($data['button_link_rel'])) : ?> rel="<?php echo esc_attr($data['button_link_rel']); ?>" <?php endif; ?>>
-		<?php echo wp_kses_post($button_html); ?>
+		<?php echo $button_html; ?>
 	</a>
 <?php else : ?>
 	<button class="<?php echo esc_attr($_class); ?>" <?php if (!empty($data['button_attrs'])) : echo ' ' . esc_attr($data['button_attrs']);
 														endif; ?>>
-		<?php echo wp_kses_post($button_html); ?>
+		<?php echo $button_html; ?>
 	</button>
 <?php endif;

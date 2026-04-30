@@ -24,24 +24,30 @@
 	}
 
 	& .swiper-button-next:after {
-		font-size: var(--swiper-navigation-font-size);
+		font-size: 16px;
+		font-weight: bold;
 	}
 
 	& .swiper-button-next {
 		height: 40px;
 		width: 40px;
 		background-color: var(--bs-primary);
-		opacity: 0.5;
+		opacity: 1;
+		border-radius: 50%;
+		border: 1px solid var(--system-black);
 	}
 
 	& .swiper-button-prev:after {
-		font-size: var(--swiper-navigation-font-size);
+		font-size: 16px;
+		font-weight: bold;
 	}
 
 	& .swiper-button-prev {
 		height: 40px;
 		width: 40px;
 		background-color: var(--bs-primary);
-		opacity: 0.5;
+		opacity: 1;
+		border-radius: 50%;
+		border: 1px solid var(--system-black);
 	}
 }

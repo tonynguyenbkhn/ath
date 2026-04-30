@@ -1,0 +1,460 @@
+.contact-us {
+    padding: 120px 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.contact-us__box {
+    background-color: #f3f2ee;
+    border-radius: 8px;
+    padding: 70px 70px 54px;
+}
+
+.contact-us__inner::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.contact-us__col {
+    box-sizing: border-box;
+    float: left;
+}
+
+.contact-us__col--info {
+    padding-right: 3.5%;
+    width: 53%;
+}
+
+.contact-us__col--form {
+    width: 47%;
+}
+
+.contact-us__title {
+    color: #000a2c;
+    font-family: var(--font-playfair-display);
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1.05;
+    margin: 0 0 28px;
+}
+
+.contact-us__description {
+    color: #6f7273;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.contact-us__meta-item {
+    align-items: flex-start;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.contact-us__meta-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 1px;
+}
+
+.contact-us__meta-text {
+    color: #222;
+    font-family: var(--font-archivo);
+    font-size: 26px;
+    line-height: 1.4;
+}
+
+.contact-us__meta-link {
+    text-decoration: none;
+}
+
+.contact-us__meta-link:hover {
+    color: #f04c26;
+}
+
+.contact-us__socials {
+    margin-top: 28px;
+}
+
+.contact-us__socials::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.contact-us__social-link {
+    display: inline-flex;
+    float: left;
+    line-height: 1;
+    margin-right: 16px;
+}
+
+.contact-us__social-link:last-child {
+    margin-right: 0;
+}
+
+.contact-us__social-link svg {
+    display: block;
+    height: 32px;
+    width: 32px;
+}
+
+.contact-us__form-wrap {
+
+}
+
+.contact-us__form-wrap .wpcf7-form-control-wrap {
+    display: block;
+}
+
+@media (max-width: 1200px) {
+    .contact-us__box {
+        padding: 56px 40px 44px;
+    }
+
+    .contact-us__title {
+        font-size: 52px;
+    }
+
+    .contact-us__meta-text {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 991px) {
+    .contact-us__box {
+        padding: 36px 24px;
+    }
+
+    .contact-us__col {
+        float: none;
+        width: 100%;
+    }
+
+    .contact-us__col--info {
+        padding-right: 0;
+        padding-bottom: 28px;
+    }
+}
+
+@media (max-width: 575px) {
+    .contact-us {
+        margin-bottom: 24px;
+    }
+
+    .contact-us__box {
+        padding: 26px 16px;
+    }
+
+    .contact-us__title {
+        font-size: 40px;
+        margin-bottom: 22px;
+    }
+
+    .contact-us__meta-item {
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .contact-us__meta-text {
+        font-size: 18px;
+    }
+
+    .contact-us__socials {
+        margin-top: 18px;
+    }
+
+    .contact-us__social-link {
+        margin-right: 12px;
+    }
+}
+
+
+// Form
+
+.register-form {
+    margin: 0 auto;
+
+}
+
+.register-form__title {
+    text-align: center;
+}
+
+.register-form__tabs {
+}
+
+
+.register-form__tabs .wpcf7-list-item {
+    margin: 0;
+}
+
+.register-form__tabs label {
+    display: block;
+    cursor: pointer;
+}
+
+.register-form__tabs input {
+    display: none;
+}
+
+.register-form__tabs .wpcf7-list-item-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    border: 1px solid #eee;
+    background: #fafafa;
+    color: #909090;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.register-form__tabs input:checked+.wpcf7-list-item-label {
+    background: #fff;
+    color: #020a2b;
+    font-weight: 700;
+    border-bottom-color: #fff;
+}
+
+.register-form__field {
+    position: relative;
+}
+
+.register-form__field::before {
+    content: "*";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    color: #ff0000;
+    font-size: 16px;
+    z-index: 2;
+}
+
+.register-form input,
+.register-form select {
+    width: 100%;
+    height: 36px;
+    border: 0;
+    border-bottom: 1px solid #e2e2e2;
+    padding: 0 0 8px 16px;
+    background: transparent;
+    color: #b8cdd2;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.register-form input::placeholder {
+    color: #b8cdd2;
+    opacity: 1;
+}
+
+.register-form select {
+    appearance: none;
+    cursor: pointer;
+}
+
+.register-form__field--select::after {
+    content: "";
+    position: absolute;
+    right: 6px;
+    top: 10px;
+    width: 9px;
+    height: 9px;
+    border-right: 1px solid #b8cdd2;
+    border-bottom: 1px solid #b8cdd2;
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.register-form__field--date input {
+    padding-right: 30px;
+}
+
+.register-form__submit {
+    margin-top: 30px;
+}
+
+.register-form input[type="submit"] {
+    width: 100%;
+    height: 54px;
+    border: 0;
+    padding: 0;
+    background: #ff4328;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.register-form .wpcf7-spinner,
+.register-form .wpcf7-not-valid-tip {
+    display: none;
+}
+
+@media (max-width: 575px) {
+    .register-form {
+        padding: 0 20px 25px;
+    }
+
+    .register-form__tabs {
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+
+}
+
+
+.register-form__grid::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.register-form__field {
+    position: relative;
+    float: left;
+    width: 50%;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-bottom: 34px;
+    box-sizing: border-box;
+}
+
+.register-form__field:nth-child(2n + 1) {
+    clear: left;
+}
+
+.register-form__field::before {
+    content: "*";
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    color: #ff0000;
+    font-size: 16px;
+    z-index: 2;
+}
+
+.register-form input,
+.register-form select {
+    width: 100%;
+    height: 36px;
+    border: 0;
+    border-bottom: 1px solid #e2e2e2;
+    padding: 0 0 8px 16px;
+    background: transparent;
+    color: #b8cdd2;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.register-form input::placeholder {
+    color: #b8cdd2;
+    opacity: 1;
+}
+
+.register-form__submit {
+    clear: both;
+    margin-top: -4px;
+}
+
+@media (max-width: 575px) {
+    .register-form__grid {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .register-form__field {
+        float: none;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 24px;
+    }
+
+    .register-form__field::before {
+        left: 0;
+    }
+}
+
+.register-form__tabs .wpcf7-form-control::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.register-form__tabs .wpcf7-list-item {
+    float: left;
+    width: 33.333333%;
+    margin: 0;
+}
+
+.register-form__tabs .wpcf7-form-control::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* mỗi tab */
+.register-form__tabs .wpcf7-list-item {
+    float: left;
+    width: 33.3333%;
+    margin: 0;
+}
+
+/* label wrap */
+.register-form__tabs label {
+    display: block;
+    cursor: pointer;
+}
+
+/* hide radio */
+.register-form__tabs input[type="radio"] {
+    display: none;
+}
+
+/* tab UI */
+.register-form__tabs .wpcf7-list-item-label {
+    display: block;
+    text-align: center;
+    height: 48px;
+    line-height: 48px;
+    border: 1px solid #e5e5e5;
+    border-left: 0;
+    background: #f5f5f5;
+    color: #9b9b9b;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* remove border-left tab đầu */
+.register-form__tabs .wpcf7-list-item:first-child .wpcf7-list-item-label {
+    border-left: 1px solid #e5e5e5;
+}
+
+/* ACTIVE TAB */
+.register-form__tabs input:checked+.wpcf7-list-item-label {
+    background: #fff;
+    color: #0b1c3d;
+    font-weight: 600;
+    border-bottom: 1px solid #fff;
+    position: relative;
+    z-index: 2;
+}
+
+/* hiệu ứng tab nổi lên */
+.register-form__tabs input:checked+.wpcf7-list-item-label::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+}

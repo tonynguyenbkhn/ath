@@ -1,0 +1,94 @@
+.for-school {
+  background: #090808;
+  color: #ffffff;
+  position: relative;
+}
+
+.for-school__grid {
+  display: block;
+
+  @include clearfix();
+}
+
+.for-school__header {
+  flex-direction: column;
+  text-align: left;
+}
+
+.for-school__title {
+  margin-bottom: 64px;
+}
+
+.for-school__light {
+  position: absolute;
+  top: -190px;
+  left: 0;
+  z-index: 0;
+  transform: scale(1);
+  display: none;
+
+  @media (min-width: 1440px) {
+    transform: scale(1.5);
+  }
+}
+
+.for-school__description {
+  color: var(--system-content-2);
+  @include typo-text-lg(400);
+
+  h2,
+  h3,
+  h4,
+  strong {
+    color: #fff;
+    @include typo-display-xs(500);
+  }
+
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    @include typo-text-lg(400);
+  }
+
+  ul {
+    margin-bottom: 16px;
+    list-style-type: disc;
+    margin-left: 33px;
+
+    li {
+      margin-bottom: 10px;
+      @include typo-text-lg(400);
+    }
+  }
+}
+
+.for-school__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.for-school__button {}
+
+.for-school__button--primary {}
+
+.for-school__button--secondary {
+  background-color: transparent;
+  border: 1px solid var(--system-white);
+}
+
+.for-school__content {
+  float: left;
+  width: 50%;
+}
+
+.for-school__media {
+  float: right;
+  width: 50%;
+}

@@ -63,7 +63,7 @@ if ($image_id) {
     <div class="container">
       <div class="hero-banner__grid">
         <div class="hero-banner__left">
-          <?php if ($description): ?><p class="hero-banner__desc text-system-white"><?php echo nl2br(esc_html($description)); ?></p><?php endif; ?>
+          <?php if ($description): ?><p class="hero-banner__desc typo-text-lg-regular text-system-content-2"><?php echo nl2br(esc_html($description)); ?></p><?php endif; ?>
           <?php if ($button_text && $button_link): ?>
             <p class="hero-banner__cta">
               <?php get_template_part('templates/components/button', null, [

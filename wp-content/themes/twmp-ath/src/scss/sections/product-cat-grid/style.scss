@@ -6,7 +6,6 @@
 
     &__main-container {
         position: relative;
-        max-width: 1280px;
     }
 
     &__light {
@@ -119,6 +118,10 @@
         text-decoration: none;
     }
 
+    & .image {
+        @include ratio(437/298);
+    }
+
     &__label {
         position: absolute;
         left: 24px;
@@ -126,34 +129,8 @@
         bottom: 22px;
         z-index: 2;
         color: var(--system-white);
-        @include type-token(36, 48, 400);
+        @include typo-token(36, 48, 400);
         font-family: var(--font-playfair-display);
         text-align: center;
-    }
-
-    @media (min-width: 992px) {
-        &__item {
-            height: 437px;
-        }
-    }
-
-    @media (max-width: 991px) {
-        &__main-container {
-            padding: 56px 0;
-        }
-
-        &__item {
-            height: 360px;
-        }
-    }
-
-    @media (max-width: 575px) {
-        &__item {
-            height: 300px;
-        }
-
-        &__label {
-            font-size: 24px;
-        }
     }
 }

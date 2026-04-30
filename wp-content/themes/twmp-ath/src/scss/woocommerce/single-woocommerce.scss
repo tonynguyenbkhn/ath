@@ -197,7 +197,7 @@
 			margin-top: 0;
 		}
 
-		@include type-token(18, 28, 400);
+		@include typo-token(18, 28, 400);
 		font-family: var(--font-archivo);
 		color: var(--system-content-1);
 
@@ -217,7 +217,7 @@
 				transition: all 0.3s ease;
 
 				a {
-					@include type-token(18, 28, 400);
+					@include typo-token(18, 28, 400);
 					font-family: var(--font-archivo);
 					color: var(--system-content-1);
 				}

@@ -13,7 +13,9 @@ if (have_rows('sections')) {
     ];
 
     while (have_rows('sections')) : the_row();
+
         $layout = get_row_layout();
+
         $data = twmp_resolve_flexible_layout_data($layout, $base_fields);
 
         if (empty($data)) {
