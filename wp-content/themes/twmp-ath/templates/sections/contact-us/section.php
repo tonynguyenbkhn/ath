@@ -29,24 +29,24 @@ $hotline = function_exists('get_field') ? (string) get_field('hotline', 'option'
 $social_links = function_exists('get_field') ? get_field('social_links', 'option') : [];
 $sticky_links = function_exists('get_field') ? get_field('sticky_links', 'option') : [];
 
-$social_links = is_array($social_links) ? $social_links : [];
-$sticky_links = is_array($sticky_links) ? $sticky_links : [];
+// $social_links = is_array($social_links) ? $social_links : [];
+// $sticky_links = is_array($sticky_links) ? $sticky_links : [];
 
-$find_link_by_type = static function (array $links, $target_type) {
-    foreach ($links as $link) {
-        $type = isset($link['type']) ? (string) $link['type'] : '';
-        $url = isset($link['url']) ? (string) $link['url'] : '';
-        if ($type === $target_type && '' !== trim($url)) {
-            return $url;
-        }
-    }
+// $find_link_by_type = static function (array $links, $target_type) {
+//     foreach ($links as $link) {
+//         $type = isset($link['type']) ? (string) $link['type'] : '';
+//         $url = isset($link['url']) ? (string) $link['url'] : '';
+//         if ($type === $target_type && '' !== trim($url)) {
+//             return $url;
+//         }
+//     }
 
-    return '';
-};
+//     return '';
+// };
 
-$tiktok_url = $find_link_by_type($social_links, 'tiktok');
-$facebook_url = $find_link_by_type($social_links, 'facebook');
-$zalo_url = $find_link_by_type($sticky_links, 'zalo');
+$tiktok_url = function_exists('get_field') ? (string) get_field('field_ath_tiktok', 'option') : '';
+$facebook_url = function_exists('get_field') ? (string) get_field('field_ath_facebook', 'option') : '';
+$zalo_url = function_exists('get_field') ? (string) get_field('field_ath_zalo', 'option') : '';
 
 $social_items = [
     [
@@ -78,58 +78,61 @@ $social_items = array_values(
 $background_image_url = ! empty($data['background_image_id']) ? wp_get_attachment_image_url((int) $data['background_image_id'], 'full') : '';
 ?>
 
-<section class="<?php echo esc_attr($_class); ?>"<?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr($data['id']); ?>"<?php endif; ?> <?php if ($background_image_url) : ?> style="background-image: url('<?php echo esc_url($background_image_url); ?>');"<?php endif; ?>>
+<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr($data['id']); ?>" <?php endif; ?> <?php if ($background_image_url) : ?> style="background-image: url('<?php echo esc_url($background_image_url); ?>');" <?php endif; ?>>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
-    <?php endif; ?>
+        <?php endif; ?>
 
-    <div class="contact-us__box">
-        <div class="contact-us__inner">
-            <div class="contact-us__col contact-us__col--info">
-                <?php if (! empty($data['title'])) : ?>
-                    <h2 class="contact-us__title"><?php echo esc_html($data['title']); ?></h2>
-                <?php endif; ?>
+        <div class="contact-us__box">
+            <div class="contact-us__inner">
+                <div class="contact-us__col contact-us__col--info">
 
-                <?php if (! empty($data['description'])) : ?>
-                    <div class="contact-us__description"><?php echo wp_kses_post($data['description']); ?></div>
-                <?php endif; ?>
+                    <?php
+                    get_template_part('templates/components/heading', null, [
+                        'title_class' => 'contact-us__title',
+                        'description_class' => 'contact-us__description',
+                        'class' => 'contact-us__header flex-column',
+                        'title' => $data && !empty($data['title']) ? $data['title'] : '',
+                        'description' => $data && !empty($data['description']) ? $data['description'] : '',
+                    ]);
+                    ?>
 
-                <?php if ('' !== trim($address)) : ?>
-                    <div class="contact-us__meta-item contact-us__meta-item--address">
-                        <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-pin'); ?></span>
-                        <span class="contact-us__meta-text"><?php echo esc_html($address); ?></span>
-                    </div>
-                <?php endif; ?>
+                    <?php if ('' !== trim($address)) : ?>
+                        <div class="contact-us__meta-item contact-us__meta-item--address">
+                            <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-pin'); ?></span>
+                            <span class="contact-us__meta-text"><?php echo esc_html($address); ?></span>
+                        </div>
+                    <?php endif; ?>
 
-                <?php if ('' !== trim($hotline)) : ?>
-                    <div class="contact-us__meta-item contact-us__meta-item--hotline">
-                        <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-phone'); ?></span>
-                        <a class="contact-us__meta-text contact-us__meta-link" href="<?php echo esc_url('tel:' . preg_replace('/[^0-9+]/', '', $hotline)); ?>">
-                            <?php echo esc_html($hotline); ?>
-                        </a>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (! empty($social_items)) : ?>
-                    <div class="contact-us__socials">
-                        <?php foreach ($social_items as $item) : ?>
-                            <a class="contact-us__social-link" href="<?php echo esc_url($item['url']); ?>" target="_blank" rel="noopener nofollow" aria-label="<?php echo esc_attr($item['label']); ?>">
-                                <?php echo twmp_get_svg_icon($item['icon']); ?>
+                    <?php if ('' !== trim($hotline)) : ?>
+                        <div class="contact-us__meta-item contact-us__meta-item--hotline">
+                            <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-phone'); ?></span>
+                            <a class="contact-us__meta-text contact-us__meta-link" href="<?php echo esc_url('tel:' . preg_replace('/[^0-9+]/', '', $hotline)); ?>">
+                                <?php echo esc_html($hotline); ?>
                             </a>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
+                        </div>
+                    <?php endif; ?>
 
-            <div class="contact-us__col contact-us__col--form">
-                <div class="contact-us__form-wrap">
-                    <?php echo do_shortcode('[contact-form-7 id="72d9326" title="Home Contact Us"]'); ?>
+                    <?php if (! empty($social_items)) : ?>
+                        <div class="contact-us__socials">
+                            <?php foreach ($social_items as $item) : ?>
+                                <a class="contact-us__social-link" href="<?php echo esc_url($item['url']); ?>" target="_blank" rel="noopener nofollow" aria-label="<?php echo esc_attr($item['label']); ?>">
+                                    <?php echo twmp_get_svg_icon($item['icon']); ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="contact-us__col contact-us__col--form">
+                    <div class="contact-us__form-wrap">
+                        <?php echo do_shortcode('[contact-form-7 id="72d9326" title="Home Contact Us"]'); ?>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <?php if ($data['enable_container']) : ?>
+        <?php if ($data['enable_container']) : ?>
         </div>
     <?php endif; ?>
 </section>

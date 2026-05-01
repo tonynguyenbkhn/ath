@@ -23,28 +23,20 @@
 }
 
 .contact-us__col--info {
-    padding-right: 3.5%;
-    width: 53%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .contact-us__col--form {
-    width: 47%;
+    width: 50%;
 }
 
 .contact-us__title {
     color: #000a2c;
-    font-family: var(--font-playfair-display);
-    font-size: 64px;
-    font-weight: 400;
-    line-height: 1.05;
-    margin: 0 0 28px;
-}
-
-.contact-us__description {
-    color: #6f7273;
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .contact-us__meta-item {
@@ -62,10 +54,8 @@
 }
 
 .contact-us__meta-text {
-    color: #222;
-    font-family: var(--font-archivo);
-    font-size: 26px;
-    line-height: 1.4;
+    color: #000A2C;
+    @include typo-text-lg(400);
 }
 
 .contact-us__meta-link {
@@ -90,7 +80,7 @@
     display: inline-flex;
     float: left;
     line-height: 1;
-    margin-right: 16px;
+    margin-right: 32px;
 }
 
 .contact-us__social-link:last-child {
@@ -104,75 +94,14 @@
 }
 
 .contact-us__form-wrap {
-
+    max-width: 440px;
+    background-color: var(--system-white);
+    padding: 32px;
 }
 
 .contact-us__form-wrap .wpcf7-form-control-wrap {
     display: block;
 }
-
-@media (max-width: 1200px) {
-    .contact-us__box {
-        padding: 56px 40px 44px;
-    }
-
-    .contact-us__title {
-        font-size: 52px;
-    }
-
-    .contact-us__meta-text {
-        font-size: 22px;
-    }
-}
-
-@media (max-width: 991px) {
-    .contact-us__box {
-        padding: 36px 24px;
-    }
-
-    .contact-us__col {
-        float: none;
-        width: 100%;
-    }
-
-    .contact-us__col--info {
-        padding-right: 0;
-        padding-bottom: 28px;
-    }
-}
-
-@media (max-width: 575px) {
-    .contact-us {
-        margin-bottom: 24px;
-    }
-
-    .contact-us__box {
-        padding: 26px 16px;
-    }
-
-    .contact-us__title {
-        font-size: 40px;
-        margin-bottom: 22px;
-    }
-
-    .contact-us__meta-item {
-        gap: 10px;
-        margin-bottom: 12px;
-    }
-
-    .contact-us__meta-text {
-        font-size: 18px;
-    }
-
-    .contact-us__socials {
-        margin-top: 18px;
-    }
-
-    .contact-us__social-link {
-        margin-right: 12px;
-    }
-}
-
 
 // Form
 
@@ -183,9 +112,17 @@
 
 .register-form__title {
     text-align: center;
+    margin-bottom: 20px;
+
+    p {
+        font-family: var(--font-inter);
+        @include typo-token(16, 24, 400);
+        color: rgba(#000A2C, 0.7);
+    }
 }
 
 .register-form__tabs {
+    margin-bottom: 32px;
 }
 
 
@@ -200,25 +137,6 @@
 
 .register-form__tabs input {
     display: none;
-}
-
-.register-form__tabs .wpcf7-list-item-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 48px;
-    border: 1px solid #eee;
-    background: #fafafa;
-    color: #909090;
-    font-size: 16px;
-    font-weight: 400;
-}
-
-.register-form__tabs input:checked+.wpcf7-list-item-label {
-    background: #fff;
-    color: #020a2b;
-    font-weight: 700;
-    border-bottom-color: #fff;
 }
 
 .register-form__field {
@@ -282,13 +200,12 @@
 
 .register-form input[type="submit"] {
     width: 100%;
-    height: 54px;
+    height: 56px;
     border: 0;
     padding: 0;
-    background: #ff4328;
+    background: var((--primary-500));
     color: #fff;
-    font-size: 16px;
-    font-weight: 600;
+    @include typo-system-button();
     cursor: pointer;
 }
 
@@ -334,7 +251,7 @@
     content: "*";
     position: absolute;
     left: 12px;
-    top: 8px;
+    top: 13px;
     color: #ff0000;
     font-size: 16px;
     z-index: 2;
@@ -343,25 +260,24 @@
 .register-form input,
 .register-form select {
     width: 100%;
-    height: 36px;
+    height: 56px;
     border: 0;
-    border-bottom: 1px solid #e2e2e2;
+    border-bottom: 1px solid var(--system-border);;
     padding: 0 0 8px 16px;
     background: transparent;
-    color: #b8cdd2;
-    font-size: 16px;
+    color: var(--system-placeholder);
+    @include typo-system-button-2();
     outline: none;
     box-sizing: border-box;
 }
 
 .register-form input::placeholder {
-    color: #b8cdd2;
+    color: var(--system-placeholder);
     opacity: 1;
 }
 
 .register-form__submit {
     clear: both;
-    margin-top: -4px;
 }
 
 @media (max-width: 575px) {
@@ -424,13 +340,14 @@
     display: block;
     text-align: center;
     height: 48px;
-    line-height: 48px;
     border: 1px solid #e5e5e5;
     border-left: 0;
     background: #f5f5f5;
-    color: #9b9b9b;
-    font-size: 16px;
-    font-weight: 400;
+    color: var(--system-content-1);
+    @include typo-token(16, 28, 500);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* remove border-left tab đầu */
@@ -441,7 +358,7 @@
 /* ACTIVE TAB */
 .register-form__tabs input:checked+.wpcf7-list-item-label {
     background: #fff;
-    color: #0b1c3d;
+    color: var(--system-black);
     font-weight: 600;
     border-bottom: 1px solid #fff;
     position: relative;

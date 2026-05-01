@@ -28,6 +28,17 @@ return [
             'enable_container' => true,
         ],
     ],
+    'event' => [
+        'template' => 'templates/sections/event/section',
+        'fields' => [
+            'button_text',
+            'button_link',
+            'products',
+        ],
+        'extra_fields' => [
+            'enable_container' => true,
+        ],
+    ],
     'about-us' => [
         'template' => 'templates/sections/about-us/section',
         'field_map' => [
