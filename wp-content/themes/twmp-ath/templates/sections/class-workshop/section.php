@@ -19,7 +19,7 @@ $data = wp_parse_args(
     ]
 );
 
-$_class = 'event-section';
+$_class = 'class-section';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
 
 $_class_container = 'container';
@@ -28,10 +28,10 @@ $_class_container .= ! empty($data['class_container']) ? esc_attr(' ' . $data['c
 $product_ids = is_array($data['products']) ? array_values(array_filter(array_map('absint', $data['products']))) : [];
 $slides = [];
 $palette = [
-    'event-card--theme-red',
-    'event-card--theme-orange',
-    'event-card--theme-purple',
-    'event-card--theme-dark',
+    'class-card--theme-red',
+    'class-card--theme-orange',
+    'class-card--theme-purple',
+    'class-card--theme-dark',
 ];
 
 foreach ($product_ids as $index => $product_id) {
@@ -62,7 +62,7 @@ foreach ($product_ids as $index => $product_id) {
 
     ob_start();
     get_template_part(
-        'templates/sections/event/item',
+        'templates/sections/class-workshop/item',
         null,
         [
             'product_id'     => $product_id,
@@ -85,7 +85,7 @@ foreach ($product_ids as $index => $product_id) {
     );
     $slides[] = [
         'content' => ob_get_clean(),
-        'class'   => 'event-section__slide',
+        'class'   => 'class-section__slide',
     ];
 }
 
@@ -101,49 +101,10 @@ if (! $has_intro && empty($slides)) {
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
 
-        <div class="event-section__shell">
-            <div class="event-section__intro-row">
-                <div class="event-section__intro">
-                    <?php
-                    get_template_part(
-                        'templates/components/heading',
-                        null,
-                        [
-                            'title_class'       => 'event-section__title',
-                            'description_class' => 'event-section__description',
-                            'class'             => 'event-section__heading flex-column',
-                            'title'             => $data['title'],
-                            'description'       => '',
-                        ]
-                    );
-                    ?>
-                </div>
-                <div class="event-section__actions">
-                    <div class="heading__description event-section__description">
-                        <?php echo wp_kses_post(wpautop($data['description'])); ?>
-                    </div>
-
-                    <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
-
-                        <?php
-                        get_template_part(
-                            'templates/components/button',
-                            null,
-                            [
-                                'class'              => 'event-section__button button-normal typo-system-button',
-                                'button_text'        => $data['button_text'],
-                                'button_url'         => $data['button_link'],
-                                'button_link_target' => '_self',
-                                'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
-                            ]
-                        );
-                        ?>
-                </div>
-            <?php endif; ?>
-            </div>
+        <div class="class-section__shell">
 
             <?php if (! empty($slides)) : ?>
-                <div class="event-section__slider-wrap position-relative">
+                <div class="class-section__slider-wrap position-relative">
                     <div class="swiper-button swiper-button-prev">
 
                     </div>
@@ -155,8 +116,8 @@ if (! $has_intro && empty($slides)) {
                         'templates/components/swiper',
                         null,
                         [
-                            'class'            => 'event-section__swiper',
-                            'data_block'       => 'event',
+                            'class'            => 'class-section__swiper',
+                            'data_block'       => 'class-workshop',
                             'enable_container' => false,
                             'settings'         => [
                                 'autoPlay'        => false,
@@ -178,8 +139,8 @@ if (! $has_intro && empty($slides)) {
                                         'spaceBetween'  => 32,
                                     ],
                                     1200 => [
-                                        'slidesPerView' => 3.3,
-                                        'spaceBetween'  => 0,
+                                        'slidesPerView' => 1.5,
+                                        'spaceBetween'  => 0
                                     ],
                                 ],
                             ],
@@ -189,6 +150,44 @@ if (! $has_intro && empty($slides)) {
                     ?>
                 </div>
             <?php endif; ?>
+
+            <div class="class-section__intro-row">
+                <div class="class-section__intro-row-wrapper">
+                    <div class="class-section__intro">
+                    <?php
+                    get_template_part(
+                        'templates/components/heading',
+                        null,
+                        [
+                            'title_class'       => 'class-section__title',
+                            'description_class' => 'class-section__description',
+                            'class'             => 'class-section__heading flex-column',
+                            'title'             => $data['title'],
+                            'description'       => $data['description']
+                        ]
+                    );
+                    ?>
+                </div>
+                <div class="class-section__actions">
+                    <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
+
+                        <?php
+                        get_template_part(
+                            'templates/components/button',
+                            null,
+                            [
+                                'class'              => 'class-section__button button-normal typo-system-button',
+                                'button_text'        => $data['button_text'],
+                                'button_url'         => $data['button_link'],
+                                'button_link_target' => '_self',
+                                'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                            ]
+                        );
+                        ?>
+                </div>
+                </div>
+            <?php endif; ?>
+            </div>
         </div>
 
         <?php if ($data['enable_container']) : ?>

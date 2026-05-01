@@ -39,9 +39,9 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr($data['id']); ?>" <?php endif; ?>>
-    	<div class="about-us__light">
-		<img width="1018px" height="508px" src="<?php echo esc_url(TWMP_IMG_URI . '/about-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-	</div>
+    <div class="about-us__light">
+        <img width="1018px" height="508px" src="<?php echo esc_url(TWMP_IMG_URI . '/about-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
+    </div>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>

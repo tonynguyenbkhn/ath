@@ -336,14 +336,14 @@
                     "min": "",
                     "max": ""
                 },
-                "layout_event_01": {
-                    "key": "layout_event_01",
-                    "name": "event",
-                    "label": "Event",
+                "layout_show_event_01": {
+                    "key": "layout_show_event_01",
+                    "name": "show-event",
+                    "label": "Show & Event",
                     "display": "block",
                     "sub_fields": [
                         {
-                            "key": "field_event_section_id",
+                            "key": "field_show_event_section_id",
                             "label": "Section ID",
                             "name": "section_id",
                             "aria-label": "",
@@ -363,7 +363,7 @@
                             "append": ""
                         },
                         {
-                            "key": "field_event_title",
+                            "key": "field_show_event_title",
                             "label": "Title",
                             "name": "title",
                             "aria-label": "",
@@ -384,7 +384,7 @@
                             "append": ""
                         },
                         {
-                            "key": "field_event_description",
+                            "key": "field_show_event_description",
                             "label": "Description",
                             "name": "description",
                             "aria-label": "",
@@ -405,7 +405,7 @@
                             "delay": 0
                         },
                         {
-                            "key": "field_event_button_text",
+                            "key": "field_show_event_button_text",
                             "label": "Button Text",
                             "name": "button_text",
                             "aria-label": "",
@@ -426,7 +426,7 @@
                             "append": ""
                         },
                         {
-                            "key": "field_event_button_link",
+                            "key": "field_show_event_button_link",
                             "label": "Button Link",
                             "name": "button_link",
                             "aria-label": "",
@@ -443,12 +443,145 @@
                             "placeholder": ""
                         },
                         {
-                            "key": "field_event_products",
+                            "key": "field_show_event_products",
                             "label": "Products",
                             "name": "products",
                             "aria-label": "",
                             "type": "post_object",
-                            "instructions": "Select products to display in the event slider.",
+                            "instructions": "Select products to display in the show_event slider.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "post_type": [
+                                "product"
+                            ],
+                            "taxonomy": "",
+                            "return_format": "id",
+                            "multiple": 1,
+                            "allow_null": 1,
+                            "ui": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_class_workshop_01": {
+                    "key": "layout_class_workshop_01",
+                    "name": "class-workshop",
+                    "label": "Class & Workshop",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_class_workshop_section_id",
+                            "label": "Section ID",
+                            "name": "section_id",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Optional HTML id for this section",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_class_workshop_title",
+                            "label": "Title",
+                            "name": "title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_class_workshop_description",
+                            "label": "Description",
+                            "name": "description",
+                            "aria-label": "",
+                            "type": "wysiwyg",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "allow_in_bindings": 1,
+                            "tabs": "all",
+                            "toolbar": "full",
+                            "media_upload": 1,
+                            "delay": 0
+                        },
+                        {
+                            "key": "field_class_workshop_button_text",
+                            "label": "Button Text",
+                            "name": "button_text",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_class_workshop_button_link",
+                            "label": "Button Link",
+                            "name": "button_link",
+                            "aria-label": "",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_class_workshop_products",
+                            "label": "Products",
+                            "name": "products",
+                            "aria-label": "",
+                            "type": "post_object",
+                            "instructions": "Select products to display in the class_workshop slider.",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {

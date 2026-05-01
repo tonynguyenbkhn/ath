@@ -120,10 +120,81 @@ const ACTIVE_EL_CLASS = 'back-to-top--visible';
 
 /***/ },
 
-/***/ "./twmp-ath/src/js/blocks/event.js"
-/*!*****************************************!*\
-  !*** ./twmp-ath/src/js/blocks/event.js ***!
-  \*****************************************/
+/***/ "./twmp-ath/src/js/blocks/class-workshop.js"
+/*!**************************************************!*\
+  !*** ./twmp-ath/src/js/blocks/class-workshop.js ***!
+  \**************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.mjs");
+/* harmony import */ var swiper_modules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper/modules */ "./node_modules/swiper/modules/index.mjs");
+
+
+const parseSettings = el => {
+  const rawSettings = el.getAttribute('data-settings');
+  if (!rawSettings) {
+    return {};
+  }
+  try {
+    return JSON.parse(rawSettings);
+  } catch (error) {
+    console.warn('event block: invalid swiper settings', error);
+    return {};
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  if (!el) {
+    return null;
+  }
+  const swiperEl = el.classList.contains('js-swiper') ? el : el.querySelector('.js-swiper');
+  if (!swiperEl) {
+    return null;
+  }
+  const settings = parseSettings(swiperEl);
+  const sliderWrap = swiperEl.closest('.class-section__slider-wrap');
+  const nextEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-next') : el.querySelector('.swiper-button-next');
+  const prevEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-prev') : el.querySelector('.swiper-button-prev');
+  const paginationEl = swiperEl.querySelector('.swiper-pagination');
+  const pagination = settings.pagination === false ? false : {
+    el: paginationEl,
+    type: 'progressbar',
+    ...(settings.pagination && typeof settings.pagination === 'object' ? settings.pagination : {})
+  };
+  const navigation = {
+    ...(nextEl ? {
+      nextEl
+    } : {}),
+    ...(prevEl ? {
+      prevEl
+    } : {}),
+    ...(settings.navigation && typeof settings.navigation === 'object' ? settings.navigation : {})
+  };
+  return new swiper__WEBPACK_IMPORTED_MODULE_0__["default"](swiperEl, {
+    modules: [swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Navigation, swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Pagination],
+    slidesPerView: 2.15,
+    spaceBetween: 32,
+    loop: false,
+    centeredSlides: false,
+    slidesOffsetBefore: 0,
+    // slidesOffsetAfter: 160,
+
+    ...settings,
+    navigation,
+    pagination
+  });
+});
+
+/***/ },
+
+/***/ "./twmp-ath/src/js/blocks/show-event.js"
+/*!**********************************************!*\
+  !*** ./twmp-ath/src/js/blocks/show-event.js ***!
+  \**********************************************/
 (__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2711,7 +2782,8 @@ var Tweezer = function () {
 var map = {
 	"./about-couter.js": "./twmp-ath/src/js/blocks/about-couter.js",
 	"./back-to-top.js": "./twmp-ath/src/js/blocks/back-to-top.js",
-	"./event.js": "./twmp-ath/src/js/blocks/event.js",
+	"./class-workshop.js": "./twmp-ath/src/js/blocks/class-workshop.js",
+	"./show-event.js": "./twmp-ath/src/js/blocks/show-event.js",
 	"./show-less.js": "./twmp-ath/src/js/blocks/show-less.js",
 	"./team.js": "./twmp-ath/src/js/blocks/team.js"
 };

@@ -28,8 +28,19 @@ return [
             'enable_container' => true,
         ],
     ],
-    'event' => [
-        'template' => 'templates/sections/event/section',
+    'show-event' => [
+        'template' => 'templates/sections/show-event/section',
+        'fields' => [
+            'button_text',
+            'button_link',
+            'products',
+        ],
+        'extra_fields' => [
+            'enable_container' => true,
+        ],
+    ],
+    'class-workshop' => [
+        'template' => 'templates/sections/class-workshop/section',
         'fields' => [
             'button_text',
             'button_link',
