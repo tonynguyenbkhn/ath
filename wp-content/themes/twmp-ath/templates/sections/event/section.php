@@ -179,7 +179,7 @@ if (! $has_intro && empty($slides)) {
                                     ],
                                     1200 => [
                                         'slidesPerView' => 3.3,
-                                        'spaceBetween'  => 32,
+                                        'spaceBetween'  => 0,
                                     ],
                                 ],
                             ],

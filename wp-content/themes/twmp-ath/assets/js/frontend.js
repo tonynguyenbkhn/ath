@@ -176,7 +176,7 @@ const parseSettings = el => {
   };
   return new swiper__WEBPACK_IMPORTED_MODULE_0__["default"](swiperEl, {
     modules: [swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Navigation, swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Pagination],
-    slidesPerView: 1.15,
+    slidesPerView: 3.3,
     spaceBetween: 32,
     loop: true,
     ...settings,
