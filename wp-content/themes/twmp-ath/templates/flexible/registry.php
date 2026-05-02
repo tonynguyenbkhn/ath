@@ -128,6 +128,23 @@ return [
             'enable_container' => true,
         ],
     ],
+    'logo-slider' => [
+        'template' => 'templates/sections/logo-slider/section',
+        'fields' => [
+            'title',
+            'description',
+            'gallery',
+        ],
+        'extra_fields' => [
+            'enable_container' => false,
+        ],
+    ],
+    'testimonials' => [
+        'template' => 'templates/sections/testimonials/section',
+        'extra_fields' => [
+            'enable_container' => false,
+        ],
+    ],
     'contact-us' => [
         'template' => 'templates/sections/contact-us/section',
         'field_map' => [

@@ -191,6 +191,69 @@ const parseSettings = el => {
 
 /***/ },
 
+/***/ "./twmp-ath/src/js/blocks/logo-slider.js"
+/*!***********************************************!*\
+  !*** ./twmp-ath/src/js/blocks/logo-slider.js ***!
+  \***********************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.mjs");
+/* harmony import */ var swiper_modules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper/modules */ "./node_modules/swiper/modules/index.mjs");
+
+
+const parseSettings = el => {
+  const rawSettings = el.getAttribute('data-settings');
+  if (!rawSettings) {
+    return {};
+  }
+  try {
+    return JSON.parse(rawSettings);
+  } catch (error) {
+    console.warn('logo slider block: invalid swiper settings', error);
+    return {};
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  if (!el) {
+    return null;
+  }
+  const swiperEl = el.classList.contains('js-swiper') ? el : el.querySelector('.js-swiper');
+  if (!swiperEl) {
+    return null;
+  }
+  const settings = parseSettings(swiperEl);
+  console.log(settings);
+  const slidesPerView = settings.slidesPerView ?? 2.2;
+  const spaceBetween = settings.spaceBetween ?? 24;
+  const autoplaySettings = settings.autoplay && typeof settings.autoplay === 'object' ? settings.autoplay : false;
+  return new swiper__WEBPACK_IMPORTED_MODULE_0__["default"](swiperEl, {
+    // modules: [Autoplay, FreeMode],
+    slidesPerView,
+    spaceBetween,
+    // speed: 3500,
+    // loop: true,
+    // allowTouchMove: true,
+    centeredSlides: false,
+    // freeMode: {
+    // 	enabled: true,
+    // 	momentum: false,
+    // },
+    // autoplay: autoplaySettings || {
+    // 	delay: 0,
+    // 	disableOnInteraction: false,
+    // 	pauseOnMouseEnter: false,
+    // },
+    ...settings
+  });
+});
+
+/***/ },
+
 /***/ "./twmp-ath/src/js/blocks/modal-search-form.js"
 /*!*****************************************************!*\
   !*** ./twmp-ath/src/js/blocks/modal-search-form.js ***!
@@ -497,6 +560,59 @@ const parseSettings = el => {
     navigation: {
       nextEl,
       prevEl
+    },
+    ...settings
+  });
+});
+
+/***/ },
+
+/***/ "./twmp-ath/src/js/blocks/testimonials.js"
+/*!************************************************!*\
+  !*** ./twmp-ath/src/js/blocks/testimonials.js ***!
+  \************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.mjs");
+/* harmony import */ var swiper_modules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper/modules */ "./node_modules/swiper/modules/index.mjs");
+
+
+const parseSettings = el => {
+  const rawSettings = el.getAttribute('data-settings');
+  if (!rawSettings) {
+    return {};
+  }
+  try {
+    return JSON.parse(rawSettings);
+  } catch (error) {
+    console.warn('testimonials block: invalid swiper settings', error);
+    return {};
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  if (!el) {
+    return null;
+  }
+  const swiperEl = el.classList.contains('js-swiper') ? el : el.querySelector('.js-swiper');
+  if (!swiperEl) {
+    return null;
+  }
+  const settings = parseSettings(swiperEl);
+  return new swiper__WEBPACK_IMPORTED_MODULE_0__["default"](swiperEl, {
+    modules: [swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Pagination],
+    loop: false,
+    centeredSlides: true,
+    slidesPerView: 1.05,
+    spaceBetween: 24,
+    pagination: {
+      el: swiperEl.querySelector('.swiper-pagination'),
+      type: 'progressbar',
+      clickable: false
     },
     ...settings
   });
@@ -3055,12 +3171,14 @@ var map = {
 	"./about-couter.js": "./twmp-ath/src/js/blocks/about-couter.js",
 	"./back-to-top.js": "./twmp-ath/src/js/blocks/back-to-top.js",
 	"./class-workshop.js": "./twmp-ath/src/js/blocks/class-workshop.js",
+	"./logo-slider.js": "./twmp-ath/src/js/blocks/logo-slider.js",
 	"./modal-search-form.js": "./twmp-ath/src/js/blocks/modal-search-form.js",
 	"./popup-welcome.js": "./twmp-ath/src/js/blocks/popup-welcome.js",
 	"./show-event.js": "./twmp-ath/src/js/blocks/show-event.js",
 	"./show-less.js": "./twmp-ath/src/js/blocks/show-less.js",
 	"./team-02.js": "./twmp-ath/src/js/blocks/team-02.js",
-	"./team.js": "./twmp-ath/src/js/blocks/team.js"
+	"./team.js": "./twmp-ath/src/js/blocks/team.js",
+	"./testimonials.js": "./twmp-ath/src/js/blocks/testimonials.js"
 };
 
 
