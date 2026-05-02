@@ -97,62 +97,73 @@ if (! $has_intro && empty($slides)) {
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr($data['id']); ?>" <?php endif; ?>>
+
     <div class="event__light">
         <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
     </div>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
-
-        <div class="event-section__shell">
-            <div class="event-section__intro-row">
-                <div class="event-section__intro">
-                    <?php
-                    get_template_part(
-                        'templates/components/heading',
-                        null,
-                        [
-                            'title_class'       => 'event-section__title',
-                            'description_class' => 'event-section__description',
-                            'class'             => 'event-section__heading flex-column',
-                            'title'             => $data['title'],
-                            'description'       => '',
-                        ]
-                    );
-                    ?>
+        <div class="position-relative">
+            <div class="event-control">
+                <div class="nav">
+                    <div class="swiper-button swiper-button-prev"></div>
+                    <div class="swiper-button swiper-button-next"></div>
                 </div>
-                <div class="event-section__actions">
-                    <div class="heading__description event-section__description">
-                        <?php echo wp_kses_post(wpautop($data['description'])); ?>
-                    </div>
-
-                    <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
-
+                <div class="swiper-pagination event-swiper-pagination"></div>
+            </div>
+            <div class="event-section__shell">
+                <div class="event-section__intro-row">
+                    <div class="event-section__intro">
                         <?php
                         get_template_part(
-                            'templates/components/button',
+                            'templates/components/heading',
                             null,
                             [
-                                'class'              => 'event-section__button button-normal typo-system-button',
-                                'button_text'        => $data['button_text'],
-                                'button_url'         => $data['button_link'],
-                                'button_link_target' => '_self',
-                                'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                                'title_class'       => 'event-section__title',
+                                'description_class' => 'event-section__description',
+                                'class'             => 'event-section__heading flex-column',
+                                'title'             => $data['title'],
+                                'description'       => '',
                             ]
                         );
                         ?>
-                </div>
-            <?php endif; ?>
-            </div>
+                    </div>
+                    <div class="event-section__actions">
+                        <div class="heading__description event-section__description">
+                            <?php echo wp_kses_post(wpautop($data['description'])); ?>
+                        </div>
 
+                        <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
+
+                            <?php
+                            get_template_part(
+                                'templates/components/button',
+                                null,
+                                [
+                                    'class'              => 'event-section__button button-normal typo-system-button',
+                                    'button_text'        => $data['button_text'],
+                                    'button_url'         => $data['button_link'],
+                                    'button_link_target' => '_self',
+                                    'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                                ]
+                            );
+                            ?>
+                    </div>
+                <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <?php if ($data['enable_container']) : ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($data['enable_container']) : ?>
+        <div class="<?php echo esc_attr($_class_container); ?> full-right">
+        <?php endif; ?>
+        <div class="event-section__shell">
             <?php if (! empty($slides)) : ?>
                 <div class="event-section__slider-wrap position-relative">
-                    <div class="swiper-button swiper-button-prev">
-
-                    </div>
-                    <div class="swiper-button swiper-button-next">
-
-                    </div>
+                    <div class="triangle "></div>
                     <?php
                     get_template_part(
                         'templates/components/swiper',
@@ -163,12 +174,8 @@ if (! $has_intro && empty($slides)) {
                             'enable_container' => false,
                             'settings'         => [
                                 'autoPlay'        => false,
-                                'pagination'      => [
-                                    'el'        => '.swiper-pagination',
-                                    'type'      => 'progressbar',
-                                    'clickable' => false,
-                                ],
                                 'prevNextButtons' => false,
+                                'pagination'      => false,
                                 'slidesPerView'   => 1.15,
                                 'spaceBetween'    => 32,
                                 'breakpoints'     => [

@@ -36,6 +36,7 @@ const body = document.body
 const BODY_MODAL_CLASS = 'is-modal-activate'
 
 export default (el, customOptions = {}) => {
+
 	const contentEl = select('.js-content', el)
 	const defaultOptions = {
 		id: 'ID',
@@ -49,6 +50,7 @@ export default (el, customOptions = {}) => {
 
 	const options = { ...defaultOptions, ...customOptions }
 	const activate = () => {
+		
 		if (options.lazyload) {
 			loadNoscriptContent(contentEl)
 		}

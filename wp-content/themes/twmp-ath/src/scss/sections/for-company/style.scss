@@ -1,7 +1,10 @@
 .for-company {
-  background: #090808;
+  background: linear-gradient(to right,
+      #1B1818 0%,
+      #1B1919 100%);
   color: #ffffff;
   position: relative;
+  padding: 160px 0;
 }
 
 .for-company__grid {
@@ -21,15 +24,10 @@
 
 .for-company__light {
   position: absolute;
-  top: -190px;
-  left: 0;
+  left: auto;
+  right: 0;
+  top: 0;
   z-index: 0;
-  transform: scale(1);
-  display: none;
-
-  @media (min-width: 1440px) {
-    transform: scale(1.5);
-  }
 }
 
 .for-company__description {

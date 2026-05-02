@@ -59,13 +59,21 @@ if (!defined('ABSPATH')) {
 
     if ('before' === $status_location) {
         // Already escaped.
-        echo wp_kses_post( $status_element ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo wp_kses_post($status_element); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 
     while (have_posts()) :
         the_post();
     ?>
-        <?php $product = wc_get_product(get_the_ID()); ?>
+        <?php
+        $product = wc_get_product(get_the_ID());
+        $product_id = $product->get_id();
+
+        $badges = function_exists('get_field') ? get_field('ath_badges', $product_id) : [];
+        $location_detail = function_exists('get_field') ? (string) get_field('ath_location_detail', $product_id) : '';
+        $location = function_exists('get_field') ? (string) get_field('ath_location', $product_id) : '';
+        $start_datetime = function_exists('get_field') ? (string) get_field('ath_start_datetime', $product_id) : '';
+        ?>
 
         <div class="relevanssi-live-search-result" role="option" aria-selected="false">
 
@@ -74,15 +82,35 @@ if (!defined('ABSPATH')) {
                 <div class="live-search-thumb">
                     <?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail'); ?>
                 </div>
+                <div class="live-search-content">
 
-                <div class="live-search-title">
-                    <?php the_title(); ?>
+                    <?php
+                    if (!empty($badges) && is_array($badges)) {
+                        echo '<div class="product-badges">';
+
+                        foreach ($badges as $badge) {
+                            $text  = $badge['text'] ?? '';
+                            $style = $badge['style'] ?? 'orange';
+
+                            if ($text) {
+                                printf(
+                                    '<span class="ath-badge ath-badge--%s">%s</span>',
+                                    esc_attr($style),
+                                    esc_html($text)
+                                );
+                            }
+                        }
+
+                        echo '</div>';
+                    }
+                    ?>
+
+                    <div class="live-search-title type-text-lg-medium text-system-black">
+                        <?php the_title(); ?>
+                    </div>
+
+                    <div class="product-meta"><?php echo esc_html($start_datetime) . ',' . esc_html($location_detail); ?></div>
                 </div>
-
-                <div class="live-search-price">
-                    <?php if ($product) echo wp_kses_post( $product->get_price_html() ); ?>
-                </div>
-
             </a>
 
         </div>
@@ -91,7 +119,7 @@ if (!defined('ABSPATH')) {
 
     if ('after' === $status_location) {
         // Already escaped.
-        echo wp_kses_post( $status_element ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo wp_kses_post($status_element); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
     ?>
 <?php else : ?>

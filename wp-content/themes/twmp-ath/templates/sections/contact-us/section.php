@@ -44,9 +44,9 @@ $sticky_links = function_exists('get_field') ? get_field('sticky_links', 'option
 //     return '';
 // };
 
-$tiktok_url = function_exists('get_field') ? (string) get_field('field_ath_tiktok', 'option') : '';
-$facebook_url = function_exists('get_field') ? (string) get_field('field_ath_facebook', 'option') : '';
-$zalo_url = function_exists('get_field') ? (string) get_field('field_ath_zalo', 'option') : '';
+$tiktok_url = function_exists('get_field') ? (string) get_field('tiktok', 'option') : '';
+$facebook_url = function_exists('get_field') ? (string) get_field('facebook', 'option') : '';
+$zalo_url = function_exists('get_field') ? (string) get_field('zalo', 'option') : '';
 
 $social_items = [
     [

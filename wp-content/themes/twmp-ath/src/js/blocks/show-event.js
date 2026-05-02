@@ -28,17 +28,22 @@ export default el => {
 	}
 
 	const settings = parseSettings(swiperEl)
-	const sliderWrap = swiperEl.closest('.event-section__slider-wrap')
+	const sliderWrap = swiperEl.closest('.event-section')
 	const nextEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-next') : el.querySelector('.swiper-button-next')
 	const prevEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-prev') : el.querySelector('.swiper-button-prev')
-	const paginationEl = swiperEl.querySelector('.swiper-pagination')
-	const pagination = settings.pagination === false
-		? false
-		: {
+	const paginationEl = sliderWrap ? sliderWrap.querySelector('.swiper-pagination') : el.querySelector('.swiper-pagination')
+	const paginationSettings = settings.pagination && typeof settings.pagination === 'object'
+		? settings.pagination
+		: {}
+	console.log('paginationSettings', paginationSettings);
+	const pagination = paginationEl
+		? {
 			el: paginationEl,
 			type: 'progressbar',
-			...(settings.pagination && typeof settings.pagination === 'object' ? settings.pagination : {}),
+			clickable: false,
+			...paginationSettings,
 		}
+		: false
 	const navigation = {
 		...(nextEl ? { nextEl } : {}),
 		...(prevEl ? { prevEl } : {}),

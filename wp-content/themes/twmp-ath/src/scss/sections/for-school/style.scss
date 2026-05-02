@@ -2,6 +2,7 @@
   background: #090808;
   color: #ffffff;
   position: relative;
+  padding: 160px 0;
 }
 
 .for-school__grid {
@@ -21,11 +22,9 @@
 
 .for-school__light {
   position: absolute;
-  top: -190px;
   left: 0;
   z-index: 0;
-  transform: scale(1);
-  display: none;
+  top: 0;
 
   @media (min-width: 1440px) {
     transform: scale(1.5);

@@ -17,8 +17,25 @@ return [
             'enable_container' => true,
         ],
     ],
+    'page-title' => [
+        'template' => 'templates/sections/page-title/section',
+        'fields' => [
+            'show_breadcrumbs',
+        ],
+    ],
     'team' => [
         'template' => 'templates/sections/team/section',
+        'fields' => [
+            'button_text',
+            'button_link',
+            'artists',
+        ],
+        'extra_fields' => [
+            'enable_container' => true,
+        ],
+    ],
+        'team-02' => [
+        'template' => 'templates/sections/team-02/section',
         'fields' => [
             'button_text',
             'button_link',
@@ -53,8 +70,7 @@ return [
     'about-us' => [
         'template' => 'templates/sections/about-us/section',
         'field_map' => [
-            'image_id' => 'image',
-            'secondary_image_id' => 'secondary_image',
+            'image_id' => 'image'
         ],
         'fields' => [
             'counters',
@@ -67,11 +83,25 @@ return [
             'enable_container' => true,
         ],
     ],
+    'two-up-intro' => [
+        'template' => 'templates/sections/two-up-intro/section',
+        'field_map' => [
+            'image_id' => 'image'
+        ],
+        'fields' => [
+            'primary_button_text',
+            'primary_button_link',
+            'secondary_button_text',
+            'secondary_button_link',
+        ],
+        'extra_fields' => [
+            'enable_container' => true,
+        ],
+    ],
     'for-school' => [
         'template' => 'templates/sections/for-school/section',
         'field_map' => [
-            'image_id' => 'image',
-            'secondary_image_id' => 'secondary_image',
+            'image_id' => 'image'
         ],
         'fields' => [
             'primary_button_text',
@@ -86,8 +116,7 @@ return [
     'for-company' => [
         'template' => 'templates/sections/for-company/section',
         'field_map' => [
-            'image_id' => 'image',
-            'secondary_image_id' => 'secondary_image',
+            'image_id' => 'image'
         ],
         'fields' => [
             'primary_button_text',

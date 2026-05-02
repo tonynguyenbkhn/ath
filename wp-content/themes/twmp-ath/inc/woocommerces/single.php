@@ -241,12 +241,12 @@ add_action('woocommerce_single_product_summary', function () {
     $product_id = $product->get_id();
 
     $fields = [
-        'field_ath_start_datetime' => ['time', 'Time'],
-        'field_ath_location_detail' => ['pin', 'Location'],
-        'field_ath_language' => ['globe', 'Language'],
-        'field_ath_format' => ['selection', 'Format'],
-        'field_ath_age_display' => ['stack', 'Age'],
-        'field_ath_demonstration' => ['users', 'Demonstration'],
+        'ath_start_datetime' => ['time', 'Time'],
+        'ath_location_detail' => ['pin', 'Location'],
+        'ath_language' => ['globe', 'Language'],
+        'ath_format' => ['selection', 'Format'],
+        'ath_age_display' => ['stack', 'Age'],
+        'ath_demonstration' => ['users', 'Demonstration'],
     ];
 
     echo '<div class="product-details-meta">';

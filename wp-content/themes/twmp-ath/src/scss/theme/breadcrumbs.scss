@@ -1,8 +1,5 @@
 .breadcrumbs {
 	display: block;
-	padding: 5px 0;
-	background: var(--light);
-	margin: 10px 0;
 
 	& ul {
 		@include list-reset;
@@ -12,8 +9,7 @@
 
 		& li {
 			display: inline-flex;
-			font-size: 14px;
-			color: var(--gray);
+			@include typo-token(16, 28, 400);
 
 			&::after {
 				content: ' / ';
@@ -36,4 +32,8 @@
 			text-decoration: underline;
 		}
 	}
+}
+
+.breadcrumbs__item--end span {
+	color: var(--primary-500);
 }
