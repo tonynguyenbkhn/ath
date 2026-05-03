@@ -191,6 +191,76 @@ const parseSettings = el => {
 
 /***/ },
 
+/***/ "./twmp-ath/src/js/blocks/fs-class.js"
+/*!********************************************!*\
+  !*** ./twmp-ath/src/js/blocks/fs-class.js ***!
+  \********************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.mjs");
+/* harmony import */ var swiper_modules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper/modules */ "./node_modules/swiper/modules/index.mjs");
+
+
+const parseSettings = el => {
+  const rawSettings = el.getAttribute('data-settings');
+  if (!rawSettings) {
+    return {};
+  }
+  try {
+    return JSON.parse(rawSettings);
+  } catch (error) {
+    console.warn('event block: invalid swiper settings', error);
+    return {};
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
+  if (!el) {
+    return null;
+  }
+  const swiperEl = el.classList.contains('js-swiper') ? el : el.querySelector('.js-swiper');
+  if (!swiperEl) {
+    return null;
+  }
+  const settings = parseSettings(swiperEl);
+  const sliderWrap = swiperEl.closest('.fs-class-section');
+  const nextEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-next') : el.querySelector('.swiper-button-next');
+  const prevEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-prev') : el.querySelector('.swiper-button-prev');
+  const paginationEl = sliderWrap ? sliderWrap.querySelector('.swiper-pagination') : el.querySelector('.swiper-pagination');
+  const paginationSettings = settings.pagination && typeof settings.pagination === 'object' ? settings.pagination : {};
+  const pagination = paginationEl ? {
+    el: paginationEl,
+    type: 'progressbar',
+    clickable: false,
+    ...paginationSettings
+  } : false;
+  console.log('pagination', pagination);
+  const navigation = {
+    ...(nextEl ? {
+      nextEl
+    } : {}),
+    ...(prevEl ? {
+      prevEl
+    } : {}),
+    ...(settings.navigation && typeof settings.navigation === 'object' ? settings.navigation : {})
+  };
+  return new swiper__WEBPACK_IMPORTED_MODULE_0__["default"](swiperEl, {
+    modules: [swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Navigation, swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Pagination],
+    slidesPerView: 3.3,
+    spaceBetween: 32,
+    loop: true,
+    ...settings,
+    navigation,
+    pagination
+  });
+});
+
+/***/ },
+
 /***/ "./twmp-ath/src/js/blocks/logo-slider.js"
 /*!***********************************************!*\
   !*** ./twmp-ath/src/js/blocks/logo-slider.js ***!
@@ -388,7 +458,6 @@ const parseSettings = el => {
   const prevEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-prev') : el.querySelector('.swiper-button-prev');
   const paginationEl = sliderWrap ? sliderWrap.querySelector('.swiper-pagination') : el.querySelector('.swiper-pagination');
   const paginationSettings = settings.pagination && typeof settings.pagination === 'object' ? settings.pagination : {};
-  console.log('paginationSettings', paginationSettings);
   const pagination = paginationEl ? {
     el: paginationEl,
     type: 'progressbar',
@@ -617,6 +686,23 @@ const parseSettings = el => {
     ...settings
   });
 });
+
+/***/ },
+
+/***/ "./twmp-ath/src/js/blocks/text-infor.js"
+/*!**********************************************!*\
+  !*** ./twmp-ath/src/js/blocks/text-infor.js ***!
+  \**********************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {
+  return null;
+}
 
 /***/ },
 
@@ -3171,6 +3257,7 @@ var map = {
 	"./about-couter.js": "./twmp-ath/src/js/blocks/about-couter.js",
 	"./back-to-top.js": "./twmp-ath/src/js/blocks/back-to-top.js",
 	"./class-workshop.js": "./twmp-ath/src/js/blocks/class-workshop.js",
+	"./fs-class.js": "./twmp-ath/src/js/blocks/fs-class.js",
 	"./logo-slider.js": "./twmp-ath/src/js/blocks/logo-slider.js",
 	"./modal-search-form.js": "./twmp-ath/src/js/blocks/modal-search-form.js",
 	"./popup-welcome.js": "./twmp-ath/src/js/blocks/popup-welcome.js",
@@ -3178,7 +3265,8 @@ var map = {
 	"./show-less.js": "./twmp-ath/src/js/blocks/show-less.js",
 	"./team-02.js": "./twmp-ath/src/js/blocks/team-02.js",
 	"./team.js": "./twmp-ath/src/js/blocks/team.js",
-	"./testimonials.js": "./twmp-ath/src/js/blocks/testimonials.js"
+	"./testimonials.js": "./twmp-ath/src/js/blocks/testimonials.js",
+	"./text-infor.js": "./twmp-ath/src/js/blocks/text-infor.js"
 };
 
 

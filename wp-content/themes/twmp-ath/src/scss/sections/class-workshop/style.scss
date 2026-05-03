@@ -140,8 +140,8 @@
   left: auto;
   right: 0;
   background-color: transparent;
-  border-color: #000A2C;
-  color: #000A2C;
+  border-color: var(--system-black);
+  color: var(--system-black);
 }
 
 .class-section__slider-wrap .swiper-button.swiper-button-prev {
@@ -495,7 +495,7 @@
 }
 
 .class-section .swiper-horizontal>.swiper-pagination-progressbar,
-.swiper-pagination-progressbar.swiper-pagination-horizontal {
+.class-section .swiper-pagination-progressbar.swiper-pagination-horizontal {
   height: 4px;
   width: 80%;
   left: 0;

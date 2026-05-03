@@ -123,11 +123,13 @@ $background_image_url = ! empty($data['background_image_id']) ? wp_get_attachmen
                         </div>
                     <?php endif; ?>
                 </div>
-
+                           
                 <div class="contact-us__col contact-us__col--form">
+                    <?php if( $data && $data['shortcode'] ): ?>
                     <div class="contact-us__form-wrap">
-                        <?php echo do_shortcode('[contact-form-7 id="72d9326" title="Home Contact Us"]'); ?>
+                        <?php echo do_shortcode(''.$data["shortcode"].''); ?>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

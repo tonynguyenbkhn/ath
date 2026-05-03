@@ -34,7 +34,7 @@ return [
             'enable_container' => true,
         ],
     ],
-        'team-02' => [
+    'team-02' => [
         'template' => 'templates/sections/team-02/section',
         'fields' => [
             'button_text',
@@ -47,6 +47,17 @@ return [
     ],
     'show-event' => [
         'template' => 'templates/sections/show-event/section',
+        'fields' => [
+            'button_text',
+            'button_link',
+            'products',
+        ],
+        'extra_fields' => [
+            'enable_container' => true,
+        ],
+    ],
+    'fs-class' => [
+        'template' => 'templates/sections/fs-class/section',
         'fields' => [
             'button_text',
             'button_link',
@@ -93,6 +104,27 @@ return [
             'primary_button_link',
             'secondary_button_text',
             'secondary_button_link',
+        ],
+        'extra_fields' => [
+            'enable_container' => true,
+        ],
+    ],
+    'text-infor' => [
+        'template' => 'templates/sections/text-infor/section',
+        'fields' => [
+            'text-1',
+            'text-2',
+            'primary_button_text',
+            'primary_button_link',
+        ],
+        'extra_fields' => [
+            'enable_container' => true,
+        ],
+    ],
+    'text-infor-02' => [
+        'template' => 'templates/sections/text-infor-02/section',
+        'fields' => [
+            'items',
         ],
         'extra_fields' => [
             'enable_container' => true,
@@ -149,6 +181,9 @@ return [
         'template' => 'templates/sections/contact-us/section',
         'field_map' => [
             'background_image_id' => 'background_image',
+        ],
+        'fields' => [
+            'shortcode'
         ],
         'extra_fields' => [
             'enable_container' => true,

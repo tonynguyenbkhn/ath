@@ -28,7 +28,7 @@ export default el => {
 	}
 
 	const settings = parseSettings(swiperEl)
-	const sliderWrap = swiperEl.closest('.event-section')
+	const sliderWrap = swiperEl.closest('.fs-class-section')
 	const nextEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-next') : el.querySelector('.swiper-button-next')
 	const prevEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-prev') : el.querySelector('.swiper-button-prev')
 	const paginationEl = sliderWrap ? sliderWrap.querySelector('.swiper-pagination') : el.querySelector('.swiper-pagination')
@@ -43,6 +43,7 @@ export default el => {
 			...paginationSettings,
 		}
 		: false
+	console.log('pagination', pagination);
 	const navigation = {
 		...(nextEl ? { nextEl } : {}),
 		...(prevEl ? { prevEl } : {}),

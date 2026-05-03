@@ -19,7 +19,7 @@ $data = wp_parse_args(
     ]
 );
 
-$_class = 'class-section';
+$_class = 'fs-class-section';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
 
 $_class_container = 'container';
@@ -28,10 +28,10 @@ $_class_container .= ! empty($data['class_container']) ? esc_attr(' ' . $data['c
 $product_ids = is_array($data['products']) ? array_values(array_filter(array_map('absint', $data['products']))) : [];
 $slides = [];
 $palette = [
-    'class-card--theme-red',
-    'class-card--theme-orange',
-    'class-card--theme-purple',
-    'class-card--theme-dark',
+    'fs-class-card--theme-red',
+    'fs-class-card--theme-orange',
+    'fs-class-card--theme-purple',
+    'fs-class-card--theme-dark',
 ];
 
 foreach ($product_ids as $index => $product_id) {
@@ -62,7 +62,7 @@ foreach ($product_ids as $index => $product_id) {
 
     ob_start();
     get_template_part(
-        'templates/sections/class-workshop/item',
+        'templates/sections/fs-class/item',
         null,
         [
             'product_id'     => $product_id,
@@ -85,7 +85,7 @@ foreach ($product_ids as $index => $product_id) {
     );
     $slides[] = [
         'content' => ob_get_clean(),
-        'class'   => 'class-section__slide',
+        'class'   => 'fs-class-section__slide',
     ];
 }
 
@@ -100,33 +100,66 @@ if (! $has_intro && empty($slides)) {
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
-
-        <div class="class-section__shell">
-
+        <div class="position-relative">
+            <div class="fs-class-section__shell has-rectangle">
+                <div class="fs-class-section__intro-row">
+                    <div class="fs-class-section__intro">
+                        <?php
+                        get_template_part(
+                            'templates/components/heading',
+                            null,
+                            [
+                                'title_class'       => 'fs-class-section__title',
+                                'description_class' => 'fs-class-section__description',
+                                'class'             => 'fs-class-section__heading flex-column',
+                                'title'             => $data['title'],
+                                'description'       => $data['description'],
+                            ]
+                        );
+                        ?>
+                    </div>
+                    <div class="fs-class-section__actions">
+                        <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
+                            <?php
+                            get_template_part(
+                                'templates/components/button',
+                                null,
+                                [
+                                    'class'              => 'fs-class-section__button button-normal typo-system-button',
+                                    'button_text'        => $data['button_text'],
+                                    'button_url'         => $data['button_link'],
+                                    'button_link_target' => '_self',
+                                    'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                                ]
+                            );
+                            ?>
+                    </div>
+                <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <?php if ($data['enable_container']) : ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($data['enable_container']) : ?>
+        <div class="<?php echo esc_attr($_class_container); ?> full-right">
+        <?php endif; ?>
+        <div class="fs-class-section__shell">
             <?php if (! empty($slides)) : ?>
-                <div class="class-section__slider-wrap position-relative">
-                    <div class="swiper-button swiper-button-prev">
-
-                    </div>
-                    <div class="swiper-button swiper-button-next">
-
-                    </div>
+                <div class="fs-class-section__slider-wrap position-relative">
+                    <div class="triangle "></div>
                     <?php
                     get_template_part(
                         'templates/components/swiper',
                         null,
                         [
-                            'class'            => 'class-section__swiper',
-                            'data_block'       => 'class-workshop',
+                            'class'            => 'fs-class-section__swiper',
+                            'data_block'       => 'fs-class',
                             'enable_container' => false,
                             'settings'         => [
                                 'autoPlay'        => false,
-                                'pagination'      => [
-                                    'el'        => '.swiper-pagination',
-                                    'type'      => 'progressbar',
-                                    'clickable' => false,
-                                ],
                                 'prevNextButtons' => false,
+                                'pagination'      => false,
                                 'slidesPerView'   => 1.15,
                                 'spaceBetween'    => 32,
                                 'breakpoints'     => [
@@ -139,8 +172,8 @@ if (! $has_intro && empty($slides)) {
                                         'spaceBetween'  => 32,
                                     ],
                                     1200 => [
-                                        'slidesPerView' => 1.5,
-                                        'spaceBetween'  => 0
+                                        'slidesPerView' => 3.3,
+                                        'spaceBetween'  => 32,
                                     ],
                                 ],
                             ],
@@ -151,45 +184,22 @@ if (! $has_intro && empty($slides)) {
                 </div>
             <?php endif; ?>
 
-            <div class="class-section__intro-row">
-                <div class="class-section__intro-row-wrapper">
-                    <div class="class-section__intro">
-                    <?php
-                    get_template_part(
-                        'templates/components/heading',
-                        null,
-                        [
-                            'title_class'       => 'class-section__title',
-                            'description_class' => 'class-section__description',
-                            'class'             => 'class-section__heading flex-column',
-                            'title'             => $data['title'],
-                            'description'       => $data['description']
-                        ]
-                    );
-                    ?>
-                </div>
-                <div class="class-section__actions">
-                    <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
 
-                        <?php
-                        get_template_part(
-                            'templates/components/button',
-                            null,
-                            [
-                                'class'              => 'class-section__button button-normal typo-system-button',
-                                'button_text'        => $data['button_text'],
-                                'button_url'         => $data['button_link'],
-                                'button_link_target' => '_self',
-                                'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
-                            ]
-                        );
-                        ?>
-                </div>
-                </div>
-            <?php endif; ?>
-            </div>
         </div>
 
+        <?php if ($data['enable_container']) : ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($data['enable_container']) : ?>
+        <div class="<?php echo esc_attr($_class_container); ?>">
+        <?php endif; ?>
+        <div class="fs-class-control">
+            <div class="nav">
+                <div class="swiper-button swiper-button-prev"></div>
+                <div class="swiper-button swiper-button-next"></div>
+            </div>
+            <div class="swiper-pagination event-swiper-pagination"></div>
+        </div>
         <?php if ($data['enable_container']) : ?>
         </div>
     <?php endif; ?>
