@@ -341,14 +341,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (el => {
   const mainMenu = (0,lib_dom__WEBPACK_IMPORTED_MODULE_1__.select)('.header__main .header__nav .main-menu');
+  const toggleIconSearch = (0,lib_dom__WEBPACK_IMPORTED_MODULE_1__.select)('.header__main .header__actions .header__menu-icons__icon');
   el.addEventListener('activate', () => {
-    if (mainMenu) {
+    if (mainMenu && toggleIconSearch) {
       (0,lib_dom__WEBPACK_IMPORTED_MODULE_1__.setStyle)('opacity', '0', mainMenu);
+      (0,lib_dom__WEBPACK_IMPORTED_MODULE_1__.setStyle)('opacity', '0', toggleIconSearch);
     }
   });
   el.addEventListener('deactivate', () => {
-    if (mainMenu) {
+    if (mainMenu && toggleIconSearch) {
       (0,lib_dom__WEBPACK_IMPORTED_MODULE_1__.setStyle)('opacity', '1', mainMenu);
+      (0,lib_dom__WEBPACK_IMPORTED_MODULE_1__.setStyle)('opacity', '1', toggleIconSearch);
     }
   });
   (0,lib_modal__WEBPACK_IMPORTED_MODULE_0__["default"])(el, {

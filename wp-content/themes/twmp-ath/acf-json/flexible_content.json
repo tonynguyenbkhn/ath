@@ -548,6 +548,23 @@
                             "multiple": 1,
                             "allow_null": 1,
                             "ui": 1
+                        },
+                        {
+                            "key": "field_team_02_sub_description",
+                            "label": "Sub Description",
+                            "name": "sub_description",
+                            "aria-label": "",
+                            "type": "wysiwyg",
+                            "instructions": "Plain text; line breaks preserved.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "rows": 4
                         }
                     ],
                     "min": "",

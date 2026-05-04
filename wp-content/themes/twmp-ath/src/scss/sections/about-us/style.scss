@@ -35,43 +35,12 @@
 }
 
 .about-us__description {
-  color: var(--system-content-2);
-  @include typo-text-lg(400);
-
-  h2,
-  h3,
-  h4,
-  strong {
-    color: #fff;
-    @include typo-display-xs(500);
-  }
-
-  h2,
-  h3,
-  h4 {
-    margin-bottom: 16px;
-  }
-
-  p {
-    margin-bottom: 16px;
-    @include typo-text-lg(400);
-  }
-
-  ul {
-    margin-bottom: 16px;
-    list-style-type: disc;
-    margin-left: 33px;
-
-    li {
-      margin-bottom: 10px;
-      @include typo-text-lg(400);
-    }
-  }
+  @include content-style();
 }
 
 .about-us__stats {
   display: block;
-
+  margin-top: 50px;
   @include clearfix();
 }
 
@@ -83,6 +52,7 @@
 .about-us__stat-value {
   font-family: 'Beautique Display';
   @include typo-token(48, 48, 500);
+  margin-bottom: 10px;
 }
 
 .about-us__stat-label {
@@ -94,7 +64,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 2.5rem;
+  margin-top: 60px;
 }
 
 .about-us__button {}
@@ -108,10 +78,27 @@
 
 .about-us__content {
   float: left;
-  width: 50%;
+  width: 100%;
+
+  @media (min-width: 992px) {
+    width: 50%;
+  }
 }
 
 .about-us__media {
   float: right;
-  width: 50%;
+  width: 100%;
+  padding-top: 20px;
+
+  @media (min-width: 992px) {
+    width: 50%;
+  }
+}
+
+.about-us__content-wrapper {
+  padding-right: 0;
+
+  @media (min-width: 992px) {
+    padding-right: 80px;
+  }
 }

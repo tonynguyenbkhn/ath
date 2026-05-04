@@ -71,7 +71,7 @@ $has_primary_button = ! empty($data['primary_button_text']) && ! empty($data['pr
                             'templates/components/button',
                             null,
                             [
-                                'class'              => 'text-infor__button bg-primary-500 text-system-white typo-system-button button-large',
+                                'class'              => 'text-infor__button bg-primary-500 text-system-white typo-system-button button-medium',
                                 'button_text'        => $data['primary_button_text'],
                                 'button_url'         => $data['primary_button_link'],
                                 'button_link_target' => '_self',

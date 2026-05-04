@@ -105,86 +105,88 @@ if (! $has_intro && empty($slides)) {
 
             <?php if (! empty($slides)) : ?>
                 <div class="class-section__slider-wrap position-relative">
-                    <div class="swiper-button swiper-button-prev">
+                    <div class="class-section__slider">
+                        <div class="swiper-button swiper-button-prev">
 
-                    </div>
-                    <div class="swiper-button swiper-button-next">
+                        </div>
+                        <div class="swiper-button swiper-button-next">
 
+                        </div>
+                        <?php
+                        get_template_part(
+                            'templates/components/swiper',
+                            null,
+                            [
+                                'class'            => 'class-section__swiper',
+                                'data_block'       => 'class-workshop',
+                                'enable_container' => false,
+                                'settings'         => [
+                                    'autoPlay'        => false,
+                                    'pagination'      => [
+                                        'el'        => '.swiper-pagination',
+                                        'type'      => 'progressbar',
+                                        'clickable' => false,
+                                    ],
+                                    'prevNextButtons' => false,
+                                    'slidesPerView'   => 1.15,
+                                    'spaceBetween'    => 32,
+                                    'breakpoints'     => [
+                                        640  => [
+                                            'slidesPerView' => 1.4,
+                                            'spaceBetween'  => 32,
+                                        ],
+                                        992  => [
+                                            'slidesPerView' => 2.3,
+                                            'spaceBetween'  => 32,
+                                        ],
+                                        1200 => [
+                                            'slidesPerView' => 1.8,
+                                            'spaceBetween'  => 0
+                                        ],
+                                    ],
+                                ],
+                                'items'            => $slides,
+                            ]
+                        );
+                        ?>
                     </div>
-                    <?php
-                    get_template_part(
-                        'templates/components/swiper',
-                        null,
-                        [
-                            'class'            => 'class-section__swiper',
-                            'data_block'       => 'class-workshop',
-                            'enable_container' => false,
-                            'settings'         => [
-                                'autoPlay'        => false,
-                                'pagination'      => [
-                                    'el'        => '.swiper-pagination',
-                                    'type'      => 'progressbar',
-                                    'clickable' => false,
-                                ],
-                                'prevNextButtons' => false,
-                                'slidesPerView'   => 1.15,
-                                'spaceBetween'    => 32,
-                                'breakpoints'     => [
-                                    640  => [
-                                        'slidesPerView' => 1.4,
-                                        'spaceBetween'  => 32,
-                                    ],
-                                    992  => [
-                                        'slidesPerView' => 2.3,
-                                        'spaceBetween'  => 32,
-                                    ],
-                                    1200 => [
-                                        'slidesPerView' => 1.5,
-                                        'spaceBetween'  => 0
-                                    ],
-                                ],
-                            ],
-                            'items'            => $slides,
-                        ]
-                    );
-                    ?>
                 </div>
             <?php endif; ?>
 
             <div class="class-section__intro-row">
                 <div class="class-section__intro-row-wrapper">
                     <div class="class-section__intro">
-                    <?php
-                    get_template_part(
-                        'templates/components/heading',
-                        null,
-                        [
-                            'title_class'       => 'class-section__title',
-                            'description_class' => 'class-section__description',
-                            'class'             => 'class-section__heading flex-column',
-                            'title'             => $data['title'],
-                            'description'       => $data['description']
-                        ]
-                    );
-                    ?>
-                </div>
-                <div class="class-section__actions">
-                    <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
-
                         <?php
                         get_template_part(
-                            'templates/components/button',
+                            'templates/components/heading',
                             null,
                             [
-                                'class'              => 'class-section__button button-normal typo-system-button',
-                                'button_text'        => $data['button_text'],
-                                'button_url'         => $data['button_link'],
-                                'button_link_target' => '_self',
-                                'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                                'title_class'       => 'class-section__title',
+                                'description_class' => 'class-section__description',
+                                'class'             => 'class-section__heading flex-column',
+                                'title'             => $data['title'],
+                                'description'       => $data['description']
                             ]
                         );
                         ?>
-                </div>
+                    </div>
+                    <div class="class-section__actions">
+                        <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
+
+                            <?php
+                            get_template_part(
+                                'templates/components/button',
+                                null,
+                                [
+                                    'class'              => 'class-section__button button-medium typo-system-button',
+                                    'button_text'        => $data['button_text'],
+                                    'button_url'         => $data['button_link'],
+                                    'button_link_target' => '_self',
+                                    'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                                ]
+                            );
+                            ?>
+                    </div>
                 </div>
             <?php endif; ?>
             </div>

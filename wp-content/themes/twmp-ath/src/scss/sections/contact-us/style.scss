@@ -166,14 +166,14 @@
     border-bottom: 1px solid #e2e2e2;
     padding: 0 0 8px 16px;
     background: transparent;
-    color: #b8cdd2;
-    font-size: 16px;
     outline: none;
     box-sizing: border-box;
+    @include typo-system-button-2();
+    color: var(--system-black);
 }
 
 .register-form input::placeholder {
-    color: #b8cdd2;
+    color: var(--system-placeholder);
     opacity: 1;
 }
 

@@ -62,7 +62,7 @@ $has_buttons = $has_primary_button || $has_secondary_button;
                                 'templates/components/button',
                                 null,
                                 [
-                                    'class'              => 'two-up-intro__button two-up-intro__button--primary bg-primary-500 text-system-white typo-system-button button-large',
+                                    'class'              => 'two-up-intro__button two-up-intro__button--primary bg-primary-500 text-system-white typo-system-button button-medium',
                                     'button_text'        => $data['primary_button_text'],
                                     'button_url'         => $data['primary_button_link'],
                                     'button_link_target' => '_self',
@@ -75,7 +75,7 @@ $has_buttons = $has_primary_button || $has_secondary_button;
                                 'templates/components/button',
                                 null,
                                 [
-                                    'class'              => 'two-up-intro__button two-up-intro__button--secondary text-system-white typo-system-button button-large',
+                                    'class'              => 'two-up-intro__button two-up-intro__button--secondary text-system-white typo-system-button button-medium',
                                     'button_text'        => $data['secondary_button_text'],
                                     'button_url'         => $data['secondary_button_link'],
                                     'button_link_target' => '_self',

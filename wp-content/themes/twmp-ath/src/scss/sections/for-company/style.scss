@@ -31,38 +31,7 @@
 }
 
 .for-company__description {
-  color: var(--system-content-2);
-  @include typo-text-lg(400);
-
-  h2,
-  h3,
-  h4,
-  strong {
-    color: #fff;
-    @include typo-display-xs(500);
-  }
-
-  h2,
-  h3,
-  h4 {
-    margin-bottom: 16px;
-  }
-
-  p {
-    margin-bottom: 16px;
-    @include typo-text-lg(400);
-  }
-
-  ul {
-    margin-bottom: 16px;
-    list-style-type: disc;
-    margin-left: 33px;
-
-    li {
-      margin-bottom: 10px;
-      @include typo-text-lg(400);
-    }
-  }
+  @include content-style();
 }
 
 .for-company__actions {
@@ -86,7 +55,23 @@
   width: 50%;
 }
 
+.for-company__content-wrap {
+  padding-left: 0;
+
+  @media (min-width: 992px) {
+    padding-left: 140px;
+  }
+}
+
 .for-company__media {
   float: left;
   width: 50%;
+
+  &-primary {
+    padding-top: 0;
+
+    @media (min-width: 992px) {
+      padding-top: 40px;
+    }
+  }
 }

@@ -9,9 +9,9 @@
   .triangle {
     width: 0;
     height: 0;
-    border-left: 152px solid transparent;
-    border-right: 152px solid transparent;
-    border-bottom: 304px solid rgba(#48BDA6, 0.3);
+    border-left: 130px solid transparent;
+    border-right: 130px solid transparent;
+    border-bottom: 245px solid rgba(#48BDA6, 0.3);
     transform: rotate(180deg);
     position: absolute;
     left: -152px;
@@ -34,11 +34,11 @@
 }
 
 .event-section::after {
-  right: -90px;
-  bottom: -100px;
-  width: 456px;
-  height: 456px;
-  border: 48px solid rgba(#ED378F, 0.4);
+  bottom: -130px;
+  height: 386px;
+  right: -190px;
+  width: 386px;
+  border: 70px solid rgba(#ED378F, 0.4);
   border-radius: 50%;
 }
 
@@ -49,6 +49,8 @@
 
 .event-section__intro-row {
   padding-bottom: 100px;
+  display: flex;
+  align-items: end;
 }
 
 .event-section__intro-row::after {
@@ -79,15 +81,11 @@
 .event-section__title {
   color: #fff;
   text-align: left;
+  line-height: 1;
 }
 
 .event-section__description {
-  color: var(--system-content-2);
-  @include typo-text-lg(400);
-
-  p {
-    margin-bottom: 12px;
-  }
+  @include content-style();
 }
 
 // .event-section__slide {
@@ -102,7 +100,7 @@
   border: 1px solid rgba(255, 255, 255, 0.55);
   background: transparent;
   color: #fff;
-  padding: 16px 24px;
+  // padding: 16px 24px;
 
   span {
     display: flex;
@@ -131,15 +129,15 @@
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
-  gap: 24px;
+  gap: 16px;
   position: absolute;
-  width: 72%;
-  bottom: -75px;
+  width: 100%;
+  bottom: -70px;
   right: 0;
 
   .nav {
     display: flex;
-    gap: 24px;
+    gap: 10px;
   }
 }
 
@@ -197,7 +195,7 @@
   position: relative;
 
   .image {
-    @include ratio(648/437);
+    @include ratio(648/438);
   }
 }
 
@@ -298,18 +296,15 @@
 
 .event-card__short-info {
   margin: 0 0 6px;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 14px;
-  line-height: 1.5;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  color: var(--system-white);
+  font-family: var(--font-inter);
+  @include typo-token(14, 22, 600);
 }
 
 .event-card__location {
-  color: #fff;
-  font-size: 17px;
-  line-height: 1.35;
-  font-weight: 600;
+  color: var(--system-white);
+  font-family: var(--font-inter);
+  @include typo-token(24, 32, 600);
 }
 
 .event-card__more {
@@ -321,10 +316,9 @@
 }
 
 .event-card__description {
-  margin-top: 14px;
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 14px;
-  line-height: 1.7;
+  margin-top: 0;
+  color: var(--system-white);
+  @include typo-text-lg(400);
 }
 
 .event-card__actions {
@@ -333,7 +327,7 @@
 }
 
 .event-card__action+.event-card__action {
-  margin-top: 10px;
+  margin-top: 32px;
 }
 
 .event-card .twmp-buy-now-form {
@@ -364,7 +358,7 @@
 .event-card:hover .event-card__more,
 .event-card:focus-within .event-card__more,
 .event-card.is-featured .event-card__more {
-  max-height: 220px;
+  max-height: unset;
   opacity: 1;
   transform: translateY(0);
 }
@@ -495,7 +489,7 @@
 .show-event .show-event__main-container .swiper-horizontal>.swiper-pagination-progressbar,
 .show-event .show-event__main-container .swiper-pagination-progressbar.swiper-pagination-horizontal {
   height: 4px;
-  width: 67%;
+  width: calc(100% - 33.33% - 32px - 108px);
   left: auto;
   right: 0;
   background-color: rgba($color: #ffffff, $alpha: 0.3);

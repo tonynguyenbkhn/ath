@@ -91,71 +91,72 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
             </div>
 
             <div class="for-company__content">
+                <div class="for-company__content-wrap">
+                    <?php
+                    get_template_part('templates/components/heading', null, [
+                        'title_class' => 'for-company__title',
+                        'description_class' => 'for-company__description',
+                        'class' => 'for-company__header flex-column',
+                        'title' => $data && !empty($data['title']) ? $data['title'] : '',
+                        'description' => $data && !empty($data['description']) ? $data['description'] : '',
+                    ]);
+                    ?>
 
-                <?php
-                get_template_part('templates/components/heading', null, [
-                    'title_class' => 'for-company__title',
-                    'description_class' => 'for-company__description',
-                    'class' => 'for-company__header flex-column',
-                    'title' => $data && !empty($data['title']) ? $data['title'] : '',
-                    'description' => $data && !empty($data['description']) ? $data['description'] : '',
-                ]);
-                ?>
+                    <?php if (! empty($counters)) : ?>
+                        <div class="for-company__stats" data-block="about-couter" role="list">
+                            <?php foreach ($counters as $counter) : ?>
+                                <?php
+                                $value = isset($counter['value']) ? trim((string) $counter['value']) : '';
+                                $label = isset($counter['label']) ? trim((string) $counter['label']) : '';
 
-                <?php if (! empty($counters)) : ?>
-                    <div class="for-company__stats" data-block="about-couter" role="list">
-                        <?php foreach ($counters as $counter) : ?>
+                                if ('' === $value && '' === $label) {
+                                    continue;
+                                }
+                                ?>
+                                <div class="for-company__stat" role="listitem">
+                                    <?php if ('' !== $value) : ?>
+                                        <div class="for-company__stat-value"><?php echo esc_html($value); ?></div>
+                                    <?php endif; ?>
+                                    <?php if ('' !== $label) : ?>
+                                        <div class="for-company__stat-label"><?php echo esc_html($label); ?></div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($has_buttons) : ?>
+                        <div class="for-company__actions">
                             <?php
-                            $value = isset($counter['value']) ? trim((string) $counter['value']) : '';
-                            $label = isset($counter['label']) ? trim((string) $counter['label']) : '';
+                            if ($has_primary_button) {
+                                get_template_part(
+                                    'templates/components/button',
+                                    null,
+                                    [
+                                        'class'              => 'for-company__button for-company__button--primary bg-primary-500 text-system-white typo-system-button button-medium',
+                                        'button_text'        => $data['primary_button_text'],
+                                        'button_url'         => $data['primary_button_link'],
+                                        'button_link_target' => '_self',
+                                    ]
+                                );
+                            }
 
-                            if ('' === $value && '' === $label) {
-                                continue;
+                            if ($has_secondary_button) {
+                                get_template_part(
+                                    'templates/components/button',
+                                    null,
+                                    [
+                                        'class'              => 'for-company__button for-company__button--secondary text-system-white typo-system-button button-medium',
+                                        'button_text'        => $data['secondary_button_text'],
+                                        'button_url'         => $data['secondary_button_link'],
+                                        'button_link_target' => '_self',
+                                    ]
+                                );
                             }
                             ?>
-                            <div class="for-company__stat" role="listitem">
-                                <?php if ('' !== $value) : ?>
-                                    <div class="for-company__stat-value"><?php echo esc_html($value); ?></div>
-                                <?php endif; ?>
-                                <?php if ('' !== $label) : ?>
-                                    <div class="for-company__stat-label"><?php echo esc_html($label); ?></div>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($has_buttons) : ?>
-                    <div class="for-company__actions">
-                        <?php
-                        if ($has_primary_button) {
-                            get_template_part(
-                                'templates/components/button',
-                                null,
-                                [
-                                    'class'              => 'for-company__button for-company__button--primary bg-primary-500 text-system-white typo-system-button button-large',
-                                    'button_text'        => $data['primary_button_text'],
-                                    'button_url'         => $data['primary_button_link'],
-                                    'button_link_target' => '_self',
-                                ]
-                            );
-                        }
-
-                        if ($has_secondary_button) {
-                            get_template_part(
-                                'templates/components/button',
-                                null,
-                                [
-                                    'class'              => 'for-company__button for-company__button--secondary text-system-white typo-system-button button-large',
-                                    'button_text'        => $data['secondary_button_text'],
-                                    'button_url'         => $data['secondary_button_link'],
-                                    'button_link_target' => '_self',
-                                ]
-                            );
-                        }
-                        ?>
-                    </div>
-                <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 

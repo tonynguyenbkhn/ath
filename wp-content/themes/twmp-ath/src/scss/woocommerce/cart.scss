@@ -98,7 +98,7 @@
 
 			&>.button {
 				float: left;
-				@include button-style-secondary;
+				@include button-style-dark;
 
 				@media (min-width: 1024px) {
 					float: right;

@@ -25,7 +25,7 @@ if (!defined('ABSPATH')) {
 	<header id="header-sticky">
 		<div class="header__main position-relative">
 			<div class="container header__container">
-				<div class="row header__row">
+				<div class="header__row">
 					<div class="flex-auto header__col header__logo">
 						<?php get_template_part('template-parts/headers/logo', null, []); ?>
 					</div>

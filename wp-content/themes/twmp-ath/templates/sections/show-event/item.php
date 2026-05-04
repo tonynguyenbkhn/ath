@@ -82,7 +82,7 @@ $_class .= ! empty($data['theme_class']) ? esc_attr(' ' . $data['theme_class']) 
 	</div>
 
 	<div class="event-card__body">
-		<?php if (! empty($data['title'])) : ?>
+		<?php if (!empty($data['title']) && 1 === 0) : ?>
 			<h3 class="event-card__title"><?php echo esc_html($data['title']); ?></h3>
 		<?php endif; ?>
 

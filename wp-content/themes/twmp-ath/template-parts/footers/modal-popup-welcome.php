@@ -27,14 +27,14 @@ $_close_button_class = !empty($data['close_button_class']) ? $data['close_button
             <span class="modal__subtitle typo-display-xs-regular"><?php esc_html_e('You are?', 'twmp-ath'); ?></span>
         </div>
         <div class="modal__content js-content">
-            <button class="modal__close-button" data-close-modal="modal-popup-welcome" aria-label="<?php echo esc_attr__('Close a search form modal', 'twmp-ath'); ?>">
+            <button class="modal__close-button d-none" data-close-modal="modal-popup-welcome" aria-label="<?php echo esc_attr__('Close a search form modal', 'twmp-ath'); ?>">
                 <span class="typo-text-md-medium text-system-content-2"><?php echo esc_html__('Cancel', 'twmp-ath'); ?></span>
             </button>
             <?php
             echo do_shortcode('[contact-form-7 id="219f971" title="Popup"]');
             ?>
         </div>
-        <button class="modal__close-button <?php echo esc_attr( $_close_button_class ); ?>" data-close-modal="modal-popup-welcome" aria-label="<?php esc_attr_e('Close a modal', 'twmp-ath'); ?>">
+        <button class="modal__close-button d-none <?php echo esc_attr( $_close_button_class ); ?>" data-close-modal="modal-popup-welcome" aria-label="<?php esc_attr_e('Close a modal', 'twmp-ath'); ?>">
             <?php echo twmp_get_svg_icon('close'); ?>
         </button>
     </div>

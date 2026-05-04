@@ -456,82 +456,98 @@
   padding: 15px 40px;
 }
 
+@mixin button-medium {
+  padding: 15px 60px;
+}
+
 @mixin button-large {
   padding: 15px 80px;
 }
 
 @mixin button-style-primary {
-  background: var(--primary);
-  color: var(--black);
+  background: var(--primary-500);
+  color: var(--system-black);
   transition: background 0.3s ease, color 0.3s ease;
 
   &:hover {
     @media (min-width: 1024px) {
       color: white;
-      background: var(--black);
+      background: var(--system-black);
     }
   }
 }
 
-@mixin button-style-secondary {
-  background: var(--secondary);
-  color: var(--white);
-  transition: background 0.3s ease, color 0.3s ease;
+// @mixin button-style-secondary {
+//   background: var(--secondary);
+//   color: var(--white);
+//   transition: background 0.3s ease, color 0.3s ease;
 
-  &:hover {
-    @media (min-width: 1024px) {
-      background: var(--primary);
-      color: var(--white);
-    }
-  }
-}
+//   &:hover {
+//     @media (min-width: 1024px) {
+//       background: var(--primary);
+//       color: var(--white);
+//     }
+//   }
+// }
 
 @mixin button-style-dark {
-  background: var(--black);
-  color: var(--white);
+  background: var(--system-black);
+  color: var(--system-white);
   transition: background 0.3s ease, color 0.3s ease;
 
   &:hover {
     @media (min-width: 1024px) {
-      background: var(--primary);
-      color: var(--white);
+      background: var(--primary-500);
+      color: var(--system-white);
     }
   }
 }
 
 @mixin button-style-white {
-  background: var(--white);
-  color: var(--black);
+  background: var(--system-white);
+  color: var(--system-black);
   transition: background 0.3s ease, color 0.3s ease;
 
   &:hover {
     @media (min-width: 1024px) {
-      background: var(--primary);
-      color: var(--white);
+      background: var(--primary-500);
+      color: var(--system-white);
     }
   }
 }
 
 @mixin button-style-outline-primary {
-  border: 1px solid var(--primary);
+  border: 1px solid var(--primary-500);
   background: none;
   transition: background 0.3s ease, color 0.3s ease;
 
   &:hover {
     @media (min-width: 1024px) {
-      border-color: var(--secondary);
+      border-color: var(--system-black);
     }
   }
 }
 
 @mixin button-style-outline-dark {
-  border: 1px solid var(--black);
+  border: 1px solid var(--system-black);
   background: none;
   transition: background 0.3s ease, color 0.3s ease;
 
   &:hover {
     @media (min-width: 1024px) {
-      border-color: var(--primary);
+      border-color: var(--primary-500);
+    }
+  }
+}
+
+@mixin button-style-outline-white {
+  border: 1px solid var(--system-white);
+  background: none;
+  transition: background 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    @media (min-width: 1024px) {
+      border-color: var(--primary-500);
     }
   }
 }
@@ -894,4 +910,43 @@ $theme-font-family-typo: (
 
 @mixin typo-system-description-2 {
 	@include typography-style(12, 20, $regular, var(--font-archivo));
+}
+
+/*----------------------------------------*/
+/*  15. Ratio Style
+/*----------------------------------------*/
+
+@mixin content-style($color: var(--system-content-2), $heading-color: #fff) {
+  color: $color;
+  @include typo-text-lg(400);
+
+  h2,
+  h3,
+  h4,
+  strong {
+    color: $heading-color;
+    @include typo-display-xs(500);
+  }
+
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    @include typo-text-lg(400);
+  }
+
+  ul {
+    margin-bottom: 16px;
+    list-style-type: disc;
+    margin-left: 33px;
+
+    li {
+      margin-bottom: 10px;
+      @include typo-text-lg(400);
+    }
+  }
 }

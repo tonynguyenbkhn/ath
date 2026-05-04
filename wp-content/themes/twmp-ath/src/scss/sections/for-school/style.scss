@@ -14,6 +14,11 @@
 .for-school__header {
   flex-direction: column;
   text-align: left;
+  padding-right: 0;
+
+  @media (min-width: 992px) {
+    padding-right: 120px;
+  }
 }
 
 .for-school__title {
@@ -32,38 +37,7 @@
 }
 
 .for-school__description {
-  color: var(--system-content-2);
-  @include typo-text-lg(400);
-
-  h2,
-  h3,
-  h4,
-  strong {
-    color: #fff;
-    @include typo-display-xs(500);
-  }
-
-  h2,
-  h3,
-  h4 {
-    margin-bottom: 16px;
-  }
-
-  p {
-    margin-bottom: 16px;
-    @include typo-text-lg(400);
-  }
-
-  ul {
-    margin-bottom: 16px;
-    list-style-type: disc;
-    margin-left: 33px;
-
-    li {
-      margin-bottom: 10px;
-      @include typo-text-lg(400);
-    }
-  }
+  @include content-style();
 }
 
 .for-school__actions {
@@ -90,4 +64,12 @@
 .for-school__media {
   float: right;
   width: 50%;
+
+  &-primary {
+    padding-left: 0;
+
+    @media (min-width: 992px) {
+      padding-left: 60px;
+    }
+  }
 }

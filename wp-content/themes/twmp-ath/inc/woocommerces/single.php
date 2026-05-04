@@ -325,7 +325,7 @@ function twmp_related_products_ids($related_products, $product_id)
 
 add_filter('woocommerce_related_products', 'twmp_related_products_ids', 10, 2);
 
-add_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 1);
+// add_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 1);
 
 //////////////////////////////
 // AFTER SUMMARY LAYOUT

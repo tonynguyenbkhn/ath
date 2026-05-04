@@ -89,7 +89,7 @@ if (! $has_intro && empty($slides)) {
 								'templates/components/button',
 								null,
 								[
-									'class'              => 'team-section__button button-normal typo-system-button',
+									'class'              => 'team-section__button button-medium typo-system-button',
 									'button_text'        => $data['button_text'],
 									'button_url'         => $data['button_link'],
 									'button_link_target' => '_self',

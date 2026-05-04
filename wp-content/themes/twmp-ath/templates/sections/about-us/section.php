@@ -48,71 +48,72 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
 
         <div class="about-us__grid">
             <div class="about-us__content">
+                <div class="about-us__content-wrapper">
+                    <?php
+                    get_template_part('templates/components/heading', null, [
+                        'title_class' => 'about-us__title',
+                        'description_class' => 'about-us__description',
+                        'class' => 'about-us__header flex-column',
+                        'title' => $data && !empty($data['title']) ? $data['title'] : '',
+                        'description' => $data && !empty($data['description']) ? $data['description'] : '',
+                    ]);
+                    ?>
 
-                <?php
-                get_template_part('templates/components/heading', null, [
-                    'title_class' => 'about-us__title',
-                    'description_class' => 'about-us__description',
-                    'class' => 'about-us__header flex-column',
-                    'title' => $data && !empty($data['title']) ? $data['title'] : '',
-                    'description' => $data && !empty($data['description']) ? $data['description'] : '',
-                ]);
-                ?>
+                    <?php if (! empty($counters)) : ?>
+                        <div class="about-us__stats" data-block="about-couter" role="list">
+                            <?php foreach ($counters as $counter) : ?>
+                                <?php
+                                $value = isset($counter['value']) ? trim((string) $counter['value']) : '';
+                                $label = isset($counter['label']) ? trim((string) $counter['label']) : '';
 
-                <?php if (! empty($counters)) : ?>
-                    <div class="about-us__stats" data-block="about-couter" role="list">
-                        <?php foreach ($counters as $counter) : ?>
+                                if ('' === $value && '' === $label) {
+                                    continue;
+                                }
+                                ?>
+                                <div class="about-us__stat" role="listitem">
+                                    <?php if ('' !== $value) : ?>
+                                        <div class="about-us__stat-value"><?php echo esc_html($value); ?></div>
+                                    <?php endif; ?>
+                                    <?php if ('' !== $label) : ?>
+                                        <div class="about-us__stat-label"><?php echo esc_html($label); ?></div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($has_buttons) : ?>
+                        <div class="about-us__actions">
                             <?php
-                            $value = isset($counter['value']) ? trim((string) $counter['value']) : '';
-                            $label = isset($counter['label']) ? trim((string) $counter['label']) : '';
+                            if ($has_primary_button) {
+                                get_template_part(
+                                    'templates/components/button',
+                                    null,
+                                    [
+                                        'class'              => 'about-us__button about-us__button--primary bg-primary-500 text-system-white typo-system-button button-medium',
+                                        'button_text'        => $data['primary_button_text'],
+                                        'button_url'         => $data['primary_button_link'],
+                                        'button_link_target' => '_self',
+                                    ]
+                                );
+                            }
 
-                            if ('' === $value && '' === $label) {
-                                continue;
+                            if ($has_secondary_button) {
+                                get_template_part(
+                                    'templates/components/button',
+                                    null,
+                                    [
+                                        'class'              => 'about-us__button about-us__button--secondary text-system-white typo-system-button button-medium',
+                                        'button_text'        => $data['secondary_button_text'],
+                                        'button_url'         => $data['secondary_button_link'],
+                                        'button_link_target' => '_self',
+                                    ]
+                                );
                             }
                             ?>
-                            <div class="about-us__stat" role="listitem">
-                                <?php if ('' !== $value) : ?>
-                                    <div class="about-us__stat-value"><?php echo esc_html($value); ?></div>
-                                <?php endif; ?>
-                                <?php if ('' !== $label) : ?>
-                                    <div class="about-us__stat-label"><?php echo esc_html($label); ?></div>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($has_buttons) : ?>
-                    <div class="about-us__actions">
-                        <?php
-                        if ($has_primary_button) {
-                            get_template_part(
-                                'templates/components/button',
-                                null,
-                                [
-                                    'class'              => 'about-us__button about-us__button--primary bg-primary-500 text-system-white typo-system-button button-large',
-                                    'button_text'        => $data['primary_button_text'],
-                                    'button_url'         => $data['primary_button_link'],
-                                    'button_link_target' => '_self',
-                                ]
-                            );
-                        }
-
-                        if ($has_secondary_button) {
-                            get_template_part(
-                                'templates/components/button',
-                                null,
-                                [
-                                    'class'              => 'about-us__button about-us__button--secondary text-system-white typo-system-button button-large',
-                                    'button_text'        => $data['secondary_button_text'],
-                                    'button_url'         => $data['secondary_button_link'],
-                                    'button_link_target' => '_self',
-                                ]
-                            );
-                        }
-                        ?>
-                    </div>
-                <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <div class="about-us__media">

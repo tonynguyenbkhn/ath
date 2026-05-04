@@ -150,6 +150,11 @@ if (! $has_intro && empty($slides)) {
 					?>
 				</div>
 			<?php endif; ?>
+			<?php if (!empty($data['sub_description'])) : ?>
+				<div class="sub_description">
+					<?php echo wp_kses_post($data['sub_description']); ?>
+				</div>
+			<?php endif; ?>
 		</div>
 
 		<?php if ($data['enable_container']) : ?>

@@ -33,6 +33,11 @@
     // align-items: center;
 }
 
+.hero-banner__desc {
+    margin-bottom: 60px;
+    max-width: 380px;
+}
+
 .hero-banner__grid {
     display: flex;
     flex-direction: column;
@@ -47,8 +52,7 @@
 
 .hero-banner__title {}
 
-.hero-banner__desc {
-}
+.hero-banner__desc {}
 
 .hero-banner__cta {
     margin-top: 1rem;

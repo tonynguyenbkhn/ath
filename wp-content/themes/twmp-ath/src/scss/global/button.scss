@@ -17,15 +17,18 @@ button:focus {
 .button-normal {
 	@include button-normal;
 }
+.button-medium {
+	@include button-medium;
+}
 .button-large {
 	@include button-large;
 }
 .button-style-primary {
 	@include button-style-primary;
 }
-.button-style-secondary {
-	@include button-style-secondary;
-}
+// .button-style-secondary {
+// 	@include button-style-secondary;
+// }
 .button-style-dark {
 	@include button-style-dark;
 }
@@ -37,4 +40,7 @@ button:focus {
 }
 .button-style-outline-dark {
 	@include button-style-outline-dark;
+}
+.button-style-outline-white {
+	@include button-style-outline-white;
 }

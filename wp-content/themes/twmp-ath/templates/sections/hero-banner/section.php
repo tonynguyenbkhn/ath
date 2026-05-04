@@ -67,7 +67,7 @@ if ($image_id) {
           <?php if ($button_text && $button_link): ?>
             <p class="hero-banner__cta">
               <?php get_template_part('templates/components/button', null, [
-                'class' => 'bg-primary-500 text-system-white typo-system-button button-default',
+                'class' => 'bg-primary-500 text-system-white typo-system-button button-medium',
                 'button_text' => $button_text,
                 'button_url' => $button_link,
                 'button_link_target' => '_self',

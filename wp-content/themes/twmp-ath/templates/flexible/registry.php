@@ -40,6 +40,7 @@ return [
             'button_text',
             'button_link',
             'artists',
+            'sub_description'
         ],
         'extra_fields' => [
             'enable_container' => true,
@@ -75,7 +76,7 @@ return [
             'products',
         ],
         'extra_fields' => [
-            'enable_container' => true,
+            'enable_container' => false,
         ],
     ],
     'about-us' => [
