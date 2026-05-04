@@ -25,7 +25,7 @@ add_action('woocommerce_before_checkout_form', 'wcs_checkout_page_open', 5);
 
 function wcs_checkout_page_open()
 {
-  echo '<div class="page-block page-block--checkout" data-block="checkout-custom" data-blocks="checkout-custom">';
+  echo '<div class="page-block page-block--checkout" data-block="checkout-custom">';
 }
 
 add_action('woocommerce_after_checkout_form', 'wcs_checkout_page_close', 100);
@@ -93,45 +93,45 @@ add_action('devvn_checkout_fields', function ($fields) {
 }, 10, 1);
 
 
-add_filter('woocommerce_checkout_fields', function ($fields) {
+// add_filter('woocommerce_checkout_fields', function ($fields) {
 
-  $fields['billing']['billing_sexy'] = array(
-    'type'     => 'billing_sexy_custom',
-    'required' => true,
-    'priority' => 5,
-  );
+//   $fields['billing']['billing_sexy'] = array(
+//     'type'     => 'billing_sexy_custom',
+//     'required' => true,
+//     'priority' => 5,
+//   );
 
-  $fields['billing']['billing_shipping_label'] = array(
-    'type'     => 'billing_shipping_label_custom',
-    'priority' => 200, // sau email
-  );
+//   $fields['billing']['billing_shipping_label'] = array(
+//     'type'     => 'billing_shipping_label_custom',
+//     'priority' => 200, // sau email
+//   );
 
-  $fields['billing']['billing_delivery_address'] = array(
-    'type'        => 'text',
-    'label'       => '',
-    'placeholder' => 'Nhập địa chỉ nhận hàng',
-    'required'    => true,
-    'class'       => array('form-row-wide'),
-    'priority'    => 300,
-  );
+//   $fields['billing']['billing_delivery_address'] = array(
+//     'type'        => 'text',
+//     'label'       => '',
+//     'placeholder' => 'Nhập địa chỉ nhận hàng',
+//     'required'    => true,
+//     'class'       => array('form-row-wide'),
+//     'priority'    => 300,
+//   );
 
-  $fields['billing']['billing_district_district'] = array(
-    'type'        => 'text',
-    'label'       => '',
-    'placeholder' => 'Nhập quận / huyện',
-    'required'    => true,
-    'class'       => array('form-row-first'),
-    'priority'    => 301,
-  );
+//   $fields['billing']['billing_district_district'] = array(
+//     'type'        => 'text',
+//     'label'       => '',
+//     'placeholder' => 'Nhập quận / huyện',
+//     'required'    => true,
+//     'class'       => array('form-row-first'),
+//     'priority'    => 301,
+//   );
 
-  $fields['billing']['billing_wards_and_communes'] = array(
-    'type'        => 'text',
-    'label'       => '',
-    'placeholder' => 'Nhập phường / xã',
-    'required'    => true,
-    'class'       => array('form-row-last'),
-    'priority'    => 302,
-  );
+//   $fields['billing']['billing_wards_and_communes'] = array(
+//     'type'        => 'text',
+//     'label'       => '',
+//     'placeholder' => 'Nhập phường / xã',
+//     'required'    => true,
+//     'class'       => array('form-row-last'),
+//     'priority'    => 302,
+//   );
 
   // $fields['billing']['billing_city_province_shop'] = array(
   //   'type'              => 'select',
@@ -144,8 +144,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
   //     'Hồ Chí Minh'     => 'Hồ Chí Minh',
   //   )
   // );
-  return $fields;
-});
+//   return $fields;
+// });
 
 function twmp_checkout_get_ticket_product_data($product_id = 0)
 {
@@ -529,7 +529,7 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
 
   echo '</div>';
 }, 20);
-
+/**
 add_filter('woocommerce_form_field_billing_sexy_custom', function ($field, $key, $args, $value) {
 
   $value = empty($value) ? 'male' : $value;
@@ -659,7 +659,7 @@ function twmp_display_custom_fields_in_admin($order) {
 //   );
 //   return $fields;
 // });
-
+ */
 add_filter('woocommerce_add_to_cart_redirect', function ($url) {
   if (!empty($_REQUEST['twmp_buy_now'])) {
     return wc_get_cart_url();

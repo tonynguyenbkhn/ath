@@ -156,22 +156,25 @@
 	}
 
 	.page-block__grid {
-		@include row(-1em);
+		// @include row(-1em);
+		@include clearfix();
 	}
 
 	.page-block__col--sidebar {
-		@include col(12, 1em);
-		display: block;
-		margin-top: 1em;
+		float: left;
+		width: 100%;
+		// @include col(12, 1em);
+		// display: block;
+		// margin-top: 1em;
 
-		@media (min-width: 1024px) {
-			@include col(5, 1em);
-			margin-top: 0;
-		}
+		// @media (min-width: 1024px) {
+		// 	@include col(5, 1em);
+		// 	margin-top: 0;
+		// }
 
-		@media (min-width: 1024px) {
-			width: 40%;
-		}
+		// @media (min-width: 1024px) {
+		// 	width: 40%;
+		// }
 
 		input[type='radio'] {
 			@include custom-radio(var(--primary), var(--title));
@@ -198,11 +201,8 @@
 	}
 
 	.page-block__col--main {
-		@include col(12, 1em);
-
-		@media (min-width: 1024px) {
-			@include col(7, 1em);
-		}
+		float: right;
+		width: 100%;
 
 		&>div {
 			width: 100%;
@@ -342,6 +342,7 @@
 
 .woocommerce-checkout-custom {
 	overflow: hidden;
+
 	form.woocommerce-cart-form {
 		background-color: var(--white);
 		border-radius: 8px;
@@ -1075,9 +1076,9 @@
 #billing_postcode_field,
 #billing_city_field,
 #billing_first_name_field {
-    display: none;
+	display: none;
 }
 
 #billing_last_name_field label {
-    display: none;
+	display: none;
 }
