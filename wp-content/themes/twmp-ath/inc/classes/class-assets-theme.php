@@ -53,6 +53,9 @@ class Assets_Theme
 
 		wp_enqueue_style('twmp-frontend', get_stylesheet_directory_uri() . '/assets/css/frontend.css', [], $this->theme_version);
 		wp_enqueue_script('twmp-frontend', get_stylesheet_directory_uri() . '/assets/js/frontend.js', [], $this->theme_version, ['strategy' => 'defer']);
+		if (function_exists('is_checkout') && is_checkout()) {
+			wp_enqueue_script('twmp-checkout-custom', get_stylesheet_directory_uri() . '/custom/checkout.js', ['jquery'], $this->theme_version, ['strategy' => 'defer']);
+		}
 		// wp_enqueue_script('twmp-woocommerce', get_stylesheet_directory_uri() . '/assets/js/woocommerce.js', ['jquery'], $this->theme_version);
 		// if (is_shop() || is_product_category()) {
 		// 	wp_enqueue_script('twmp-woocommerce-shop', get_stylesheet_directory_uri() . '/custom/shop.js', ['jquery'], $this->theme_version);

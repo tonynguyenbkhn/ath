@@ -28,6 +28,17 @@ if (! $checkout->is_registration_enabled() && $checkout->is_registration_require
 	return;
 }
 
+$is_payment_step = function_exists('twmp_checkout_is_payment_step') && twmp_checkout_is_payment_step();
+
+if ($is_payment_step) {
+	if (function_exists('twmp_checkout_render_payment_step_section')) {
+		twmp_checkout_render_payment_step_section();
+	}
+
+	do_action('woocommerce_after_checkout_form', $checkout);
+	return;
+}
+
 ?>
 
 <form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__('Checkout', 'twmp-ath'); ?>">

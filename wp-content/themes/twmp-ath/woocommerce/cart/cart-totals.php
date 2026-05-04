@@ -15,6 +15,25 @@ defined('ABSPATH') || exit;
 $is_checkout_summary = function_exists('is_checkout') && is_checkout();
 
 if ($is_checkout_summary) :
+	$payment_state = function_exists('twmp_checkout_get_payment_order_context') ? twmp_checkout_get_payment_order_context() : array();
+	if (function_exists('twmp_checkout_is_payment_step') && twmp_checkout_is_payment_step() && !empty($payment_state['order']) && $payment_state['order'] instanceof WC_Order) :
+		$order = $payment_state['order'];
+		?>
+		<div class="twmp-checkout-summary__totals twmp-checkout-summary__totals--payment">
+			<div class="twmp-checkout-summary__total-row">
+				<span class="twmp-checkout-summary__total-label"><?php esc_html_e('Total', 'twmp-ath'); ?></span>
+				<span class="twmp-checkout-summary__total-value"><?php echo wp_kses_post($order->get_formatted_order_total()); ?></span>
+			</div>
+
+			<div class="twmp-checkout-summary__status">
+				<p class="twmp-checkout-summary__status-title"><?php echo esc_html(!empty($payment_state['status_label']) ? $payment_state['status_label'] : esc_html__('Waiting for confirmation', 'twmp-ath')); ?></p>
+				<p class="twmp-checkout-summary__status-text"><?php echo esc_html(!empty($payment_state['status_text']) ? $payment_state['status_text'] : esc_html__('Upload your bill and wait for admin review.', 'twmp-ath')); ?></p>
+				<p class="twmp-checkout-summary__status-meta"><?php echo esc_html(sprintf(__('Order #%s', 'twmp-ath'), $order->get_order_number())); ?></p>
+			</div>
+		</div>
+		<?php
+		return;
+	endif;
 	?>
 	<div class="twmp-checkout-summary__totals">
 		<div class="twmp-checkout-summary__total-row">
