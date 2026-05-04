@@ -141,6 +141,7 @@ __webpack_require__.r(__webpack_exports__);
   let refreshTimer = null;
   let loadingOverlay = null;
   const getCartForm = () => (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.woocommerce-cart-form');
+  const getQuantityInput = () => (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.select)('.twmp-ticket-quantity__input', el);
   const setLoadingState = isLoading => {
     if (isLoading) {
       if (!loadingOverlay) {
@@ -202,10 +203,48 @@ __webpack_require__.r(__webpack_exports__);
       window.location.reload();
     });
   };
+  const clampQuantity = value => {
+    const parsed = Number.parseInt(value, 10);
+    if (Number.isNaN(parsed) || parsed < 1) {
+      return 1;
+    }
+    return parsed;
+  };
+  const syncQuantityInput = nextValue => {
+    const quantityInput = getQuantityInput();
+    if (!quantityInput) {
+      return;
+    }
+    quantityInput.value = String(clampQuantity(nextValue));
+    quantityInput.dispatchEvent(new Event('change', {
+      bubbles: true
+    }));
+  };
+  const updateQuantityByStep = step => {
+    const quantityInput = getQuantityInput();
+    if (!quantityInput) {
+      return;
+    }
+    const currentValue = clampQuantity(quantityInput.value);
+    const nextValue = step === 'plus' ? currentValue + 1 : currentValue - 1;
+    syncQuantityInput(nextValue);
+  };
+  (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.on)('click', e => {
+    const target = e.target;
+    const stepButton = target && target.closest ? target.closest('[data-ticket-quantity-step]') : null;
+    if (!stepButton) {
+      return;
+    }
+    e.preventDefault();
+    updateQuantityByStep(stepButton.getAttribute('data-ticket-quantity-step'));
+  }, el);
   (0,lib_dom__WEBPACK_IMPORTED_MODULE_0__.on)('change', e => {
     const target = e.target;
-    if (!target || !['twmp_ticket_price_option', 'twmp_ticket_performance'].includes(target.name)) {
+    if (!target || !['twmp_ticket_price_option', 'twmp_ticket_performance', 'twmp_ticket_quantity'].includes(target.name)) {
       return;
+    }
+    if (target.name === 'twmp_ticket_quantity') {
+      target.value = String(clampQuantity(target.value));
     }
     window.clearTimeout(refreshTimer);
     setLoadingState(true);

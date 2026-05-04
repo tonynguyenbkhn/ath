@@ -10,6 +10,7 @@ export default el => {
 	let refreshTimer = null
 	let loadingOverlay = null
 	const getCartForm = () => select('.woocommerce-cart-form')
+	const getQuantityInput = () => select('.twmp-ticket-quantity__input', el)
 
 	const setLoadingState = isLoading => {
 		if (isLoading) {
@@ -94,8 +95,54 @@ export default el => {
 			body: body.toString(),
 		}).then(() => {
 			window.location.reload()
-		})
+			})
 	}
+
+	const clampQuantity = value => {
+		const parsed = Number.parseInt(value, 10)
+		if (Number.isNaN(parsed) || parsed < 1) {
+			return 1
+		}
+
+		return parsed
+	}
+
+	const syncQuantityInput = nextValue => {
+		const quantityInput = getQuantityInput()
+		if (!quantityInput) {
+			return
+		}
+
+		quantityInput.value = String(clampQuantity(nextValue))
+		quantityInput.dispatchEvent(new Event('change', { bubbles: true }))
+	}
+
+	const updateQuantityByStep = step => {
+		const quantityInput = getQuantityInput()
+		if (!quantityInput) {
+			return
+		}
+
+		const currentValue = clampQuantity(quantityInput.value)
+		const nextValue = step === 'plus' ? currentValue + 1 : currentValue - 1
+		syncQuantityInput(nextValue)
+	}
+
+	on(
+		'click',
+		e => {
+			const target = e.target
+			const stepButton = target && target.closest ? target.closest('[data-ticket-quantity-step]') : null
+
+			if (!stepButton) {
+				return
+			}
+
+			e.preventDefault()
+			updateQuantityByStep(stepButton.getAttribute('data-ticket-quantity-step'))
+		},
+		el
+	)
 
 	on(
 		'change',
@@ -107,9 +154,14 @@ export default el => {
 				![
 					'twmp_ticket_price_option',
 					'twmp_ticket_performance',
+					'twmp_ticket_quantity',
 				].includes(target.name)
 			) {
 				return
+			}
+
+			if (target.name === 'twmp_ticket_quantity') {
+				target.value = String(clampQuantity(target.value))
 			}
 
 			window.clearTimeout(refreshTimer)

@@ -4,15 +4,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-remove_action('woocommerce_checkout_order_review', 'woocommerce_order_review', 10);
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10);
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10);
 remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_output_all_notices', 10);
-
-// Layout
-add_action('woocommerce_checkout_before_customer_details',  'wcs_checkout_page_block_open', 10);
-add_action('woocommerce_checkout_after_customer_details', 'wcs_checkout_page_block_between', 40);
-add_action('woocommerce_checkout_after_order_review', 'wcs_checkout_page_block_close', 90);
 
 // add_filter('woocommerce_default_address_fields', 'wcs_checkout_update_fields_order');
 // add_filter('woocommerce_checkout_fields', 'wcs_checkout_update_placeholder_fields');
@@ -25,31 +19,18 @@ add_action('woocommerce_before_checkout_form', 'wcs_checkout_page_open', 5);
 
 function wcs_checkout_page_open()
 {
-  echo '<div class="page-block page-block--checkout" data-block="checkout-custom">';
+  echo '<div class="page-block page-block--checkout woocommerce-checkout-custom" data-block="checkout-custom">';
+  echo '<div class="twmp-checkout-steps" aria-hidden="true">';
+  echo '<div class="twmp-checkout-steps__item is-active"><span class="twmp-checkout-steps__index">1</span><span class="twmp-checkout-steps__label">' . esc_html__('Booking information', 'twmp-ath') . '</span></div>';
+  echo '<div class="twmp-checkout-steps__line"></div>';
+  echo '<div class="twmp-checkout-steps__item"><span class="twmp-checkout-steps__index">2</span><span class="twmp-checkout-steps__label">' . esc_html__('Payment', 'twmp-ath') . '</span></div>';
+  echo '</div>';
 }
 
 add_action('woocommerce_after_checkout_form', 'wcs_checkout_page_close', 100);
 
 function wcs_checkout_page_close()
 {
-  echo '</div>';
-}
-
-function wcs_checkout_page_block_open()
-{
-  echo '<div class="grid page-block__grid">';
-  echo '<div class="grid__col page-block__col page-block__col--main">';
-}
-
-function wcs_checkout_page_block_between()
-{
-  echo '</div>';
-  echo '<div class="grid__col page-block__col page-block__col--sidebar">';
-}
-
-function wcs_checkout_page_block_close()
-{
-  echo '</div>';
   echo '</div>';
 }
 
@@ -81,6 +62,30 @@ function wcs_checkout_update_placeholder_fields($fields)
 function wcs_checkout_render_shop_steps()
 {
   get_template_part('templates/blocks/shop-steps', null, []);
+}
+
+function twmp_checkout_get_cart_item_key_by_product_id($product_id = 0)
+{
+  if (!function_exists('WC') || !WC()->cart) {
+    return '';
+  }
+
+  $product_id = absint($product_id);
+  if (!$product_id) {
+    $product_id = twmp_checkout_get_ticket_product_id();
+  }
+
+  if (!$product_id) {
+    return '';
+  }
+
+  foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+    if (!empty($cart_item['product_id']) && absint($cart_item['product_id']) === $product_id) {
+      return $cart_item_key;
+    }
+  }
+
+  return '';
 }
 
 add_action('devvn_checkout_fields', function ($fields) {
@@ -319,18 +324,33 @@ function twmp_checkout_render_ticket_detail_section()
   }
 
   $state = twmp_checkout_get_ticket_selection_state($product_id);
+  $quantity = 1;
+  $cart_item_key = twmp_checkout_get_cart_item_key_by_product_id($product_id);
+
+  if ($cart_item_key && function_exists('WC') && WC()->cart) {
+    foreach (WC()->cart->get_cart() as $current_cart_item_key => $cart_item) {
+      if ($current_cart_item_key !== $cart_item_key) {
+        continue;
+      }
+
+      $quantity = !empty($cart_item['quantity']) ? max(1, absint($cart_item['quantity'])) : 1;
+      break;
+    }
+  }
   ?>
-  <section class="twmp-checkout-ticket-detail">
+  <section class="twmp-checkout-card twmp-checkout-card--ticket-detail">
     <input type="hidden" name="twmp_ticket_product_id" value="<?php echo esc_attr($product_id); ?>">
 
-    <header class="twmp-checkout-ticket-detail__header">
-      <h3 class="twmp-checkout-ticket-detail__title"><?php echo esc_html__('Ticket detail', 'twmp-ath'); ?></h3>
+    <header class="twmp-checkout-card__header">
+      <span class="twmp-checkout-card__step">2</span>
+      <h3 class="twmp-checkout-card__title"><?php echo esc_html__('Ticket detail', 'twmp-ath'); ?></h3>
     </header>
 
-    <?php if (!empty($ticket_data['performances'])) : ?>
-      <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--performance">
-        <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Select Performance date *', 'twmp-ath'); ?></p>
-        <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--performance">
+    <div class="twmp-checkout-card__content">
+      <?php if (!empty($ticket_data['performances'])) : ?>
+        <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--performance">
+          <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Select Performance date *', 'twmp-ath'); ?></p>
+          <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--performance">
           <?php foreach ($ticket_data['performances'] as $option) : ?>
             <label class="twmp-ticket-option <?php echo esc_attr($state['performance_key'] === $option['key'] ? 'is-selected' : ''); ?>">
               <input
@@ -347,14 +367,14 @@ function twmp_checkout_render_ticket_detail_section()
               <span class="twmp-ticket-option__time"><?php echo esc_html($option['time']); ?></span>
             </label>
           <?php endforeach; ?>
+          </div>
         </div>
-      </div>
-    <?php endif; ?>
+      <?php endif; ?>
 
-    <?php if (!empty($ticket_data['ticket_prices'])) : ?>
-      <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--price">
-        <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Select type of ticket', 'twmp-ath'); ?></p>
-        <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--price">
+      <?php if (!empty($ticket_data['ticket_prices'])) : ?>
+        <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--price">
+          <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Select type of ticket', 'twmp-ath'); ?></p>
+          <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--price">
           <?php foreach ($ticket_data['ticket_prices'] as $option) : ?>
             <label class="twmp-ticket-price-option <?php echo esc_attr($state['price_key'] === $option['key'] ? 'is-selected' : ''); ?>">
               <input
@@ -369,14 +389,33 @@ function twmp_checkout_render_ticket_detail_section()
               <span class="twmp-ticket-price-option__unit"><?php echo esc_html__('/ Ticket', 'twmp-ath'); ?></span>
             </label>
           <?php endforeach; ?>
+          </div>
+        </div>
+      <?php endif; ?>
+
+      <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--quantity">
+        <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Quantity', 'twmp-ath'); ?> *</p>
+        <div class="twmp-ticket-quantity" data-ticket-quantity-control>
+          <button type="button" class="twmp-ticket-quantity__button" data-ticket-quantity-step="minus" aria-label="<?php echo esc_attr__('Decrease quantity', 'twmp-ath'); ?>">-</button>
+          <input
+            type="number"
+            name="twmp_ticket_quantity"
+            class="twmp-ticket-quantity__input"
+            value="<?php echo esc_attr($quantity); ?>"
+            min="1"
+            step="1"
+            inputmode="numeric"
+            required
+          >
+          <button type="button" class="twmp-ticket-quantity__button" data-ticket-quantity-step="plus" aria-label="<?php echo esc_attr__('Increase quantity', 'twmp-ath'); ?>">+</button>
         </div>
       </div>
-    <?php endif; ?>
+    </div>
   </section>
   <?php
 }
 
-add_action('woocommerce_checkout_before_customer_details', 'twmp_checkout_render_ticket_detail_section', 20);
+add_action('woocommerce_checkout_after_customer_details', 'twmp_checkout_render_ticket_detail_section', 20);
 
 add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
   if (!function_exists('WC') || !WC()->session) {
@@ -396,6 +435,24 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
   ));
 
   WC()->session->set('twmp_ticket_selection', $selection);
+
+  $quantity = !empty($data['twmp_ticket_quantity']) ? max(1, absint($data['twmp_ticket_quantity'])) : 0;
+  if ($quantity > 0 && function_exists('WC') && WC()->cart) {
+    $cart_item_key = twmp_checkout_get_cart_item_key_by_product_id($product_id);
+    if ($cart_item_key) {
+      $current_quantity = 0;
+      foreach (WC()->cart->get_cart() as $current_cart_item_key => $cart_item) {
+        if ($current_cart_item_key === $cart_item_key) {
+          $current_quantity = !empty($cart_item['quantity']) ? absint($cart_item['quantity']) : 0;
+          break;
+        }
+      }
+
+      if ($current_quantity !== $quantity) {
+        WC()->cart->set_quantity($cart_item_key, $quantity, true);
+      }
+    }
+  }
 });
 
 add_action('woocommerce_checkout_process', function () {
@@ -633,6 +690,38 @@ function twmp_display_custom_fields_in_admin($order) {
   }
 }
 
+add_action('woocommerce_checkout_update_order_meta', function ($order_id) {
+  if (!empty($_POST['billing_birth_date'])) {
+    update_post_meta($order_id, '_billing_birth_date', sanitize_text_field($_POST['billing_birth_date']));
+  }
+
+  if (!empty($_POST['billing_age'])) {
+    update_post_meta($order_id, '_billing_age', absint($_POST['billing_age']));
+  }
+}, 20);
+
+add_action('woocommerce_admin_order_data_after_billing_address', function ($order) {
+  $birth_date = get_post_meta($order->get_id(), '_billing_birth_date', true);
+  $age = get_post_meta($order->get_id(), '_billing_age', true);
+
+  if (!$birth_date && !$age) {
+    return;
+  }
+
+  echo '<div class="address">';
+  echo '<h3>' . esc_html__('Booking information', 'twmp-ath') . '</h3>';
+
+  if ($birth_date) {
+    echo '<p><strong>' . esc_html__('Date of Birth:', 'twmp-ath') . '</strong> ' . esc_html($birth_date) . '</p>';
+  }
+
+  if ($age) {
+    echo '<p><strong>' . esc_html__('Age:', 'twmp-ath') . '</strong> ' . esc_html($age) . '</p>';
+  }
+
+  echo '</div>';
+}, 30);
+
 // add_filter('woocommerce_checkout_fields', function ($fields) {
 //   $fields['billing']['billing_delivery_address'] = array(
 //     'type'        => 'select',
@@ -660,6 +749,91 @@ function twmp_display_custom_fields_in_admin($order) {
 //   return $fields;
 // });
  */
+add_filter('woocommerce_checkout_fields', function ($fields) {
+  $hidden_billing_fields = array(
+    'billing_company',
+    'billing_address_1',
+    'billing_address_2',
+    'billing_city',
+    'billing_state',
+    'billing_postcode',
+  );
+
+  foreach ($hidden_billing_fields as $field_key) {
+    if (isset($fields['billing'][$field_key])) {
+      $fields['billing'][$field_key]['type'] = 'hidden';
+      $fields['billing'][$field_key]['required'] = false;
+    }
+  }
+
+  if (isset($fields['billing']['billing_country'])) {
+    $fields['billing']['billing_country']['type'] = 'hidden';
+    $fields['billing']['billing_country']['required'] = false;
+    $fields['billing']['billing_country']['default'] = 'VN';
+  }
+
+  if (isset($fields['billing']['billing_first_name'])) {
+    $fields['billing']['billing_first_name']['type'] = 'text';
+    $fields['billing']['billing_first_name']['required'] = true;
+    $fields['billing']['billing_first_name']['label'] = '';
+    $fields['billing']['billing_first_name']['placeholder'] = esc_html__('First Name', 'twmp-ath');
+    $fields['billing']['billing_first_name']['class'] = array('form-row-first', 'twmp-checkout-field');
+    $fields['billing']['billing_first_name']['priority'] = 10;
+  }
+
+  if (isset($fields['billing']['billing_last_name'])) {
+    $fields['billing']['billing_last_name']['type'] = 'text';
+    $fields['billing']['billing_last_name']['required'] = true;
+    $fields['billing']['billing_last_name']['label'] = '';
+    $fields['billing']['billing_last_name']['placeholder'] = esc_html__('Last Name', 'twmp-ath');
+    $fields['billing']['billing_last_name']['class'] = array('form-row-last', 'twmp-checkout-field');
+    $fields['billing']['billing_last_name']['priority'] = 20;
+  }
+
+  if (isset($fields['billing']['billing_phone'])) {
+    $fields['billing']['billing_phone']['type'] = 'tel';
+    $fields['billing']['billing_phone']['required'] = true;
+    $fields['billing']['billing_phone']['label'] = '';
+    $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone number', 'twmp-ath');
+    $fields['billing']['billing_phone']['class'] = array('form-row-first', 'twmp-checkout-field');
+    $fields['billing']['billing_phone']['priority'] = 30;
+  }
+
+  $fields['billing']['billing_birth_date'] = array(
+    'type'        => 'date',
+    'label'       => '',
+    'placeholder' => esc_html__('Date of Birth', 'twmp-ath'),
+    'required'    => true,
+    'class'       => array('form-row-first', 'twmp-checkout-field'),
+    'priority'    => 40,
+  );
+
+  if (isset($fields['billing']['billing_email'])) {
+    $fields['billing']['billing_email']['type'] = 'email';
+    $fields['billing']['billing_email']['required'] = true;
+    $fields['billing']['billing_email']['label'] = '';
+    $fields['billing']['billing_email']['placeholder'] = esc_html__('Email', 'twmp-ath');
+    $fields['billing']['billing_email']['class'] = array('form-row-last', 'twmp-checkout-field');
+    $fields['billing']['billing_email']['priority'] = 50;
+  }
+
+  $fields['billing']['billing_age'] = array(
+    'type'              => 'number',
+    'label'             => '',
+    'placeholder'       => esc_html__('Age', 'twmp-ath'),
+    'required'          => true,
+    'class'             => array('form-row-last', 'twmp-checkout-field'),
+    'custom_attributes' => array(
+      'min'       => 1,
+      'step'      => 1,
+      'inputmode' => 'numeric',
+    ),
+    'priority'          => 60,
+  );
+
+  return $fields;
+}, 20);
+
 add_filter('woocommerce_add_to_cart_redirect', function ($url) {
   if (!empty($_REQUEST['twmp_buy_now'])) {
     return wc_get_cart_url();

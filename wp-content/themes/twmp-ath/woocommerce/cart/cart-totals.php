@@ -5,12 +5,6 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/cart/cart-totals.php.
  *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
  * @see     https://woocommerce.com/document/template-structure/
  * @package WooCommerce\Templates
  * @version 2.3.6
@@ -18,6 +12,23 @@
 
 defined('ABSPATH') || exit;
 
+$is_checkout_summary = function_exists('is_checkout') && is_checkout();
+
+if ($is_checkout_summary) :
+	?>
+	<div class="twmp-checkout-summary__totals">
+		<div class="twmp-checkout-summary__total-row">
+			<span class="twmp-checkout-summary__total-label"><?php esc_html_e('Total', 'twmp-ath'); ?></span>
+			<span class="twmp-checkout-summary__total-value"><?php wc_cart_totals_order_total_html(); ?></span>
+		</div>
+
+		<div class="twmp-checkout-summary__actions">
+			<button type="button" class="twmp-checkout-summary__button submit-thanh-toan"><?php esc_html_e('Proceed to payment', 'twmp-ath'); ?></button>
+		</div>
+	</div>
+	<?php
+	return;
+endif;
 ?>
 <div class="cart_totals <?php echo (WC()->customer->has_calculated_shipping()) ? 'calculated_shipping' : ''; ?>">
 
@@ -84,8 +95,7 @@ defined('ABSPATH') || exit;
 				foreach (WC()->cart->get_tax_totals() as $code => $tax) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		?>
 					<tr class="tax-rate tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
-						<th><?php echo esc_html($tax->label) . $estimated_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-							?></th>
+						<th><?php echo esc_html($tax->label) . $estimated_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
 						<td data-title="<?php echo esc_attr($tax->label); ?>"><?php echo wp_kses_post($tax->formatted_amount); ?></td>
 					</tr>
 				<?php
@@ -93,8 +103,7 @@ defined('ABSPATH') || exit;
 			} else {
 				?>
 				<tr class="tax-total">
-					<th><?php echo esc_html(WC()->countries->tax_or_vat()) . $estimated_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-						?></th>
+					<th><?php echo esc_html(WC()->countries->tax_or_vat()) . $estimated_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
 					<td data-title="<?php echo esc_attr(WC()->countries->tax_or_vat()); ?>"><?php wc_cart_totals_taxes_total_html(); ?></td>
 				</tr>
 		<?php

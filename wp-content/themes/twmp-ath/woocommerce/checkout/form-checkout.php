@@ -34,25 +34,26 @@ if (! $checkout->is_registration_enabled() && $checkout->is_registration_require
 
 	<?php if ($checkout->get_checkout_fields()) : ?>
 
-		<?php do_action('woocommerce_checkout_before_customer_details'); ?>
+		<div class="twmp-checkout-stack">
+			<section class="twmp-checkout-card twmp-checkout-card--booking">
+				<header class="twmp-checkout-card__header">
+					<span class="twmp-checkout-card__step">1</span>
+					<h3 class="twmp-checkout-card__title"><?php esc_html_e('Ticket booking information', 'twmp-ath'); ?></h3>
+				</header>
 
-		<div class="col2-set" id="customer_details">
-			<div class="col-1">
-				<?php do_action('woocommerce_checkout_billing'); ?>
-			</div>
+				<div class="twmp-checkout-card__content">
+					<?php do_action('woocommerce_checkout_billing'); ?>
+				</div>
+			</section>
 
-			<div class="col-2">
-				<?php do_action('woocommerce_checkout_shipping'); ?>
-			</div>
+			<?php do_action('woocommerce_checkout_after_customer_details'); ?>
 		</div>
-
-		<?php do_action('woocommerce_checkout_after_customer_details'); ?>
 
 	<?php endif; ?>
 
 	<?php do_action('woocommerce_checkout_before_order_review_heading'); ?>
 
-	<div class="order_review_wrapper">
+	<div class="order_review_wrapper twmp-checkout-payment">
 		<h3 id="order_review_heading"><?php esc_html_e('Payment method', 'twmp-ath'); ?></h3>
 
 		<?php do_action('woocommerce_checkout_before_order_review'); ?>
