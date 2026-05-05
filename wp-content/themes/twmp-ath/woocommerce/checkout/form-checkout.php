@@ -28,7 +28,7 @@ if (! $checkout->is_registration_enabled() && $checkout->is_registration_require
 	return;
 }
 
-$is_payment_step = function_exists('twmp_checkout_is_payment_step') && twmp_checkout_is_payment_step();
+$is_payment_step = function_exists('twmp_checkout_is_payment_step_2') && twmp_checkout_is_payment_step_2();
 
 if ($is_payment_step) {
 	if (function_exists('twmp_checkout_render_payment_step_section')) {

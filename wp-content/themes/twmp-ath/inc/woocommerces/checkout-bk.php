@@ -1571,7 +1571,6 @@ add_action('woocommerce_process_shop_order_meta', function ($order_id) {
 }, 20);
 
 // AJAX handler for payment proof upload and status polling are defined above in the code.
-
 add_action('wp_ajax_twmp_upload_payment_bill', 'twmp_upload_payment_bill');
 add_action('wp_ajax_nopriv_twmp_upload_payment_bill', 'twmp_upload_payment_bill');
 
