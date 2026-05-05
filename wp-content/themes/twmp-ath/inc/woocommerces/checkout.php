@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10);
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10);
-remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_output_all_notices', 10);
+// remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_output_all_notices', 10);
 
 // add_filter('woocommerce_default_address_fields', 'wcs_checkout_update_fields_order');
 // add_filter('woocommerce_checkout_fields', 'wcs_checkout_update_placeholder_fields');
@@ -16,6 +16,16 @@ remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_outp
 
 add_action('woocommerce_before_checkout_form', 'wcs_checkout_page_open', 5);
 // add_action('woocommerce_before_checkout_form', 'wcs_checkout_render_shop_steps', 6);
+// add_filter('woocommerce_checkout_redirect_empty_cart', 'twmp_checkout_allow_payment_step_empty_cart', 10);
+
+function twmp_checkout_allow_payment_step_empty_cart($redirect_empty_cart)
+{
+  if (function_exists('twmp_checkout_is_payment_step_2') && twmp_checkout_is_payment_step_2()) {
+    return false;
+  }
+
+  return $redirect_empty_cart;
+}
 
 function wcs_checkout_page_open()
 {
@@ -32,7 +42,7 @@ function wcs_checkout_page_open()
     'nonceActionPrefix'  => 'twmp_checkout_payment_',
   );
 
-  echo '<div class="page-block page-block--checkout woocommerce-checkout-custom" data-block="checkout-custom" data-settings="' . esc_attr(wp_json_encode($settings)) . '">';
+  echo '<div class="page-block page-block--checkout woocommerce-checkout-custom--settings" data-settings="' . esc_attr(wp_json_encode($settings)) . '">';
   echo '<div class="twmp-checkout-steps" aria-hidden="true">';
   echo '<div class="twmp-checkout-steps__item ' . esc_attr(1 === $step ? 'is-active' : '') . '"><span class="twmp-checkout-steps__index">1</span><span class="twmp-checkout-steps__label">' . esc_html__('Booking information', 'twmp-ath') . '</span></div>';
   echo '<div class="twmp-checkout-steps__line"></div>';
@@ -47,14 +57,14 @@ function wcs_checkout_page_close()
   echo '</div>';
 }
 
-function wcs_checkout_update_fields_order($fields)
-{
-  unset($fields['company']);
-  unset($fields['address_2']);
-  unset($fields['postcode']);
+// function wcs_checkout_update_fields_order($fields)
+// {
+//   unset($fields['company']);
+//   unset($fields['address_2']);
+//   unset($fields['postcode']);
 
-  return $fields;
-}
+//   return $fields;
+// }
 
 function wcs_checkout_update_placeholder_fields($fields)
 {
@@ -72,10 +82,10 @@ function wcs_checkout_update_placeholder_fields($fields)
   return $fields;
 }
 
-function wcs_checkout_render_shop_steps()
-{
-  get_template_part('templates/blocks/shop-steps', null, []);
-}
+// function wcs_checkout_render_shop_steps()
+// {
+//   get_template_part('template-parts/woocommerces/shop-steps', null, []);
+// }
 
 function twmp_checkout_get_cart_item_key_by_product_id($product_id = 0)
 {
@@ -101,14 +111,14 @@ function twmp_checkout_get_cart_item_key_by_product_id($product_id = 0)
   return '';
 }
 
-add_action('devvn_checkout_fields', function ($fields) {
-  unset($fields['billing']['billing_state']);
-  unset($fields['billing']['billing_city']);
-  unset($fields['billing']['billing_address_1']);
-  unset($fields['billing']['billing_address_2']);
+// add_action('devvn_checkout_fields', function ($fields) {
+//   unset($fields['billing']['billing_state']);
+//   unset($fields['billing']['billing_city']);
+//   unset($fields['billing']['billing_address_1']);
+//   unset($fields['billing']['billing_address_2']);
 
-  return $fields;
-}, 10, 1);
+//   return $fields;
+// }, 10, 1);
 
 
 // add_filter('woocommerce_checkout_fields', function ($fields) {
@@ -763,27 +773,27 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
 // });
  */
 add_filter('woocommerce_checkout_fields', function ($fields) {
-  $hidden_billing_fields = array(
-    'billing_company',
-    'billing_address_1',
-    'billing_address_2',
-    'billing_city',
-    'billing_state',
-    'billing_postcode',
-  );
+  // $hidden_billing_fields = array(
+  //   'billing_company',
+  //   'billing_address_1',
+  //   'billing_address_2',
+  //   'billing_city',
+  //   'billing_state',
+  //   'billing_postcode',
+  // );
 
-  foreach ($hidden_billing_fields as $field_key) {
-    if (isset($fields['billing'][$field_key])) {
-      $fields['billing'][$field_key]['type'] = 'hidden';
-      $fields['billing'][$field_key]['required'] = false;
-    }
-  }
+  // foreach ($hidden_billing_fields as $field_key) {
+  //   if (isset($fields['billing'][$field_key])) {
+  //     $fields['billing'][$field_key]['type'] = 'hidden';
+  //     $fields['billing'][$field_key]['required'] = false;
+  //   }
+  // }
 
-  if (isset($fields['billing']['billing_country'])) {
-    $fields['billing']['billing_country']['type'] = 'hidden';
-    $fields['billing']['billing_country']['required'] = false;
-    $fields['billing']['billing_country']['default'] = 'VN';
-  }
+  // if (isset($fields['billing']['billing_country'])) {
+  //   $fields['billing']['billing_country']['type'] = 'hidden';
+  //   $fields['billing']['billing_country']['required'] = false;
+  //   $fields['billing']['billing_country']['default'] = 'VN';
+  // }
 
   if (isset($fields['billing']['billing_first_name'])) {
     $fields['billing']['billing_first_name']['type'] = 'text';
@@ -847,26 +857,37 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
   return $fields;
 }, 20);
 
-add_filter('woocommerce_add_to_cart_redirect', function ($url) {
-  if (!empty($_REQUEST['twmp_buy_now'])) {
-    return wc_get_cart_url();
+// Xử lý tính năng "Buy Now" - bỏ qua giỏ hàng và chuyển thẳng đến trang thanh toán
+add_action('woocommerce_add_to_cart', function () {
+  if (empty($_REQUEST['twmp_buy_now'])) {
+    return;
   }
 
-  return $url;
+  if (function_exists('WC') && WC()->cart) {
+    WC()->cart->empty_cart();
+  }
+}, 1);
+
+add_filter('woocommerce_add_to_cart_redirect', function ($redirect_url) {
+  if (!empty($_REQUEST['twmp_buy_now'])) {
+    return wc_get_checkout_url();
+  }
+
+  return $redirect_url;
 });
 
 add_filter('woocommerce_checkout_fields', function ($fields) {
-  $fields['billing']['billing_first_name']['type'] = 'hidden';
-  $fields['billing']['billing_first_name']['required'] = false;
-  $fields['billing']['billing_country']['type'] = 'hidden';
-  $fields['billing']['billing_country']['required'] = false;
-  $fields['billing']['billing_address_1']['type'] = 'hidden';
-  $fields['billing']['billing_address_1']['required'] = false;
-  $fields['billing']['billing_address_2']['type'] = 'hidden';
-  $fields['billing']['billing_postcode']['type'] = 'hidden';
-  $fields['billing']['billing_city']['type'] = 'hidden';
-  $fields['billing']['billing_city']['required'] = false;
-  $fields['billing']['billing_country']['default'] = 'VN'; // đổi thành mã quốc gia mong muốn
+  // $fields['billing']['billing_first_name']['type'] = 'hidden';
+  // $fields['billing']['billing_first_name']['required'] = false;
+  // $fields['billing']['billing_country']['type'] = 'hidden';
+  // $fields['billing']['billing_country']['required'] = false;
+  // $fields['billing']['billing_address_1']['type'] = 'hidden';
+  // $fields['billing']['billing_address_1']['required'] = false;
+  // $fields['billing']['billing_address_2']['type'] = 'hidden';
+  // $fields['billing']['billing_postcode']['type'] = 'hidden';
+  // $fields['billing']['billing_city']['type'] = 'hidden';
+  // $fields['billing']['billing_city']['required'] = false;
+  // $fields['billing']['billing_country']['default'] = 'VN';
 
   $fields['billing']['billing_last_name']['placeholder'] = 'Nhập họ và tên';
   $fields['billing']['billing_phone']['placeholder']     = 'Nhập số điện thoại';
@@ -1038,7 +1059,9 @@ function twmp_checkout_get_payment_order_context()
     $request_order_id = absint(wp_unslash($_GET['order_id']));
   }
 
-  if (isset($_GET['key'])) {
+  if (isset($_GET['order_key'])) {
+    $request_order_key = sanitize_text_field(wp_unslash($_GET['order_key']));
+  } elseif (isset($_GET['key'])) {
     $request_order_key = sanitize_text_field(wp_unslash($_GET['key']));
   }
 
@@ -1055,6 +1078,10 @@ function twmp_checkout_get_payment_order_context()
   if ($request_order_id > 0 && $request_order_key !== '') {
     $order = function_exists('wc_get_order') ? wc_get_order($request_order_id) : null;
     if ($order instanceof WC_Order && hash_equals($order->get_order_key(), $request_order_key)) {
+      if (!headers_sent()) {
+        nocache_headers();
+      }
+
       $context['step'] = 2;
       $context['order_id'] = $request_order_id;
       $context['order_key'] = $request_order_key;
@@ -1072,7 +1099,7 @@ function twmp_checkout_get_payment_order_context()
   return $context;
 }
 
-function twmp_checkout_is_payment_step()
+function twmp_checkout_is_payment_step_2()
 {
   $state = twmp_checkout_get_payment_order_context();
   return 2 === absint($state['step']);
@@ -1202,11 +1229,11 @@ function twmp_checkout_render_payment_step_section()
             <input type="hidden" name="nonce" value="<?php echo esc_attr($state['nonce']); ?>">
 
             <label class="twmp-checkout-proof-form__file">
-              <input type="file" name="payment_bill" accept="image/*,application/pdf" data-payment-file <?php disabled(!$state['can_upload']); ?>>
+              <input type="file" name="payment_bill" accept="image/*,application/pdf" data-payment-file>
               <span data-payment-file-label><?php echo esc_html__('Choose bill file', 'twmp-ath'); ?></span>
             </label>
 
-            <button type="submit" class="twmp-checkout-proof-form__button" data-payment-submit <?php disabled(!$state['can_upload']); ?>>
+            <button type="submit" class="twmp-checkout-proof-form__button" data-payment-submit>
               <?php echo esc_html($config['bill_title']); ?>
             </button>
 
@@ -1232,6 +1259,8 @@ function twmp_checkout_get_payment_order_from_request()
 
   if (isset($_REQUEST['order_key'])) {
     $order_key = sanitize_text_field(wp_unslash($_REQUEST['order_key']));
+  } elseif (isset($_REQUEST['key'])) {
+    $order_key = sanitize_text_field(wp_unslash($_REQUEST['key']));
   }
 
   if ((!$order_id || !$order_key) && function_exists('WC') && WC()->session) {
@@ -1291,7 +1320,8 @@ function twmp_checkout_handle_payment_proof_upload()
   $order = $order_context['order'];
   check_ajax_referer('twmp_checkout_payment_' . $order->get_id(), 'nonce');
 
-  if ($order->has_status(array('processing', 'completed'))) {
+  $proof_status = twmp_checkout_get_payment_proof_status($order);
+  if ('approved' === $proof_status) {
     wp_send_json_error(array('message' => esc_html__('This order was already approved.', 'twmp-ath')), 409);
   }
 
@@ -1359,6 +1389,11 @@ function twmp_checkout_handle_payment_proof_upload()
   wp_send_json_success(array(
     'message' => esc_html__('Bill uploaded successfully. Waiting for confirmation.', 'twmp-ath'),
     'status'  => twmp_checkout_get_payment_status_payload($order),
+    'redirect_url' => add_query_arg(
+      'key',
+      $order->get_order_key(),
+      wc_get_endpoint_url('order-received', $order->get_id(), wc_get_checkout_url())
+    ),
   ));
 }
 
@@ -1450,6 +1485,7 @@ add_filter('woocommerce_get_checkout_order_received_url', function ($order_recei
   return add_query_arg(array(
     'twmp_checkout_step' => 2,
     'order_id'           => $order->get_id(),
+    'order_key'          => $order->get_order_key(),
     'key'                => $order->get_order_key(),
   ), wc_get_checkout_url());
 }, 20, 2);
@@ -1533,3 +1569,102 @@ add_action('woocommerce_process_shop_order_meta', function ($order_id) {
     $order->update_status('failed', __('Payment proof rejected by admin.', 'twmp-ath'));
   }
 }, 20);
+
+// AJAX handler for payment proof upload and status polling are defined above in the code.
+
+add_action('wp_ajax_twmp_upload_payment_bill', 'twmp_upload_payment_bill');
+add_action('wp_ajax_nopriv_twmp_upload_payment_bill', 'twmp_upload_payment_bill');
+
+function twmp_upload_payment_bill()
+{
+    $order_id  = absint($_POST['order_id'] ?? 0);
+    $order_key = sanitize_text_field($_POST['order_key'] ?? '');
+    $nonce     = sanitize_text_field($_POST['nonce'] ?? '');
+
+    if (!$order_id || !$order_key || !$nonce) {
+        wp_send_json_error(['message' => 'Missing required data.'], 400);
+    }
+
+    if (!wp_verify_nonce($nonce, 'twmp_checkout_payment_' . $order_id)) {
+        wp_send_json_error(['message' => 'Invalid nonce.'], 403);
+    }
+
+    $order = wc_get_order($order_id);
+
+    if (!$order || $order->get_order_key() !== $order_key) {
+        wp_send_json_error(['message' => 'Invalid order.'], 403);
+    }
+
+    if (empty($_FILES['payment_bill']['name'])) {
+        wp_send_json_error(['message' => 'No file uploaded.'], 400);
+    }
+
+    $file = $_FILES['payment_bill'];
+
+    $allowed_mimes = [
+        'jpg|jpeg' => 'image/jpeg',
+        'png'      => 'image/png',
+        'webp'     => 'image/webp',
+        'pdf'      => 'application/pdf',
+    ];
+
+    add_filter('upload_mimes', function ($mimes) use ($allowed_mimes) {
+        return array_merge($mimes, $allowed_mimes);
+    });
+
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+
+    $attachment_id = media_handle_upload('payment_bill', 0);
+
+    if (is_wp_error($attachment_id)) {
+        wp_send_json_error([
+            'message' => $attachment_id->get_error_message(),
+        ], 400);
+    }
+
+    $order->update_meta_data('_payment_bill_attachment_id', $attachment_id);
+    $order->update_status('on-hold', 'Customer uploaded payment receipt.');
+    $order->save();
+
+    wp_send_json_success([
+        'message'       => 'Uploaded successfully.',
+        'attachment_id' => $attachment_id,
+        'url'           => wp_get_attachment_url($attachment_id),
+        'filename'      => basename(get_attached_file($attachment_id)),
+        'redirect_url'  => add_query_arg(
+            'key',
+            $order->get_order_key(),
+            wc_get_endpoint_url('order-received', $order->get_id(), wc_get_checkout_url())
+        ),
+    ]);
+}
+
+add_action('woocommerce_admin_order_data_after_order_details', function ($order) {
+    if (!$order instanceof WC_Order) {
+        return;
+    }
+    $attachment_id = $order->get_meta('_payment_bill_attachment_id', true);
+    if (!$attachment_id) {
+        return;
+    }
+
+    $url       = wp_get_attachment_url($attachment_id);
+    $mime_type = get_post_mime_type($attachment_id);
+
+    echo '<div class="order_data_column" style="width:100%; margin-top:20px;">';
+    echo '<h3>Payment Receipt</h3>';
+
+    if (str_starts_with($mime_type, 'image/')) {
+        echo '<a href="' . esc_url($url) . '" target="_blank">';
+        echo wp_get_attachment_image($attachment_id, 'medium', false, [
+            'style' => 'max-width:300px;height:auto;border:1px solid #ddd;padding:6px;background:#fff;',
+        ]);
+        echo '</a>';
+    } else {
+        echo '<a href="' . esc_url($url) . '" target="_blank">View uploaded receipt</a>';
+    }
+
+    echo '</div>';
+});

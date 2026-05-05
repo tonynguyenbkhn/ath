@@ -42,6 +42,10 @@ get_template_part('template-parts/footers/modal-popup-welcome', null, []);
 // get_template_part('templates/blocks/menu-mobile-footer', null, []);
 ?>
 <?php wp_footer(); ?>
+
+<script>
+</script>
+
 </body>
 
 </html>

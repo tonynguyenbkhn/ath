@@ -20,10 +20,10 @@ defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_cart'); ?>
 <?php
+$payment_state = function_exists('twmp_checkout_get_payment_order_context') ? twmp_checkout_get_payment_order_context() : array();
+$is_payment_summary = function_exists('twmp_checkout_is_payment_step') && twmp_checkout_is_payment_step() && !empty($payment_state['order']) && $payment_state['order'] instanceof WC_Order;
 $is_checkout_summary = function_exists('is_checkout') && is_checkout();
-if ($is_checkout_summary) :
-	$payment_state = function_exists('twmp_checkout_get_payment_order_context') ? twmp_checkout_get_payment_order_context() : array();
-	if (function_exists('twmp_checkout_is_payment_step') && twmp_checkout_is_payment_step() && !empty($payment_state['order']) && $payment_state['order'] instanceof WC_Order) :
+if ($is_payment_summary) :
 		$order = $payment_state['order'];
 		$order_items = function_exists('twmp_checkout_build_order_summary_data') ? twmp_checkout_build_order_summary_data($order) : array();
 		?>
@@ -63,6 +63,8 @@ if ($is_checkout_summary) :
 		<?php
 		return;
 	endif;
+
+if ($is_checkout_summary) :
 	$cart = function_exists('WC') ? WC()->cart : null;
 	$selection = function_exists('twmp_checkout_get_ticket_selection_state') ? twmp_checkout_get_ticket_selection_state() : array();
 	$selected_product_id = !empty($selection['product_id']) ? absint($selection['product_id']) : 0;

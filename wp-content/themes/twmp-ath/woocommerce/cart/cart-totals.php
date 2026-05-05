@@ -41,10 +41,10 @@ if ($is_checkout_summary) :
 			<span class="twmp-checkout-summary__total-value"><?php wc_cart_totals_order_total_html(); ?></span>
 		</div>
 
-		<div class="twmp-checkout-summary__actions">
-			<button type="button" class="twmp-checkout-summary__button submit-thanh-toan"><?php esc_html_e('Proceed to payment', 'twmp-ath'); ?></button>
-		</div>
+	<div class="twmp-checkout-summary__actions">
+		<button type="button" class="twmp-checkout-summary__button submit-thanh-toan" data-checkout-url="<?php echo esc_url(function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/')); ?>"><?php esc_html_e('Proceed to payment', 'twmp-ath'); ?></button>
 	</div>
+</div>
 	<?php
 	return;
 endif;

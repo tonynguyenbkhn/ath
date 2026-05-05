@@ -110,32 +110,34 @@ add_action('twmp_before_content_page', function () {
 
 // add_filter('pre_site_transient_update_plugins', '__return_null');
 
-add_filter( 'term_link', 'devvn_product_cat_permalink', 10, 3 );
-function devvn_product_cat_permalink( $url, $term, $taxonomy ){
+add_filter('term_link', 'devvn_product_cat_permalink', 10, 3);
+function devvn_product_cat_permalink($url, $term, $taxonomy)
+{
     switch ($taxonomy):
         case 'product_cat':
             $taxonomy_slug = 'product-category'; //Thay bằng slug hiện tại của bạn. Mặc định là product-category
-            if(strpos($url, $taxonomy_slug) === FALSE) break;
+            if (strpos($url, $taxonomy_slug) === FALSE) break;
             $url = str_replace('/' . $taxonomy_slug, '', $url);
             break;
     endswitch;
     return $url;
 }
 // Add our custom product cat rewrite rules
-function devvn_product_category_rewrite_rules($flash = false) {
-    $terms = get_terms( array(
+function devvn_product_category_rewrite_rules($flash = false)
+{
+    $terms = get_terms(array(
         'taxonomy' => 'product_cat',
         'post_type' => 'product',
         'hide_empty' => false,
     ));
-    if($terms && !is_wp_error($terms)){
+    if ($terms && !is_wp_error($terms)) {
         $siteurl = esc_url(home_url('/'));
-        foreach ($terms as $term){
+        foreach ($terms as $term) {
             $term_slug = $term->slug;
-            $baseterm = str_replace($siteurl,'',get_term_link($term->term_id,'product_cat'));
-            add_rewrite_rule($baseterm.'?$','index.php?product_cat='.$term_slug,'top');
-            add_rewrite_rule($baseterm.'page/([0-9]{1,})/?$', 'index.php?product_cat='.$term_slug.'&paged=$matches[1]','top');
-            add_rewrite_rule($baseterm.'(?:feed/)?(feed|rdf|rss|rss2|atom)/?$', 'index.php?product_cat='.$term_slug.'&feed=$matches[1]','top');
+            $baseterm = str_replace($siteurl, '', get_term_link($term->term_id, 'product_cat'));
+            add_rewrite_rule($baseterm . '?$', 'index.php?product_cat=' . $term_slug, 'top');
+            add_rewrite_rule($baseterm . 'page/([0-9]{1,})/?$', 'index.php?product_cat=' . $term_slug . '&paged=$matches[1]', 'top');
+            add_rewrite_rule($baseterm . '(?:feed/)?(feed|rdf|rss|rss2|atom)/?$', 'index.php?product_cat=' . $term_slug . '&feed=$matches[1]', 'top');
         }
     }
     if ($flash == true)
@@ -144,12 +146,13 @@ function devvn_product_category_rewrite_rules($flash = false) {
 add_action('init', 'devvn_product_category_rewrite_rules');
 
 /*Sửa lỗi khi tạo mới taxomony bị 404*/
-add_action( 'create_term', 'devvn_new_product_cat_edit_success', 10, 2 );
-function devvn_new_product_cat_edit_success( $term_id, $taxonomy ) {
+add_action('create_term', 'devvn_new_product_cat_edit_success', 10, 2);
+function devvn_new_product_cat_edit_success($term_id, $taxonomy)
+{
     devvn_product_category_rewrite_rules(true);
 }
 
-add_filter( 'wp_img_tag_add_auto_sizes', '__return_false' );
+add_filter('wp_img_tag_add_auto_sizes', '__return_false');
 
 // add_action( 'after_setup_theme', function() {
 //     remove_theme_support( 'duotone' );
@@ -159,41 +162,44 @@ add_filter( 'wp_img_tag_add_auto_sizes', '__return_false' );
 //     wp_dequeue_style('core-block-supports-duotone');
 // }, 100);
 
-add_action('template_redirect', function() {
+add_action('template_redirect', function () {
     ob_start('remove_core_inline_css');
 });
 
-function remove_core_inline_css($html) {
+function remove_core_inline_css($html)
+{
     return preg_replace('#<style[^>]*id=[\'"]core-block-supports-inline-css[\'"][^>]*>.*?</style>#si', '', $html);
 }
 
-add_action( 'template_redirect', 'redirect_old_product_category_url' );
+add_action('template_redirect', 'redirect_old_product_category_url');
 
-function redirect_old_product_category_url() {
+function redirect_old_product_category_url()
+{
     // Lấy URL hiện tại
     $requested_url = filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_UNSAFE_RAW);
     $requested_url = is_string($requested_url) ? wp_unslash($requested_url) : '';
 
     // Kiểm tra nếu URL có chứa /product-category/
-    if ( strpos( $requested_url, '/product-category/' ) !== false ) {
+    if (strpos($requested_url, '/product-category/') !== false) {
         // Tách slug (vd: /product-category/shoes/ → shoes)
-        $slug = str_replace( '/product-category/', '', $requested_url );
+        $slug = str_replace('/product-category/', '', $requested_url);
 
         // Đảm bảo kết thúc bằng dấu /
-        if ( substr($slug, -1) !== '/' ) {
+        if (substr($slug, -1) !== '/') {
             $slug .= '/';
         }
 
         // Tạo URL mới
-        $new_url = home_url( '/' . $slug );
+        $new_url = home_url('/' . $slug);
 
         // Redirect 301
-        wp_redirect( $new_url, 301 );
+        wp_redirect($new_url, 301);
         exit;
     }
 }
 
-function mytheme_enqueue_styles() {
+function mytheme_enqueue_styles()
+{
     wp_enqueue_style(
         'mytheme-style', // handle
         get_stylesheet_uri(), // tự động lấy style.css
