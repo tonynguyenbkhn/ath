@@ -148,3 +148,5 @@ vite.config.ts.timestamp-*
 
 wp-content/ai1wm-backups/
 *.wpress
+
+wp-content/themes/twmp-ath/assets/
