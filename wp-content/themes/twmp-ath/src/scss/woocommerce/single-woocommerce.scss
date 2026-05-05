@@ -2,37 +2,23 @@
 /*  Layout
 /*----------------------------------------*/
 .product__detail {
-	@include row(0);
+	@include clearfix();
 
 	.woocommerce-product-gallery {
-		flex: 0 0 100%;
-		max-width: 100%;
-		order: 1;
-		padding-left: 0;
-		padding-right: 0;
+		float: left;
+		width: 100%;
 
 		@media (min-width: 1024px) {
-			flex: 0 0 39%;
-			max-width: 39%;
-			order: 1;
-			padding-left: 0;
-			padding-right: 0;
+			width: 39%;
 		}
 	}
 
 	.summary.entry-summary {
-		flex: 0 0 100%;
-		max-width: 100%;
-		padding-left: 0;
-		padding-right: 0;
-		order: 2;
+		float: right;
+		width: 100%;
 
 		@media (min-width: 1024px) {
-			flex: 0 0 61%;
-			max-width: 61%;
-			order: 1;
-			padding-left: 0;
-			padding-right: 0;
+			width: 61%;
 		}
 
 		.entry-summary-wrapper {
@@ -48,9 +34,9 @@
 	}
 
 	.woocommerce_after_single_product_summary {
-		@include col(12, 0);
 		margin-top: 0;
-		order: 3;
+		float: left;
+		width: 100%;
 
 		@media (max-width: 991px) {
 			order: 2;

@@ -333,18 +333,19 @@ add_filter('woocommerce_related_products', 'twmp_related_products_ids', 10, 2);
 
 add_action('woocommerce_after_single_product_summary', function () {
     echo '<div class="woocommerce_after_single_product_summary">';
-    echo '<div class="row">';
-    echo '<div class="col-lg-8 col-md-12 col-sm-12 col-12">';
+    // echo '<div class="row">';
+    // echo '<div class="col-lg-8 col-md-12 col-sm-12 col-12">';
 }, 5);
 
 add_action('woocommerce_after_single_product_summary', function () {
-    echo '</div>';
-    echo '<div class="col-lg-4 col-md-12 col-sm-12 col-12">';
-    echo '<div class="single__content-widgets">';
+    // echo '</div>';
+    // echo '<div class="col-lg-4 col-md-12 col-sm-12 col-12">';
+    // echo '<div class="single__content-widgets">';
 }, 50);
 
 add_action('woocommerce_after_single_product_summary', function () {
-    echo '</div></div></div></div>';
+    // echo '</div></div></div></div>';
+    echo '</div>';
 }, 1000);
 
 add_action('woocommerce_before_single_product', function () {
