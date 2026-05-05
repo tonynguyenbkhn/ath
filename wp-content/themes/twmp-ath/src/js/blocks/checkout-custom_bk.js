@@ -1,20 +1,82 @@
 import { select, on } from 'lib/dom'
 
 export default el => {
-	const checkoutForm = select('form.checkout', el)
-
-	if (!checkoutForm) {
+	const checkoutBlock = select('[data-block="checkout-custom"]', el) || el
+	
+	if (!checkoutBlock) {
 		return
 	}
 
+	let settings = {}
+	try {
+		const settingsNode = select('.woocommerce-checkout-custom--settings', checkoutBlock)
+		settings = JSON.parse(settingsNode ? settingsNode.getAttribute('data-settings') || '{}' : '{}')
+	} catch (error) {
+		settings = {}
+	}
+
+	const checkoutForm = select('form.checkout', checkoutBlock)
 	let refreshTimer = null
 	let loadingOverlay = null
+
+	const handleProceedToPayment = event => {
+		const target = event.target
+		const button = target && target.closest ? target.closest('.submit-thanh-toan') : null
+
+		if (!button || !checkoutBlock.contains(button)) {
+			return
+		}
+
+		event.preventDefault()
+
+		const placeOrderButton = checkoutForm
+			? checkoutForm.querySelector('#place_order')
+			: null
+
+		if (placeOrderButton && typeof placeOrderButton.click === 'function') {
+			placeOrderButton.click()
+			return
+		}
+
+		if (checkoutForm && typeof checkoutForm.requestSubmit === 'function') {
+			checkoutForm.requestSubmit()
+		}
+	}
+
 	const getCartForm = () => select('.woocommerce-cart-form')
-	const getQuantityInput = () => select('.twmp-ticket-quantity__input', el)
+	const getQuantityInput = () => select('.twmp-ticket-quantity__input', checkoutBlock)
+	const getTicketDetailCard = () => select('.twmp-checkout-card--ticket-detail', checkoutBlock)
+	const getTicketOptionItems = () =>
+		Array.from(checkoutBlock.querySelectorAll('.twmp-ticket-option, .twmp-ticket-price-option'))
+
+	const syncActiveRadioState = input => {
+		if (!input || !input.name) {
+			return
+		}
+
+		const option = input.closest('.twmp-ticket-option, .twmp-ticket-price-option')
+		if (!option) {
+			return
+		}
+
+		const group = checkoutBlock.querySelectorAll(`input[name="${input.name}"]`)
+		group.forEach(groupInput => {
+			const groupOption = groupInput.closest('.twmp-ticket-option, .twmp-ticket-price-option')
+			if (!groupOption) {
+				return
+			}
+
+			const isActive = groupInput === input || groupInput.checked
+			groupOption.classList.toggle('is-selected', isActive)
+			groupOption.classList.toggle('is-active', isActive)
+		})
+	}
 
 	const setLoadingState = isLoading => {
+		const ticketDetailCard = getTicketDetailCard()
+
 		if (isLoading) {
-			if (!loadingOverlay) {
+			if (!loadingOverlay && ticketDetailCard) {
 				loadingOverlay = document.createElement('div')
 				loadingOverlay.className = 'twmp-checkout-ticket-detail__loading'
 				loadingOverlay.setAttribute('aria-hidden', 'true')
@@ -24,19 +86,27 @@ export default el => {
 					'z-index:999',
 					'cursor:wait',
 					'background:rgba(255,255,255,.45)',
+					'pointer-events:auto',
+					'touch-action:none',
 				].join(';')
 
-				el.style.position = el.style.position || 'relative'
-				el.appendChild(loadingOverlay)
+				ticketDetailCard.style.position = ticketDetailCard.style.position || 'relative'
+				ticketDetailCard.appendChild(loadingOverlay)
 			}
 
-			el.setAttribute('aria-busy', 'true')
-			el.classList.add('is-loading')
+			checkoutBlock.setAttribute('aria-busy', 'true')
+			checkoutBlock.classList.add('is-loading')
+			if (ticketDetailCard) {
+				ticketDetailCard.classList.add('is-loading')
+			}
 			return
 		}
 
-		el.removeAttribute('aria-busy')
-		el.classList.remove('is-loading')
+		checkoutBlock.removeAttribute('aria-busy')
+		checkoutBlock.classList.remove('is-loading')
+		if (ticketDetailCard) {
+			ticketDetailCard.classList.remove('is-loading')
+		}
 
 		if (loadingOverlay && loadingOverlay.parentNode) {
 			loadingOverlay.parentNode.removeChild(loadingOverlay)
@@ -50,11 +120,60 @@ export default el => {
 		return new URLSearchParams(formData).toString()
 	}
 
+	const postAjax = async (payload, useFormData = false) => {
+		if (!ajaxUrl) {
+			return null
+		}
+
+		const requestInit = {
+			method: 'POST',
+			credentials: 'same-origin',
+		}
+
+		if (useFormData) {
+			requestInit.body = payload
+		} else {
+			requestInit.headers = {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+			}
+			requestInit.body = payload.toString()
+		}
+
+		try {
+			const response = await fetch(ajaxUrl, requestInit)
+			const raw = await response.text().catch(() => '')
+
+			let data = null
+			if (raw) {
+				try {
+					data = JSON.parse(raw)
+				} catch (error) {
+					data = {
+						success: false,
+						data: {
+							message: raw,
+						},
+					}
+				}
+			}
+
+			if (!response.ok) {
+				throw data || new Error('Request failed')
+			}
+
+			return data
+		} catch (error) {
+			console.error('checkout-custom ajax failed:', error)
+			throw error
+		}
+	}
+
 	const updateCheckoutSession = () => {
 		if (
 			typeof window.wc_checkout_params === 'undefined' ||
 			!window.wc_checkout_params ||
-			!window.wc_checkout_params.wc_ajax_url
+			!window.wc_checkout_params.wc_ajax_url ||
+			!checkoutForm
 		) {
 			return Promise.resolve()
 		}
@@ -95,7 +214,7 @@ export default el => {
 			body: body.toString(),
 		}).then(() => {
 			window.location.reload()
-			})
+		})
 	}
 
 	const clampQuantity = value => {
@@ -116,6 +235,8 @@ export default el => {
 		quantityInput.value = String(clampQuantity(nextValue))
 		quantityInput.dispatchEvent(new Event('change', { bubbles: true }))
 	}
+
+	on('click', handleProceedToPayment, checkoutBlock)
 
 	const updateQuantityByStep = step => {
 		const quantityInput = getQuantityInput()
@@ -141,7 +262,7 @@ export default el => {
 			e.preventDefault()
 			updateQuantityByStep(stepButton.getAttribute('data-ticket-quantity-step'))
 		},
-		el
+		checkoutBlock
 	)
 
 	on(
@@ -149,20 +270,34 @@ export default el => {
 		e => {
 			const target = e.target
 
-			if (
-				!target ||
-				![
-					'twmp_ticket_price_option',
-					'twmp_ticket_performance',
-					'twmp_ticket_quantity',
-				].includes(target.name)
-			) {
-				return
-			}
+		if (
+			!target ||
+			![
+				'twmp_ticket_price_option',
+				'twmp_ticket_performance',
+				'twmp_ticket_quantity',
+			].includes(target.name)
+		) {
+			return
+		}
 
-			if (target.name === 'twmp_ticket_quantity') {
-				target.value = String(clampQuantity(target.value))
-			}
+		if (target.matches && target.matches('input[type="radio"]')) {
+			syncActiveRadioState(target)
+		}
+
+		if (target.name === 'twmp_ticket_quantity') {
+			target.value = String(clampQuantity(target.value))
+		}
+
+		const ticketDetailCard = getTicketDetailCard()
+		if (ticketDetailCard) {
+			const controlWrappers = ticketDetailCard.querySelectorAll(
+				'.twmp-checkout-ticket-detail__options, [data-ticket-quantity-control]'
+			)
+			controlWrappers.forEach(wrapper => {
+				wrapper.classList.toggle('is-disabled', true)
+			})
+		}
 
 			window.clearTimeout(refreshTimer)
 			setLoadingState(true)
@@ -173,9 +308,274 @@ export default el => {
 					.catch(() => submitCartUpdate())
 					.finally(() => {
 						setLoadingState(false)
+						const ticketDetailCard = getTicketDetailCard()
+						if (ticketDetailCard) {
+							const controlWrappers = ticketDetailCard.querySelectorAll(
+								'.twmp-checkout-ticket-detail__options, [data-ticket-quantity-control]'
+							)
+							controlWrappers.forEach(wrapper => {
+								wrapper.classList.toggle('is-disabled', false)
+							})
+						}
 					})
 			}, 100)
 		},
-		el
+		checkoutBlock
 	)
+
+	getTicketOptionItems().forEach(item => {
+		const input = item.querySelector('input[type="radio"]')
+		if (input && input.checked) {
+			item.classList.add('is-selected', 'is-active')
+		}
+	})
+
+	const stage = select('[data-payment-stage]', checkoutBlock)
+	const proofForm = select('[data-payment-proof-form]', checkoutBlock)
+	const fileInput = select('[data-payment-file]', checkoutBlock)
+	const filePicker = select('.twmp-checkout-proof-form__file', checkoutBlock)
+	const fileLabel = select('[data-payment-file-label]', checkoutBlock)
+	const submitButton = select('[data-payment-submit]', checkoutBlock)
+	const notice = select('[data-payment-notice]', checkoutBlock)
+	const statusBadge = select('[data-payment-status-badge]', checkoutBlock)
+	const statusTitle = select('[data-payment-status-title]', checkoutBlock)
+	const statusText = select('[data-payment-status-text]', checkoutBlock)
+
+	if (!stage || !proofForm || !fileInput || !submitButton) {
+		return
+	}
+
+	if (stage.getAttribute('data-payment-initialized') === '1') {
+		return
+	}
+
+	stage.setAttribute('data-payment-initialized', '1')
+
+	const ajaxUrl = settings.ajaxUrl || window.ajaxurl || '/wp-admin/admin-ajax.php'
+	const orderId = stage.getAttribute('data-order-id') || settings.orderId || ''
+	const orderKey = stage.getAttribute('data-order-key') || settings.orderKey || ''
+	const nonce = stage.getAttribute('data-payment-nonce') || settings.nonce || ''
+	const pollAction = settings.pollAction || 'twmp_checkout_poll_payment_status'
+	const uploadAction = settings.uploadAction || 'twmp_checkout_upload_payment_proof'
+	const pollInterval = Number.parseInt(settings.pollInterval || 15000, 10) || 15000
+	const initialStatus = stage.getAttribute('data-payment-status') || ''
+	let pollTimer = null
+	let isUploading = false
+
+	const setNotice = (message, type) => {
+		if (!notice) {
+			return
+		}
+
+		notice.textContent = message || ''
+		notice.dataset.state = type || ''
+		notice.classList.toggle('is-error', type === 'error')
+		notice.classList.toggle('is-success', type === 'success')
+		notice.classList.toggle('is-waiting', type === 'waiting')
+	}
+
+	const setFileLabel = fileName => {
+		if (fileLabel) {
+			fileLabel.textContent = fileName || settings.fileLabel || 'Choose bill file'
+		}
+	}
+
+	const setButtonState = (disabled, label) => {
+		submitButton.classList.toggle('is-loading', !!disabled && isUploading)
+
+		if (label) {
+			submitButton.textContent = label
+		}
+	}
+
+	const getStatusPayload = response => {
+		if (!response || !response.success || !response.data) {
+			return null
+		}
+
+		return response.data.status || null
+	}
+
+	const applyStatus = payload => {
+		if (!payload) {
+			return
+		}
+
+		stage.setAttribute('data-payment-status', payload.proof_status || '')
+
+		if (statusBadge) {
+			statusBadge.textContent = payload.action_label || payload.status_label || ''
+		}
+
+		if (statusTitle) {
+			statusTitle.textContent = payload.status_label || ''
+		}
+
+		if (statusText) {
+			statusText.textContent = payload.status_text || ''
+		}
+
+		if (payload.proof_status === 'approved') {
+			setNotice(payload.status_text || 'Payment confirmed.', 'success')
+			setButtonState(true, settings.approvedLabel || 'Confirmed')
+			if (pollTimer) {
+				window.clearInterval(pollTimer)
+				pollTimer = null
+			}
+			return
+		}
+
+		if (payload.proof_status === 'rejected') {
+			setNotice(payload.review_note || payload.status_text || 'Bill rejected. Please upload again.', 'error')
+			setButtonState(false, settings.uploadLabel || settings.billTitle || 'Upload bill')
+			return
+		}
+
+		if (payload.proof_status === 'pending_review') {
+			setNotice(payload.status_text || 'Waiting for admin review.', 'waiting')
+			setButtonState(true, settings.waitingLabel || 'Waiting for confirmation')
+			return
+		}
+
+		setButtonState(false, settings.uploadLabel || settings.billTitle || 'Upload bill')
+		setNotice(payload.status_text || '', '')
+	}
+
+	const pollStatus = () => {
+		if (!orderId || !orderKey || !nonce) {
+			return
+		}
+
+		const payload = new URLSearchParams()
+		payload.append('action', pollAction)
+		payload.append('order_id', orderId)
+		payload.append('order_key', orderKey)
+		payload.append('nonce', nonce)
+
+		postAjax(payload).then(response => {
+			const payload = getStatusPayload(response)
+			if (payload) {
+				applyStatus(payload)
+			}
+		}).catch(() => undefined)
+	}
+
+	const startPolling = () => {
+		if (pollTimer) {
+			window.clearInterval(pollTimer)
+		}
+
+		pollTimer = window.setInterval(pollStatus, pollInterval)
+	}
+
+	const uploadBill = file => {
+		if (!file) {
+			setNotice(settings.noFileMessage || 'Please choose a bill file first.', 'error')
+			return
+		}
+
+		const fileInput = proofForm.querySelector('[data-payment-file]');
+        const fileLabel = proofForm.querySelector('[data-payment-file-label]');
+        const submitBtn = proofForm.querySelector('[data-payment-submit]');
+
+		fileInput?.addEventListener('change', function() {
+            const file = this.files?.[0];
+
+            if (file && fileLabel) {
+                fileLabel.textContent = file.name;
+            }
+        });
+
+		proofForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const file = fileInput.files?.[0];
+
+            if (!file) {
+                alert('Please upload payment receipt.');
+                return;
+            }
+
+            const formData = new FormData(proofForm);
+            formData.append('action', 'twmp_upload_payment_bill');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Uploading...';
+
+            try {
+                const response = await fetch(ajaxUrl, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin',
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.data?.message || 'Upload failed.');
+                }
+
+				fileLabel.textContent = result.data.filename;
+				submitBtn.textContent = 'Uploaded';
+
+				// alert('Payment receipt uploaded successfully.');
+				window.location.href = result.data.redirect_url || window.location.href
+            } catch (error) {
+                alert(error.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Upload bill';
+            }
+        });
+	}
+
+	on(
+		'submit',
+		event => {
+			event.preventDefault()
+			uploadBill(fileInput.files && fileInput.files[0] ? fileInput.files[0] : null)
+		},
+		proofForm
+	)
+
+	on('change', function () {
+		const file = this.files && this.files[0] ? this.files[0] : null
+		setFileLabel(file ? file.name : '')
+		if (!file) {
+			setNotice('', '')
+			return
+		}
+		setNotice(settings.selectedFileMessage || file.name, '')
+	}, fileInput)
+
+	if (filePicker) {
+		on('click', event => {
+			if (fileInput.disabled) {
+				return
+			}
+
+			const target = event.target
+			if (target === fileInput) {
+				return
+			}
+
+			event.preventDefault()
+			fileInput.click()
+		}, filePicker)
+	}
+
+	if (stage.getAttribute('data-payment-status') === 'approved') {
+		setButtonState(true, settings.approvedLabel || 'Confirmed')
+	} else if (stage.getAttribute('data-payment-status') === 'pending_review') {
+		setButtonState(true, settings.waitingLabel || 'Waiting for confirmation')
+	} else if (stage.getAttribute('data-payment-status') === 'rejected') {
+		setButtonState(false, settings.uploadLabel || settings.billTitle || 'Upload bill')
+	} else {
+		setButtonState(false, settings.uploadLabel || settings.billTitle || 'Upload bill')
+	}
+
+	setFileLabel('')
+	pollStatus()
+	if (initialStatus !== 'approved') {
+		startPolling()
+	}
 }
