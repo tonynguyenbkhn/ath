@@ -199,12 +199,16 @@
 /*  08. Input Default
 /*----------------------------------------*/
 @mixin input-field {
-  width: 100%;
+  width: calc( 100% - 40px );
   height: 44px;
-  padding: 0.5em .625em;
+  padding: 10px 20px;
   border: 1px solid var(--system-border);
-  border-radius: 6px;
-  color: var(--system-title);
+  border-radius: 0;
+  color: var(--system-black);
+
+  &::-webkit-input-placeholder {
+    color: var(--system-placeholder);
+  }
 }
 
 /*----------------------------------------*/
@@ -950,4 +954,15 @@ $theme-font-family-typo: (
       @include typo-text-lg(400);
     }
   }
+}
+
+// Column Grid
+@mixin float-grid($columns, $gap, $margin-bottom: 0) {
+	float: left;
+	width: calc((100% - (#{$gap} * (#{$columns} - 1))) / #{$columns});
+	margin-bottom: $margin-bottom;
+
+	&:not(:nth-child(#{$columns}n)) {
+		margin-right: $gap;
+	}
 }

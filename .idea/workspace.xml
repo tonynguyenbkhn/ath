@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="61696a51-c0f1-48bc-9e8d-a165c72fefcf" name="Changes" comment="resolve config">
+      <change beforePath="$PROJECT_DIR$/wp-content/plugins/woocommerce/includes/shortcodes/class-wc-shortcode-checkout.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/plugins/woocommerce/includes/shortcodes/class-wc-shortcode-checkout.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/custom/asl-custom.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/custom/checkout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/custom/product.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/custom/shop.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/footer.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/footer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/inc/classes/class-assets-theme.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/inc/classes/class-assets-theme.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/inc/woocommerces/checkout.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/inc/woocommerces/checkout.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/src/js/blocks/checkout-custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/src/js/blocks/checkout-custom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/src/scss/woocommerce/checkout.scss" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/src/scss/woocommerce/checkout.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/src/scss/woocommerce/single-product/summary.scss" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/src/scss/woocommerce/single-product/summary.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/woocommerce/cart/cart-totals.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/woocommerce/cart/cart-totals.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/woocommerce/cart/cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/woocommerce/cart/cart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twmp-ath/woocommerce/checkout/form-checkout.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twmp-ath/woocommerce/checkout/form-checkout.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="14528" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "tonynguyenbkhn"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/tonynguyenbkhn/ath.git",
+    "accountId": "dc0d7020-24e6-45ea-afac-d1425e519c03"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="3DHlNwO7CRSneX5eMfTtIav5OnL" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="openDirectoriesWithSingleClick" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "checkout-branch",
+    "last_opened_file_path": "D:/laragon/www/2026/ath",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecapSpentCounter">
+    <option name="endsOfQuotaMs" value="1778894317197" />
+    <option name="spentUsd" value="0.0098543" />
+  </component>
+  <component name="RecapUselessUpdatesCounter">
+    <option name="suspendCountdown" value="3" />
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-WS-253.31033.133" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="61696a51-c0f1-48bc-9e8d-a165c72fefcf" name="Changes" comment="" />
+      <created>1777946840113</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1777946840113</updated>
+      <workItem from="1777946841620" duration="3280000" />
+    </task>
+    <task id="LOCAL-00001" summary="resolve config">
+      <option name="closed" value="true" />
+      <created>1777947004254</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1777947004254</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="resolve config" />
+    <option name="LAST_COMMIT_MESSAGE" value="resolve config" />
+  </component>
+</project>
