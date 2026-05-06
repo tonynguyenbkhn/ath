@@ -125,6 +125,7 @@
             align-items: center;
             justify-content: center;
             width: 260px;
+            cursor: pointer;
 
             span {
                 display: flex;
@@ -134,6 +135,7 @@
         // contact-us-btn
         .contact-us-btn {
             width: 260px;
+            cursor: pointer;
         }
     }
 }

@@ -23,8 +23,19 @@ if (! defined('ABSPATH')) {
 do_action('woocommerce_before_checkout_form', $checkout);
 
 // If checkout registration is disabled and not logged in, the user cannot checkout.
-if (! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in()) {
+if (! $checkout->is_registration_enabled() && $checkout->is_registration_required()) {
 	echo esc_html(apply_filters('woocommerce_checkout_must_be_logged_in_message', __('You must be logged in to checkout.', 'twmp-ath')));
+	return;
+}
+
+$is_payment_step = function_exists('twmp_checkout_is_payment_step_2') && twmp_checkout_is_payment_step_2();
+
+if ($is_payment_step) {
+	if (function_exists('twmp_checkout_render_payment_step_section')) {
+		twmp_checkout_render_payment_step_section();
+	}
+
+	do_action('woocommerce_after_checkout_form', $checkout);
 	return;
 }
 

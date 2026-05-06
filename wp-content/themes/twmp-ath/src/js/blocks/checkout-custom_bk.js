@@ -1,5 +1,12 @@
 import { select, on } from 'lib/dom'
 
+/**
+ * checkout-custom block initializer
+ * - `el`: root element for this block (provided by block renderer)
+ * - Finds the checkout block container and prepares helpers and event
+ *   handlers used below (quantity controls, ticket options, payment proof upload/polling).
+ * - Early-return if block not present.
+ */
 export default el => {
 	const checkoutBlock = select('[data-block="checkout-custom"]', el) || el
 
@@ -19,25 +26,34 @@ export default el => {
 	let refreshTimer = null
 	let loadingOverlay = null
 
+	/**
+	 * handleProceedToPayment
+	 * - Trigger: delegated `click` on `checkoutBlock`.
+	 * - When: user clicks an element with class `.submit-thanh-toan`.
+	 * - What: prevents default and attempts to submit the real
+	 *   checkout form by clicking `#place_order` or using `requestSubmit()`.
+	 * - Purpose: allow custom UI button to behave like WooCommerce's place order button.
+	 */
 	const handleProceedToPayment = event => {
 		const target = event.target
 		const button = target && target.closest ? target.closest('.submit-thanh-toan') : null
-		if (!button || !checkoutBlock.contains(button)) return
+
+		if (!button || !checkoutBlock.contains(button)) {
+			return
+		}
 
 		event.preventDefault()
-		console.log('submit-thanh-toan clicked')
 
-		const placeOrderButton = checkoutForm ? checkoutForm.querySelector('#place_order') : null
-		console.log('placeOrderButton:', placeOrderButton)
+		const placeOrderButton = checkoutForm
+			? checkoutForm.querySelector('#place_order')
+			: null
 
 		if (placeOrderButton && typeof placeOrderButton.click === 'function') {
-			console.log('clicking #place_order')
 			placeOrderButton.click()
 			return
 		}
 
 		if (checkoutForm && typeof checkoutForm.requestSubmit === 'function') {
-			console.log('calling checkoutForm.requestSubmit()')
 			checkoutForm.requestSubmit()
 		}
 	}
@@ -51,10 +67,9 @@ export default el => {
 
 	/**
 	 * syncActiveRadioState
-	 * - Trigger: called when a ticket option radio input changes.
-	 * - Purpose: toggles `.is-selected` and `.is-active` classes on the
-	 *   option containers for the radio group so the UI reflects the
-	 *   currently selected option.
+	 * - Trigger: call when a ticket option radio input changes.
+	 * - What: toggle `.is-selected` and `.is-active` classes for all
+	 *   inputs in the same name group so the UI highlights the chosen option.
 	 */
 	const syncActiveRadioState = input => {
 		if (!input || !input.name) {
@@ -132,6 +147,60 @@ export default el => {
 	const serializeForm = form => {
 		const formData = new FormData(form)
 		return new URLSearchParams(formData).toString()
+	}
+
+	/**
+	 * postAjax
+	 * - Wrapper around fetch to POST to `ajaxUrl`.
+	 * - `payload`: URLSearchParams or FormData depending on `useFormData`.
+	 * - `useFormData`: when true, send FormData; otherwise send urlencoded string.
+	 */
+	const postAjax = async (payload, useFormData = false) => {
+		if (!ajaxUrl) {
+			return null
+		}
+
+		const requestInit = {
+			method: 'POST',
+			credentials: 'same-origin',
+		}
+
+		if (useFormData) {
+			requestInit.body = payload
+		} else {
+			requestInit.headers = {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+			}
+			requestInit.body = payload.toString()
+		}
+
+		try {
+			const response = await fetch(ajaxUrl, requestInit)
+			const raw = await response.text().catch(() => '')
+
+			let data = null
+			if (raw) {
+				try {
+					data = JSON.parse(raw)
+				} catch (error) {
+					data = {
+						success: false,
+						data: {
+							message: raw,
+						},
+					}
+				}
+			}
+
+			if (!response.ok) {
+				throw data || new Error('Request failed')
+			}
+
+			return data
+		} catch (error) {
+			console.error('checkout-custom ajax failed:', error)
+			throw error
+		}
 	}
 
 	/**
@@ -218,7 +287,6 @@ export default el => {
 		quantityInput.dispatchEvent(new Event('change', { bubbles: true }))
 	}
 
-	// Delegate click events inside `checkoutBlock` to handle proceed-to-payment
 	on('click', handleProceedToPayment, checkoutBlock)
 
 	/**
@@ -237,8 +305,6 @@ export default el => {
 		syncQuantityInput(nextValue)
 	}
 
-	// Delegate click handler for quantity +/- step buttons inside block.
-	// Elements should have `data-ticket-quantity-step="plus"` or `"minus"`.
 	on(
 		'click',
 		e => {
@@ -261,34 +327,34 @@ export default el => {
 		e => {
 			const target = e.target
 
-			if (
-				!target ||
-				![
-					'twmp_ticket_price_option',
-					'twmp_ticket_performance',
-					'twmp_ticket_quantity',
-				].includes(target.name)
-			) {
-				return
-			}
+		if (
+			!target ||
+			![
+				'twmp_ticket_price_option',
+				'twmp_ticket_performance',
+				'twmp_ticket_quantity',
+			].includes(target.name)
+		) {
+			return
+		}
 
-			if (target.matches && target.matches('input[type="radio"]')) {
-				syncActiveRadioState(target)
-			}
+		if (target.matches && target.matches('input[type="radio"]')) {
+			syncActiveRadioState(target)
+		}
 
-			if (target.name === 'twmp_ticket_quantity') {
-				target.value = String(clampQuantity(target.value))
-			}
+		if (target.name === 'twmp_ticket_quantity') {
+			target.value = String(clampQuantity(target.value))
+		}
 
-			const ticketDetailCard = getTicketDetailCard()
-			if (ticketDetailCard) {
-				const controlWrappers = ticketDetailCard.querySelectorAll(
-					'.twmp-checkout-ticket-detail__options, [data-ticket-quantity-control]'
-				)
-				controlWrappers.forEach(wrapper => {
-					wrapper.classList.toggle('is-disabled', true)
-				})
-			}
+		const ticketDetailCard = getTicketDetailCard()
+		if (ticketDetailCard) {
+			const controlWrappers = ticketDetailCard.querySelectorAll(
+				'.twmp-checkout-ticket-detail__options, [data-ticket-quantity-control]'
+			)
+			controlWrappers.forEach(wrapper => {
+				wrapper.classList.toggle('is-disabled', true)
+			})
+		}
 
 			// Debounce update: show loading state, call server to update
 			window.clearTimeout(refreshTimer)
@@ -315,8 +381,6 @@ export default el => {
 		checkoutBlock
 	)
 
-	// On init: mark option items that are checked as selected/active so the
-	// UI reflects the initial state.
 	getTicketOptionItems().forEach(item => {
 		const input = item.querySelector('input[type="radio"]')
 		if (input && input.checked) {
@@ -324,7 +388,6 @@ export default el => {
 		}
 	})
 
-	// Payment / step-2 handling (copied from backup)
 	const stage = select('[data-payment-stage]', checkoutBlock)
 	const proofForm = select('[data-payment-proof-form]', checkoutBlock)
 	const fileInput = select('[data-payment-file]', checkoutBlock)
@@ -357,55 +420,11 @@ export default el => {
 	let pollTimer = null
 	let isUploading = false
 
-	// postAjax: lightweight POST helper returning parsed JSON or null
-	const postAjax = async (payload, useFormData = false) => {
-		if (!ajaxUrl) {
-			return null
-		}
-
-		const requestInit = {
-			method: 'POST',
-			credentials: 'same-origin',
-		}
-
-		if (useFormData) {
-			requestInit.body = payload
-		} else {
-			requestInit.headers = {
-				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-			}
-			requestInit.body = payload.toString()
-		}
-
-		try {
-			const response = await fetch(ajaxUrl, requestInit)
-			const raw = await response.text().catch(() => '')
-
-			let data = null
-			if (raw) {
-				try {
-					data = JSON.parse(raw)
-				} catch (error) {
-					data = {
-						success: false,
-						data: {
-							message: raw,
-						},
-					}
-				}
-			}
-
-			if (!response.ok) {
-				throw data || new Error('Request failed')
-			}
-
-			return data
-		} catch (error) {
-			console.error('checkout-custom ajax failed:', error)
-			throw error
-		}
-	}
-
+	/**
+	 * setNotice
+	 * - Update the user-facing notice in the payment proof area.
+	 * - `type` controls visual styling: 'error', 'success', 'waiting', or ''.
+	 */
 	const setNotice = (message, type) => {
 		if (!notice) {
 			return
@@ -418,12 +437,17 @@ export default el => {
 		notice.classList.toggle('is-waiting', type === 'waiting')
 	}
 
+	// Update visible file label for selected file
 	const setFileLabel = fileName => {
 		if (fileLabel) {
 			fileLabel.textContent = fileName || settings.fileLabel || 'Choose bill file'
 		}
 	}
 
+	/**
+	 * setButtonState
+	 * - Toggle submit button visual/loading state and optionally update its label.
+	 */
 	const setButtonState = (disabled, label) => {
 		submitButton.classList.toggle('is-loading', !!disabled && isUploading)
 
@@ -432,6 +456,7 @@ export default el => {
 		}
 	}
 
+	// Extract normalized status payload from AJAX response
 	const getStatusPayload = response => {
 		if (!response || !response.success || !response.data) {
 			return null
@@ -440,6 +465,11 @@ export default el => {
 		return response.data.status || null
 	}
 
+	/**
+	 * applyStatus
+	 * - Apply server-sent payment proof status to UI elements
+	 * - Expected `payload.proof_status` values: 'approved', 'rejected', 'pending_review'
+	 */
 	const applyStatus = payload => {
 		if (!payload) {
 			return
@@ -485,6 +515,11 @@ export default el => {
 		setNotice(payload.status_text || '', '')
 	}
 
+	/**
+	 * pollStatus
+	 * - Poll server for payment proof status using `postAjax` and update UI.
+	 * - Sends `action`, `order_id`, `order_key`, and `nonce`.
+	 */
 	const pollStatus = () => {
 		if (!orderId || !orderKey || !nonce) {
 			return
@@ -504,6 +539,10 @@ export default el => {
 		}).catch(() => undefined)
 	}
 
+	/**
+	 * startPolling
+	 * - Start interval to poll payment status every `pollInterval` ms.
+	 */
 	const startPolling = () => {
 		if (pollTimer) {
 			window.clearInterval(pollTimer)
@@ -512,63 +551,71 @@ export default el => {
 		pollTimer = window.setInterval(pollStatus, pollInterval)
 	}
 
+	/**
+	 * uploadBill
+	 * - Handles file selection and form submission for uploading a payment proof.
+	 * - `file` should be the selected File object; shows an error if missing.
+	 * - Attaches `change` listener to sync filename label and `submit` listener
+	 *   to post FormData to `ajaxUrl`, then redirects on success.
+	 */
 	const uploadBill = file => {
 		if (!file) {
 			setNotice(settings.noFileMessage || 'Please choose a bill file first.', 'error')
 			return
 		}
 
-		const fileInputLocal = proofForm.querySelector('[data-payment-file]')
-		const fileLabelLocal = proofForm.querySelector('[data-payment-file-label]')
-		const submitBtnLocal = proofForm.querySelector('[data-payment-submit]')
+		const fileInput = proofForm.querySelector('[data-payment-file]');
+		const fileLabel = proofForm.querySelector('[data-payment-file-label]');
+		const submitBtn = proofForm.querySelector('[data-payment-submit]');
 
-		fileInputLocal?.addEventListener('change', function () {
-			const file = this.files?.[0]
+		fileInput?.addEventListener('change', function() {
+			const file = this.files?.[0];
 
-			if (file && fileLabelLocal) {
-				fileLabelLocal.textContent = file.name
+			if (file && fileLabel) {
+				fileLabel.textContent = file.name;
 			}
-		})
+		});
 
-		proofForm.addEventListener('submit', async function (event) {
-			event.preventDefault()
+		proofForm.addEventListener('submit', async function(event) {
+			event.preventDefault();
 
-			const file = fileInputLocal.files?.[0]
+			const file = fileInput.files?.[0];
 
 			if (!file) {
-				alert('Please upload payment receipt.')
-				return
+				alert('Please upload payment receipt.');
+				return;
 			}
 
-			const formData = new FormData(proofForm)
-			formData.append('action', uploadAction)
+			const formData = new FormData(proofForm);
+			formData.append('action', 'twmp_upload_payment_bill');
 
-			submitBtnLocal.disabled = true
-			submitBtnLocal.textContent = 'Uploading...'
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'Uploading...';
 
 			try {
 				const response = await fetch(ajaxUrl, {
 					method: 'POST',
 					body: formData,
 					credentials: 'same-origin',
-				})
+				});
 
-				const result = await response.json()
+				const result = await response.json();
 
 				if (!result.success) {
-					throw new Error(result.data?.message || 'Upload failed.')
+					throw new Error(result.data?.message || 'Upload failed.');
 				}
 
-				fileLabelLocal.textContent = result.data.filename
-				submitBtnLocal.textContent = 'Uploaded'
-				alert(result.data.message || 'Bill uploaded successfully.')
-				// window.location.href = result.data.redirect_url || window.location.href
+				fileLabel.textContent = result.data.filename;
+				submitBtn.textContent = 'Uploaded';
+
+				// alert('Payment receipt uploaded successfully.');
+				window.location.href = result.data.redirect_url || window.location.href
 			} catch (error) {
-				alert(error.message)
-				submitBtnLocal.disabled = false
-				submitBtnLocal.textContent = 'Upload bill'
+				alert(error.message);
+				submitBtn.disabled = false;
+				submitBtn.textContent = 'Upload bill';
 			}
-		})
+		});
 	}
 
 	on(
@@ -622,4 +669,3 @@ export default el => {
 		startPolling()
 	}
 }
-

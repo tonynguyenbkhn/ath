@@ -76,6 +76,10 @@ if (class_exists('WooCommerce') && is_shop()) {
 
 ?>
 <?php wp_footer(); ?>
+
+<script>
+</script>
+
 </body>
 
 </html>

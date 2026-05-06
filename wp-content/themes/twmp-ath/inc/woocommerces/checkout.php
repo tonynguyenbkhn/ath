@@ -1,157 +1,292 @@
 <?php
 
 if (!defined('ABSPATH')) {
-    exit;
+  exit;
 }
 
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10);
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10);
 remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_output_all_notices', 10);
 
-// add_filter('woocommerce_default_address_fields', 'wcs_checkout_update_fields_order');
-// add_filter('woocommerce_checkout_fields', 'wcs_checkout_update_placeholder_fields');
-
-// Move shipping section
-// add_filter('woocommerce_cart_ready_to_calc_shipping', '__return_false');
-
-add_action('woocommerce_before_checkout_form', 'wcs_checkout_page_open', 5);
-// add_action('woocommerce_before_checkout_form', 'wcs_checkout_render_shop_steps', 6);
-
-function wcs_checkout_page_open()
-{
-  echo '<div class="page-block page-block--checkout woocommerce-checkout-custom" data-block="checkout-custom">';
-  echo '<div class="twmp-checkout-steps" aria-hidden="true">';
-  echo '<div class="twmp-checkout-steps__item is-active"><span class="twmp-checkout-steps__index">1</span><span class="twmp-checkout-steps__label">' . esc_html__('Booking information', 'twmp-ath') . '</span></div>';
-  echo '<div class="twmp-checkout-steps__line"></div>';
-  echo '<div class="twmp-checkout-steps__item"><span class="twmp-checkout-steps__index">2</span><span class="twmp-checkout-steps__label">' . esc_html__('Payment', 'twmp-ath') . '</span></div>';
-  echo '</div>';
-}
-
-add_action('woocommerce_after_checkout_form', 'wcs_checkout_page_close', 100);
-
-function wcs_checkout_page_close()
-{
-  echo '</div>';
-}
-
-function wcs_checkout_update_fields_order($fields)
-{
-  unset($fields['company']);
-  unset($fields['address_2']);
-  unset($fields['postcode']);
-
-  return $fields;
-}
-
-function wcs_checkout_update_placeholder_fields($fields)
-{
-  $fields['billing']['billing_first_name']['placeholder'] = esc_html__('First name', 'twmp-ath');
-  $fields['billing']['billing_last_name']['placeholder'] = esc_html__('Last name', 'twmp-ath');
-  $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone', 'twmp-ath');
-  $fields['billing']['billing_city']['placeholder'] = esc_html__('City', 'twmp-ath');
-  $fields['billing']['billing_email']['placeholder'] = esc_html__('Email', 'twmp-ath');
-
-  $fields['shipping']['shipping_first_name']['placeholder'] = esc_html__('First name', 'twmp-ath');
-  $fields['shipping']['shipping_last_name']['placeholder'] = esc_html__('Last name', 'twmp-ath');
-  $fields['shipping']['shipping_phone']['placeholder'] = esc_html__('Phone', 'twmp-ath');
-  $fields['shipping']['shipping_city']['placeholder'] = esc_html__('City', 'twmp-ath');
-
-  return $fields;
-}
-
-function wcs_checkout_render_shop_steps()
-{
-  get_template_part('templates/blocks/shop-steps', null, []);
-}
-
-function twmp_checkout_get_cart_item_key_by_product_id($product_id = 0)
-{
-  if (!function_exists('WC') || !WC()->cart) {
-    return '';
-  }
-
-  $product_id = absint($product_id);
-  if (!$product_id) {
-    $product_id = twmp_checkout_get_ticket_product_id();
-  }
-
-  if (!$product_id) {
-    return '';
-  }
-
-  foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
-    if (!empty($cart_item['product_id']) && absint($cart_item['product_id']) === $product_id) {
-      return $cart_item_key;
+// Xử lý tính năng "Buy Now" - bỏ qua giỏ hàng và chuyển thẳng đến trang thanh toán
+add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id, $quantity) {
+  if (!empty($_REQUEST['twmp_buy_now'])) {
+    if (function_exists('WC') && WC()->cart) {
+      WC()->cart->empty_cart();
     }
+  }
+  return $passed;
+}, 1, 3);
+
+add_filter('woocommerce_add_to_cart_redirect', function ($redirect_url) {
+  if (!empty($_REQUEST['twmp_buy_now'])) {
+    return wc_get_checkout_url();
+  }
+
+  return $redirect_url;
+});
+
+// Reset checkout flow nếu có item mới được thêm vào cart
+add_action('woocommerce_before_checkout_form', function () {
+  if (!function_exists('WC') || !WC()->session) {
+    return;
+  }
+
+  // Nếu cart có item mới → reset flow
+  if (!empty(WC()->cart) && !WC()->cart->is_empty()) {
+    WC()->session->__unset('twmp_checkout_payment_order_id');
+    WC()->session->__unset('twmp_checkout_payment_order_key');
+  }
+}, 1);
+
+// Custom html cho trang thanh toán
+add_action('woocommerce_before_checkout_form', 'twmp_checkout_page_open', 5);
+
+function twmp_checkout_page_open()
+{
+  $state = function_exists('twmp_checkout_get_payment_order_context') ? twmp_checkout_get_payment_order_context() : array();
+  $step = !empty($state['step']) ? absint($state['step']) : 1;
+  $settings = array(
+    'step'               => $step,
+    'orderId'            => !empty($state['order_id']) ? absint($state['order_id']) : 0,
+    'orderKey'           => !empty($state['order_key']) ? sanitize_text_field($state['order_key']) : '',
+    'ajaxUrl'            => admin_url('admin-ajax.php'),
+    'pollAction'         => 'twmp_checkout_poll_payment_status',
+    'uploadAction'       => 'twmp_checkout_upload_payment_proof',
+    'adminReviewAction'  => 'twmp_checkout_admin_review_order',
+    'nonceActionPrefix'  => 'twmp_checkout_payment_',
+  );
+
+  echo '<div class="page-block page-block--checkout woocommerce-checkout-custom--settings" data-settings="' . esc_attr(wp_json_encode($settings)) . '">';
+  echo '<div class="twmp-checkout-steps" aria-hidden="true">';
+  echo '<div class="twmp-checkout-steps__item ' . esc_attr(1 === $step ? 'is-active' : '') . '"><span class="twmp-checkout-steps__index">1</span><span class="twmp-checkout-steps__label">' . esc_html__('Booking information', 'twmp-ath') . '</span></div>';
+  echo '<div class="twmp-checkout-steps__line"></div>';
+  echo '<div class="twmp-checkout-steps__item ' . esc_attr(2 === $step ? 'is-active' : '') . '"><span class="twmp-checkout-steps__index">2</span><span class="twmp-checkout-steps__label">' . esc_html__('Payment', 'twmp-ath') . '</span></div>';
+  echo '</div>';
+}
+
+add_action('woocommerce_after_checkout_form', 'twmp_checkout_page_close', 100);
+
+function twmp_checkout_page_close()
+{
+  echo '</div>';
+}
+
+// Lấy context đơn hàng cho trang thanh toán, bao gồm thông tin đơn hàng, trạng thái xác thực bill, và cấu hình thanh toán
+function twmp_checkout_get_payment_order_context()
+{
+  static $context = null;
+
+  if (null !== $context) {
+    return $context;
+  }
+
+  $context = array(
+    'step'         => 1,
+    'order_id'     => 0,
+    'order_key'    => '',
+    'order'        => null,
+    'proof_status' => 'waiting_upload',
+    'status_label'  => esc_html__('Awaiting bill upload', 'twmp-ath'),
+    'status_text'   => esc_html__('Complete transfer and upload the bill to continue.', 'twmp-ath'),
+    'can_upload'    => true,
+    'nonce'         => wp_create_nonce('twmp_checkout_payment_guest'),
+    'config'        => twmp_checkout_get_payment_config(),
+  );
+
+  $request_order_id = 0;
+  $request_order_key = '';
+
+  if (isset($_GET['order_id'])) {
+    $request_order_id = absint(wp_unslash($_GET['order_id']));
+  }
+
+  if (isset($_GET['order_key'])) {
+    $request_order_key = sanitize_text_field(wp_unslash($_GET['order_key']));
+  } elseif (isset($_GET['key'])) {
+    $request_order_key = sanitize_text_field(wp_unslash($_GET['key']));
+  }
+
+  if ((!$request_order_id || !$request_order_key) && function_exists('WC') && WC()->session) {
+    if (!$request_order_id) {
+      $request_order_id = absint(WC()->session->get('twmp_checkout_payment_order_id', 0));
+    }
+
+    if (!$request_order_key) {
+      $request_order_key = (string) WC()->session->get('twmp_checkout_payment_order_key', '');
+    }
+  }
+
+  if ($request_order_id > 0 && $request_order_key !== '') {
+    $order = function_exists('wc_get_order') ? wc_get_order($request_order_id) : null;
+    if ($order instanceof WC_Order && hash_equals($order->get_order_key(), $request_order_key)) {
+      if (!headers_sent()) {
+        nocache_headers();
+      }
+
+      $context['step'] = 2;
+      $context['order_id'] = $request_order_id;
+      $context['order_key'] = $request_order_key;
+      $context['order'] = $order;
+
+      $proof_status = twmp_checkout_get_payment_proof_status($order);
+      $context['proof_status'] = $proof_status;
+      $context['status_label'] = twmp_checkout_get_payment_status_label($proof_status);
+      $context['status_text'] = twmp_checkout_get_payment_status_text($proof_status);
+      $context['can_upload'] = in_array($proof_status, array('waiting_upload', 'rejected'), true);
+      $context['nonce'] = wp_create_nonce('twmp_checkout_payment_' . $request_order_id);
+    }
+  }
+
+  return $context;
+}
+
+// Lấy cấu hình thanh toán từ options, hỗ trợ nhiều key khác nhau để linh hoạt trong việc đặt tên option
+function twmp_checkout_get_option_value(array $keys, $default = '')
+{
+  foreach ($keys as $key) {
+    if (function_exists('get_field')) {
+      $value = get_field($key, 'option');
+      if (is_array($value) && !empty($value['url'])) {
+        return $value;
+      }
+      if (is_string($value) && trim($value) !== '') {
+        return trim($value);
+      }
+      if (is_numeric($value) && absint($value) > 0) {
+        return absint($value);
+      }
+    }
+
+    $value = get_option($key, null);
+    if ($value === null || $value === '' || $value === false) {
+      continue;
+    }
+
+    return is_string($value) ? trim($value) : $value;
+  }
+
+  return $default;
+}
+
+// Hỗ trợ lấy URL media từ nhiều dạng input khác nhau (URL trực tiếp, ID attachment, hoặc array chứa URL/ID)
+function twmp_checkout_resolve_media_url($value)
+{
+  if (is_array($value)) {
+    if (!empty($value['url'])) {
+      return esc_url_raw($value['url']);
+    }
+
+    if (!empty($value['ID'])) {
+      $value = absint($value['ID']);
+    } else {
+      return '';
+    }
+  }
+
+  if (is_numeric($value)) {
+    $url = wp_get_attachment_url(absint($value));
+    return $url ? esc_url_raw($url) : '';
+  }
+
+  if (is_string($value) && filter_var($value, FILTER_VALIDATE_URL)) {
+    return esc_url_raw($value);
   }
 
   return '';
 }
 
-add_action('devvn_checkout_fields', function ($fields) {
-  unset($fields['billing']['billing_state']);
-  unset($fields['billing']['billing_city']);
-  unset($fields['billing']['billing_address_1']);
-  unset($fields['billing']['billing_address_2']);
+// Lấy cấu hình thanh toán từ options, hỗ trợ nhiều key khác nhau để linh hoạt trong việc đặt tên option
+function twmp_checkout_get_payment_config()
+{
+  $qr_value = twmp_checkout_get_option_value(array(
+    'checkout_payment_qr',
+    'payment_qr',
+    'twmp_checkout_payment_qr',
+    'twmp_payment_qr',
+  ));
 
-  return $fields;
-}, 10, 1);
+  return array(
+    'qr_url'          => twmp_checkout_resolve_media_url($qr_value),
+    'company_name'    => (string) twmp_checkout_get_option_value(array('checkout_company_name', 'company_name', 'twmp_checkout_company_name'), get_bloginfo('name')),
+    'company_address' => (string) twmp_checkout_get_option_value(array('checkout_company_address', 'company_address', 'twmp_checkout_company_address')),
+    'company_phone'   => (string) twmp_checkout_get_option_value(array('checkout_company_phone', 'company_phone', 'twmp_checkout_company_phone')),
+    'company_email'   => (string) twmp_checkout_get_option_value(array('checkout_company_email', 'company_email', 'twmp_checkout_company_email')),
+    'bank_name'       => (string) twmp_checkout_get_option_value(array('checkout_bank_name', 'bank_name', 'twmp_checkout_bank_name')),
+    'account_name'    => (string) twmp_checkout_get_option_value(array('checkout_bank_account_name', 'bank_account_name', 'twmp_checkout_bank_account_name')),
+    'account_number'  => (string) twmp_checkout_get_option_value(array('checkout_bank_account_number', 'bank_account_number', 'twmp_checkout_bank_account_number')),
+    'branch'          => (string) twmp_checkout_get_option_value(array('checkout_bank_branch', 'bank_branch', 'twmp_checkout_bank_branch')),
+    'transfer_note'   => (string) twmp_checkout_get_option_value(array('checkout_transfer_note', 'transfer_note', 'twmp_checkout_transfer_note')),
+    'bill_title'      => (string) twmp_checkout_get_option_value(array('checkout_bill_title', 'payment_bill_title', 'twmp_checkout_bill_title'), esc_html__('Upload bill', 'twmp-ath')),
+  );
+}
+
+// Lấy trạng thái xác thực bill của đơn hàng, dựa trên order status và meta '_twmp_checkout_payment_proof_status'
+function twmp_checkout_get_payment_proof_status($order)
+{
+  if (!$order instanceof WC_Order) {
+    return 'waiting_upload';
+  }
+
+  $order_status = $order->get_status();
+  if (in_array($order_status, array('processing', 'completed'), true)) {
+    return 'approved';
+  }
+
+  if ('failed' === $order_status) {
+    return 'rejected';
+  }
+
+  $status = sanitize_key((string) $order->get_meta('_twmp_checkout_payment_proof_status', true));
+  if (in_array($status, array('waiting_upload', 'pending_review', 'approved', 'rejected'), true)) {
+    return $status;
+  }
+
+  return 'waiting_upload';
+}
+
+// Lấy label hiển thị tương ứng với trạng thái xác thực bill
+function twmp_checkout_get_payment_status_label($status)
+{
+  $labels = array(
+    'waiting_upload' => esc_html__('Waiting for bill upload', 'twmp-ath'),
+    'pending_review' => esc_html__('Waiting for confirmation', 'twmp-ath'),
+    'approved'       => esc_html__('Payment confirmed', 'twmp-ath'),
+    'rejected'       => esc_html__('Bill rejected', 'twmp-ath'),
+  );
+
+  return !empty($labels[$status]) ? $labels[$status] : esc_html__('Waiting for bill upload', 'twmp-ath');
+}
+
+// Lấy text mô tả tương ứng với trạng thái xác thực bill, để hướng dẫn khách hàng biết bước tiếp theo cần làm gì
+function twmp_checkout_get_payment_status_text($status)
+{
+  $texts = array(
+    'waiting_upload' => esc_html__('Transfer to the account below and upload the bill.', 'twmp-ath'),
+    'pending_review' => esc_html__('We have received your bill. Please wait for admin review.', 'twmp-ath'),
+    'approved'       => esc_html__('Your payment was approved.', 'twmp-ath'),
+    'rejected'       => esc_html__('Your bill was rejected. Please upload a clearer file.', 'twmp-ath'),
+  );
+
+  return !empty($texts[$status]) ? $texts[$status] : esc_html__('Transfer to the account below and upload the bill.', 'twmp-ath');
+}
+
+// Lấy label cho nút hành động tương ứng với trạng thái xác thực bill, ví dụ: nếu đã approved thì nút sẽ là "Success", nếu rejected thì là "Failed", còn lại sẽ là "Waiting"
+function twmp_checkout_get_payment_action_label($status)
+{
+  if ('approved' === $status) {
+    return esc_html__('Success', 'twmp-ath');
+  }
+
+  if ('rejected' === $status) {
+    return esc_html__('Failed', 'twmp-ath');
+  }
+
+  return esc_html__('Waiting', 'twmp-ath');
+}
 
 
-// add_filter('woocommerce_checkout_fields', function ($fields) {
-
-//   $fields['billing']['billing_sexy'] = array(
-//     'type'     => 'billing_sexy_custom',
-//     'required' => true,
-//     'priority' => 5,
-//   );
-
-//   $fields['billing']['billing_shipping_label'] = array(
-//     'type'     => 'billing_shipping_label_custom',
-//     'priority' => 200, // sau email
-//   );
-
-//   $fields['billing']['billing_delivery_address'] = array(
-//     'type'        => 'text',
-//     'label'       => '',
-//     'placeholder' => 'Nhập địa chỉ nhận hàng',
-//     'required'    => true,
-//     'class'       => array('form-row-wide'),
-//     'priority'    => 300,
-//   );
-
-//   $fields['billing']['billing_district_district'] = array(
-//     'type'        => 'text',
-//     'label'       => '',
-//     'placeholder' => 'Nhập quận / huyện',
-//     'required'    => true,
-//     'class'       => array('form-row-first'),
-//     'priority'    => 301,
-//   );
-
-//   $fields['billing']['billing_wards_and_communes'] = array(
-//     'type'        => 'text',
-//     'label'       => '',
-//     'placeholder' => 'Nhập phường / xã',
-//     'required'    => true,
-//     'class'       => array('form-row-last'),
-//     'priority'    => 302,
-//   );
-
-  // $fields['billing']['billing_city_province_shop'] = array(
-  //   'type'              => 'select',
-  //   'label'             => esc_html__('Province/City', 'twmp-ath'),
-  //   'required'          => true,
-  //   'class'             => array('form-row-wide'),
-  //   'input_class'       => array('regular-select'),
-  //   'options'           => array(
-  //     ''                => esc_html__('Province/City', 'twmp-ath'),
-  //     'Hồ Chí Minh'     => 'Hồ Chí Minh',
-  //   )
-  // );
-//   return $fields;
-// });
-
+// Các hàm hỗ trợ cho tính năng vé sự kiện, bao gồm lấy dữ liệu sản phẩm vé, lưu trữ lựa chọn vé vào session, và render phần chi tiết vé trên trang thanh toán
 function twmp_checkout_get_ticket_product_data($product_id = 0)
 {
   $product_id = absint($product_id);
@@ -194,7 +329,7 @@ function twmp_checkout_get_ticket_product_data($product_id = 0)
       'date'         => $date,
       'time'         => $time,
       'display'      => sprintf('%s | %s %s', $day, $date, $time),
-      'display_short'=> sprintf('%s %s', $date, $time),
+      'display_short' => sprintf('%s %s', $date, $time),
     );
   }
 
@@ -337,7 +472,7 @@ function twmp_checkout_render_ticket_detail_section()
       break;
     }
   }
-  ?>
+?>
   <section class="twmp-checkout-card twmp-checkout-card--ticket-detail">
     <input type="hidden" name="twmp_ticket_product_id" value="<?php echo esc_attr($product_id); ?>">
 
@@ -351,22 +486,21 @@ function twmp_checkout_render_ticket_detail_section()
         <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--performance">
           <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Select Performance date *', 'twmp-ath'); ?></p>
           <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--performance">
-          <?php foreach ($ticket_data['performances'] as $option) : ?>
-            <label class="twmp-ticket-option <?php echo esc_attr($state['performance_key'] === $option['key'] ? 'is-selected' : ''); ?>">
-              <input
-                type="radio"
-                name="twmp_ticket_performance"
-                value="<?php echo esc_attr($option['key']); ?>"
-                <?php checked($state['performance_key'], $option['key']); ?>
-                required
-              >
-              <span class="twmp-ticket-option__main">
-                <span class="twmp-ticket-option__day"><?php echo esc_html($option['day']); ?></span>
-                <span class="twmp-ticket-option__date"><?php echo esc_html($option['date']); ?></span>
-              </span>
-              <span class="twmp-ticket-option__time"><?php echo esc_html($option['time']); ?></span>
-            </label>
-          <?php endforeach; ?>
+            <?php foreach ($ticket_data['performances'] as $option) : ?>
+              <label class="twmp-ticket-option <?php echo esc_attr($state['performance_key'] === $option['key'] ? 'is-selected' : ''); ?>">
+                <input
+                  type="radio"
+                  name="twmp_ticket_performance"
+                  value="<?php echo esc_attr($option['key']); ?>"
+                  <?php checked($state['performance_key'], $option['key']); ?>
+                  required>
+                <span class="twmp-ticket-option__main">
+                  <span class="twmp-ticket-option__day"><?php echo esc_html($option['day']); ?></span>
+                  <span class="twmp-ticket-option__date"><?php echo esc_html($option['date']); ?></span>
+                </span>
+                <span class="twmp-ticket-option__time"><?php echo esc_html($option['time']); ?></span>
+              </label>
+            <?php endforeach; ?>
           </div>
         </div>
       <?php endif; ?>
@@ -375,20 +509,19 @@ function twmp_checkout_render_ticket_detail_section()
         <div class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--price">
           <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Select type of ticket', 'twmp-ath'); ?></p>
           <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--price">
-          <?php foreach ($ticket_data['ticket_prices'] as $option) : ?>
-            <label class="twmp-ticket-price-option <?php echo esc_attr($state['price_key'] === $option['key'] ? 'is-selected' : ''); ?>">
-              <input
-                type="radio"
-                name="twmp_ticket_price_option"
-                value="<?php echo esc_attr($option['key']); ?>"
-                <?php checked($state['price_key'], $option['key']); ?>
-                required
-              >
-              <span class="twmp-ticket-price-option__label"><?php echo esc_html($option['label']); ?></span>
-              <span class="twmp-ticket-price-option__price"><?php echo wp_kses_post(wc_price($option['price'])); ?></span>
-              <span class="twmp-ticket-price-option__unit"><?php echo esc_html__('/ Ticket', 'twmp-ath'); ?></span>
-            </label>
-          <?php endforeach; ?>
+            <?php foreach ($ticket_data['ticket_prices'] as $option) : ?>
+              <label class="twmp-ticket-price-option <?php echo esc_attr($state['price_key'] === $option['key'] ? 'is-selected' : ''); ?>">
+                <input
+                  type="radio"
+                  name="twmp_ticket_price_option"
+                  value="<?php echo esc_attr($option['key']); ?>"
+                  <?php checked($state['price_key'], $option['key']); ?>
+                  required>
+                <span class="twmp-ticket-price-option__label"><?php echo esc_html($option['label']); ?></span>
+                <span class="twmp-ticket-price-option__price"><?php echo wp_kses_post(wc_price($option['price'])); ?></span>
+                <span class="twmp-ticket-price-option__unit"><?php echo esc_html__('/ Ticket', 'twmp-ath'); ?></span>
+              </label>
+            <?php endforeach; ?>
           </div>
         </div>
       <?php endif; ?>
@@ -405,18 +538,44 @@ function twmp_checkout_render_ticket_detail_section()
             min="1"
             step="1"
             inputmode="numeric"
-            required
-          >
+            required>
           <button type="button" class="twmp-ticket-quantity__button" data-ticket-quantity-step="plus" aria-label="<?php echo esc_attr__('Increase quantity', 'twmp-ath'); ?>">+</button>
         </div>
       </div>
     </div>
   </section>
-  <?php
+<?php
 }
 
 add_action('woocommerce_checkout_after_customer_details', 'twmp_checkout_render_ticket_detail_section', 20);
 
+function twmp_checkout_get_cart_item_key_by_product_id($product_id = 0)
+{
+  if (!function_exists('WC') || !WC()->cart) {
+    return '';
+  }
+
+  $product_id = absint($product_id);
+  if (!$product_id) {
+    $product_id = twmp_checkout_get_ticket_product_id();
+  }
+
+  if (!$product_id) {
+    return '';
+  }
+
+  foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+    if (!empty($cart_item['product_id']) && absint($cart_item['product_id']) === $product_id) {
+      return $cart_item_key;
+    }
+  }
+
+  return '';
+}
+/**
+ * Đoạn code này là trung tâm xử lý realtime của checkout (AJAX) — mỗi khi user thay đổi option (date, ticket type, quantity), nó sẽ:
+ *👉 cập nhật session + đồng bộ lại giỏ hàng
+ */
 add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
   if (!function_exists('WC') || !WC()->session) {
     return;
@@ -455,6 +614,7 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
   }
 });
 
+// Validation khi submit checkout: đảm bảo user đã chọn đủ performance + ticket type nếu sản phẩm đó yêu cầu
 add_action('woocommerce_checkout_process', function () {
   $product_id = !empty($_POST['twmp_ticket_product_id']) ? absint($_POST['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
   if (!$product_id) {
@@ -482,6 +642,7 @@ add_action('woocommerce_checkout_process', function () {
   }
 });
 
+// Khi tạo order, lưu lại lựa chọn vé vào order meta để hiển thị trong admin và email
 add_action('woocommerce_checkout_create_order', function ($order, $data) {
   $product_id = !empty($_POST['twmp_ticket_product_id']) ? absint($_POST['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
   if (!$product_id) {
@@ -515,6 +676,8 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
   }
 }, 20, 2);
 
+
+// Khi tính tổng cart, nếu có sản phẩm vé thì cập nhật lại giá dựa trên lựa chọn của user (performance + ticket type), đảm bảo giá hiển thị và tính toán đúng trong suốt quá trình checkout
 add_action('woocommerce_before_calculate_totals', function ($cart) {
   if (is_admin() && !defined('DOING_AJAX')) {
     return;
@@ -559,6 +722,8 @@ add_action('woocommerce_before_calculate_totals', function ($cart) {
   }
 }, 20);
 
+
+// Hiển thị chi tiết vé đã chọn (performance + ticket type) trong trang admin order detail, giúp admin dễ dàng kiểm tra thông tin vé mà khách hàng đã đặt mà không cần phải mở từng meta để xem
 add_action('woocommerce_admin_order_data_after_billing_address', function ($order) {
   $ticket_product_id = $order->get_meta('_twmp_ticket_product_id');
   $ticket_performance = $order->get_meta('_twmp_ticket_performance_label');
@@ -586,278 +751,412 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
 
   echo '</div>';
 }, 20);
-/**
-add_filter('woocommerce_form_field_billing_sexy_custom', function ($field, $key, $args, $value) {
 
-  $value = empty($value) ? 'male' : $value;
-
-  ob_start();
-?>
-  <p class="form-row billing-radio form-row-wide" id="billing_sexy_field" data-priority="10">
-    <span class="woocommerce-input-wrapper">
-      <input type="radio" class="input-radio " value="male" name="<?php echo esc_attr($key); ?>" id="billing_sexy_male" <?php checked($value, 'male'); ?>>
-      <label for="billing_sexy_male" class="radio ">Anh
-      </label>
-      <input type="radio" class="input-radio " value="female" name="<?php echo esc_attr($key); ?>" id="billing_sexy_female" <?php checked($value, 'female'); ?>>
-      <label for="billing_sexy_female" class="radio ">Chị
-      </label>
-    </span>
-  </p>
-<?php
-
-  return ob_get_clean();
-}, 10, 4);
-
-add_filter('woocommerce_form_field_billing_shipping_label_custom', function ($field, $key, $args, $value) {
-  $value = empty($value) ? 'nhan-hang-tai-nha' : $value;
-  ob_start();
-?>
-  <p class="form-row billing-radio form-row-wide" id="billing_delivery_form_field" data-priority="90">
-    <label for="billing_delivery_form_nhan-hang-tai-nha" class="">Hình thức nhận hàng
-      <span class="optional">(tuỳ chọn)</span>
-    </label>
-    <span class="woocommerce-input-wrapper">
-      <input type="radio" class="input-radio " value="nhan-hang-tai-nha" name="billing_delivery_form" id="billing_delivery_form_nhan-hang-tai-nha" <?php checked($value, 'nhan-hang-tai-nha'); ?>>
-      <label for="billing_delivery_form_nhan-hang-tai-nha" class="radio ">Nhận hàng tại nhà
-        <span class="optional">(tuỳ chọn)</span>
-      </label>
-      <input type="radio" class="input-radio " value="nhan-tai-cua-hang" name="billing_delivery_form" id="billing_delivery_form_nhan-tai-cua-hang" <?php checked($value, 'nhan-tai-cua-hang'); ?>>
-      <label for="billing_delivery_form_nhan-tai-cua-hang" class="radio ">Nhận tại cửa hàng
-        <span class="optional">(tuỳ chọn)</span>
-      </label>
-    </span>
-  </p>
-<?php
-  return ob_get_clean();
-}, 10, 4);
-
-// Lưu custom fields vào order meta
-add_action('woocommerce_checkout_update_order_meta', 'twmp_save_custom_checkout_fields');
-function twmp_save_custom_checkout_fields($order_id) {
-  // Lưu billing_sexy
-  if (!empty($_POST['billing_sexy'])) {
-    update_post_meta($order_id, '_billing_sexy', sanitize_text_field($_POST['billing_sexy']));
-  }
-
-  // Lưu billing_delivery_form (từ billing_shipping_label)
-  if (!empty($_POST['billing_delivery_form'])) {
-    update_post_meta($order_id, '_billing_delivery_form', sanitize_text_field($_POST['billing_delivery_form']));
-  }
-
-  // Lưu các field text bổ sung (mặc dù WooCommerce tự động lưu, nhưng đảm bảo)
-  if (!empty($_POST['billing_delivery_address'])) {
-    update_post_meta($order_id, '_billing_delivery_address', sanitize_text_field($_POST['billing_delivery_address']));
-  }
-
-  if (!empty($_POST['billing_district_district'])) {
-    update_post_meta($order_id, '_billing_district_district', sanitize_text_field($_POST['billing_district_district']));
-  }
-
-  if (!empty($_POST['billing_wards_and_communes'])) {
-    update_post_meta($order_id, '_billing_wards_and_communes', sanitize_text_field($_POST['billing_wards_and_communes']));
-  }
-}
-
-// Hiển thị custom fields trong admin order details
-add_action('woocommerce_admin_order_data_after_billing_address', 'twmp_display_custom_fields_in_admin');
-function twmp_display_custom_fields_in_admin($order) {
-  $sexy = get_post_meta($order->get_id(), '_billing_sexy', true);
-  $delivery_form = get_post_meta($order->get_id(), '_billing_delivery_form', true);
-  $delivery_address = get_post_meta($order->get_id(), '_billing_delivery_address', true);
-  $district = get_post_meta($order->get_id(), '_billing_district_district', true);
-  $wards = get_post_meta($order->get_id(), '_billing_wards_and_communes', true);
-
-  if ($sexy || $delivery_form || $delivery_address || $district || $wards) {
-    echo '<div class="address">';
-    echo '<h3>' . esc_html__('Thông tin bổ sung', 'twmp-ath') . '</h3>';
-    if ($sexy) {
-      echo '<p><strong>' . esc_html__('Giới tính:', 'twmp-ath') . '</strong> ' . esc_html($sexy === 'male' ? 'Anh' : 'Chị') . '</p>';
-    }
-    if ($delivery_form) {
-      $delivery_label = $delivery_form === 'nhan-hang-tai-nha' ? 'Nhận hàng tại nhà' : 'Nhận tại cửa hàng';
-      echo '<p><strong>' . esc_html__('Hình thức nhận hàng:', 'twmp-ath') . '</strong> ' . esc_html($delivery_label) . '</p>';
-    }
-    if ($delivery_address) {
-      echo '<p><strong>' . esc_html__('Địa chỉ nhận hàng:', 'twmp-ath') . '</strong> ' . esc_html($delivery_address) . '</p>';
-    }
-    if ($district) {
-      echo '<p><strong>' . esc_html__('Quận/Huyện:', 'twmp-ath') . '</strong> ' . esc_html($district) . '</p>';
-    }
-    if ($wards) {
-      echo '<p><strong>' . esc_html__('Phường/Xã:', 'twmp-ath') . '</strong> ' . esc_html($wards) . '</p>';
-    }
-    echo '</div>';
-  }
-}
-
-add_action('woocommerce_checkout_update_order_meta', function ($order_id) {
-  if (!empty($_POST['billing_birth_date'])) {
-    update_post_meta($order_id, '_billing_birth_date', sanitize_text_field($_POST['billing_birth_date']));
-  }
-
-  if (!empty($_POST['billing_age'])) {
-    update_post_meta($order_id, '_billing_age', absint($_POST['billing_age']));
-  }
-}, 20);
-
-add_action('woocommerce_admin_order_data_after_billing_address', function ($order) {
-  $birth_date = get_post_meta($order->get_id(), '_billing_birth_date', true);
-  $age = get_post_meta($order->get_id(), '_billing_age', true);
-
-  if (!$birth_date && !$age) {
+// Khi tạo order, nếu đơn hàng cần thanh toán thì mặc định set status là "on-hold" để chờ khách upload bill, đồng thời lưu lại trạng thái xác thực bill vào order meta để tiện cho việc hiển thị và quản lý sau này
+add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
+  $order = $order instanceof WC_Order ? $order : (function_exists('wc_get_order') ? wc_get_order($order_id) : null);
+  if (!$order instanceof WC_Order) {
     return;
   }
 
-  echo '<div class="address">';
-  echo '<h3>' . esc_html__('Booking information', 'twmp-ath') . '</h3>';
+  $order->update_meta_data('_twmp_checkout_payment_step', 'payment');
+  $order->update_meta_data('_twmp_checkout_payment_proof_status', 'waiting_upload');
+  $order->update_meta_data('_twmp_checkout_payment_proof_attachment_id', 0);
+  $order->update_meta_data('_twmp_checkout_payment_reviewed_at', '');
+  $order->update_meta_data('_twmp_checkout_payment_reviewed_by', 0);
+  $order->update_meta_data('_twmp_checkout_payment_review_note', '');
+  $order->save();
 
-  if ($birth_date) {
-    echo '<p><strong>' . esc_html__('Date of Birth:', 'twmp-ath') . '</strong> ' . esc_html($birth_date) . '</p>';
+  if (function_exists('WC') && WC()->session) {
+    WC()->session->set('twmp_checkout_payment_order_id', $order->get_id());
+    WC()->session->set('twmp_checkout_payment_order_key', $order->get_order_key());
   }
 
-  if ($age) {
-    echo '<p><strong>' . esc_html__('Age:', 'twmp-ath') . '</strong> ' . esc_html($age) . '</p>';
+  if ($order->needs_payment() && !$order->has_status('on-hold')) {
+    $order->update_status('on-hold', esc_html__('Awaiting payment proof upload.', 'twmp-ath'));
+  }
+}, 20, 3);
+
+add_action('woocommerce_payment_complete', function ($order_id) {
+  $order = wc_get_order($order_id);
+  if (!$order || $order->get_payment_method() !== 'bacs') {
+    return;
+  }
+
+  $order->update_meta_data('_twmp_checkout_payment_proof_status', 'waiting_upload');
+  $order->save();
+
+  if (!$order->has_status('on-hold')) {
+    $order->update_status('on-hold', 'BACS selected — hold for manual proof/upload.');
+  }
+}, 10);
+
+// Sau khi tạo order và chuyển đến trang "order received", thay vì hiển thị trang mặc định, chúng ta sẽ redirect về lại trang checkout với query param đặc biệt để hiển thị phần upload bill, đồng thời lưu order_id + order_key vào session để đảm bảo user có thể truy cập trực tiếp vào URL đó mà không cần phải qua bước "order received" nếu họ muốn upload bill sau khi đặt hàng
+add_filter('woocommerce_get_checkout_order_received_url', function ($order_received_url, $order) {
+  if (!$order instanceof WC_Order) {
+    return $order_received_url;
+  }
+
+  if (function_exists('WC') && WC()->session) {
+    WC()->session->set('twmp_checkout_payment_order_id', $order->get_id());
+    WC()->session->set('twmp_checkout_payment_order_key', $order->get_order_key());
+  }
+
+  return add_query_arg(array(
+    'twmp_checkout_step' => 2,
+    'order_id'           => $order->get_id(),
+    'order_key'          => $order->get_order_key(),
+    'key'                => $order->get_order_key(),
+  ), wc_get_checkout_url());
+}, 20, 2);
+
+// Mỗi khi order status thay đổi, tự động cập nhật lại trạng thái xác thực bill tương ứng vào order meta, giúp đồng bộ hóa trạng thái giữa order status và payment proof status, đồng thời đảm bảo hiển thị đúng thông tin cho khách hàng và admin khi xem đơn hàng
+add_action('woocommerce_order_status_changed', function ($order_id, $from, $to, $order) {
+  $order = $order instanceof WC_Order ? $order : (function_exists('wc_get_order') ? wc_get_order($order_id) : null);
+  if (!$order instanceof WC_Order) {
+    return;
+  }
+
+  if (in_array($to, array('processing', 'completed'), true)) {
+    $order->update_meta_data('_twmp_checkout_payment_proof_status', 'approved');
+    $order->update_meta_data('_twmp_checkout_payment_reviewed_at', current_time('mysql'));
+    $order->save();
+    return;
+  }
+
+  if ('failed' === $to) {
+    $order->update_meta_data('_twmp_checkout_payment_proof_status', 'rejected');
+    $order->update_meta_data('_twmp_checkout_payment_reviewed_at', current_time('mysql'));
+    $order->save();
+    return;
+  }
+
+  if ('on-hold' === $to || 'pending' === $to) {
+    $current = twmp_checkout_get_payment_proof_status($order);
+    if (in_array($current, array('waiting_upload', 'pending_review'), true)) {
+      $order->update_meta_data('_twmp_checkout_payment_proof_status', $current);
+      $order->save();
+    }
+  }
+}, 20, 4);
+
+
+// Hàm kiểm tra xem hiện tại có đang ở bước thanh toán (step 2) hay không, dựa trên order context được lưu trong session, giúp điều kiện hiển thị phần upload bill chỉ xuất hiện khi user đã đặt hàng và đang ở bước thanh toán
+function twmp_checkout_is_payment_step_2()
+{
+  $state = twmp_checkout_get_payment_order_context();
+  return 2 === absint($state['step']);
+}
+
+// Step 2: Payment - Upload bill
+// Render phần thông tin thanh toán và upload bill trong trang checkout, hiển thị dựa trên trạng thái xác thực bill của đơn hàng, đồng thời cung cấp đầy đủ thông tin chuyển khoản cho khách hàng để họ dễ dàng thực hiện thanh toán và upload bill sau khi đặt hàng
+function twmp_checkout_render_payment_step_section()
+{
+  $state = twmp_checkout_get_payment_order_context();
+  if (empty($state['order']) || !$state['order'] instanceof WC_Order) {
+    return;
+  }
+
+  $order = $state['order'];
+  $config = !empty($state['config']) ? $state['config'] : twmp_checkout_get_payment_config();
+  $order_total = $order->get_formatted_order_total();
+?>
+  <div class="twmp-checkout-stack twmp-checkout-stack--payment">
+    <section class="twmp-checkout-card twmp-checkout-card--payment">
+      <header class="twmp-checkout-card__header">
+        <span class="twmp-checkout-card__step">2</span>
+        <h3 class="twmp-checkout-card__title"><?php echo esc_html__('Payment', 'twmp-ath'); ?></h3>
+      </header>
+
+      <div class="twmp-checkout-card__content">
+        <div class="twmp-checkout-payment-stage" data-payment-stage data-order-id="<?php echo esc_attr($state['order_id']); ?>" data-order-key="<?php echo esc_attr($state['order_key']); ?>" data-payment-status="<?php echo esc_attr($state['proof_status']); ?>" data-payment-nonce="<?php echo esc_attr($state['nonce']); ?>">
+          <div class="twmp-checkout-payment-stage__header">
+            <span class="twmp-checkout-payment-stage__badge" data-payment-status-badge><?php echo esc_html(twmp_checkout_get_payment_action_label($state['proof_status'])); ?></span>
+            <p class="twmp-checkout-payment-stage__title" data-payment-status-title><?php echo esc_html($state['status_label']); ?></p>
+            <p class="twmp-checkout-payment-stage__description" data-payment-status-text><?php echo esc_html($state['status_text']); ?></p>
+          </div>
+
+          <div class="twmp-checkout-payment-stage__grid">
+            <div class="twmp-checkout-payment-stage__qr">
+              <?php if (!empty($config['qr_url'])) : ?>
+                <img src="<?php echo esc_url($config['qr_url']); ?>" alt="<?php echo esc_attr__('Payment QR code', 'twmp-ath'); ?>">
+              <?php else : ?>
+                <div class="twmp-checkout-payment-stage__qr-placeholder">
+                  <span><?php echo esc_html__('QR code', 'twmp-ath'); ?></span>
+                </div>
+              <?php endif; ?>
+            </div>
+
+            <div class="twmp-checkout-payment-stage__info">
+              <h4 class="twmp-checkout-payment-stage__info-title"><?php echo esc_html(!empty($config['company_name']) ? $config['company_name'] : get_bloginfo('name')); ?></h4>
+
+              <ul class="twmp-checkout-payment-stage__list">
+                <?php if (!empty($config['bank_name'])) : ?>
+                  <li><strong><?php echo esc_html__('Bank', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['bank_name']); ?></li>
+                <?php endif; ?>
+                <?php if (!empty($config['account_name'])) : ?>
+                  <li><strong><?php echo esc_html__('Account name', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['account_name']); ?></li>
+                <?php endif; ?>
+                <?php if (!empty($config['account_number'])) : ?>
+                  <li><strong><?php echo esc_html__('Account number', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['account_number']); ?></li>
+                <?php endif; ?>
+                <?php if (!empty($config['branch'])) : ?>
+                  <li><strong><?php echo esc_html__('Branch', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['branch']); ?></li>
+                <?php endif; ?>
+                <li><strong><?php echo esc_html__('Order', 'twmp-ath'); ?>:</strong> #<?php echo esc_html($order->get_order_number()); ?></li>
+                <li><strong><?php echo esc_html__('Total', 'twmp-ath'); ?>:</strong> <?php echo wp_kses_post($order_total); ?></li>
+                <?php if (!empty($config['transfer_note'])) : ?>
+                  <li><strong><?php echo esc_html__('Transfer note', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['transfer_note']); ?></li>
+                <?php endif; ?>
+              </ul>
+
+              <?php if (!empty($config['company_address']) || !empty($config['company_phone']) || !empty($config['company_email'])) : ?>
+                <div class="twmp-checkout-payment-stage__company">
+                  <?php if (!empty($config['company_address'])) : ?>
+                    <p><?php echo esc_html($config['company_address']); ?></p>
+                  <?php endif; ?>
+                  <?php if (!empty($config['company_phone'])) : ?>
+                    <p><?php echo esc_html($config['company_phone']); ?></p>
+                  <?php endif; ?>
+                  <?php if (!empty($config['company_email'])) : ?>
+                    <p><?php echo esc_html($config['company_email']); ?></p>
+                  <?php endif; ?>
+                </div>
+              <?php endif; ?>
+            </div>
+          </div>
+
+          <form class="twmp-checkout-proof-form" data-payment-proof-form enctype="multipart/form-data">
+            <input type="hidden" name="order_id" value="<?php echo esc_attr($state['order_id']); ?>">
+            <input type="hidden" name="order_key" value="<?php echo esc_attr($state['order_key']); ?>">
+            <input type="hidden" name="nonce" value="<?php echo esc_attr($state['nonce']); ?>">
+
+            <label class="twmp-checkout-proof-form__file">
+              <input type="file" name="payment_bill" accept="image/*,application/pdf" data-payment-file>
+              <span data-payment-file-label><?php echo esc_html__('Choose bill file', 'twmp-ath'); ?></span>
+            </label>
+
+            <button type="submit" class="twmp-checkout-proof-form__button" data-payment-submit>
+              <?php echo esc_html($config['bill_title']); ?>
+            </button>
+
+            <p class="twmp-checkout-proof-form__hint"><?php echo esc_html__('Upload a clear transfer receipt after the transfer is completed.', 'twmp-ath'); ?></p>
+          </form>
+
+          <div class="twmp-checkout-proof-form__notice" data-payment-notice aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+<?php
+}
+
+// Dùng để chặn WooCommerce redirect khỏi checkout khi giỏ hàng trống.
+add_filter('woocommerce_checkout_redirect_empty_cart', 'twmp_checkout_allow_payment_step_empty_cart', 10);
+function twmp_checkout_allow_payment_step_empty_cart($redirect_empty_cart)
+{
+  if (function_exists('twmp_checkout_is_payment_step_2') && twmp_checkout_is_payment_step_2()) {
+    return false;
+  }
+
+  return $redirect_empty_cart;
+}
+
+add_action('woocommerce_admin_order_data_after_order_details', function ($order) {
+  if (!$order instanceof WC_Order) {
+    return;
+  }
+  $attachment_id = $order->get_meta('_twmp_checkout_payment_proof_attachment_id', true);
+  if (!$attachment_id) {
+    return;
+  }
+
+  $url       = wp_get_attachment_url($attachment_id);
+  $mime_type = get_post_mime_type($attachment_id);
+
+  echo '<div class="order_data_column" style="width:100%; margin-top:20px;">';
+  echo '<h3>Payment Receipt</h3>';
+
+  if (str_starts_with($mime_type, 'image/')) {
+    echo '<a href="' . esc_url($url) . '" target="_blank">';
+    echo wp_get_attachment_image($attachment_id, 'medium', false, [
+      'style' => 'max-width:300px;height:auto;border:1px solid #ddd;padding:6px;background:#fff;',
+    ]);
+    echo '</a>';
+  } else {
+    echo '<a href="' . esc_url($url) . '" target="_blank">View uploaded receipt</a>';
   }
 
   echo '</div>';
-}, 30);
+});
 
-// add_filter('woocommerce_checkout_fields', function ($fields) {
-//   $fields['billing']['billing_delivery_address'] = array(
-//     'type'        => 'select',
-//     'label'       => esc_html__('Province/City', 'twmp-ath'),
-//     'required'    => true,
-//     'class'       => array('form-row-wide'),
-//     'input_class' => 'regular-select',
-//     'options'     => get_tinh_thanh_pho()
-//   );
-//   return $fields;
-// });
+add_action('wp_ajax_twmp_checkout_poll_payment_status', 'twmp_checkout_poll_payment_status');
+add_action('wp_ajax_nopriv_twmp_checkout_poll_payment_status', 'twmp_checkout_poll_payment_status');
 
-// add_filter('woocommerce_checkout_fields', function ($fields) {
-//   $fields['billing']['billing_district_shop'] = array(
-//     'type'        => 'select',
-//     'label'       => esc_html__('District', 'twmp-ath'),
-//     'required'    => true,
-//     'class'       => array('form-row-wide'),
-//     'input_class' => array('regular-select'),
-//     'options'     => array(
-//       ''          => esc_html__('District', 'twmp-ath'),
-//       'Quận 1'    => 'Quận 1',
-//     )
-//   );
-//   return $fields;
-// });
- */
-add_filter('woocommerce_checkout_fields', function ($fields) {
-  $hidden_billing_fields = array(
-    'billing_company',
-    'billing_address_1',
-    'billing_address_2',
-    'billing_city',
-    'billing_state',
-    'billing_postcode',
-  );
+function twmp_checkout_poll_payment_status()
+{
+  $order_context = twmp_checkout_get_payment_order_from_request();
+  if (is_wp_error($order_context)) {
+    wp_send_json_error(array('message' => $order_context->get_error_message()), 403);
+  }
 
-  foreach ($hidden_billing_fields as $field_key) {
-    if (isset($fields['billing'][$field_key])) {
-      $fields['billing'][$field_key]['type'] = 'hidden';
-      $fields['billing'][$field_key]['required'] = false;
+  $order = $order_context['order'];
+  check_ajax_referer('twmp_checkout_payment_' . $order->get_id(), 'nonce');
+
+  wp_send_json_success(array(
+    'message' => esc_html__('Payment status loaded.', 'twmp-ath'),
+    'status'  => twmp_checkout_get_payment_status_payload($order),
+  ));
+}
+
+function twmp_checkout_get_payment_order_from_request()
+{
+  $order_id = 0;
+  $order_key = '';
+
+  if (isset($_REQUEST['order_id'])) {
+    $order_id = absint(wp_unslash($_REQUEST['order_id']));
+  }
+
+  if (isset($_REQUEST['order_key'])) {
+    $order_key = sanitize_text_field(wp_unslash($_REQUEST['order_key']));
+  } elseif (isset($_REQUEST['key'])) {
+    $order_key = sanitize_text_field(wp_unslash($_REQUEST['key']));
+  }
+
+  if ((!$order_id || !$order_key) && function_exists('WC') && WC()->session) {
+    if (!$order_id) {
+      $order_id = absint(WC()->session->get('twmp_checkout_payment_order_id', 0));
+    }
+
+    if (!$order_key) {
+      $order_key = (string) WC()->session->get('twmp_checkout_payment_order_key', '');
     }
   }
 
-  if (isset($fields['billing']['billing_country'])) {
-    $fields['billing']['billing_country']['type'] = 'hidden';
-    $fields['billing']['billing_country']['required'] = false;
-    $fields['billing']['billing_country']['default'] = 'VN';
+  if (!$order_id || !$order_key) {
+    return new WP_Error('twmp_checkout_missing_order', esc_html__('Order session is missing.', 'twmp-ath'));
   }
 
-  if (isset($fields['billing']['billing_first_name'])) {
-    $fields['billing']['billing_first_name']['type'] = 'text';
-    $fields['billing']['billing_first_name']['required'] = true;
-    $fields['billing']['billing_first_name']['label'] = '';
-    $fields['billing']['billing_first_name']['placeholder'] = esc_html__('First Name', 'twmp-ath');
-    $fields['billing']['billing_first_name']['class'] = array('form-row-first', 'twmp-checkout-field');
-    $fields['billing']['billing_first_name']['priority'] = 10;
+  $order = function_exists('wc_get_order') ? wc_get_order($order_id) : null;
+  if (!$order instanceof WC_Order || !hash_equals($order->get_order_key(), $order_key)) {
+    return new WP_Error('twmp_checkout_invalid_order', esc_html__('Invalid order verification token.', 'twmp-ath'));
   }
 
-  if (isset($fields['billing']['billing_last_name'])) {
-    $fields['billing']['billing_last_name']['type'] = 'text';
-    $fields['billing']['billing_last_name']['required'] = true;
-    $fields['billing']['billing_last_name']['label'] = '';
-    $fields['billing']['billing_last_name']['placeholder'] = esc_html__('Last Name', 'twmp-ath');
-    $fields['billing']['billing_last_name']['class'] = array('form-row-last', 'twmp-checkout-field');
-    $fields['billing']['billing_last_name']['priority'] = 20;
+  return array(
+    'order'     => $order,
+    'order_id'  => $order_id,
+    'order_key' => $order_key,
+  );
+}
+
+function twmp_checkout_get_payment_status_payload(WC_Order $order)
+{
+  $proof_status = twmp_checkout_get_payment_proof_status($order);
+
+  return array(
+    'order_id'      => $order->get_id(),
+    'order_number'  => $order->get_order_number(),
+    'order_key'     => $order->get_order_key(),
+    'order_status'  => $order->get_status(),
+    'proof_status'  => $proof_status,
+    'status_label'  => twmp_checkout_get_payment_status_label($proof_status),
+    'status_text'   => twmp_checkout_get_payment_status_text($proof_status),
+    'action_label'  => twmp_checkout_get_payment_action_label($proof_status),
+    'can_upload'    => in_array($proof_status, array('waiting_upload', 'rejected'), true),
+    'reviewed_at'   => (string) $order->get_meta('_twmp_checkout_payment_reviewed_at', true),
+    'reviewed_by'   => absint($order->get_meta('_twmp_checkout_payment_reviewed_by', true)),
+    'review_note'   => (string) $order->get_meta('_twmp_checkout_payment_review_note', true),
+    'attachment_id' => absint($order->get_meta('_twmp_checkout_payment_proof_attachment_id', true)),
+  );
+}
+
+add_action('wp_ajax_twmp_checkout_upload_payment_proof', 'twmp_checkout_handle_payment_proof_upload');
+add_action('wp_ajax_nopriv_twmp_checkout_upload_payment_proof', 'twmp_checkout_handle_payment_proof_upload');
+
+function twmp_checkout_handle_payment_proof_upload()
+{
+  $order_context = twmp_checkout_get_payment_order_from_request();
+  if (is_wp_error($order_context)) {
+    wp_send_json_error(array('message' => $order_context->get_error_message()), 403);
   }
 
-  if (isset($fields['billing']['billing_phone'])) {
-    $fields['billing']['billing_phone']['type'] = 'tel';
-    $fields['billing']['billing_phone']['required'] = true;
-    $fields['billing']['billing_phone']['label'] = '';
-    $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone number', 'twmp-ath');
-    $fields['billing']['billing_phone']['class'] = array('form-row-first', 'twmp-checkout-field');
-    $fields['billing']['billing_phone']['priority'] = 30;
+  $order = $order_context['order'];
+  check_ajax_referer('twmp_checkout_payment_' . $order->get_id(), 'nonce');
+
+  $proof_status = twmp_checkout_get_payment_proof_status($order);
+  if ('approved' === $proof_status) {
+    wp_send_json_error(array('message' => esc_html__('This order was already approved.', 'twmp-ath')), 409);
   }
 
-  $fields['billing']['billing_birth_date'] = array(
-    'type'        => 'date',
-    'label'       => '',
-    'placeholder' => esc_html__('Date of Birth', 'twmp-ath'),
-    'required'    => true,
-    'class'       => array('form-row-first', 'twmp-checkout-field'),
-    'priority'    => 40,
+  if (empty($_FILES['payment_bill']) || empty($_FILES['payment_bill']['name'])) {
+    wp_send_json_error(array('message' => esc_html__('Please choose a bill file first.', 'twmp-ath')), 400);
+  }
+
+  $file = $_FILES['payment_bill'];
+  $max_size = 10 * MB_IN_BYTES;
+  if (!empty($file['size']) && absint($file['size']) > $max_size) {
+    wp_send_json_error(array('message' => esc_html__('Bill file is too large. Maximum size is 10MB.', 'twmp-ath')), 400);
+  }
+
+  $allowed_mimes = array(
+    'jpg'  => 'image/jpeg',
+    'jpeg' => 'image/jpeg',
+    'png'  => 'image/png',
+    'gif'  => 'image/gif',
+    'webp' => 'image/webp',
+    'pdf'  => 'application/pdf',
   );
 
-  if (isset($fields['billing']['billing_email'])) {
-    $fields['billing']['billing_email']['type'] = 'email';
-    $fields['billing']['billing_email']['required'] = true;
-    $fields['billing']['billing_email']['label'] = '';
-    $fields['billing']['billing_email']['placeholder'] = esc_html__('Email', 'twmp-ath');
-    $fields['billing']['billing_email']['class'] = array('form-row-last', 'twmp-checkout-field');
-    $fields['billing']['billing_email']['priority'] = 50;
+  $file_info = wp_check_filetype_and_ext($file['tmp_name'], $file['name'], $allowed_mimes);
+  if (empty($file_info['ext']) || empty($file_info['type'])) {
+    wp_send_json_error(array('message' => esc_html__('Unsupported file type. Please upload image or PDF.', 'twmp-ath')), 400);
   }
 
-  $fields['billing']['billing_age'] = array(
-    'type'              => 'number',
-    'label'             => '',
-    'placeholder'       => esc_html__('Age', 'twmp-ath'),
-    'required'          => true,
-    'class'             => array('form-row-last', 'twmp-checkout-field'),
-    'custom_attributes' => array(
-      'min'       => 1,
-      'step'      => 1,
-      'inputmode' => 'numeric',
+  require_once ABSPATH . 'wp-admin/includes/file.php';
+  require_once ABSPATH . 'wp-admin/includes/image.php';
+  require_once ABSPATH . 'wp-admin/includes/media.php';
+
+  $movefile = wp_handle_upload($file, array(
+    'test_form' => false,
+    'mimes'     => $allowed_mimes,
+  ));
+
+  if (!empty($movefile['error'])) {
+    wp_send_json_error(array('message' => $movefile['error']), 400);
+  }
+
+  $attachment = array(
+    'post_mime_type' => $movefile['type'],
+    'post_title'     => sanitize_file_name(wp_basename($movefile['file'])),
+    'post_content'   => '',
+    'post_status'    => 'inherit',
+  );
+
+  $attachment_id = wp_insert_attachment($attachment, $movefile['file'], $order->get_id());
+  if (is_wp_error($attachment_id) || !$attachment_id) {
+    wp_send_json_error(array('message' => esc_html__('Could not save the uploaded file.', 'twmp-ath')), 500);
+  }
+
+  $attachment_data = wp_generate_attachment_metadata($attachment_id, $movefile['file']);
+  wp_update_attachment_metadata($attachment_id, $attachment_data);
+
+  $order->update_meta_data('_twmp_checkout_payment_step', 'payment');
+  $order->update_meta_data('_twmp_checkout_payment_proof_attachment_id', absint($attachment_id));
+  $order->update_meta_data('_twmp_checkout_payment_proof_status', 'pending_review');
+  $order->update_meta_data('_twmp_checkout_payment_reviewed_at', '');
+  $order->update_meta_data('_twmp_checkout_payment_reviewed_by', 0);
+  $order->update_meta_data('_twmp_checkout_payment_review_note', '');
+  $order->add_order_note(sprintf(esc_html__('Customer uploaded payment proof (attachment #%s).', 'twmp-ath'), absint($attachment_id)));
+  $order->save();
+
+  wp_send_json_success(array(
+    'message' => esc_html__('Bill uploaded successfully. Waiting for confirmation.', 'twmp-ath'),
+    'status'  => twmp_checkout_get_payment_status_payload($order),
+    'redirect_url' => add_query_arg(
+      'key',
+      $order->get_order_key(),
+      wc_get_endpoint_url('order-received', $order->get_id(), wc_get_checkout_url())
     ),
-    'priority'          => 60,
-  );
-
-  return $fields;
-}, 20);
-
-add_filter('woocommerce_add_to_cart_redirect', function ($url) {
-  if (!empty($_REQUEST['twmp_buy_now'])) {
-    return wc_get_cart_url();
-  }
-
-  return $url;
-});
-
-add_filter('woocommerce_checkout_fields', function ($fields) {
-  $fields['billing']['billing_first_name']['type'] = 'hidden';
-  $fields['billing']['billing_first_name']['required'] = false;
-  $fields['billing']['billing_country']['type'] = 'hidden';
-  $fields['billing']['billing_country']['required'] = false;
-  $fields['billing']['billing_address_1']['type'] = 'hidden';
-  $fields['billing']['billing_address_1']['required'] = false;
-  $fields['billing']['billing_address_2']['type'] = 'hidden';
-  $fields['billing']['billing_postcode']['type'] = 'hidden';
-  $fields['billing']['billing_city']['type'] = 'hidden';
-  $fields['billing']['billing_city']['required'] = false;
-  $fields['billing']['billing_country']['default'] = 'VN'; // đổi thành mã quốc gia mong muốn
-
-  $fields['billing']['billing_last_name']['placeholder'] = 'Nhập họ và tên';
-  $fields['billing']['billing_phone']['placeholder']     = 'Nhập số điện thoại';
-  $fields['billing']['billing_email']['placeholder']     = 'Nhập địa chỉ email';
-  return $fields;
-});
-
+  ));
+}
