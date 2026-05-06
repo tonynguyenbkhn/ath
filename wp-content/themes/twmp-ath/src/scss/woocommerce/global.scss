@@ -1,58 +1,3 @@
-@mixin style-price {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 0;
-	width: 50%;
-	order: 2;
-
-	@media (min-width: 576px) {
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: flex-end;
-	}
-
-	ins {
-		text-decoration: none;
-		order: 1;
-	}
-
-	span bdi {
-		color: var(--price-color);
-		font-weight: bold;
-		font-size: 14px;
-
-		@media (min-width: 576px) {
-			font-size: 16px;
-		}
-	}
-
-	ins span {
-		color: var(--price-color);
-		font-weight: bold;
-		font-size: 14px;
-
-		@media (min-width: 576px) {
-			font-size: 16px;
-		}
-	}
-
-	del {
-		margin-left: 0.25em;
-		opacity: 1;
-		text-decoration: none;
-		order: 2;
-
-		span {
-			bdi {
-				color: var(--body-text-color);
-				font-weight: 400;
-				text-decoration: line-through;
-				font-size: 14px;
-			}
-		}
-	}
-}
-
 .woocommerce-breadcrumb {
 	width: 100%;
 	background-color: transparent;
@@ -70,7 +15,7 @@
 		}
 
 		a {
-			color: var(--primary);
+			color: var(--primary-500);
 		}
 	}
 }

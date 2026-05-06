@@ -860,3 +860,4 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
   $fields['billing']['billing_email']['placeholder']     = 'Nhập địa chỉ email';
   return $fields;
 });
+
