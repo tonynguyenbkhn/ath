@@ -183,7 +183,7 @@ function twmp_render_product_card()
         </a>
     </div>
 
-<?php
+    <?php
 }
 
 // Layout
@@ -220,51 +220,53 @@ function twmp_render_shop_sidebar_start()
 add_action('woocommerce_after_main_content', 'twmp_render_shop_sidebar_main', 5);
 function twmp_render_shop_sidebar_main()
 {
-?>
-    <div class="filter-shop">
-        <div class="filter-item__head">
-            <h3 class="filter-item__title"><?php echo esc_html__('Filter', 'twmp-ath'); ?></h3>
-            <button class="filter-item__reset button-text d-flex items-center gap-8" onclick="FWP.reset()"><?php echo esc_html__('Clear all', 'twmp-ath'); ?> <?php echo twmp_get_svg_icon('clear-all'); ?></button>
-        </div>
-        <div class="filter-item__body">
-            <div class="filter-item">
-                <span class="filter-item__label"><?php echo esc_html__('Date Time', 'twmp-ath'); ?></span>
-                <?php
-                echo do_shortcode('[facetwp facet="date_time"]');
-                ?>
+    if (class_exists('WooCommerce') && (is_shop() || is_product_taxonomy() ) ) {
+    ?>
+        <div class="filter-shop">
+            <div class="filter-item__head">
+                <h3 class="filter-item__title"><?php echo esc_html__('Filter', 'twmp-ath'); ?></h3>
+                <button class="filter-item__reset button-text d-flex items-center gap-8" onclick="FWP.reset()"><?php echo esc_html__('Clear all', 'twmp-ath'); ?> <?php echo twmp_get_svg_icon('clear-all'); ?></button>
             </div>
-            <div class="filter-item">
-                <span class="filter-item__label"><?php echo esc_html__('Date of week', 'twmp-ath'); ?></span>
-                <?php
-                echo do_shortcode('[facetwp facet="date_of_week"]');
-                ?>
+            <div class="filter-item__body">
+                <div class="filter-item">
+                    <span class="filter-item__label"><?php echo esc_html__('Date Time', 'twmp-ath'); ?></span>
+                    <?php
+                    echo do_shortcode('[facetwp facet="date_time"]');
+                    ?>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-item__label"><?php echo esc_html__('Date of week', 'twmp-ath'); ?></span>
+                    <?php
+                    echo do_shortcode('[facetwp facet="date_of_week"]');
+                    ?>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-item__label"><?php echo esc_html__('Age group', 'twmp-ath'); ?></span>
+                    <?php
+                    echo do_shortcode('[facetwp facet="age_group"]');
+                    ?>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-item__label"><?php echo esc_html__('Event status', 'twmp-ath'); ?></span>
+                    <?php
+                    echo do_shortcode('[facetwp facet="event_status"]');
+                    ?>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-item__label"><?php echo esc_html__('Event type', 'twmp-ath'); ?></span>
+                    <?php
+                    echo do_shortcode('[facetwp facet="event_type"]');
+                    ?>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-item__label"><?php echo esc_html__('Location', 'twmp-ath'); ?></span>
+                    <?php
+                    echo do_shortcode('[facetwp facet="location"]');
+                    ?>
+                </div>
             </div>
-            <div class="filter-item">
-                <span class="filter-item__label"><?php echo esc_html__('Age group', 'twmp-ath'); ?></span>
-                <?php
-                echo do_shortcode('[facetwp facet="age_group"]');
-                ?>
-            </div>
-            <div class="filter-item">
-                <span class="filter-item__label"><?php echo esc_html__('Event status', 'twmp-ath'); ?></span>
-                <?php
-                echo do_shortcode('[facetwp facet="event_status"]');
-                ?>
-            </div>
-            <div class="filter-item">
-                <span class="filter-item__label"><?php echo esc_html__('Event type', 'twmp-ath'); ?></span>
-                <?php
-                echo do_shortcode('[facetwp facet="event_type"]');
-                ?>
-            </div>
-            <div class="filter-item">
-                <span class="filter-item__label"><?php echo esc_html__('Location', 'twmp-ath'); ?></span>
-                <?php
-                echo do_shortcode('[facetwp facet="location"]');
-                ?>
-            </div>
-        </div>
     <?php
+    }
 }
 
 add_action('woocommerce_after_main_content', 'twmp_render_shop_sidebar_end', 8);

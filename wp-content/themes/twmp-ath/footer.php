@@ -41,7 +41,7 @@ get_template_part('template-parts/footers/modal-popup-welcome', null, []);
 // get_template_part('template-parts/footers/mini-cart', null, []);
 // get_template_part('templates/blocks/menu-mobile-footer', null, []);
 
-if (class_exists('WooCommerce') && is_shop()) {
+if (class_exists('WooCommerce') && (is_shop() || is_product_taxonomy() ) ) {
 ?>
     <script>
         document.addEventListener('facetwp-loaded', function() {
