@@ -17,6 +17,7 @@ class TWMP_THEME
 		Views_Theme::get_instance();
 		Admin_Theme::get_instance();
 		Woo_Theme::get_instance();
+		Calendar_Theme::get_instance();
 		$this->setup_hooks();
 	}
 

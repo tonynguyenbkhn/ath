@@ -97,7 +97,7 @@ module.exports = (env, argv) => {
         safelist: {
           standard: ['body', 'html', /^wp-/],
           deep: [/^is-/, /^has-/],
-          greedy: [/^twmp-/, /^woocommerce-/]
+          greedy: [/^twmp-/, /^woocommerce-/, /^calendar-/, /^fc-/]
         }
       })] : []),
       new CopyWebpackPlugin({
