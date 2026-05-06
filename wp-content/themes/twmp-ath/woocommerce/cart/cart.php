@@ -20,7 +20,50 @@ defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_cart'); ?>
 <?php
+$payment_state = function_exists('twmp_checkout_get_payment_order_context') ? twmp_checkout_get_payment_order_context() : array();
+$is_payment_summary = function_exists('twmp_checkout_is_payment_step') && twmp_checkout_is_payment_step() && !empty($payment_state['order']) && $payment_state['order'] instanceof WC_Order;
 $is_checkout_summary = function_exists('is_checkout') && is_checkout();
+if ($is_payment_summary) :
+		$order = $payment_state['order'];
+		$order_items = function_exists('twmp_checkout_build_order_summary_data') ? twmp_checkout_build_order_summary_data($order) : array();
+		?>
+		<div class="twmp-checkout-summary twmp-checkout-summary--payment">
+			<div class="twmp-checkout-summary__card">
+				<header class="twmp-checkout-summary__header">
+					<h3 class="twmp-checkout-summary__title"><?php esc_html_e('Order summary', 'twmp-ath'); ?></h3>
+				</header>
+
+				<div class="twmp-checkout-summary__content">
+					<?php if (!empty($order_items)) : ?>
+						<?php foreach ($order_items as $item) : ?>
+							<article class="twmp-checkout-summary__item">
+								<div class="twmp-checkout-summary__media">
+									<?php echo !empty($item['image']) ? wp_kses_post($item['image']) : ''; ?>
+								</div>
+								<div class="twmp-checkout-summary__body">
+									<div class="twmp-checkout-summary__meta">
+										<?php foreach (!empty($item['badges']) ? array_slice($item['badges'], 0, 3) : array() as $badge) : ?>
+											<span class="twmp-checkout-summary__badge"><?php echo esc_html($badge); ?></span>
+										<?php endforeach; ?>
+									</div>
+									<h4 class="twmp-checkout-summary__name"><?php echo esc_html($item['name']); ?></h4>
+								</div>
+								<div class="twmp-checkout-summary__aside">
+									<div class="twmp-checkout-summary__qty"><?php echo esc_html('x' . absint($item['quantity'])); ?></div>
+								</div>
+							</article>
+						<?php endforeach; ?>
+					<?php else : ?>
+						<p class="twmp-checkout-summary__empty"><?php esc_html_e('Your order is ready for payment proof review.', 'twmp-ath'); ?></p>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+		<?php wc_get_template('cart/cart-totals.php'); ?>
+		<?php
+		return;
+	endif;
+
 if ($is_checkout_summary) :
 	$cart = function_exists('WC') ? WC()->cart : null;
 	$selection = function_exists('twmp_checkout_get_ticket_selection_state') ? twmp_checkout_get_ticket_selection_state() : array();
