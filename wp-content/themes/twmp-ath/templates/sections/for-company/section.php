@@ -133,7 +133,7 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
                                     'templates/components/button',
                                     null,
                                     [
-                                        'class'              => 'for-company__button for-company__button--primary bg-primary-500 text-system-white typo-system-button button-medium',
+                                        'class'              => 'for-company__button for-company__button--primary bg-primary-500 text-system-white typo-system-button button-large',
                                         'button_text'        => $data['primary_button_text'],
                                         'button_url'         => $data['primary_button_link'],
                                         'button_link_target' => '_self',
@@ -146,7 +146,7 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
                                     'templates/components/button',
                                     null,
                                     [
-                                        'class'              => 'for-company__button for-company__button--secondary text-system-white typo-system-button button-medium',
+                                        'class'              => 'for-company__button for-company__button--secondary text-system-white typo-system-button button-large',
                                         'button_text'        => $data['secondary_button_text'],
                                         'button_url'         => $data['secondary_button_link'],
                                         'button_link_target' => '_self',

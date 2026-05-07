@@ -29,9 +29,9 @@ export default el => {
 
 	// setLastVisit(now)
 
-	// Modal(el, {
-	// 	id: 'modal-popup-welcome'
-	// })
+	Modal(el, {
+		id: 'modal-popup-welcome'
+	})
 
 	// el.addEventListener('activate', () => {
 	// 	setLastVisit(Date.now())

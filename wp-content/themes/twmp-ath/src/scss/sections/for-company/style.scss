@@ -37,11 +37,14 @@
 .for-company__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 2.5rem;
+  gap: 32px;
+  margin-top: 40px;
 }
 
-.for-company__button {}
+.for-company__button {
+  padding-left: 70px;
+  padding-right: 70px;
+}
 
 .for-company__button--primary {}
 
