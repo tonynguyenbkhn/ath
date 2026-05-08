@@ -9,6 +9,112 @@ remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_f
 remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_output_all_notices', 10);
 
 // Xử lý tính năng "Buy Now" - bỏ qua giỏ hàng và chuyển thẳng đến trang thanh toán
+// wp-content\themes\twmp-ath\inc\woocommerces\checkout.php
+// Keep only firstname, lastname, phone, date of birth, and age on checkout.
+add_filter('woocommerce_checkout_fields', function ($fields) {
+  $visible_billing_fields = array(
+    'billing_first_name',
+    'billing_last_name',
+    'billing_phone',
+    'billing_date_of_birth',
+    'billing_age',
+  );
+
+  foreach ($fields as $group_key => $group_fields) {
+    foreach ($group_fields as $field_key => $field) {
+      if (isset($fields[$group_key][$field_key])) {
+        $fields[$group_key][$field_key]['required'] = false;
+      }
+    }
+  }
+
+  foreach ($fields as $group_key => $group_fields) {
+    foreach ($group_fields as $field_key => $field) {
+      if (in_array($field_key, $visible_billing_fields, true)) {
+        continue;
+      }
+
+      if (isset($fields[$group_key][$field_key])) {
+        $fields[$group_key][$field_key]['type'] = 'hidden';
+        $fields[$group_key][$field_key]['required'] = false;
+        $fields[$group_key][$field_key]['label'] = '';
+        $fields[$group_key][$field_key]['placeholder'] = '';
+        $fields[$group_key][$field_key]['class'] = array('twmp-checkout-field--hidden');
+      }
+    }
+  }
+
+  if (isset($fields['billing']['billing_first_name'])) {
+    $fields['billing']['billing_first_name']['type'] = 'text';
+    $fields['billing']['billing_first_name']['label'] = esc_html__('First name', 'twmp-ath');
+    $fields['billing']['billing_first_name']['placeholder'] = esc_html__('First name', 'twmp-ath');
+    $fields['billing']['billing_first_name']['required'] = false;
+    $fields['billing']['billing_first_name']['class'] = array('form-row-first', 'twmp-checkout-field');
+    $fields['billing']['billing_first_name']['priority'] = 10;
+  }
+
+  if (isset($fields['billing']['billing_last_name'])) {
+    $fields['billing']['billing_last_name']['type'] = 'text';
+    $fields['billing']['billing_last_name']['label'] = esc_html__('Last name', 'twmp-ath');
+    $fields['billing']['billing_last_name']['placeholder'] = esc_html__('Last name', 'twmp-ath');
+    $fields['billing']['billing_last_name']['required'] = false;
+    $fields['billing']['billing_last_name']['class'] = array('form-row-last', 'twmp-checkout-field');
+    $fields['billing']['billing_last_name']['priority'] = 20;
+  }
+
+  if (isset($fields['billing']['billing_phone'])) {
+    $fields['billing']['billing_phone']['type'] = 'tel';
+    $fields['billing']['billing_phone']['label'] = esc_html__('Phone', 'twmp-ath');
+    $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone', 'twmp-ath');
+    $fields['billing']['billing_phone']['required'] = false;
+    $fields['billing']['billing_phone']['class'] = array('form-row-wide', 'twmp-checkout-field');
+    $fields['billing']['billing_phone']['priority'] = 30;
+  }
+
+  $fields['billing']['billing_date_of_birth'] = array(
+    'type'        => 'date',
+    'label'       => esc_html__('Date of birth', 'twmp-ath'),
+    'placeholder' => esc_html__('Date of birth', 'twmp-ath'),
+    'required'    => false,
+    'class'       => array('form-row-first', 'twmp-checkout-field'),
+    'priority'    => 40,
+  );
+
+  $fields['billing']['billing_age'] = array(
+    'type'              => 'number',
+    'label'             => esc_html__('Age', 'twmp-ath'),
+    'placeholder'       => esc_html__('Age', 'twmp-ath'),
+    'required'          => false,
+    'class'             => array('form-row-last', 'twmp-checkout-field'),
+    'custom_attributes' => array(
+      'min'       => 1,
+      'step'      => 1,
+      'inputmode' => 'numeric',
+    ),
+    'priority'          => 50,
+  );
+
+  foreach (array('shipping', 'account', 'order') as $group_key) {
+    if (isset($fields[$group_key])) {
+      $fields[$group_key] = array();
+    }
+  }
+
+  return $fields;
+}, 20);
+
+add_action('woocommerce_checkout_create_order', function ($order, $data) {
+  if (!$order instanceof WC_Order) {
+    return;
+  }
+
+  $billing_date_of_birth = isset($_POST['billing_date_of_birth']) ? sanitize_text_field(wp_unslash($_POST['billing_date_of_birth'])) : '';
+  $billing_age = isset($_POST['billing_age']) ? absint(wp_unslash($_POST['billing_age'])) : 0;
+
+  $order->update_meta_data('_billing_date_of_birth', $billing_date_of_birth);
+  $order->update_meta_data('_billing_age', $billing_age);
+}, 20, 2);
+
 add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id, $quantity) {
   if (!empty($_REQUEST['twmp_buy_now'])) {
     if (function_exists('WC') && WC()->cart) {
@@ -542,9 +648,164 @@ function twmp_checkout_render_ticket_detail_section()
           <button type="button" class="twmp-ticket-quantity__button" data-ticket-quantity-step="plus" aria-label="<?php echo esc_attr__('Increase quantity', 'twmp-ath'); ?>">+</button>
         </div>
       </div>
+
+      <?php
+      $attendee_names = twmp_checkout_get_ticket_attendee_names_from_session();
+      $extra_attendee_count = max(0, $quantity - 1);
+      ?>
+      <div
+        class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--attendees"
+        data-ticket-attendees-wrapper
+        <?php echo $extra_attendee_count > 0 ? '' : 'style="display:none;"'; ?>>
+        <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Ticket holder names', 'twmp-ath'); ?></p>
+        <p class="twmp-checkout-ticket-detail__hint"><?php echo esc_html__('Enter the name for each additional ticket holder.', 'twmp-ath'); ?></p>
+        <input type="hidden" name="twmp_ticket_attendees_list" value="<?php echo esc_attr(twmp_checkout_format_ticket_attendee_list($attendee_names)); ?>" data-ticket-attendees-list>
+        <div class="twmp-ticket-attendees" data-ticket-attendees-container>
+          <?php for ($index = 2; $index <= $quantity; $index++) : ?>
+            <div class="twmp-ticket-attendees__item">
+              <label class="twmp-ticket-attendees__label" for="twmp_ticket_attendees_<?php echo esc_attr($index); ?>">
+                <?php echo esc_html(sprintf(__('Name of ticket holder %d', 'twmp-ath'), $index)); ?>
+              </label>
+              <input
+                type="text"
+                class="twmp-ticket-attendees__input"
+                id="twmp_ticket_attendees_<?php echo esc_attr($index); ?>"
+                name="twmp_ticket_attendees[<?php echo esc_attr($index); ?>]"
+                value="<?php echo esc_attr(!empty($attendee_names[$index]) ? $attendee_names[$index] : ''); ?>"
+                placeholder="<?php echo esc_attr(sprintf(__('Name of ticket holder %d', 'twmp-ath'), $index)); ?>"
+                autocomplete="name"
+                required>
+            </div>
+          <?php endfor; ?>
+        </div>
+      </div>
     </div>
   </section>
 <?php
+
+  if (function_exists('wc_enqueue_js')) {
+    $js = <<<JS
+(function() {
+  const checkoutRoot = document.querySelector('.woocommerce-checkout-custom--settings');
+  if (!checkoutRoot) {
+    return;
+  }
+
+  if (checkoutRoot.getAttribute('data-ticket-attendees-init') === '1') {
+    return;
+  }
+  checkoutRoot.setAttribute('data-ticket-attendees-init', '1');
+
+  const quantityInput = checkoutRoot.querySelector('input[name="twmp_ticket_quantity"]');
+  const attendeesWrapper = checkoutRoot.querySelector('[data-ticket-attendees-wrapper]');
+  const attendeesContainer = checkoutRoot.querySelector('[data-ticket-attendees-container]');
+  const attendeesList = checkoutRoot.querySelector('[data-ticket-attendees-list]');
+
+  if (!quantityInput || !attendeesWrapper || !attendeesContainer || !attendeesList) {
+    return;
+  }
+
+  const getQuantity = () => {
+    const quantity = parseInt(quantityInput.value, 10);
+    return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+  };
+
+  const getCurrentValues = () => {
+    const values = {};
+    attendeesContainer.querySelectorAll('.twmp-ticket-attendees__input').forEach(input => {
+      const match = input.name && input.name.match(/twmp_ticket_attendees\\[(\\d+)\\]/);
+      if (!match) {
+        return;
+      }
+
+      const index = parseInt(match[1], 10);
+      values[index] = input.value || '';
+    });
+    return values;
+  };
+
+  const syncHiddenList = () => {
+    const values = [];
+    attendeesContainer.querySelectorAll('.twmp-ticket-attendees__input').forEach(input => {
+      const value = (input.value || '').trim();
+      if (value) {
+        values.push(value);
+      }
+    });
+
+    attendeesList.value = values.join(', ');
+  };
+
+  const renderAttendees = () => {
+    const quantity = getQuantity();
+    const count = Math.max(0, quantity - 1);
+    const currentValues = getCurrentValues();
+
+    if (count === 0) {
+      attendeesWrapper.style.display = 'none';
+      attendeesContainer.innerHTML = '';
+      attendeesList.value = '';
+      return;
+    }
+
+    attendeesWrapper.style.display = '';
+    attendeesContainer.innerHTML = '';
+
+    for (let index = 2; index <= quantity; index += 1) {
+      const item = document.createElement('div');
+      item.className = 'twmp-ticket-attendees__item';
+
+      const label = document.createElement('label');
+      label.className = 'twmp-ticket-attendees__label';
+      label.htmlFor = 'twmp_ticket_attendees_' + index;
+      label.textContent = 'Name of ticket holder ' + index;
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'twmp-ticket-attendees__input';
+      input.id = 'twmp_ticket_attendees_' + index;
+      input.name = 'twmp_ticket_attendees[' + index + ']';
+      input.placeholder = 'Name of ticket holder ' + index;
+      input.autocomplete = 'name';
+      input.required = true;
+      input.value = currentValues[index] || '';
+
+      input.addEventListener('input', syncHiddenList);
+      item.appendChild(label);
+      item.appendChild(input);
+      attendeesContainer.appendChild(item);
+    }
+
+    syncHiddenList();
+  };
+
+  const syncAndUpdate = () => {
+    const quantity = getQuantity();
+    quantityInput.value = String(quantity);
+    renderAttendees();
+  };
+
+  quantityInput.addEventListener('input', syncAndUpdate);
+  quantityInput.addEventListener('change', syncAndUpdate);
+  checkoutRoot.addEventListener('click', event => {
+    const button = event.target && event.target.closest ? event.target.closest('[data-ticket-quantity-step]') : null;
+    if (!button) {
+      return;
+    }
+
+    window.setTimeout(syncAndUpdate, 0);
+  });
+
+  syncAndUpdate();
+
+  if (window.jQuery) {
+    window.jQuery(document.body).on('updated_checkout', syncAndUpdate);
+  }
+})();
+JS;
+
+    wc_enqueue_js($js);
+  }
 }
 
 add_action('woocommerce_checkout_after_customer_details', 'twmp_checkout_render_ticket_detail_section', 20);
@@ -572,6 +833,49 @@ function twmp_checkout_get_cart_item_key_by_product_id($product_id = 0)
 
   return '';
 }
+
+function twmp_checkout_get_ticket_attendee_names_from_session()
+{
+  if (!function_exists('WC') || !WC()->session) {
+    return array();
+  }
+
+  $stored = WC()->session->get('twmp_ticket_attendees', array());
+  if (!is_array($stored)) {
+    return array();
+  }
+
+  $names = array();
+  foreach ($stored as $index => $name) {
+    $index = absint($index);
+    $name = sanitize_text_field((string) $name);
+    if ($index < 2 || $name === '') {
+      continue;
+    }
+
+    $names[$index] = $name;
+  }
+
+  ksort($names);
+
+  return $names;
+}
+
+function twmp_checkout_format_ticket_attendee_list(array $names)
+{
+  $clean_names = array();
+
+  foreach ($names as $name) {
+    $name = sanitize_text_field((string) $name);
+    if ($name === '') {
+      continue;
+    }
+
+    $clean_names[] = $name;
+  }
+
+  return implode(', ', $clean_names);
+}
 /**
  * Đoạn code này là trung tâm xử lý realtime của checkout (AJAX) — mỗi khi user thay đổi option (date, ticket type, quantity), nó sẽ:
  *👉 cập nhật session + đồng bộ lại giỏ hàng
@@ -594,6 +898,25 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
   ));
 
   WC()->session->set('twmp_ticket_selection', $selection);
+
+  $attendees = array();
+  if (!empty($data['twmp_ticket_attendees']) && is_array($data['twmp_ticket_attendees'])) {
+    foreach ($data['twmp_ticket_attendees'] as $index => $name) {
+      $index = absint($index);
+      if ($index < 2) {
+        continue;
+      }
+
+      $name = sanitize_text_field(wp_unslash($name));
+      if ($name === '') {
+        continue;
+      }
+
+      $attendees[$index] = $name;
+    }
+  }
+
+  WC()->session->set('twmp_ticket_attendees', $attendees);
 
   $quantity = !empty($data['twmp_ticket_quantity']) ? max(1, absint($data['twmp_ticket_quantity'])) : 0;
   if ($quantity > 0 && function_exists('WC') && WC()->cart) {
@@ -640,6 +963,32 @@ add_action('woocommerce_checkout_process', function () {
   } elseif (!empty($ticket_data['ticket_prices']) && empty($ticket_data['ticket_prices'][$price_key])) {
     wc_add_notice(__('The selected ticket type is invalid.', 'twmp-ath'), 'error');
   }
+
+  $quantity = !empty($_POST['twmp_ticket_quantity']) ? max(1, absint(wp_unslash($_POST['twmp_ticket_quantity']))) : 1;
+  $posted_attendees = array();
+
+  if (!empty($_POST['twmp_ticket_attendees']) && is_array($_POST['twmp_ticket_attendees'])) {
+    foreach ($_POST['twmp_ticket_attendees'] as $index => $name) {
+      $index = absint($index);
+      if ($index < 2) {
+        continue;
+      }
+
+      $name = sanitize_text_field(wp_unslash($name));
+      if ($name === '') {
+        continue;
+      }
+
+      $posted_attendees[$index] = $name;
+    }
+  }
+
+  for ($index = 2; $index <= $quantity; $index++) {
+    if (empty($posted_attendees[$index])) {
+      wc_add_notice(sprintf(__('Please enter the name for ticket holder %d.', 'twmp-ath'), $index), 'error');
+      break;
+    }
+  }
 });
 
 // Khi tạo order, lưu lại lựa chọn vé vào order meta để hiển thị trong admin và email
@@ -674,6 +1023,27 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
     $order->update_meta_data('_twmp_ticket_price_label', $price_option['label']);
     $order->update_meta_data('_twmp_ticket_price_amount', $price_option['price']);
   }
+
+  $attendee_names = array();
+  if (!empty($_POST['twmp_ticket_attendees']) && is_array($_POST['twmp_ticket_attendees'])) {
+    foreach ($_POST['twmp_ticket_attendees'] as $index => $name) {
+      $index = absint($index);
+      if ($index < 2) {
+        continue;
+      }
+
+      $name = sanitize_text_field(wp_unslash($name));
+      if ($name === '') {
+        continue;
+      }
+
+      $attendee_names[$index] = $name;
+    }
+  }
+
+  ksort($attendee_names);
+  $order->update_meta_data('_twmp_ticket_attendee_names', $attendee_names);
+  $order->update_meta_data('_twmp_ticket_attendee_names_list', twmp_checkout_format_ticket_attendee_list($attendee_names));
 }, 20, 2);
 
 
@@ -725,12 +1095,16 @@ add_action('woocommerce_before_calculate_totals', function ($cart) {
 
 // Hiển thị chi tiết vé đã chọn (performance + ticket type) trong trang admin order detail, giúp admin dễ dàng kiểm tra thông tin vé mà khách hàng đã đặt mà không cần phải mở từng meta để xem
 add_action('woocommerce_admin_order_data_after_billing_address', function ($order) {
+  $billing_date_of_birth = $order->get_meta('_billing_date_of_birth');
+  $billing_age = $order->get_meta('_billing_age');
   $ticket_product_id = $order->get_meta('_twmp_ticket_product_id');
   $ticket_performance = $order->get_meta('_twmp_ticket_performance_label');
   $ticket_price_label = $order->get_meta('_twmp_ticket_price_label');
   $ticket_price_amount = $order->get_meta('_twmp_ticket_price_amount');
+  $ticket_attendee_names = $order->get_meta('_twmp_ticket_attendee_names');
+  $ticket_attendee_names_list = $order->get_meta('_twmp_ticket_attendee_names_list');
 
-  if (!$ticket_product_id && !$ticket_performance && !$ticket_price_label) {
+  if (!$billing_date_of_birth && '' === (string) $billing_age && !$ticket_product_id && !$ticket_performance && !$ticket_price_label && empty($ticket_attendee_names)) {
     return;
   }
 
@@ -747,6 +1121,31 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
       echo ' - ' . wp_kses_post(wc_price((float) $ticket_price_amount));
     }
     echo '</p>';
+  }
+
+  if ($billing_date_of_birth) {
+    echo '<p><strong>' . esc_html__('Date of birth:', 'twmp-ath') . '</strong> ' . esc_html($billing_date_of_birth) . '</p>';
+  }
+
+  if ('' !== (string) $billing_age) {
+    echo '<p><strong>' . esc_html__('Age:', 'twmp-ath') . '</strong> ' . esc_html($billing_age) . '</p>';
+  }
+
+  if (!empty($ticket_attendee_names)) {
+    echo '<p><strong>' . esc_html__('Ticket holders:', 'twmp-ath') . '</strong></p>';
+    echo '<ul style="margin:0 0 12px 18px;">';
+    foreach ((array) $ticket_attendee_names as $index => $name) {
+      $index = absint($index);
+      $name = sanitize_text_field((string) $name);
+      if ($index < 2 || $name === '') {
+        continue;
+      }
+
+      echo '<li>' . esc_html(sprintf(__('Ticket holder %d: %s', 'twmp-ath'), $index, $name)) . '</li>';
+    }
+    echo '</ul>';
+  } elseif ($ticket_attendee_names_list) {
+    echo '<p><strong>' . esc_html__('Ticket holders:', 'twmp-ath') . '</strong> ' . esc_html($ticket_attendee_names_list) . '</p>';
   }
 
   echo '</div>';
@@ -943,11 +1342,442 @@ function twmp_checkout_render_payment_step_section()
             <p class="twmp-checkout-proof-form__hint"><?php echo esc_html__('Upload a clear transfer receipt after the transfer is completed.', 'twmp-ath'); ?></p>
           </form>
 
-          <div class="twmp-checkout-proof-form__notice" data-payment-notice aria-live="polite"></div>
+          <style>
+            .twmp-checkout-payment-popup {
+              position: fixed;
+              inset: 0;
+              z-index: 9999;
+              display: none;
+              align-items: center;
+              justify-content: center;
+              padding: 20px;
+            }
+
+            .twmp-checkout-payment-popup.is-open {
+              display: flex;
+            }
+
+            .twmp-checkout-payment-popup__backdrop {
+              position: absolute;
+              inset: 0;
+              background: rgba(31, 39, 71, 0.56);
+            }
+
+            .twmp-checkout-payment-popup__dialog {
+              position: relative;
+              width: min(100%, 640px);
+              padding: 42px 36px 32px;
+              border-radius: 2px;
+              background: #fbf7ef;
+              box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+              text-align: center;
+              color: #1f2747;
+            }
+
+            .twmp-checkout-payment-popup__close {
+              position: absolute;
+              top: 14px;
+              right: 14px;
+              width: 36px;
+              height: 36px;
+              border: 0;
+              border-radius: 50%;
+              background: rgba(31, 39, 71, 0.08);
+              color: #1f2747;
+              font-size: 24px;
+              line-height: 1;
+              cursor: pointer;
+            }
+
+            .twmp-checkout-payment-popup__icon {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 70px;
+              height: 70px;
+              margin: 0 auto 22px;
+              border-radius: 50%;
+            }
+
+            .twmp-checkout-payment-popup__title {
+              margin: 0 0 12px;
+              color: #1f2747;
+              font-size: 34px;
+              line-height: 1.1;
+              font-weight: 500;
+            }
+
+            .twmp-checkout-payment-popup__message {
+              max-width: 480px;
+              margin: 0 auto 26px;
+              color: #6b7182;
+              font-size: 14px;
+              line-height: 22px;
+            }
+
+            .twmp-checkout-payment-popup__actions {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 14px;
+              justify-content: center;
+            }
+
+            .twmp-checkout-payment-popup__action {
+              min-width: 180px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              padding: 14px 22px;
+              border: 1px solid #ece6dc;
+              border-radius: 2px;
+              background: #fff;
+              color: #1f2747;
+              text-decoration: none;
+              font-size: 14px;
+              line-height: 20px;
+              font-weight: 600;
+            }
+
+            .twmp-checkout-payment-popup__action--primary {
+              border-color: #f15a24;
+              background: #f15a24;
+              color: #fff;
+            }
+
+            .twmp-checkout-payment-popup__reopen {
+              display: none;
+              width: fit-content;
+              margin: 18px auto 0;
+              padding: 10px 16px;
+              border: 1px solid #ece6dc;
+              border-radius: 2px;
+              background: #fff;
+              color: #1f2747;
+              font-size: 13px;
+              line-height: 18px;
+              font-weight: 600;
+              cursor: pointer;
+            }
+
+            .twmp-checkout-payment-popup__reopen.is-visible {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .twmp-checkout-payment-popup.is-approved .twmp-checkout-payment-popup__icon {
+              background: #1fa84a;
+              color: #fff;
+            }
+
+            .twmp-checkout-payment-popup.is-pending_review .twmp-checkout-payment-popup__icon {
+              background: #ff9800;
+              color: #fff;
+            }
+
+            .twmp-checkout-payment-popup.is-rejected .twmp-checkout-payment-popup__icon {
+              background: #ff2f2f;
+              color: #fff;
+            }
+
+            html.twmp-payment-popup-open body {
+              overflow: hidden;
+            }
+
+            @media (max-width: 767px) {
+              .twmp-checkout-payment-popup__dialog {
+                padding: 34px 22px 26px;
+              }
+
+              .twmp-checkout-payment-popup__title {
+                font-size: 28px;
+              }
+
+              .twmp-checkout-payment-popup__action {
+                width: 100%;
+                min-width: 0;
+              }
+            }
+          </style>
+
+          <div class="twmp-checkout-payment-popup" data-payment-popup aria-live="polite" aria-hidden="true">
+            <div class="twmp-checkout-payment-popup__backdrop" data-payment-popup-close></div>
+            <div class="twmp-checkout-payment-popup__dialog" role="dialog" aria-modal="true" aria-labelledby="twmp-payment-popup-title">
+              <button type="button" class="twmp-checkout-payment-popup__close" data-payment-popup-close aria-label="<?php echo esc_attr__('Close', 'twmp-ath'); ?>">×</button>
+              <div class="twmp-checkout-payment-popup__icon" data-payment-popup-icon aria-hidden="true"></div>
+              <h3 class="twmp-checkout-payment-popup__title" id="twmp-payment-popup-title" data-payment-popup-title></h3>
+              <p class="twmp-checkout-payment-popup__message" data-payment-popup-message></p>
+              <div class="twmp-checkout-payment-popup__actions" data-payment-popup-actions></div>
+            </div>
+          </div>
+          <button type="button" class="twmp-checkout-payment-popup__reopen" data-payment-popup-reopen hidden><?php echo esc_html__('View status', 'twmp-ath'); ?></button>
         </div>
       </div>
     </section>
   </div>
+<?php
+  if (function_exists('wc_enqueue_js')) {
+    $home_url = wp_json_encode(esc_url(home_url('/')));
+    $shop_url = wp_json_encode(function_exists('wc_get_page_permalink') ? esc_url(wc_get_page_permalink('shop')) : esc_url(home_url('/')));
+    $js = <<<JS
+(function() {
+  const root = document.querySelector('.woocommerce-checkout-custom--settings');
+  if (!root) {
+    return;
+  }
+
+  if (root.getAttribute('data-payment-popup-init') === '1') {
+    return;
+  }
+  root.setAttribute('data-payment-popup-init', '1');
+
+  const settings = (() => {
+    try {
+      return JSON.parse(root.getAttribute('data-settings') || '{}') || {};
+    } catch (error) {
+      return {};
+    }
+  })();
+
+  const popup = root.querySelector('[data-payment-popup]');
+  const proofForm = root.querySelector('[data-payment-proof-form]');
+  const fileInput = root.querySelector('[data-payment-file]');
+  const fileLabel = root.querySelector('[data-payment-file-label]');
+  const submitButton = root.querySelector('[data-payment-submit]');
+  const stage = root.querySelector('[data-payment-stage]');
+  const statusTitle = root.querySelector('[data-payment-status-title]');
+  const statusText = root.querySelector('[data-payment-status-text]');
+  const popupTitle = root.querySelector('[data-payment-popup-title]');
+  const popupMessage = root.querySelector('[data-payment-popup-message]');
+  const popupActions = root.querySelector('[data-payment-popup-actions]');
+  const popupIcon = root.querySelector('[data-payment-popup-icon]');
+  const reopenButton = root.querySelector('[data-payment-popup-reopen]');
+  const closeTargets = popup ? popup.querySelectorAll('[data-payment-popup-close]') : [];
+  const ajaxUrl = settings.ajaxUrl || window.ajaxurl || '/wp-admin/admin-ajax.php';
+  const uploadAction = settings.uploadAction || 'twmp_checkout_upload_payment_proof';
+  const homeUrl = {$home_url};
+  const shopUrl = {$shop_url};
+  const allowedStates = ['approved', 'pending_review', 'rejected'];
+  let observer = null;
+  let lastPopupState = '';
+  let lastPopupPayload = {};
+
+  const iconMap = {
+    approved: '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" width="32" height="32"><path fill="currentColor" d="M24 4a20 20 0 1 0 20 20A20.023 20.023 0 0 0 24 4Zm-3.2 28.2-7.1-7.1 2.8-2.8 4.3 4.3 10.7-10.7 2.8 2.8Z"/></svg>',
+    pending_review: '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" width="32" height="32"><path fill="currentColor" d="M12 8h18l6 6v26a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2Zm16 1.7V15h5.3Z"/><rect x="16" y="24" width="16" height="2.8" rx="1.4" fill="currentColor"/><rect x="16" y="30" width="12" height="2.8" rx="1.4" fill="currentColor"/></svg>',
+    rejected: '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" width="32" height="32"><path fill="currentColor" d="M24 4a20 20 0 1 0 20 20A20.023 20.023 0 0 0 24 4Zm7.1 25.3-2.8 2.8L24 26.8l-4.3 5.3-2.8-2.8 5.3-4.3-5.3-5.3 2.8-2.8 4.3 5.3 4.3-5.3 2.8 2.8-5.3 5.3Z"/></svg>'
+  };
+
+  const configMap = {
+    approved: {
+      title: 'Success Payment',
+      message: 'We send the tickets code via SMS to the email address on your booking. Please check your email.',
+      actionLabelPrimary: 'View Other Project',
+      actionLabelSecondary: 'Return to home',
+      primaryUrl: shopUrl,
+      secondaryUrl: homeUrl
+    },
+    pending_review: {
+      title: 'Wait for confirmation',
+      message: 'We will confirm and send the tickets to you in a few minutes.',
+      actionLabelPrimary: 'Find Show/Event',
+      primaryUrl: shopUrl
+    },
+    rejected: {
+      title: 'Fail payment',
+      message: 'Your bill was rejected. Please upload a clearer file or try again.',
+      actionLabelPrimary: 'Find Show/Event',
+      primaryUrl: shopUrl
+    }
+  };
+
+  const setStageText = payload => {
+    if (statusTitle) {
+      statusTitle.textContent = payload.status_label || '';
+    }
+
+    if (statusText) {
+      statusText.textContent = payload.status_text || '';
+    }
+  };
+
+  const closePopup = () => {
+    if (!popup) {
+      return;
+    }
+
+    popup.classList.remove('is-open', 'is-approved', 'is-pending_review', 'is-rejected');
+    popup.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('twmp-payment-popup-open');
+
+    if (reopenButton) {
+      const shouldShowReopen = !!lastPopupState;
+      reopenButton.hidden = !shouldShowReopen;
+      reopenButton.classList.toggle('is-visible', shouldShowReopen);
+    }
+  };
+
+  const renderPopup = (proofStatus, payload = {}) => {
+    if (!popup || !allowedStates.includes(proofStatus)) {
+      closePopup();
+      return;
+    }
+
+    lastPopupState = proofStatus;
+    lastPopupPayload = payload;
+    const config = configMap[proofStatus];
+    const safeMessage = payload.review_note || payload.status_text || config.message;
+
+    popup.dataset.state = proofStatus;
+    popup.classList.remove('is-approved', 'is-pending_review', 'is-rejected');
+    popup.classList.add('is-open', 'is-' + proofStatus);
+    popup.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.add('twmp-payment-popup-open');
+
+    if (reopenButton) {
+      reopenButton.hidden = true;
+      reopenButton.classList.remove('is-visible');
+    }
+
+    if (popupIcon) {
+      popupIcon.innerHTML = iconMap[proofStatus] || '';
+    }
+
+    if (popupTitle) {
+      popupTitle.textContent = config.title;
+    }
+
+    if (popupMessage) {
+      popupMessage.textContent = safeMessage;
+    }
+
+    if (popupActions) {
+      if (proofStatus === 'approved') {
+        popupActions.innerHTML = '<a class="twmp-checkout-payment-popup__action" href="' + homeUrl + '">Return to home</a><a class="twmp-checkout-payment-popup__action twmp-checkout-payment-popup__action--primary" href="' + shopUrl + '">View Other Project</a>';
+      } else {
+        popupActions.innerHTML = '<a class="twmp-checkout-payment-popup__action twmp-checkout-payment-popup__action--primary" href="' + config.primaryUrl + '">' + config.actionLabelPrimary + '</a>';
+      }
+    }
+
+    setStageText(payload);
+  };
+
+  const getCurrentStageStatus = () => {
+    return (stage && stage.getAttribute('data-payment-status')) || '';
+  };
+
+  const syncPopupFromStage = () => {
+    const proofStatus = getCurrentStageStatus();
+    if (!proofStatus || !allowedStates.includes(proofStatus)) {
+      closePopup();
+      return;
+    }
+
+    renderPopup(proofStatus, {
+      status_text: statusText ? statusText.textContent : '',
+      status_label: statusTitle ? statusTitle.textContent : ''
+    });
+  };
+
+  if (reopenButton) {
+    reopenButton.addEventListener('click', () => {
+      if (!lastPopupState) {
+        syncPopupFromStage();
+        return;
+      }
+
+      renderPopup(lastPopupState, lastPopupPayload || {});
+    });
+  }
+
+  const uploadBill = async event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const file = fileInput && fileInput.files ? fileInput.files[0] : null;
+    if (!file) {
+      renderPopup('rejected', {
+        status_text: settings.noFileMessage || 'Please choose a bill file first.'
+      });
+      return false;
+    }
+
+    const formData = new FormData(proofForm);
+    formData.append('action', uploadAction);
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = settings.uploadingLabel || 'Uploading...';
+    }
+
+    try {
+      const response = await fetch(ajaxUrl, {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin'
+      });
+
+      const result = await response.json();
+      if (!result || !result.success) {
+        throw new Error((result && result.data && result.data.message) || 'Upload failed.');
+      }
+
+      const payload = (result.data && result.data.status) || {};
+      const proofStatus = payload.proof_status || 'pending_review';
+
+      if (fileLabel && result.data && result.data.filename) {
+        fileLabel.textContent = result.data.filename;
+      }
+
+      renderPopup(proofStatus, payload);
+      if (stage && payload.proof_status) {
+        stage.setAttribute('data-payment-status', payload.proof_status);
+      }
+    } catch (error) {
+      renderPopup('rejected', {
+        status_text: error && error.message ? error.message : 'Upload failed.'
+      });
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = settings.billTitle || 'Upload bill';
+      }
+    }
+
+    return false;
+  };
+
+  if (proofForm) {
+    proofForm.addEventListener('submit', uploadBill, true);
+  }
+
+  closeTargets.forEach(target => {
+    target.addEventListener('click', closePopup);
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closePopup();
+    }
+  });
+
+  if (stage) {
+    observer = new MutationObserver(() => {
+      syncPopupFromStage();
+    });
+
+    observer.observe(stage, {
+      attributes: true,
+      attributeFilter: ['data-payment-status']
+    });
+  }
+
+  syncPopupFromStage();
+})();
+JS;
+    wc_enqueue_js($js);
+  }
+?>
 <?php
 }
 

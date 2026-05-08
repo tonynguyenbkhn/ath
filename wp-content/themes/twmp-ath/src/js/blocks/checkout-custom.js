@@ -261,6 +261,14 @@ export default el => {
 		e => {
 			const target = e.target
 
+			if (!target) {
+				return
+			}
+
+			if (target.name === 'twmp_ticket_quantity') {
+				target.value = String(clampQuantity(target.value))
+			}
+
 			if (
 				!target ||
 				![
