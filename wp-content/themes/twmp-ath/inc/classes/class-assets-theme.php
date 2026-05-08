@@ -66,24 +66,24 @@ class Assets_Theme
 
 		// Enqueue artists template styles on single product page.
 
-		// $locale_settings = array(
-		// 	'woocommerce' => array(
-		// 		'checkoutUrl'    => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : '',
-		// 		'addToCartUrl'    => function_exists('wc_get_cart_url') ? wc_get_cart_url() : '',
-		// 	),
-		// 	'ajax' => array(
-		// 		'restUrl'    => get_rest_url(null, 'twmp/v1'),
-		// 		'url'        => admin_url('admin-ajax.php'),
-		// 		'ajax_error' => __('Sorry, something went wrong. Please refresh this page and try again!', 'twmp-ath'),
-		// 		'nonce'      => wp_create_nonce('twmp-config-nonce'),
-		// 	),
-		// 	'themePath' => get_template_directory_uri(),
-		// 	'message' => array(
-		// 		'notfound' => esc_html__('No order found.', 'twmp-ath'),
-		// 		'error' => esc_html__('System error, please try again.', 'twmp-ath')
-		// 	)
-		// );
+		$locale_settings = array(
+			'woocommerce' => array(
+				'checkoutUrl'    => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : '',
+				'addToCartUrl'    => function_exists('wc_get_cart_url') ? wc_get_cart_url() : '',
+			),
+			'ajax' => array(
+				// 'restUrl'    => get_rest_url(null, 'twmp/v1'),
+				'url'        => admin_url('admin-ajax.php'),
+				// 'ajax_error' => __('Sorry, something went wrong. Please refresh this page and try again!', 'twmp-ath'),
+				// 'nonce'      => wp_create_nonce('twmp-config-nonce'),
+			),
+			'themePath' => get_template_directory_uri(),
+			'message' => array(
+				'notfound' => esc_html__('No order found.', 'twmp-ath'),
+				'error' => esc_html__('System error, please try again.', 'twmp-ath')
+			)
+		);
 
-		// wp_localize_script('twmp-frontend', 'twmpConfig', $locale_settings);
+		wp_localize_script('twmp-frontend', 'twmpConfig', $locale_settings);
 	}
 }
