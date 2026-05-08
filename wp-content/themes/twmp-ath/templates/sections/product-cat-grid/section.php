@@ -12,7 +12,8 @@ $data = wp_parse_args($args, [
 	'grid_css_class' => ''
 ]);
 
-$_class = !empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
+$_class = 'product-cat-grid';
+$_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
 
 $_class_container = 'container';
 $_class_container .= !empty($data['class_container']) ? esc_attr(' ' . $data['class_container']) : '';
@@ -36,9 +37,7 @@ $grid_css_class = $data['grid_css_class'] ? $data['grid_css_class'] : 'col-12 co
 
 if (!empty($product_categories) && !is_wp_error($product_categories)) : ?>
 
-	<div class="<?php echo esc_attr($_class); ?>" <?php if (!empty($data['id'])) : ?> id="<?php 
-	
-	echo esc_attr($data['id']); ?>" <?php endif; ?>>
+	<div class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
 	<div class="product-cat-grid__light">
 		<img width="496px" height="645px" src="<?php echo esc_url(TWMP_IMG_URI . '/product-cat-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
 	</div>

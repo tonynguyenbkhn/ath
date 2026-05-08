@@ -29,7 +29,7 @@ $_class_container .= !empty($data['class_container']) ? esc_attr(' ' . $data['cl
 $has_primary_button = ! empty($data['primary_button_text']) && ! empty($data['primary_button_link']);
 ?>
 
-<section class="<?php echo esc_attr($_class); ?>" data-block="text-infor"<?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr($data['id']); ?>"<?php endif; ?>>
+<section class="<?php echo esc_attr($_class); ?>" data-block="text-infor" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>

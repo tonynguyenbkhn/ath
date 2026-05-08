@@ -31,11 +31,13 @@ $_number = (int) $data['index'] + 1;
 ?>
 
 <article class="<?php echo esc_attr($_class); ?>">
-    <div class="text-infor-02__item-number" aria-hidden="true"><?php echo esc_html((string) $_number); ?></div>
+    <div class="text-infor-02__item-header">
+        <div class="text-infor-02__item-number" aria-hidden="true"><?php echo esc_html((string) $_number); ?></div>
 
-    <?php if ('' !== $title) : ?>
-        <h3 class="text-infor-02__item-title"><?php echo esc_html($title); ?></h3>
-    <?php endif; ?>
+        <?php if ('' !== $title) : ?>
+            <h3 class="text-infor-02__item-title"><?php echo esc_html($title); ?></h3>
+        <?php endif; ?>
+    </div>
 
     <?php if ('' !== $description) : ?>
         <div class="text-infor-02__item-description">

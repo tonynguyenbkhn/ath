@@ -19,7 +19,7 @@ $data = wp_parse_args(
     ]
 );
 
-$_class = 'event-section';
+$_class = 'show-event';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
 
 $_class_container = 'container';
@@ -96,7 +96,7 @@ if (! $has_intro && empty($slides)) {
 }
 ?>
 
-<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr($data['id']); ?>" <?php endif; ?>>
+<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
 
     <div class="event__light">
         <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">

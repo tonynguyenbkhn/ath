@@ -28,7 +28,7 @@ export default el => {
 	}
 
 	const settings = parseSettings(swiperEl)
-	const sliderWrap = swiperEl.closest('.show-event')
+	const sliderWrap = swiperEl.closest('.fc-class-workshop-section')
 	const nextEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-next') : el.querySelector('.swiper-button-next')
 	const prevEl = sliderWrap ? sliderWrap.querySelector('.swiper-button-prev') : el.querySelector('.swiper-button-prev')
 	const paginationEl = sliderWrap ? sliderWrap.querySelector('.swiper-pagination') : el.querySelector('.swiper-pagination')
@@ -51,9 +51,16 @@ export default el => {
 
 	return new Swiper(swiperEl, {
 		modules: [Navigation, Pagination],
-		slidesPerView: 3.3,
+
+		slidesPerView: 2.15,
 		spaceBetween: 32,
-		loop: true,
+
+		loop: false,
+		centeredSlides: false,
+
+		slidesOffsetBefore: 0,
+		// slidesOffsetAfter: 160,
+
 		...settings,
 		navigation,
 		pagination,

@@ -1,4 +1,4 @@
-.event-section {
+.show-event {
   position: relative;
   overflow: hidden;
   padding: 160px 0;
@@ -113,7 +113,7 @@
   overflow: visible;
 }
 
-.event-section .swiper-button {
+.show-event .swiper-button {
   top: auto;
   left: auto;
   right: 0;
@@ -141,7 +141,7 @@
   }
 }
 
-.event-section .swiper-button.swiper-button-prev {
+.show-event .swiper-button.swiper-button-prev {
   right: 56px;
 }
 
@@ -204,7 +204,7 @@
 .show-event .show-event__main-container .swiper-horizontal>.swiper-pagination-progressbar,
 .show-event .show-event__main-container .swiper-pagination-progressbar.swiper-pagination-horizontal {
   height: 4px;
-  width: calc(100% - 33.33% - 32px - 108px);
+  width: calc(100% - 33.33% - 32px - 32px - 48px - 108px);
   left: auto;
   right: 0;
   background-color: rgba($color: #ffffff, $alpha: 0.3);

@@ -17,11 +17,11 @@ $data = wp_parse_args(
     ]
 );
 
-$_class = 'contact-us section';
-$_class .= ! empty($data['class']) ? ' ' . sanitize_html_class($data['class']) : '';
+$_class = 'contact-us';
+$_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
 
 $_class_container = 'container';
-$_class_container .= ! empty($data['class_container']) ? ' ' . sanitize_html_class($data['class_container']) : '';
+$_class_container .= ! empty($data['class_container']) ? ' ' . esc_attr($data['class_container']) : '';
 
 $address = function_exists('get_field') ? (string) get_field('address', 'option') : '';
 $hotline = function_exists('get_field') ? (string) get_field('hotline', 'option') : '';
@@ -78,7 +78,7 @@ $social_items = array_values(
 $background_image_url = ! empty($data['background_image_id']) ? wp_get_attachment_image_url((int) $data['background_image_id'], 'full') : '';
 ?>
 
-<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr($data['id']); ?>" <?php endif; ?> <?php if ($background_image_url) : ?> style="background-image: url('<?php echo esc_url($background_image_url); ?>');" <?php endif; ?>>
+<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?> <?php if ($background_image_url) : ?> style="background-image: url('<?php echo esc_url($background_image_url); ?>');" <?php endif; ?>>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>

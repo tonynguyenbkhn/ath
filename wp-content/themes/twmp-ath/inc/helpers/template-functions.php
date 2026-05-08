@@ -466,7 +466,7 @@ function twmp_resolve_flexible_layout_data($layout, $base_fields = [])
 	}
 
 	$data = twmp_get_flexible_content_data($fields);
-	$data['class'] = sprintf('section %s mb-3', sanitize_html_class($layout));
+	$data['class'] = sprintf('section %s', sanitize_html_class($layout).'-'.esc_attr('section'));
 
 	if (!empty($config['extra_fields']) && is_array($config['extra_fields'])) {
 		foreach ($config['extra_fields'] as $key => $value) {

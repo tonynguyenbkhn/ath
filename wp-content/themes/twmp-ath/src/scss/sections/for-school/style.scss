@@ -2,7 +2,8 @@
   background: #090808;
   color: #ffffff;
   position: relative;
-  padding: 160px 0;
+  padding-top: 75px;
+  padding-bottom: 120px;
 }
 
 .for-school__grid {
@@ -22,7 +23,7 @@
 }
 
 .for-school__title {
-  margin-bottom: 64px;
+  margin-bottom: 80px;
 }
 
 .for-school__light {
@@ -70,6 +71,50 @@
 
     @media (min-width: 992px) {
       padding-left: 60px;
+    }
+  }
+}
+
+#our-approach.for-school {
+  background-color: rgba(246, 244, 237, 1);
+  color: var(--system-black);
+
+  .for-school__title {
+    color: var(--system-black);
+    margin-bottom: 50px;
+  }
+
+  .for-school__description ul li {
+    color: rgba(100, 100, 100, 1);
+    @include typo-token(22, 30, 400);
+  }
+
+  .for-school__image-wrap {
+    img {
+      max-width: unset;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .for-school__header {
+      padding-right: 35px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .for-school__media-primary {
+      padding-left: 0px;
+    }
+  }
+}
+
+#fc-for-company-1.for-school {
+  padding-top: 105px;  
+  padding-bottom: 180px;
+
+    .for-school__image-wrap {
+    img {
+      max-width: unset;
     }
   }
 }

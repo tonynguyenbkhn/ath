@@ -106,11 +106,12 @@ if (! $has_intro && empty($slides)) {
             <?php if (! empty($slides)) : ?>
                 <div class="class-section__slider-wrap position-relative">
                     <div class="class-section__slider">
-                        <div class="swiper-button swiper-button-prev">
-
-                        </div>
-                        <div class="swiper-button swiper-button-next">
-
+                        <div class="class-section-control">
+                            <div class="nav">
+                                <div class="swiper-button swiper-button-prev"></div>
+                                <div class="swiper-button swiper-button-next"></div>
+                            </div>
+                            <div class="swiper-pagination class-section-swiper-pagination"></div>
                         </div>
                         <?php
                         get_template_part(
@@ -122,11 +123,7 @@ if (! $has_intro && empty($slides)) {
                                 'enable_container' => false,
                                 'settings'         => [
                                     'autoPlay'        => false,
-                                    'pagination'      => [
-                                        'el'        => '.swiper-pagination',
-                                        'type'      => 'progressbar',
-                                        'clickable' => false,
-                                    ],
+                                    'pagination'      => false,
                                     'prevNextButtons' => false,
                                     'slidesPerView'   => 1.15,
                                     'spaceBetween'    => 32,

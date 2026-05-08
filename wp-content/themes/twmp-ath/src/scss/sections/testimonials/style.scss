@@ -1,5 +1,6 @@
 .testimonials-section {
-	padding: 40px 0 120px;
+padding: 148px 0 160px;
+	background-color: #ffffff;
 }
 
 .testimonials-section__shell {
@@ -11,20 +12,24 @@
 .testimonials-section__heading {
 	align-items: center;
 	flex-direction: column;
+	margin-bottom: 40px;
 }
 
 .testimonials-section__title {
 	color: var(--system-black);
+	margin-bottom: 25px;
 }
 
 .testimonials-section__description {
-	color: #646464;
+	p {
+		@include typo-display-xs(400);
+	}
 }
 
 .testimonials-section__slider-wrap {
 	.swiper-pagination {
 		position: relative;
-		margin-top: 20px;
+		margin-top: 40px;
 	}
 }
 
