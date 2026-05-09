@@ -231,6 +231,139 @@ function twmp_get_svg_icon($name)
 	return $svg_icon;
 }
 
+function twmp_get_cart_url()
+{
+	return wc_get_page_permalink('cart');
+}
+
+function twmp_redirect_to_cart()
+{
+	wp_safe_redirect(twmp_get_cart_url());
+	exit;
+}
+
+function twmp_render_cart_button($product_id = 0, $button_text = '', $button_classes = '', $icon_name = 'book-ticket')
+{
+	global $product;
+
+	if (! $product_id && $product instanceof WC_Product) {
+		$product_id = $product->get_id();
+	}
+
+	$product_id = absint($product_id);
+
+	if (! $product_id) {
+		return;
+	}
+
+	if (! twmp_is_event_bookable($product_id)) {
+		return;
+	}
+
+	if ('' === $button_text) {
+		$button_text = __('Book Ticket', 'twmp-ath');
+	}
+
+	if ('' === $button_classes) {
+		$button_classes = 'bg-primary-500 text-system-white typo-system-button button-default cart-redirect-btn';
+	}
+
+	$button_html = function_exists('twmp_get_svg_icon') ? twmp_get_svg_icon($icon_name) : '';
+
+	printf(
+		'<form class="twmp-buy-now-form" action="%1$s" method="post"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
+		esc_url(get_permalink($product_id)),
+		absint($product_id),
+		esc_attr($button_classes),
+		esc_html($button_text),
+		$button_html ? '<span class="icon pe-none" aria-hidden="true">' . $button_html . '</span>' : ''
+	);
+}
+
+function twmp_parse_site_datetime($value)
+{
+	$value = trim((string) $value);
+
+	if ('' === $value) {
+		return 0;
+	}
+
+	$timezone = function_exists('wp_timezone') ? wp_timezone() : new DateTimeZone('UTC');
+	$formats = ['Y-m-d H:i:s', 'Y-m-d H:i'];
+
+	foreach ($formats as $format) {
+		$dt = DateTimeImmutable::createFromFormat($format, $value, $timezone);
+
+		if ($dt instanceof DateTimeImmutable) {
+			return $dt->getTimestamp();
+		}
+	}
+
+	$timestamp = strtotime($value);
+
+	return $timestamp ? absint($timestamp) : 0;
+}
+
+function twmp_get_event_start_timestamp($product_id = 0)
+{
+	$product_id = absint($product_id);
+
+	if (! $product_id || ! function_exists('get_field')) {
+		return 0;
+	}
+
+	return twmp_parse_site_datetime(get_field('ath_start_datetime', $product_id));
+}
+
+function twmp_is_event_bookable($product_id = 0)
+{
+	$start_timestamp = twmp_get_event_start_timestamp($product_id);
+
+	if (! $start_timestamp || ! function_exists('current_datetime')) {
+		return false;
+	}
+
+	return $start_timestamp >= current_datetime()->getTimestamp();
+}
+
+function twmp_format_event_datetime_range($start_value = '', $end_value = '')
+{
+	$start_timestamp = twmp_parse_site_datetime($start_value);
+
+	if (! $start_timestamp) {
+		return '';
+	}
+
+	$start_text = wp_date('l j M Y - G:i', $start_timestamp);
+	$end_timestamp = twmp_parse_site_datetime($end_value);
+
+	if (! $end_timestamp) {
+		return $start_text;
+	}
+
+	return $start_text . ' - ' . wp_date('l j M Y - G:i', $end_timestamp);
+}
+
+function twmp_get_taxonomy_term_names($post_id = 0, $taxonomy = '', $separator = ', ')
+{
+	$post_id = absint($post_id);
+	$taxonomy = sanitize_key((string) $taxonomy);
+
+	if (! $post_id || '' === $taxonomy) {
+		return '';
+	}
+
+	$terms = wp_get_post_terms($post_id, $taxonomy, ['fields' => 'names']);
+
+	if (is_wp_error($terms) || empty($terms)) {
+		return '';
+	}
+
+	$terms = array_filter(array_map('trim', array_map('strval', $terms)));
+
+	return implode($separator, $terms);
+}
+
 function twmp_get_flexible_content_data($array)
 {
 	if (!function_exists('get_sub_field')) {

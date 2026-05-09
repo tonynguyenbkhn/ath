@@ -116,6 +116,17 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
 }, 20, 2);
 
 add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id, $quantity) {
+  if (!twmp_is_event_bookable($product_id)) {
+    wc_add_notice(__('This event is no longer available for booking.', 'twmp-ath'), 'error');
+
+    if (!empty($_REQUEST['twmp_buy_now'])) {
+      wp_safe_redirect(wc_get_checkout_url());
+      exit;
+    }
+
+    return false;
+  }
+
   if (!empty($_REQUEST['twmp_buy_now'])) {
     if (function_exists('WC') && WC()->cart) {
       WC()->cart->empty_cart();
@@ -130,6 +141,21 @@ add_filter('woocommerce_add_to_cart_redirect', function ($redirect_url) {
   }
 
   return $redirect_url;
+});
+
+add_action('woocommerce_checkout_process', function () {
+  if (!function_exists('WC') || !WC()->cart) {
+    return;
+  }
+
+  foreach (WC()->cart->get_cart() as $cart_item) {
+    $product_id = !empty($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+
+    if ($product_id && !twmp_is_event_bookable($product_id)) {
+      wc_add_notice(__('One or more events in your cart are no longer available for booking.', 'twmp-ath'), 'error');
+      break;
+    }
+  }
 });
 
 // Reset checkout flow nếu có item mới được thêm vào cart

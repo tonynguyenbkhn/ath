@@ -46,7 +46,7 @@ function twmp_render_product_card()
     }
 
     $short_info      = function_exists('get_field') ? (string) get_field('ath_short_info', $product_id) : '';
-    $location_detail = function_exists('get_field') ? (string) get_field('ath_location_detail', $product_id) : '';
+    $location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
     $location        = function_exists('get_field') ? (string) get_field('ath_location', $product_id) : '';
 
     $description_source = trim(wp_strip_all_tags((string) $product_post->post_content));
@@ -64,12 +64,6 @@ function twmp_render_product_card()
     $date_month   = $timestamp ? strtoupper(wp_date('M', $timestamp)) : '';
     $date_year    = $timestamp ? wp_date('y', $timestamp) : '';
 
-    $book_url = add_query_arg(
-        [
-            'book_ticket' => $product_id,
-        ],
-        $url
-    );
 ?>
 
     <div class="product-card product-card--theme-red">
@@ -140,47 +134,50 @@ function twmp_render_product_card()
                     </div>
                 <?php endif; ?>
             </div>
-
-            <div class="product-card__body">
-                <?php if ($short_info) : ?>
-                    <p class="product-card__short-info"><?php echo esc_html($short_info); ?></p>
-                <?php endif; ?>
-
-                <?php if ($location || $location_detail) : ?>
-                    <div class="product-card__location">
-                        <?php echo esc_html($location ?: $location_detail); ?>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($description) : ?>
-                    <div class="product-card__more">
-                        <div class="product-card__description">
-                            <?php echo esc_html($description); ?>
-                        </div>
-                        <div class="product-card__actions">
-                            <div class="product-card__action product-card__action--book">
-                                <a
-                                    class="bg-primary-500 text-system-white typo-system-button button-default cart-redirect-btn"
-                                    href="<?php echo esc_url($book_url); ?>">
-                                    <span class="text pe-none"><?php echo esc_html__('Book Ticket', 'twmp'); ?></span>
-                                    <span class="icon pe-none" aria-hidden="true"></span>
-                                </a>
-                            </div>
-
-                            <div class="product-card__action product-card__action--view">
-                                <a
-                                    title="<?php echo esc_attr(sprintf(__('View Detail %s', 'twmp'), $title)); ?>"
-                                    class="product-card__view-button button-normal typo-system-button button-default has-icon has-after-icon"
-                                    href="<?php echo esc_url($url); ?>">
-                                    <span class="text pe-none"><?php echo esc_html__('View Detail', 'twmp'); ?></span>
-                                    <span class="icon pe-none" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
         </a>
+
+        <div class="product-card__body">
+            <?php if ($short_info) : ?>
+                <p class="product-card__short-info"><?php echo esc_html($short_info); ?></p>
+            <?php endif; ?>
+
+            <?php if ($location || $location_detail) : ?>
+                <div class="product-card__location">
+                    <?php echo esc_html($location ?: $location_detail); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($description) : ?>
+                <div class="product-card__more">
+                    <div class="product-card__description">
+                        <?php echo esc_html($description); ?>
+                    </div>
+                    <div class="product-card__actions">
+                        <div class="product-card__action product-card__action--book">
+                            <?php
+                            if (function_exists('twmp_render_cart_button')) {
+                                twmp_render_cart_button(
+                                    $product_id,
+                                    __('Book Ticket', 'twmp'),
+                                    'bg-primary-500 text-system-white typo-system-button button-default cart-redirect-btn'
+                                );
+                            }
+                            ?>
+                        </div>
+
+                        <div class="product-card__action product-card__action--view">
+                            <a
+                                title="<?php echo esc_attr(sprintf(__('View Detail %s', 'twmp'), $title)); ?>"
+                                class="product-card__view-button button-normal typo-system-button button-default has-icon has-after-icon"
+                                href="<?php echo esc_url($url); ?>">
+                                <span class="text pe-none"><?php echo esc_html__('View Detail', 'twmp'); ?></span>
+                                <span class="icon pe-none" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
 
     <?php

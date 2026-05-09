@@ -43,7 +43,7 @@ foreach ($product_ids as $index => $product_id) {
 
     $badges = function_exists('get_field') ? get_field('ath_badges', $product_id) : [];
     $short_info = function_exists('get_field') ? (string) get_field('ath_short_info', $product_id) : '';
-    $location_detail = function_exists('get_field') ? (string) get_field('ath_location_detail', $product_id) : '';
+	$location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
     $location = function_exists('get_field') ? (string) get_field('ath_location', $product_id) : '';
     $description_source = trim(wp_strip_all_tags((string) $product_post->post_content));
     $description = '';

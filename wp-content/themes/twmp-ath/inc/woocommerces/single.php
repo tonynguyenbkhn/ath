@@ -16,50 +16,6 @@ if (!defined('ABSPATH')) {
 //////////////////////////////
 
 /**
- * Get cart URL
- */
-function twmp_get_cart_url()
-{
-    return wc_get_page_permalink('cart');
-}
-
-/**
- * Redirect to cart
- */
-function twmp_redirect_to_cart()
-{
-    wp_safe_redirect(twmp_get_cart_url());
-    exit;
-}
-
-/**
- * Render checkout/cart button
- */
-function twmp_render_cart_button()
-{
-    global $product;
-
-    if (!$product) {
-        return;
-    }
-
-    $product_id = $product->get_id();
-    $cart_url = twmp_get_cart_url();
-    $button_classes = 'bg-primary-500 text-system-white typo-system-button button-default cart-redirect-btn';
-    $button_text = esc_html__('Book Tiket', 'twmp-ath');
-    $button_html = twmp_get_svg_icon('book-ticket');
-
-    printf(
-        '<form class="twmp-buy-now-form" action="%1$s" method="post"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
-        esc_url(get_permalink($product_id)),
-        absint($product_id),
-        esc_attr($button_classes),
-        esc_html($button_text),
-        $button_html ? '<span class="icon pe-none" aria-hidden="true">' . $button_html . '</span>' : ''
-    );
-}
-
-/**
  * Render contact us button
  */
 function twmp_render_contact_us_button()
@@ -91,24 +47,25 @@ function twmp_field_to_string($value)
 //////////////////////////////
 
 add_filter('woocommerce_product_tabs', function ($tabs) {
-	// Rename Description tab
-	if (isset($tabs['description'])) {
-		$tabs['description']['title'] = __('About', 'twmp-ath');
-	}
+    // Rename Description tab
+    if (isset($tabs['description'])) {
+        $tabs['description']['title'] = __('About', 'twmp-ath');
+    }
 
-	// Add custom Section tab
-	$tabs['section'] = [
-		'title'    => __('Section', 'twmp-ath'),
-		'priority' => 25,
-		'callback' => 'render_product_section_tab',
-	];
+    // Add custom Section tab
+    $tabs['section'] = [
+        'title'    => __('Section', 'twmp-ath'),
+        'priority' => 25,
+        'callback' => 'render_product_section_tab',
+    ];
 
-	return $tabs;
+    return $tabs;
 }, 98);
 
-function render_product_section_tab() {
-	echo '<h2>' . esc_html__('Section', 'twmp-ath') . '</h2>';
-	echo '<p>' . esc_html__('Your section content here.', 'twmp-ath') . '</p>';
+function render_product_section_tab()
+{
+    echo '<h2>' . esc_html__('Section', 'twmp-ath') . '</h2>';
+    echo '<p>' . esc_html__('Your section content here.', 'twmp-ath') . '</p>';
 }
 
 add_action('wp', function () {
@@ -242,20 +199,25 @@ add_action('woocommerce_single_product_summary', function () {
 
     $fields = [
         'ath_start_datetime' => ['time', 'Time'],
-        'ath_location_detail' => ['pin', 'Location'],
+        'ath_venue' => ['pin', 'Location'],
         'ath_language' => ['globe', 'Language'],
         'ath_format' => ['selection', 'Format'],
-        'ath_age_display' => ['stack', 'Age'],
+        'ath_age_group' => ['stack', 'Age'],
         'ath_demonstration' => ['users', 'Demonstration'],
     ];
 
     echo '<div class="product-details-meta">';
 
     foreach ($fields as $field_key => $icon) {
-        $value = get_field($field_key, $product_id);
+        $value = get_field($field_key, $product_id) ?? '';
 
-        if (!$value) {
-            continue;
+        if ('ath_start_datetime' === $field_key) {
+            $end_value = function_exists('get_field') ? get_field('ath_end_datetime', $product_id) : '';
+            $value = twmp_format_event_datetime_range($value, $end_value);
+        } elseif ('ath_venue' === $field_key) {
+            $value = twmp_get_taxonomy_term_names($product_id, 'ath_venue');
+        } elseif ('ath_age_group' === $field_key) {
+            $value = twmp_get_taxonomy_term_names($product_id, 'ath_age_group');
         }
 
         echo '<div class="product-details-meta__item">';
@@ -289,43 +251,161 @@ add_filter('woocommerce_product_single_add_to_cart_text', function () {
 //////////////////////////////
 // RELATED PRODUCTS
 //////////////////////////////
+add_action('woocommerce_after_single_product_summary', 'twmp_woocommerce_output_related_products', 20);
 
-function twmp_related_products_ids($related_products, $product_id)
+function twmp_woocommerce_output_related_products()
 {
-    $custom_ids = get_field('related_product', $product_id);
+	global $product;
 
-    if (!empty($custom_ids)) {
-        return $custom_ids;
-    }
+	if (! ($product instanceof WC_Product)) {
+		return;
+	}
 
-    $terms = wp_get_post_terms($product_id, 'product_cat', ['fields' => 'ids']);
+	$product_id = $product->get_id();
+	$custom_ids = function_exists('get_field') ? get_field('ath_similar_service', $product_id) : [];
+	$custom_ids = is_array($custom_ids) ? $custom_ids : [$custom_ids];
+	$related_ids = [];
 
-    if (empty($terms)) {
-        return $related_products;
-    }
+	foreach ($custom_ids as $custom_id) {
+		if ($custom_id instanceof WP_Post) {
+			$custom_id = $custom_id->ID;
+		} elseif (is_array($custom_id)) {
+			$custom_id = $custom_id['ID'] ?? $custom_id['id'] ?? 0;
+		} elseif (is_object($custom_id) && isset($custom_id->ID)) {
+			$custom_id = $custom_id->ID;
+		}
 
-    $products = get_posts([
-        'posts_per_page' => 5,
-        'post_type'      => 'product',
-        'post_status'    => 'publish',
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-        'tax_query'      => [
-            [
-                'taxonomy' => 'product_cat',
-                'field'    => 'term_id',
-                'terms'    => $terms,
-            ]
-        ],
-        'post__not_in'   => [$product_id],
-    ]);
+		$custom_id = absint($custom_id);
 
-    return wp_list_pluck($products, 'ID');
+		if (! $custom_id || $custom_id === $product_id || in_array($custom_id, $related_ids, true)) {
+			continue;
+		}
+
+		$related_post = get_post($custom_id);
+
+		if (! $related_post instanceof WP_Post || 'product' !== $related_post->post_type || 'publish' !== $related_post->post_status) {
+			continue;
+		}
+
+		if (! function_exists('wc_get_product')) {
+			continue;
+		}
+
+		$related_product = wc_get_product($custom_id);
+
+		if (! $related_product instanceof WC_Product) {
+			continue;
+		}
+
+		$related_ids[] = $custom_id;
+	}
+
+	if (empty($related_ids) || ! function_exists('twmp_render_product_card')) {
+		return;
+	}
+
+	$slides = [];
+	$previous_product = $product;
+
+	foreach ($related_ids as $related_id) {
+		$related_product = wc_get_product($related_id);
+
+		if (! $related_product instanceof WC_Product) {
+			continue;
+		}
+
+		$product = $related_product;
+
+		ob_start();
+		twmp_render_product_card();
+		$slide_html = ob_get_clean();
+
+		if ('' === trim((string) $slide_html)) {
+			continue;
+		}
+
+		$slides[] = [
+			'content' => $slide_html,
+			'class'   => 'relate-product-section__slide',
+		];
+	}
+
+	$product = $previous_product;
+
+	if (empty($slides)) {
+		return;
+	}
+	?>
+	<section class="relate-product-section relate-product-section--related-products">
+		<div class="relate-product-section__shell">
+			<div class="relate-product-section__header">
+				<div class="relate-product-section__intro">
+					<?php
+					get_template_part(
+						'templates/components/heading',
+						null,
+						[
+							'title_class'       => 'relate-product-section__title',
+							'description_class' => 'relate-product-section__description',
+							'class'             => 'relate-product-section__heading',
+							'title'             => esc_html__('Related Products', 'twmp-ath'),
+							'description'       => '',
+						]
+					);
+					?>
+				</div>
+			</div>
+
+			<div class="relate-product-section__slider-wrap position-relative">
+				<div class="event-control">
+					<div class="nav">
+						<div class="swiper-button swiper-button-prev"></div>
+						<div class="swiper-button swiper-button-next"></div>
+					</div>
+					<div class="swiper-pagination event-swiper-pagination"></div>
+				</div>
+				<?php
+				get_template_part(
+					'templates/components/swiper',
+					null,
+					[
+						'class'           => 'relate-product-section__swiper',
+						'data_block'      => 'relate-product',
+						'enable_container' => false,
+						'settings'        => [
+							'autoPlay'        => false,
+							'pagination'      => false,
+							'prevNextButtons' => false,
+							'grid'           => [
+								'rows' => 2,
+							],
+							'slidesPerView'   => 1,
+							'slidesPerGroup'  => 1,
+							'spaceBetween'    => 24,
+							'breakpoints'     => [
+								640  => [
+									'slidesPerView'  => 2,
+									'slidesPerGroup' => 2,
+								],
+								992  => [
+									'slidesPerView'  => 4,
+									'slidesPerGroup' => 4,
+								],
+								1200 => [
+									'slidesPerView'  => 4,
+									'slidesPerGroup' => 4,
+								],
+							],
+						],
+						'items'           => $slides,
+					]
+				);
+				?>
+			</div>
+		</div>
+	</section>
+	<?php
 }
-
-add_filter('woocommerce_related_products', 'twmp_related_products_ids', 10, 2);
-
-// add_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 1);
 
 //////////////////////////////
 // AFTER SUMMARY LAYOUT
