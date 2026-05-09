@@ -5,6 +5,9 @@ function twmp_get_svg_icon($name)
 	$svg_icon = '';
 
 	switch ($name):
+		case 'play':
+			$svg_icon = '<svg width="54" height="54" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.25 43.727V10.274c0-1.885 0-2.827.394-3.358a2 2 0 011.446-.8c.66-.054 1.458.446 3.056 1.444l26.762 16.727c1.44.9 2.16 1.35 2.407 1.925a2 2 0 010 1.576c-.247.576-.967 1.026-2.407 1.926L16.146 46.44c-1.598.999-2.397 1.498-3.056 1.445a2 2 0 01-1.446-.8c-.394-.532-.394-1.474-.394-3.358z" fill="#fff"/></svg>';
+			break;
 		case 'caret-down':
 			$svg_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill-rule="evenodd" clip-rule="evenodd" d="M7.00003 8.5C6.59557 8.5 6.23093 8.74364 6.07615 9.11732C5.92137 9.49099 6.00692 9.92111 6.29292 10.2071L11.2929 15.2071C11.6834 15.5976 12.3166 15.5976 12.7071 15.2071L17.7071 10.2071C17.9931 9.92111 18.0787 9.49099 17.9239 9.11732C17.7691 8.74364 17.4045 8.5 17 8.5H7.00003Z" fill="#000000"></path> </g></svg>';
 			break;
@@ -362,6 +365,91 @@ function twmp_get_taxonomy_term_names($post_id = 0, $taxonomy = '', $separator =
 	$terms = array_filter(array_map('trim', array_map('strval', $terms)));
 
 	return implode($separator, $terms);
+}
+
+function twmp_get_product_video_gallery_data($product_id = 0)
+{
+	$product_id = absint($product_id);
+
+	if (! $product_id || ! function_exists('get_field')) {
+		return [];
+	}
+
+	$video_url = trim((string) get_field('ath_video_url', $product_id));
+	$image_id  = absint(get_field('ath_image_video', $product_id));
+
+	if ('' === $video_url || ! $image_id) {
+		return [];
+	}
+
+	$image_size = function_exists('apply_filters') ? apply_filters('woocommerce_gallery_thumbnail_size', 'woocommerce_thumbnail') : 'woocommerce_thumbnail';
+
+	return [
+		'video_url' => esc_url_raw($video_url),
+		'image_id'  => $image_id,
+		'image_size' => $image_size,
+	];
+}
+
+function twmp_render_product_video_gallery_item($product_id = 0, $context = 'main')
+{
+	$data = twmp_get_product_video_gallery_data($product_id);
+
+	if (empty($data)) {
+		return;
+	}
+
+	$product_id = absint($product_id);
+	$video_url  = $data['video_url'];
+	$image_id   = $data['image_id'];
+	$image_size = 'thumb' === $context ? 'woocommerce_gallery_thumbnail' : 'woocommerce_single';
+	$wrapper_class = 'woocommerce-product-gallery__image woocommerce-product-gallery__image--video';
+	$label = __('Video', 'twmp-ath');
+	$thumb_src = wp_get_attachment_image_url($image_id, 'woocommerce_gallery_thumbnail');
+	$large_src = wp_get_attachment_image_url($image_id, 'full');
+	$large_meta = wp_get_attachment_image_src($image_id, 'full');
+	$large_width = is_array($large_meta) && ! empty($large_meta[1]) ? absint($large_meta[1]) : 0;
+	$large_height = is_array($large_meta) && ! empty($large_meta[2]) ? absint($large_meta[2]) : 0;
+	$thumb_alt = esc_attr($label);
+
+	?>
+	<div
+		class="<?php echo esc_attr($wrapper_class); ?>"
+		data-product-id="<?php echo esc_attr($product_id); ?>"
+		data-thumb="<?php echo esc_url($thumb_src ? $thumb_src : $large_src); ?>"
+		data-thumb-alt="<?php echo $thumb_alt; ?>"
+		data-large_image="<?php echo esc_url($large_src); ?>"
+		data-large_image_width="<?php echo esc_attr((string) $large_width); ?>"
+		data-large_image_height="<?php echo esc_attr((string) $large_height); ?>"
+	>
+		<a
+			class="product-video-badge"
+			href="<?php echo esc_url($video_url); ?>"
+			data-fancybox="product-gallery"
+			data-type="iframe"
+			aria-label="<?php echo esc_attr($label); ?>"
+			style="display:block;position:relative;text-decoration:none;"
+		>
+			<figure class="image image--cover image--default product-video-badge__figure">
+				<?php
+				echo wp_get_attachment_image(
+					$image_id,
+					$image_size,
+					false,
+					[
+						'class' => 'image__img product-video-badge__image',
+						'alt'   => $label,
+					]
+				);
+				?>
+			</figure>
+			<span class="product-video-badge__overlay" aria-hidden="true" style="position:absolute;inset:0;background:rgba(0,0,0,.35);pointer-events:none;"></span>
+			<span class="product-video-badge__content" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff;z-index:2;pointer-events:none;">
+				<span class="product-video-badge__play" aria-hidden="true" style="width: 53px;height:54px;line-height:1;"><?php echo twmp_get_svg_icon('play'); ?></span>
+			</span>
+		</a>
+	</div>
+	<?php
 }
 
 function twmp_get_flexible_content_data($array)

@@ -47,7 +47,6 @@ function twmp_render_product_card()
 
     $short_info      = function_exists('get_field') ? (string) get_field('ath_short_info', $product_id) : '';
     $location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
-    $location        = function_exists('get_field') ? (string) get_field('ath_location', $product_id) : '';
 
     $description_source = trim(wp_strip_all_tags((string) $product_post->post_content));
     $description        = '';
@@ -90,14 +89,16 @@ function twmp_render_product_card()
             <div class="product-card__top">
                 <?php if (!empty($badges)) : ?>
                     <div class="product-card__badges">
-                        <?php foreach ($badges as $badge) : ?>
+                        <?php 
+
+                        foreach ($badges as $badge) : ?>
                             <?php
                             $badge_label = '';
                             $badge_theme = 'orange';
 
                             if (is_array($badge)) {
-                                $badge_label = $badge['label'] ?? $badge['text'] ?? $badge['title'] ?? '';
-                                $badge_theme = $badge['theme'] ?? $badge['color'] ?? $badge['type'] ?? $badge_theme;
+                                $badge_label = $badge['text'] ?? '';
+                                $badge_theme = $badge['style'] ?? $badge_theme;
                             } elseif (is_string($badge)) {
                                 $badge_label = $badge;
                             }
@@ -108,6 +109,7 @@ function twmp_render_product_card()
                             if ('' === $badge_label) {
                                 continue;
                             }
+
                             ?>
                             <span class="ath-badge ath-badge--<?php echo esc_attr($badge_theme); ?>">
                                 <?php echo esc_html($badge_label); ?>
@@ -141,17 +143,15 @@ function twmp_render_product_card()
                 <p class="product-card__short-info"><?php echo esc_html($short_info); ?></p>
             <?php endif; ?>
 
-            <?php if ($location || $location_detail) : ?>
+            <?php if ($location_detail) : ?>
                 <div class="product-card__location">
-                    <?php echo esc_html($location ?: $location_detail); ?>
+                    <?php echo esc_html($location_detail); ?>
                 </div>
             <?php endif; ?>
 
             <?php if ($description) : ?>
                 <div class="product-card__more">
-                    <div class="product-card__description">
-                        <?php echo esc_html($description); ?>
-                    </div>
+              
                     <div class="product-card__actions">
                         <div class="product-card__action product-card__action--book">
                             <?php

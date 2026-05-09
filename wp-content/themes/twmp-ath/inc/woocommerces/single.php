@@ -263,6 +263,7 @@ function twmp_woocommerce_output_related_products()
 
 	$product_id = $product->get_id();
 	$custom_ids = function_exists('get_field') ? get_field('ath_similar_service', $product_id) : [];
+
 	$custom_ids = is_array($custom_ids) ? $custom_ids : [$custom_ids];
 	$related_ids = [];
 
@@ -336,7 +337,7 @@ function twmp_woocommerce_output_related_products()
 		return;
 	}
 	?>
-	<section class="relate-product-section relate-product-section--related-products">
+	<section class="relate-product-section section relate-product-section--related-products">
 		<div class="relate-product-section__shell">
 			<div class="relate-product-section__header">
 				<div class="relate-product-section__intro">
@@ -348,7 +349,7 @@ function twmp_woocommerce_output_related_products()
 							'title_class'       => 'relate-product-section__title',
 							'description_class' => 'relate-product-section__description',
 							'class'             => 'relate-product-section__heading',
-							'title'             => esc_html__('Related Products', 'twmp-ath'),
+							'title'             => esc_html__('Similar Show/ Event', 'twmp-ath'),
 							'description'       => '',
 						]
 					);
@@ -357,12 +358,11 @@ function twmp_woocommerce_output_related_products()
 			</div>
 
 			<div class="relate-product-section__slider-wrap position-relative">
-				<div class="event-control">
+				<div class="relate-product-control">
 					<div class="nav">
 						<div class="swiper-button swiper-button-prev"></div>
 						<div class="swiper-button swiper-button-next"></div>
 					</div>
-					<div class="swiper-pagination event-swiper-pagination"></div>
 				</div>
 				<?php
 				get_template_part(

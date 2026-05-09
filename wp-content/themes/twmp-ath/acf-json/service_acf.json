@@ -302,12 +302,12 @@
             }
         },
         {
-            "key": "field_ath_gallery",
-            "label": "Event Gallery",
-            "name": "ath_gallery",
-            "type": "gallery",
-            "instructions": "Ảnh thumbnail/gallery dưới video.",
-            "return_format": "array",
+            "key": "field_ath_image_video",
+            "label": "Event Image Video",
+            "name": "ath_image_video",
+            "type": "image",
+            "instructions": "Ảnh thumbnail video.",
+            "return_format": "id",
             "library": "all",
             "min": "",
             "max": "",

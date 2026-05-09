@@ -30,6 +30,10 @@ if ( ! $product || ! $product instanceof WC_Product ) {
 
 $attachment_ids = $product->get_gallery_image_ids();
 
+if ( empty($attachment_ids) ) {
+	return;
+}
+
 if ( $attachment_ids && $product->get_image_id() ) {
 	foreach ( $attachment_ids as $key => $attachment_id ) {
 		/**
