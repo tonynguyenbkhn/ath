@@ -630,17 +630,22 @@ function twmp_checkout_render_ticket_detail_section()
           <div class="twmp-checkout-ticket-detail__options twmp-checkout-ticket-detail__options--performance">
             <?php foreach ($ticket_data['performances'] as $option) : ?>
               <label class="twmp-ticket-option <?php echo esc_attr($state['performance_key'] === $option['key'] ? 'is-selected' : ''); ?>">
-                <input
-                  type="radio"
-                  name="twmp_ticket_performance"
-                  value="<?php echo esc_attr($option['key']); ?>"
-                  <?php checked($state['performance_key'], $option['key']); ?>
-                  required>
-                <span class="twmp-ticket-option__main">
-                  <span class="twmp-ticket-option__day"><?php echo esc_html($option['day']); ?></span>
-                  <span class="twmp-ticket-option__date"><?php echo esc_html($option['date']); ?></span>
-                </span>
-                <span class="twmp-ticket-option__time"><?php echo esc_html($option['time']); ?></span>
+                <div class="twmp-ticket-option-wrap">
+                  <input
+                    type="radio"
+                    name="twmp_ticket_performance"
+                    value="<?php echo esc_attr($option['key']); ?>"
+                    <?php checked($state['performance_key'], $option['key']); ?>
+                    required>
+                  <div class="twmp-ticket-option-wrap--right">
+                    <span class="twmp-ticket-option__main">
+                      <span class="twmp-ticket-option__day"><?php echo esc_html($option['day']); ?></span>
+                      <span class="twmp-ticket-option__date"><?php echo esc_html($option['date']); ?></span>
+                    </span>
+                    <span class="twmp-ticket-option__time"><?php echo esc_html($option['time']); ?></span>
+                  </div>
+                </div>
+
               </label>
             <?php endforeach; ?>
           </div>
@@ -659,9 +664,11 @@ function twmp_checkout_render_ticket_detail_section()
                   value="<?php echo esc_attr($option['key']); ?>"
                   <?php checked($state['price_key'], $option['key']); ?>
                   required>
-                <span class="twmp-ticket-price-option__label"><?php echo esc_html($option['label']); ?></span>
-                <span class="twmp-ticket-price-option__price"><?php echo wp_kses_post(wc_price($option['price'])); ?></span>
-                <span class="twmp-ticket-price-option__unit"><?php echo esc_html__('/ Ticket', 'twmp-ath'); ?></span>
+                <div class="twmp_ticket_price_option-wrap">
+                  <span class="twmp-ticket-price-option__label"><?php echo esc_html($option['label']); ?></span>
+                  <span class="twmp-ticket-price-option__price"><?php echo wp_kses_post(wc_price($option['price'])); ?></span>
+                  <span class="twmp-ticket-price-option__unit"><?php echo esc_html__('/ Ticket', 'twmp-ath'); ?></span>
+                </div>
               </label>
             <?php endforeach; ?>
           </div>
@@ -1306,9 +1313,7 @@ function twmp_checkout_render_payment_step_section()
       <div class="twmp-checkout-card__content">
         <div class="twmp-checkout-payment-stage" data-payment-stage data-order-id="<?php echo esc_attr($state['order_id']); ?>" data-order-key="<?php echo esc_attr($state['order_key']); ?>" data-payment-status="<?php echo esc_attr($state['proof_status']); ?>" data-payment-nonce="<?php echo esc_attr($state['nonce']); ?>">
           <div class="twmp-checkout-payment-stage__header">
-            <span class="twmp-checkout-payment-stage__badge" data-payment-status-badge><?php echo esc_html(twmp_checkout_get_payment_action_label($state['proof_status'])); ?></span>
-            <p class="twmp-checkout-payment-stage__title" data-payment-status-title><?php echo esc_html($state['status_label']); ?></p>
-            <p class="twmp-checkout-payment-stage__description" data-payment-status-text><?php echo esc_html($state['status_text']); ?></p>
+            <p class="twmp-checkout-payment-stage__description" data-payment-status-text>Scan the QR code below to pay <?php echo $order_total; ?>, and upload the confirmation receipt. After payment, we will send the tickets code via SMS to the email hai**com.</p>
           </div>
 
           <div class="twmp-checkout-payment-stage__grid">
@@ -1372,10 +1377,9 @@ function twmp_checkout_render_payment_step_section()
             </label>
 
             <button type="submit" class="twmp-checkout-proof-form__button" data-payment-submit>
-              <?php echo esc_html($config['bill_title']); ?>
+              <?php echo twmp_get_svg_icon('upload'); ?>
+              <span><?php echo esc_html($config['bill_title']); ?></span>
             </button>
-
-            <p class="twmp-checkout-proof-form__hint"><?php echo esc_html__('Upload a clear transfer receipt after the transfer is completed.', 'twmp-ath'); ?></p>
           </form>
 
           <style>

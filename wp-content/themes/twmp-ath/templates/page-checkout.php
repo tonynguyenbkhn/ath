@@ -20,18 +20,18 @@ get_template_part('templates/sections/page-title/section', null, ['class' => 'pa
 ?>
 
 <div data-block="checkout-custom">
-    <div class="wp-block-group woocommerce-checkout-custom">
+    <div class="woocommerce-checkout-custom <?php echo $is_step_2 ? 'twmp_checkout_step_2' : 'twmp_checkout_step_1' ?>">
         <div class="container">
-            <div class="wp-block-columns">
+            <div class="woocommerce_checkout-columns">
                 <?php if ($is_step_2) : ?>
-                    <div class="wp-block-column" style="flex-basis:100%">
+                    <div class="woocommerce_checkout--full">
                         <?php echo do_shortcode('[woocommerce_checkout]'); ?>
                     </div>
                 <?php else : ?>
-                    <div class="wp-block-column" style="flex-basis:45%">
+                    <div class="woocommerce_checkout--left">
                         <?php echo do_shortcode('[woocommerce_checkout]'); ?>
                     </div>
-                    <div class="wp-block-column" style="flex-basis:55%">
+                    <div class="woocommerce_checkout--right">
                         <?php echo do_shortcode('[woocommerce_cart]'); ?>
                     </div>
                 <?php endif; ?>

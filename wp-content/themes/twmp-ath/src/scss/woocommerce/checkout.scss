@@ -26,323 +26,56 @@
 		text-align: center;
 	}
 
-	.page-block--checkout {
-		.woocommerce-form-coupon-toggle {
-			margin-top: 1em;
-		}
-
-		.woocommerce-info {
-			border-top: 2px solid var(--primary);
-			background-color: #ffe0d0;
-			color: var(--title);
-			padding: 0.625em;
-		}
-
-		.woocommerce-form-login {
-			display: flex;
-			flex-direction: column;
-			flex-flow: row wrap;
-			justify-content: space-between;
-			align-items: center;
-
-			p {
-				width: 100%;
-				order: 1;
-
-				&.lost_password {
-					order: 3;
-					width: 50%;
-				}
-			}
-
-			p.form-row {
-				width: 50%;
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: flex-end;
-				position: relative;
-				order: 4;
-
-				input[name='rememberme'] {
-					@include custom-checkbox(var(--primary), var(--title));
-				}
-
-				&.form-row-first,
-				&.form-row-last {
-					order: 1;
-					display: flex;
-					flex-direction: column;
-					align-items: start;
-					width: 100%;
-
-					@media (min-width: 1024px) {
-						width: 49%;
-					}
-				}
-
-				label {
-					font-weight: bold;
-
-					&.woocommerce-form-login__rememberme {
-						position: relative;
-						padding-left: 1.875rem;
-					}
-				}
-
-				span {
-					color: var(--title);
-					width: 100%;
-				}
-
-				input.input-text {
-					@include input-field;
-				}
-
-				.password-input {
-					position: relative;
-				}
-
-				.show-password-input {
-					position: absolute;
-					right: 10px;
-					top: 7px;
-					background-color: transparent;
-					padding: 0;
-
-					&::after {
-						content: '👁️';
-					}
-				}
-
-				.woocommerce-form-login__submit {
-					width: 150px;
-					@include button-style-primary;
-					margin-left: 1em;
-				}
-			}
-		}
-
-		.woocommerce-form-coupon {
-			display: flex;
-			flex-direction: column;
-			flex-flow: row wrap;
-			align-items: center;
-
-			p {
-				width: 100%;
-			}
-
-			p.form-row {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: flex-end;
-
-				&.form-row-first,
-				&.form-row-last {
-					width: 49%;
-					order: 1;
-					display: flex;
-					flex-direction: column;
-					align-items: start;
-				}
-
-				input.input-text {
-					@include input-field;
-					border-radius: 0;
-				}
-
-				.button {
-					@include button-style-primary;
-					padding: 15px 20px;
-				}
-			}
-		}
+	.woocommerce_checkout-columns {
+		display: flex;
+		align-items: stretch;
 	}
 
-	.page-block__grid {
-		// @include row(-1em);
-		@include clearfix();
+	.woocommerce_checkout--left,
+	.woocommerce_checkout--right {
+		float: none;
+		width: auto;
+		flex: 1 1 0;
 	}
 
-	.page-block__col--sidebar {
-		float: left;
-		width: 100%;
-		// @include col(12, 1em);
-		// display: block;
-		// margin-top: 1em;
-
-		// @media (min-width: 1024px) {
-		// 	@include col(5, 1em);
-		// 	margin-top: 0;
-		// }
-
-		// @media (min-width: 1024px) {
-		// 	width: 40%;
-		// }
-
-		input[type='radio'] {
-			@include custom-radio(var(--primary), var(--title));
-
-			~label::after {
-				left: 3px;
-				width: 12px;
-				height: 12px;
-			}
-		}
-
-		.wc_payment_method {
-			position: relative;
-			padding-left: 1.875rem;
-		}
-
-		.button {
-			@include button-style-dark;
-		}
-
-		.shop_table {
-			@include table-border;
-		}
+	.woocommerce_checkout--left .woocommerce,
+	.woocommerce_checkout--right {
+		height: 100%;
 	}
 
-	.page-block__col--main {
-		float: right;
-		width: 100%;
-
-		&>div {
-			width: 100%;
-
-			&>div {
-				width: 100%;
-			}
-		}
-
-		.woocommerce-billing-fields__field-wrapper {
-			display: flex;
-			flex-direction: column;
-		}
-
-		p.form-row {
-			display: flex;
-			flex-direction: column;
-			margin-top: 10px;
-
-			label {
-				font-weight: bold;
-			}
-
-			span {
-				color: var(--title);
-			}
-
-			input.input-text {
-				@include input-field;
-			}
-
-			.select2-selection {
-				@include input-field;
-			}
-		}
-
-		.woocommerce-form__label {
-			position: relative;
-			padding-left: 1.875rem;
-		}
-
-		input[type='checkbox'] {
-			@include custom-checkbox(var(--primary), var(--title));
-		}
+	.woocommerce_checkout--left .woocommerce>*,
+	.woocommerce_checkout--right>* {
+		height: 100%;
 	}
 
-	.wc_payment_methods.payment_methods.methods {
-		padding: 0;
-		margin: 0;
-		list-style: none;
-	}
-}
-
-.woocommerce-order-overview.woocommerce-thankyou-order-details.order_details {
-	padding: 16px;
-	margin: 0;
-	list-style: none;
-	display: flex;
-	flex-direction: column;
-	border: 2px dashed var(--primary);
-	border-radius: 8px;
-
-	&+p {
-		display: none;
-	}
-
-	li {
+	.woocommerce_checkout--full {
 		flex: 0 0 100%;
-		max-width: 100%;
-		padding: 0;
+	}
+
+	.woocommerce_checkout--left {
+		flex: 0 0 58%;
+
+		.woocommerce {
+			padding-right: 60px;
+		}
+	}
+
+	.woocommerce_checkout--right {
+		flex: 0 0 42%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.woocommerce_checkout--right>* {
+		height: 100%;
+	}
+
+	.woocommerce_checkout--left>*,
+	.woocommerce_checkout--right>* {
+		height: 100%;
 	}
 }
-
-.woocommerce-table.woocommerce-table--order-details.shop_table.order_details {
-	width: 100%;
-	border: 2px dashed var(--primary);
-	border-radius: 8px;
-	padding: 16px;
-}
-
-// .custom-billing-address {
-// 	font-size: 15px;
-// 	line-height: 1.6;
-// 	color: #333;
-// 	border-bottom: 1px solid #ccc;
-// 	margin-bottom: 16px;
-// 	padding-bottom: 16px;
-// }
-
-// address {
-// 	padding: 16px;
-// 	border-radius: 8px;
-// 	font-style: normal;
-// 	font-size: 15px;
-// 	line-height: 1.6;
-// 	color: #333;
-// 	border: 2px dashed var(--primary);
-
-// 	p {
-// 		border-bottom: 1px solid #ccc;
-// 		padding-bottom: 16px;
-
-// 		&:last-child {
-// 			border-bottom: 0;
-// 			padding-bottom: 0;
-// 		}
-// 	}
-// }
-
-// address br {
-// 	display: none;
-// }
-
-// address br::after {
-// 	content: " ";
-// }
-
-// .woocommerce-customer-details--phone,
-// .woocommerce-customer-details--email {
-// 	margin-top: 12px;
-// 	font-weight: 500;
-// 	color: #222;
-// 	display: block;
-// }
-
-// .woocommerce-customer-details--phone::before {
-// 	content: '📞 ';
-// 	color: #0073aa;
-// }
-
-// .woocommerce-customer-details--email::before {
-// 	content: '✉️ ';
-// 	color: #0073aa;
-// }
 
 // ver 2
 
@@ -868,7 +601,7 @@
 
 	#billing_email_field {
 		margin-bottom: 0;
-		margin-top: 10px;
+		margin-top: 0;
 	}
 
 	#billing_shop_address_field .woocommerce-input-wrapper label {
@@ -1092,7 +825,7 @@
 .woocommerce-checkout-custom {
 	position: relative;
 	padding: 24px 0 72px;
-	padding-top: 100px;
+	padding-top: 108px;
 
 	.wp-block-columns {
 		gap: 24px;
@@ -1104,14 +837,14 @@
 	}
 
 	.twmp-checkout-steps {
-		display: flex;
 		align-items: center;
+		display: flex;
+		gap: 95px;
 		justify-content: center;
-		gap: 200px;
+		left: 50%;
 		margin: 0 auto 22px;
 		position: absolute;
-		top: 0;
-		left: 50%;
+		top: 16px;
 		transform: translateX(-50%);
 	}
 
@@ -1153,36 +886,40 @@
 		height: 2px;
 		background: linear-gradient(90deg, var(--primary-500) 0 50%, #E7E7E7 50% 100%);
 		border-radius: 999px;
-		left: 135px;
-		top: 25px;
+		left: 110px;
+		top: 20px;
 		position: absolute;
-		width: 213px;
+		width: 170px;
 	}
 
 	.twmp-checkout-stack {
 		display: grid;
-		gap: 22px;
+		gap: 40px;
 	}
 
-	.twmp-checkout-card,
-	.twmp-checkout-summary__card,
-	.twmp-checkout-summary__totals {
+	.twmp-checkout-summary {
 		background: #fff;
-		border-radius: 14px;
-		box-shadow: 0 1px 0 rgba(22, 26, 38, 0.03);
+		border-radius: 12px;
+		box-shadow: 0 1px 0 var(--system-border);
 	}
 
 	.twmp-checkout-card {
-		padding: 18px 20px 20px;
+		background: #fff;
+		border-radius: 12px;
+		box-shadow: 0 1px 0 var(--system-border);
+	}
+
+	.twmp-checkout-card {
+		padding: 24px 20px 20px;
 	}
 
 	.twmp-checkout-card__header {
 		display: flex;
 		align-items: center;
 		gap: 10px;
-		padding-bottom: 14px;
-		margin-bottom: 16px;
-		border-bottom: 1px solid #ece6dc;
+		padding-bottom: 20px;
+		margin-bottom: 6px;
+		border-bottom: 1px solid var(--system-border);
 	}
 
 	.twmp-checkout-card__step {
@@ -1217,7 +954,7 @@
 	.woocommerce-billing-fields__field-wrapper {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 16px 16px;
+		gap: 30px 20px;
 	}
 
 	.woocommerce-billing-fields__field-wrapper .form-row {
@@ -1275,12 +1012,12 @@
 	.twmp-checkout-field input[type='date'],
 	.twmp-checkout-field input[type='number'],
 	.twmp-checkout-field .select2-selection {
-		width: 100%;
+		width: calc(100% - 48px);
 		height: 56px;
 		border: 0;
 		border-bottom: 1px solid var(--system-border);
 		border-radius: 0;
-		padding: 0;
+		padding: 0 16px 0 32px;
 		background: transparent;
 		color: var(--system-placeholder);
 		@include typo-system-button-2();
@@ -1308,52 +1045,59 @@
 	}
 
 	.twmp-checkout-ticket-detail__group {
-		margin-top: 18px;
+		margin-top: 20px;
 	}
 
 	.twmp-checkout-ticket-detail__label {
 		margin: 0 0 12px;
-		color: #5a606f;
-		font-size: 13px;
-		line-height: 18px;
-		font-weight: 500;
+		@include typo-text-md(400);
+		color: var(--system-content-1);
 	}
 
 	.twmp-checkout-ticket-detail__options {
 		display: grid;
-		gap: 12px;
+		gap: 30px;
 	}
 
 	.twmp-checkout-ticket-detail__options--performance {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.twmp-ticket-option,
-	.twmp-ticket-price-option {
+	.twmp-ticket-option {
 		position: relative;
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		padding: 14px 16px;
-		border: 1px solid #ece6dc;
+		padding: 16px 12px;
+		border: 1px solid var(--system-border);
 		border-radius: 2px;
 		background: #fff;
 		cursor: pointer;
 		transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 	}
 
-	.twmp-ticket-option.is-selected,
-	.twmp-ticket-price-option.is-selected {
-		border-color: #f15a24;
+	.twmp-ticket-option.is-selected {
+		border-color: var(--primary-500);
 		box-shadow: 0 0 0 1px rgba(241, 90, 36, 0.08);
 		background: rgba(241, 90, 36, 0.03);
+	}
+
+	.twmp-ticket-option-wrap {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+
+		&--right {
+			display: flex;
+			flex-direction: column;
+		}
 	}
 
 	.twmp-ticket-option input,
 	.twmp-ticket-price-option input {
 		appearance: none;
-		width: 16px;
-		height: 16px;
+		width: 24px;
+		height: 24px;
 		border: 1px solid #d6d0c5;
 		border-radius: 50%;
 		margin: 0;
@@ -1363,8 +1107,8 @@
 
 	.twmp-ticket-option input:checked,
 	.twmp-ticket-price-option input:checked {
-		border-color: #f15a24;
-		box-shadow: inset 0 0 0 4px #f15a24;
+		border-color: var(--primary-500);
+		box-shadow: inset 0 0 0 7px var(--primary-500);
 	}
 
 	.twmp-ticket-option__main {
@@ -1374,51 +1118,48 @@
 		flex-wrap: wrap;
 	}
 
-	.twmp-ticket-option__day,
-	.twmp-ticket-option__date,
-	.twmp-ticket-option__time {
-		color: #1f2747;
-		font-size: 13px;
-		line-height: 18px;
-		font-weight: 600;
+	.twmp-ticket-option__day {
+		color: var(--system-black);
+		@include typo-text-lg(500);
+		border-right: 1px solid black;
+		padding-right: 10px;
 	}
 
 	.twmp-ticket-option__date {
-		color: #7b7f8a;
-		font-weight: 500;
+		color: rgba($color: #3a3a3a, $alpha: 0.7);
+		@include typo-text-lg(400)
+	}
+
+	.twmp-ticket-option__time {
+		color: var(--system-content-1);
+		font-family: var(--font-inter);
+		@include typo-token(18, 24, 400);
+		margin-top: 6px;
 	}
 
 	.twmp-ticket-price-option {
-		align-items: baseline;
-		flex-wrap: wrap;
+		display: flex;
+		gap: 12px;
+		align-items: center;
 	}
 
 	.twmp-ticket-price-option__label {
-		color: #1f2747;
-		font-size: 14px;
-		line-height: 20px;
-		font-weight: 500;
+		color: rgba($color: #3a3a3a, $alpha: 0.7);
+		@include typo-text-lg(400);
 	}
 
 	.twmp-ticket-price-option__price {
-		margin-left: auto;
-		color: #1f2747;
-		font-size: 14px;
-		line-height: 20px;
-		font-weight: 700;
+		color: var(--system-black);
+		@include typo-text-lg(500);
 	}
 
 	.twmp-ticket-price-option__unit {
-		width: 100%;
-		color: #7b7f8a;
-		font-size: 12px;
-		line-height: 16px;
-		margin-left: 28px;
+		color: var(--system-black);
+		@include typo-text-lg(500);
 	}
 
 	.twmp-checkout-ticket-detail__group--quantity {
 		display: grid;
-		gap: 12px;
 	}
 
 	.twmp-ticket-quantity {
@@ -1426,8 +1167,7 @@
 		align-items: center;
 		gap: 16px;
 		width: fit-content;
-		padding-bottom: 10px;
-		border-bottom: 1px solid #e3ddd3;
+		border-bottom: 1px solid var(--system-border);
 	}
 
 	.twmp-ticket-quantity__button {
@@ -1445,15 +1185,15 @@
 	}
 
 	.twmp-ticket-quantity__input {
-		width: 44px;
+		width: 100px;
 		border: 0;
 		background: transparent;
-		color: #1f2747;
-		font-size: 14px;
-		line-height: 20px;
-		font-weight: 600;
+		color: #444444;
+		@include typo-token(18, 24, 500);
 		text-align: center;
 		padding: 0;
+		font-family: var(--font-archivo);
+		height: 56px;
 	}
 
 	.twmp-checkout-payment {
@@ -1462,25 +1202,23 @@
 
 	.twmp-checkout-summary {
 		display: grid;
-		gap: 18px;
+		gap: 0;
 	}
 
 	.twmp-checkout-summary__card {
-		padding: 18px 18px 16px;
+		padding: 30px 23px 16px;
 	}
 
 	.twmp-checkout-summary__header {
-		padding-bottom: 12px;
-		margin-bottom: 12px;
-		border-bottom: 1px solid #ece6dc;
+		border-bottom: 1px solid var(--system-border);
+		margin-bottom: 40px;
+		padding-bottom: 32px;
 	}
 
 	.twmp-checkout-summary__title {
 		margin: 0;
-		color: #1f2747;
-		font-size: 17px;
-		line-height: 24px;
-		font-weight: 700;
+		color: var(--system-black);
+		@include typo-display-xs(700);
 	}
 
 	.twmp-checkout-summary__content {
@@ -1501,7 +1239,7 @@
 		width: 76px;
 		height: 76px;
 		object-fit: cover;
-		border-radius: 8px;
+		border-radius: 0;
 		display: block;
 	}
 
@@ -1520,18 +1258,13 @@
 	}
 
 	.twmp-checkout-summary__name {
-		margin: 0 0 4px;
-		color: #1f2747;
-		font-size: 15px;
-		line-height: 22px;
-		font-weight: 700;
+		@include typo-text-lg(500);
+		color: var(--system-black);
 	}
 
 	.twmp-checkout-summary__details {
-		margin: 0;
-		color: #7b7f8a;
-		font-size: 12px;
-		line-height: 18px;
+		@include typo-token(12, 24, 400);
+		color: var(--system-content-1);
 	}
 
 	.twmp-checkout-summary__aside {
@@ -1539,18 +1272,13 @@
 	}
 
 	.twmp-checkout-summary__price {
-		color: #1f2747;
-		font-size: 14px;
-		line-height: 20px;
-		font-weight: 700;
-		white-space: nowrap;
+		color: var(--system-black);
+		@include typo-token(16, 28, 500);
 	}
 
 	.twmp-checkout-summary__qty {
-		margin-top: 8px;
-		color: #7b7f8a;
-		font-size: 12px;
-		line-height: 16px;
+		color: var(--system-black);
+		@include typo-token(16, 28, 400);
 	}
 
 	.twmp-checkout-summary__totals {
@@ -1567,17 +1295,17 @@
 	}
 
 	.twmp-checkout-summary__total-label {
-		color: #1f2747;
-		font-size: 14px;
-		line-height: 20px;
-		font-weight: 500;
+		@include typo-text-lg(400);
+		color: var(--system-black);
 	}
 
 	.twmp-checkout-summary__total-value {
-		color: #f15a24;
-		font-size: 20px;
-		line-height: 28px;
-		font-weight: 700;
+		@include typo-display-xs(600);
+		color: var(--primary-500);
+
+		strong {
+			font-weight: 600;
+		}
 	}
 
 	.twmp-checkout-summary__actions {
@@ -1586,14 +1314,12 @@
 
 	.twmp-checkout-summary__button {
 		width: 100%;
-		height: 46px;
+		height: 56px;
 		border: 0;
 		border-radius: 2px;
-		background: #f15a24;
+		background: var(--primary-500);
 		color: #fff;
-		font-size: 14px;
-		line-height: 20px;
-		font-weight: 600;
+		@include typo-system-button();
 		cursor: pointer;
 	}
 
@@ -1621,37 +1347,13 @@
 		display: grid;
 		gap: 8px;
 		padding: 18px;
-		border: 1px solid #ece6dc;
 		border-radius: 12px;
-		background: #fbfaf7;
-	}
-
-	.twmp-checkout-payment-stage__badge {
-		width: fit-content;
-		padding: 6px 10px;
-		border-radius: 999px;
-		background: rgba(241, 90, 36, 0.12);
-		color: #f15a24;
-		font-size: 12px;
-		line-height: 16px;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-	}
-
-	.twmp-checkout-payment-stage__title {
-		margin: 0;
-		color: #1f2747;
-		font-size: 18px;
-		line-height: 26px;
-		font-weight: 700;
+	
 	}
 
 	.twmp-checkout-payment-stage__description {
-		margin: 0;
-		color: #5a606f;
-		font-size: 14px;
-		line-height: 22px;
+		@include typo-token(20, 32, 400);
+		color: var(--system-black);
 	}
 
 	.twmp-checkout-payment-stage__grid {

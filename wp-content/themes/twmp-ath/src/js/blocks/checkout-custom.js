@@ -434,10 +434,9 @@ export default el => {
 
 	const setButtonState = (disabled, label) => {
 		submitButton.classList.toggle('is-loading', !!disabled && isUploading)
-
-		if (label) {
-			submitButton.textContent = label
-		}
+		// if (label) {
+		// 	submitButton.textContent = label
+		// }
 	}
 
 	const getStatusPayload = response => {
@@ -463,9 +462,9 @@ export default el => {
 			statusTitle.textContent = payload.status_label || ''
 		}
 
-		if (statusText) {
-			statusText.textContent = payload.status_text || ''
-		}
+		// if (statusText) {
+		// 	statusText.textContent = payload.status_text || ''
+		// }
 
 		if (payload.proof_status === 'approved') {
 			setNotice(payload.status_text || 'Payment confirmed.', 'success')

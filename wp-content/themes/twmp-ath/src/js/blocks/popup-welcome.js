@@ -37,7 +37,7 @@ export default el => {
 	// 	setLastVisit(Date.now())
 	// })
 
-	if (1 > 0) { // shouldShow
-		trigger('activate', el)
-	}
+	// if (1 > 0) { // shouldShow
+	// 	trigger('activate', el)
+	// }
 }
