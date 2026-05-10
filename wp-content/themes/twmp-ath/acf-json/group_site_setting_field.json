@@ -250,6 +250,24 @@
             "selected": 0
         },
         {
+            "key": "field_ath_banner_shop_page",
+            "label": "Banner Shop Page",
+            "name": "ath_banner_shop_page",
+            "type": "image",
+            "instructions": "Ảnh banner Shop Page.",
+            "return_format": "id",
+            "library": "all",
+            "min": "",
+            "max": "",
+            "preview_size": "thumbnail",
+            "insert": "append",
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
             "key": "field_6113a74088b9d",
             "label": "Thank you footer",
             "name": "thank_you_footer",

@@ -35,7 +35,7 @@
 	}
 
 	.woocommerce_after_single_product_summary {
-		margin-top: 0;
+		margin-top: 140px;
 		float: left;
 		width: 100%;
 
@@ -64,7 +64,7 @@
 
 .ath-badge {
 	display: inline-block;
-	padding: 10px 18px;
+	padding: 5px 8px;
 	font-size: 12px;
 	font-weight: 600;
 	color: #fff;
@@ -191,15 +191,14 @@
 		ul.tabs {
 			display: flex;
 			padding: 0;
-			margin: 0 0 1.875em 0;
 			// display: none;
 
 			&>li {
 				background-color: transparent;
 				border: 0;
 				border-radius: 0;
-				padding: 10px 50px;
-				padding-bottom: 15px;
+				padding: 10px 54px;
+				padding-bottom: 10px;
 				border-bottom: 2px solid var(--system-border);
 				transition: all 0.3s ease;
 
@@ -222,6 +221,7 @@
 
 		.woocommerce-Tabs-panel {
 			margin-bottom: 0;
+			margin-top: 20px;
 
 			&>div {
 				border-radius: 0;
@@ -229,6 +229,11 @@
 		}
 	}
 }
+
+/*----------------------------------------*/
+/*  Related Event Section
+/*----------------------------------------*/
+@import './single-product/section';
 
 /*----------------------------------------*/
 /*  Related

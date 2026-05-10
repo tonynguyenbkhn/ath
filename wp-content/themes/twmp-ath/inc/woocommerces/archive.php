@@ -89,7 +89,7 @@ function twmp_render_product_card()
             <div class="product-card__top">
                 <?php if (!empty($badges)) : ?>
                     <div class="product-card__badges">
-                        <?php 
+                        <?php
 
                         foreach ($badges as $badge) : ?>
                             <?php
@@ -151,7 +151,7 @@ function twmp_render_product_card()
 
             <?php if ($description) : ?>
                 <div class="product-card__more">
-              
+
                     <div class="product-card__actions">
                         <div class="product-card__action product-card__action--book">
                             <?php
@@ -188,13 +188,17 @@ function twmp_render_product_card()
 add_action('woocommerce_before_main_content', 'twmp_render_shop_layout', 40);
 function twmp_render_shop_layout()
 {
-    echo '<div class="twmp-shop-layout"><div class="twmp-shop-layout__main"><div class="twmp-shop-layout__container container">';
+    if (is_shop() || is_product_category()):
+        echo '<div class="twmp-shop-layout"><div class="twmp-shop-layout__main"><div class="twmp-shop-layout__container container">';
+    endif;
 }
 
 add_action('woocommerce_after_main_content', 'twmp_render_shop_layout_end', 9);
 function twmp_render_shop_layout_end()
 {
-    echo '</div></div></div>';
+    if (is_shop() || is_product_category()):
+        echo '</div></div></div>';
+    endif;
 }
 
 add_action('woocommerce_shop_loop_header', 'twmp_render_shop_header', 20);
@@ -217,7 +221,7 @@ function twmp_render_shop_sidebar_start()
 add_action('woocommerce_after_main_content', 'twmp_render_shop_sidebar_main', 5);
 function twmp_render_shop_sidebar_main()
 {
-    if (class_exists('WooCommerce') && (is_shop() || is_product_taxonomy() ) ) {
+    if (class_exists('WooCommerce') && (is_shop() || is_product_taxonomy())) {
     ?>
         <div class="filter-shop">
             <div class="filter-item__head">
@@ -271,3 +275,43 @@ function twmp_render_shop_sidebar_end()
 {
     echo '</div></div></div>';
 }
+
+
+// Custom Banner Shop Page
+
+add_action('woocommerce_before_main_content', function () {
+    if (!class_exists('WooCommerce')) {
+        return;
+    }
+
+    if ( !is_shop() || !is_product_category() ) {
+        return;
+    }
+
+    $banner_id = 0;
+
+    if (is_product_category()) {
+        $term = get_queried_object();
+
+        if ($term instanceof WP_Term) {
+            $banner_id = absint(function_exists('get_field') ? get_field('ath_product_cat_image', $term) : 0);
+        }
+    }
+
+    if (!$banner_id) {
+        $banner_id = absint(function_exists('get_field') ? get_field('ath_banner_shop_page', 'option') : 0);
+    }
+
+    if (!$banner_id) {
+        return;
+    }
+    echo '<div class="twmp-shop-banner">';
+    get_template_part('templates/components/image', null, [
+        'image_id'    => $banner_id,
+        'image_size'  => 'full',
+        'lazyload'    => false,
+        'class'       => 'twmp-shop-banner__image image--cover image--default',
+        'image_class' => 'twmp-shop-banner__image',
+    ]);
+    echo '</div>';
+}, 5);

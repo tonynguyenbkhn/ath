@@ -3,6 +3,7 @@
     div.product {
         position: relative;
         color: var(--system-content-1);
+        margin-top: 40px;
 
         /* product title */
         .product_title {
@@ -97,7 +98,7 @@
         .product-details-meta {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 23px;
             margin-bottom: 24px;
 
             @media (max-width: 575px) {

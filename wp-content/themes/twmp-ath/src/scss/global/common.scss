@@ -13,9 +13,7 @@
 /*  01. Entry Content
 /*----------------------------------------*/
 
-.archive-shop-page-seo__content,
-.page-blog__description,
-.site-main .entry-content {
+.entry-content {
   @include wysiwyg;
 
   margin-bottom: 30px;

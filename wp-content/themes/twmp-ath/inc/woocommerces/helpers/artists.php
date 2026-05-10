@@ -266,7 +266,7 @@ function twmp_render_artists_grid($artists)
 				$image_url   = ! empty($artist['image']['url']) ? $artist['image']['url'] : '';
 				$image_alt   = ! empty($artist['image']['alt']) ? $artist['image']['alt'] : '';
 				$name        = ! empty($artist['name']) ? $artist['name'] : '';
-				$position    = ! empty($artist['position']) ? $artist['position'] : '';
+				$position    = ! empty(get_the_excerpt($artist_id)) ? get_the_excerpt($artist_id) : '';
 				$description = ! empty($artist['description']) ? $artist['description'] : '';
 				$url         = ! empty($artist['url']) ? $artist['url'] : '';
 

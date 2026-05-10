@@ -98,8 +98,6 @@ $header--main-height-mobile: 60px;
 	}
 
 	.header__logo {
-		width: 17%;
-
 		float: left;
 		width: 15%;
 		height: 100%;
@@ -150,8 +148,40 @@ body:not(.home) {
 }
 
 /*----------------------------------------*/
-/*  Button Contact
+/*  Logo
 /*----------------------------------------*/
+.site-logo {
+	img {
+		width: 95px;
+		height: auto;
+	}
+}
+
+/*----------------------------------------*/
+/*  Header Icons
+/*----------------------------------------*/
+.header__menu-icons {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 16px;
+}
+
+/*----------------------------------------*/
+/*  Icon Search
+/*----------------------------------------*/
+.header__menu-icons__item--search {
+	display: inline-flex;
+	cursor: pointer;
+
+	span {
+		display: block;
+
+		& svg {
+			fill: white;
+		}
+	}
+}
 
 /*----------------------------------------*/
 /*  Main Nav
@@ -232,48 +262,6 @@ body:not(.home) {
 
 		& li.active>a::after {
 			color: var(--black);
-		}
-	}
-}
-
-/*----------------------------------------*/
-/*  Logo
-/*----------------------------------------*/
-.site-logo {
-	img {
-		width: 95px;
-		height: auto;
-	}
-}
-
-/*----------------------------------------*/
-/*  Header Icons
-/*----------------------------------------*/
-.header__menu-icons {
-	display: flex;
-	align-items: center;
-
-	&>* {
-		margin: 0 5px;
-
-		@media (min-width: 1024px) {
-			margin: 0 10px;
-		}
-	}
-}
-
-/*----------------------------------------*/
-/*  Icon Search
-/*----------------------------------------*/
-.header__menu-icons__item--search {
-	display: inline-flex;
-	cursor: pointer;
-
-	span {
-		display: block;
-
-		& svg {
-			fill: white;
 		}
 	}
 }

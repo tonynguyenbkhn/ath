@@ -1,12 +1,11 @@
 .woocommerce-breadcrumb {
 	width: 100%;
 	background-color: transparent;
-	margin-top: 20px;
-	margin-bottom: 52px;
+	margin-top: 10px;
 
 	.woocommerce-breadcrumb__container {
-		padding-top: 0.625em;
-		padding-bottom: 0.625em;
+		padding-top: 10px;
+		padding-bottom: 10px;
 
 		@media (max-width: 576px) {
 			text-overflow: ellipsis;
@@ -15,7 +14,9 @@
 		}
 
 		a {
-			color: var(--primary-500);
+			color: var(--system-content-1);
 		}
+
+		color: var(--primary-500);
 	}
 }
