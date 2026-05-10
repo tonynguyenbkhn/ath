@@ -18,6 +18,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     'billing_phone',
     'billing_date_of_birth',
     'billing_age',
+    'billing_email',
   );
 
   foreach ($fields as $group_key => $group_fields) {
@@ -71,6 +72,15 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_phone']['priority'] = 30;
   }
 
+  if (isset($fields['billing']['billing_email'])) {
+    $fields['billing']['billing_email']['type'] = 'email';
+    $fields['billing']['billing_email']['label'] = esc_html__('Email', 'twmp-ath');
+    $fields['billing']['billing_email']['placeholder'] = esc_html__('Email', 'twmp-ath');
+    $fields['billing']['billing_email']['required'] = false;
+    $fields['billing']['billing_email']['class'] = array('form-row-wide', 'twmp-checkout-field');
+    $fields['billing']['billing_email']['priority'] = 90;
+  }
+
   $fields['billing']['billing_date_of_birth'] = array(
     'type'        => 'date',
     'label'       => esc_html__('Date of birth', 'twmp-ath'),
@@ -91,7 +101,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
       'step'      => 1,
       'inputmode' => 'numeric',
     ),
-    'priority'          => 50,
+    'priority'          => 100,
   );
 
   foreach (array('shipping', 'account', 'order') as $group_key) {
@@ -707,7 +717,7 @@ function twmp_checkout_render_ticket_detail_section()
       </div>
     </div>
   </section>
-<?php
+  <?php
 
   if (function_exists('wc_enqueue_js')) {
     $js = <<<JS
@@ -1285,7 +1295,7 @@ function twmp_checkout_render_payment_step_section()
   $order = $state['order'];
   $config = !empty($state['config']) ? $state['config'] : twmp_checkout_get_payment_config();
   $order_total = $order->get_formatted_order_total();
-?>
+  ?>
   <div class="twmp-checkout-stack twmp-checkout-stack--payment">
     <section class="twmp-checkout-card twmp-checkout-card--payment">
       <header class="twmp-checkout-card__header">
@@ -1541,7 +1551,7 @@ function twmp_checkout_render_payment_step_section()
       </div>
     </section>
   </div>
-<?php
+  <?php
   if (function_exists('wc_enqueue_js')) {
     $home_url = wp_json_encode(esc_url(home_url('/')));
     $shop_url = wp_json_encode(function_exists('wc_get_page_permalink') ? esc_url(wc_get_page_permalink('shop')) : esc_url(home_url('/')));
@@ -1803,7 +1813,7 @@ function twmp_checkout_render_payment_step_section()
 JS;
     wc_enqueue_js($js);
   }
-?>
+  ?>
 <?php
 }
 

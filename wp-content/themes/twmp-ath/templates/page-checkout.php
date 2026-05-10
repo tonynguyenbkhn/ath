@@ -15,6 +15,8 @@ if ($data && $data['twmp_checkout_step'] === '2') {
     $is_step_2 = true;
 }
 
+get_template_part('templates/sections/page-title/section', null, ['class' => 'page-checkout-title']);
+
 ?>
 
 <div data-block="checkout-custom">
