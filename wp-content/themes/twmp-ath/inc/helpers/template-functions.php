@@ -280,7 +280,7 @@ function twmp_render_cart_button($product_id = 0, $button_text = '', $button_cla
 	$button_html = function_exists('twmp_get_svg_icon') ? twmp_get_svg_icon($icon_name) : '';
 
 	printf(
-		'<form class="twmp-buy-now-form" action="%1$s" method="post"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
+		'<form class="twmp-buy-now-form swiper-no-swiping" action="%1$s" method="post"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
 		esc_url(get_permalink($product_id)),
 		absint($product_id),
 		esc_attr($button_classes),

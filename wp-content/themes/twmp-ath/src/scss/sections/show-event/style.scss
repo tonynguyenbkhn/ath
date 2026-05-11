@@ -360,6 +360,8 @@
 .event-card__actions {
   margin-top: 14px;
   margin-bottom: 5px;
+  position: relative;
+  z-index: 3;
 }
 
 .event-card__action+.event-card__action {
@@ -368,6 +370,8 @@
 
 .event-card .twmp-buy-now-form {
   margin: 0;
+  position: relative;
+  z-index: 3;
 }
 
 .event-card .cart-redirect-btn,
@@ -380,6 +384,19 @@
   justify-content: center;
   align-items: center;
   padding: 0;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+  touch-action: manipulation;
+
+  span {
+    display: flex;
+  }
+}
+
+.event-card .cart-redirect-btn {
+  width: 100%;
 }
 
 .event-card__view-button {
@@ -389,6 +406,19 @@
 
 .event-card__view-button .text {
   color: #fff;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .event-card__more {
+    max-height: none;
+    opacity: 1;
+    overflow: visible;
+    transform: none;
+  }
+
+  .event-card__action+.event-card__action {
+    margin-top: 18px;
+  }
 }
 
 .event-card:hover .event-card__more,

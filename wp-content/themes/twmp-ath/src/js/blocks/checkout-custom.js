@@ -426,17 +426,34 @@ export default el => {
 		notice.classList.toggle('is-waiting', type === 'waiting')
 	}
 
-	const setFileLabel = fileName => {
-		if (fileLabel) {
-			fileLabel.textContent = fileName || settings.fileLabel || 'Choose bill file'
-		}
-	}
+	// const setFileLabel = fileName => {
+	// 	if (fileLabel) {
+	// 		fileLabel.textContent = fileName || settings.fileLabel || 'Choose bill file'
+	// 	}
+	// }
 
 	const setButtonState = (disabled, label) => {
+		submitButton.disabled = !!disabled || !hasSelectedFile()
+		submitButton.setAttribute('aria-disabled', submitButton.disabled ? 'true' : 'false')
 		submitButton.classList.toggle('is-loading', !!disabled && isUploading)
 		// if (label) {
 		// 	submitButton.textContent = label
 		// }
+	}
+
+	const hasSelectedFile = () => {
+		return !!(fileInput && fileInput.files && fileInput.files[0])
+	}
+
+	const syncSubmitButtonState = () => {
+		const paymentStatus = stage.getAttribute('data-payment-status') || ''
+		const shouldDisable =
+			paymentStatus === 'approved' ||
+			paymentStatus === 'pending_review' ||
+			isUploading ||
+			!hasSelectedFile()
+
+		setButtonState(shouldDisable, settings.uploadLabel || settings.billTitle || 'Upload bill')
 	}
 
 	const getStatusPayload = response => {
@@ -522,6 +539,7 @@ export default el => {
 	const uploadBill = file => {
 		if (!file) {
 			setNotice(settings.noFileMessage || 'Please choose a bill file first.', 'error')
+			syncSubmitButtonState()
 			return
 		}
 
@@ -535,6 +553,8 @@ export default el => {
 			if (file && fileLabelLocal) {
 				fileLabelLocal.textContent = file.name
 			}
+
+			syncSubmitButtonState()
 		})
 
 		proofForm.addEventListener('submit', async function (event) {
@@ -544,6 +564,7 @@ export default el => {
 
 			if (!file) {
 				alert('Please upload payment receipt.')
+				syncSubmitButtonState()
 				return
 			}
 
@@ -569,11 +590,11 @@ export default el => {
 				fileLabelLocal.textContent = result.data.filename
 				submitBtnLocal.textContent = 'Uploaded'
 				alert(result.data.message || 'Bill uploaded successfully.')
+				syncSubmitButtonState()
 				// window.location.href = result.data.redirect_url || window.location.href
 			} catch (error) {
 				alert(error.message)
-				submitBtnLocal.disabled = false
-				submitBtnLocal.textContent = 'Upload bill'
+				syncSubmitButtonState()
 			}
 		})
 	}
@@ -589,12 +610,14 @@ export default el => {
 
 	on('change', function () {
 		const file = this.files && this.files[0] ? this.files[0] : null
-		setFileLabel(file ? file.name : '')
+		// setFileLabel(file ? file.name : '')
 		if (!file) {
 			setNotice('', '')
+			syncSubmitButtonState()
 			return
 		}
 		setNotice(settings.selectedFileMessage || file.name, '')
+		syncSubmitButtonState()
 	}, fileInput)
 
 	if (filePicker) {
@@ -618,12 +641,11 @@ export default el => {
 	} else if (stage.getAttribute('data-payment-status') === 'pending_review') {
 		setButtonState(true, settings.waitingLabel || 'Waiting for confirmation')
 	} else if (stage.getAttribute('data-payment-status') === 'rejected') {
-		setButtonState(false, settings.uploadLabel || settings.billTitle || 'Upload bill')
+		syncSubmitButtonState()
 	} else {
-		setButtonState(false, settings.uploadLabel || settings.billTitle || 'Upload bill')
+		syncSubmitButtonState()
 	}
 
-	setFileLabel('')
 	pollStatus()
 	if (initialStatus !== 'approved') {
 		startPolling()

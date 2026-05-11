@@ -49,7 +49,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_first_name']['type'] = 'text';
     $fields['billing']['billing_first_name']['label'] = esc_html__('First name', 'twmp-ath');
     $fields['billing']['billing_first_name']['placeholder'] = esc_html__('First name', 'twmp-ath');
-    $fields['billing']['billing_first_name']['required'] = false;
+    $fields['billing']['billing_first_name']['required'] = true;
     $fields['billing']['billing_first_name']['class'] = array('form-row-first', 'twmp-checkout-field');
     $fields['billing']['billing_first_name']['priority'] = 10;
   }
@@ -58,7 +58,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_last_name']['type'] = 'text';
     $fields['billing']['billing_last_name']['label'] = esc_html__('Last name', 'twmp-ath');
     $fields['billing']['billing_last_name']['placeholder'] = esc_html__('Last name', 'twmp-ath');
-    $fields['billing']['billing_last_name']['required'] = false;
+    $fields['billing']['billing_last_name']['required'] = true;
     $fields['billing']['billing_last_name']['class'] = array('form-row-last', 'twmp-checkout-field');
     $fields['billing']['billing_last_name']['priority'] = 20;
   }
@@ -67,7 +67,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_phone']['type'] = 'tel';
     $fields['billing']['billing_phone']['label'] = esc_html__('Phone', 'twmp-ath');
     $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone', 'twmp-ath');
-    $fields['billing']['billing_phone']['required'] = false;
+    $fields['billing']['billing_phone']['required'] = true;
     $fields['billing']['billing_phone']['class'] = array('form-row-wide', 'twmp-checkout-field');
     $fields['billing']['billing_phone']['priority'] = 30;
   }
@@ -76,7 +76,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_email']['type'] = 'email';
     $fields['billing']['billing_email']['label'] = esc_html__('Email', 'twmp-ath');
     $fields['billing']['billing_email']['placeholder'] = esc_html__('Email', 'twmp-ath');
-    $fields['billing']['billing_email']['required'] = false;
+    $fields['billing']['billing_email']['required'] = true;
     $fields['billing']['billing_email']['class'] = array('form-row-wide', 'twmp-checkout-field');
     $fields['billing']['billing_email']['priority'] = 90;
   }
@@ -85,7 +85,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     'type'        => 'date',
     'label'       => esc_html__('Date of birth', 'twmp-ath'),
     'placeholder' => esc_html__('Date of birth', 'twmp-ath'),
-    'required'    => false,
+    'required'    => true,
     'class'       => array('form-row-first', 'twmp-checkout-field'),
     'priority'    => 40,
   );
@@ -94,7 +94,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     'type'              => 'number',
     'label'             => esc_html__('Age', 'twmp-ath'),
     'placeholder'       => esc_html__('Age', 'twmp-ath'),
-    'required'          => false,
+    'required'          => true,
     'class'             => array('form-row-last', 'twmp-checkout-field'),
     'custom_attributes' => array(
       'min'       => 1,
@@ -588,6 +588,188 @@ function twmp_checkout_get_ticket_selection_state($product_id = 0)
   return $state;
 }
 
+function twmp_checkout_normalize_checkout_field_state(array $fields)
+{
+  $state = array();
+  $allowed_fields = array(
+    'billing_first_name',
+    'billing_last_name',
+    'billing_phone',
+    'billing_date_of_birth',
+    'billing_age',
+    'billing_email',
+  );
+
+  foreach ($allowed_fields as $field_key) {
+    if (!array_key_exists($field_key, $fields)) {
+      continue;
+    }
+
+    $value = $fields[$field_key];
+    if ('billing_age' === $field_key) {
+      $value = '' === (string) $value ? '' : absint($value);
+    } else {
+      $value = sanitize_text_field((string) $value);
+    }
+
+    $state[$field_key] = $value;
+  }
+
+  return $state;
+}
+
+function twmp_checkout_get_checkout_field_state_from_session()
+{
+  if (!function_exists('WC') || !WC()->session) {
+    return array();
+  }
+
+  $stored = WC()->session->get('twmp_checkout_fields', array());
+  if (!is_array($stored)) {
+    return array();
+  }
+
+  return twmp_checkout_normalize_checkout_field_state($stored);
+}
+
+function twmp_checkout_sync_checkout_field_state_to_session(array $fields)
+{
+  if (!function_exists('WC') || !WC()->session) {
+    return;
+  }
+
+  $current = twmp_checkout_get_checkout_field_state_from_session();
+  $state = array_merge($current, twmp_checkout_normalize_checkout_field_state($fields));
+  WC()->session->set('twmp_checkout_fields', $state);
+}
+
+add_filter('woocommerce_checkout_get_value', function ($value, $input) {
+  if ('' !== $value && null !== $value) {
+    return $value;
+  }
+
+  $stored = twmp_checkout_get_checkout_field_state_from_session();
+  return isset($stored[$input]) ? $stored[$input] : $value;
+}, 20, 2);
+
+function twmp_checkout_normalize_ticket_attendee_state(array $attendees)
+{
+  $state = array();
+
+  foreach ($attendees as $index => $name) {
+    $index = absint($index);
+    if ($index < 2) {
+      continue;
+    }
+
+    $state[$index] = sanitize_text_field((string) $name);
+  }
+
+  ksort($state);
+
+  return $state;
+}
+
+function twmp_checkout_parse_ticket_attendee_state($value)
+{
+  if (is_string($value)) {
+    $decoded = json_decode(wp_unslash($value), true);
+    if (is_array($decoded)) {
+      $value = $decoded;
+    }
+  }
+
+  if (!is_array($value)) {
+    return array();
+  }
+
+  return twmp_checkout_normalize_ticket_attendee_state($value);
+}
+
+function twmp_checkout_get_ticket_attendee_state_from_session($product_id = 0)
+{
+  if (!function_exists('WC') || !WC()->session) {
+    return array();
+  }
+
+  $state = twmp_checkout_parse_ticket_attendee_state(WC()->session->get('twmp_ticket_attendees', array()));
+
+  $stored_state = WC()->session->get('twmp_ticket_attendees_state', array());
+  $stored_state = twmp_checkout_parse_ticket_attendee_state($stored_state);
+  if (!empty($stored_state)) {
+    $state = array_merge($state, $stored_state);
+  }
+
+  return twmp_checkout_normalize_ticket_attendee_state($state);
+}
+
+function twmp_checkout_get_ticket_quantity_state($product_id = 0)
+{
+  $product_id = absint($product_id);
+  $quantity = 1;
+  $session_quantity = 0;
+
+  if (function_exists('WC') && WC()->session) {
+    $stored = WC()->session->get('twmp_ticket_quantity', array());
+
+    if (is_array($stored)) {
+      $session_quantity = !empty($stored[$product_id]) ? absint($stored[$product_id]) : 0;
+    } elseif (absint($stored) > 0) {
+      $session_quantity = absint($stored);
+    }
+  }
+
+  if ($session_quantity > 0) {
+    $quantity = $session_quantity;
+  } elseif (function_exists('WC') && WC()->cart) {
+    $cart_item_key = twmp_checkout_get_cart_item_key_by_product_id($product_id);
+
+    if ($cart_item_key) {
+      foreach (WC()->cart->get_cart() as $current_cart_item_key => $cart_item) {
+        if ($current_cart_item_key !== $cart_item_key) {
+          continue;
+        }
+
+        $cart_quantity = !empty($cart_item['quantity']) ? max(1, absint($cart_item['quantity'])) : 1;
+        if ($cart_quantity > 0) {
+          $quantity = $cart_quantity;
+        }
+        break;
+      }
+    }
+  }
+
+  if (function_exists('WC') && WC()->cart) {
+    $cart_item_key = twmp_checkout_get_cart_item_key_by_product_id($product_id);
+
+    if ($cart_item_key) {
+      foreach (WC()->cart->get_cart() as $current_cart_item_key => $cart_item) {
+        if ($current_cart_item_key !== $cart_item_key) {
+          continue;
+        }
+
+        $cart_quantity = !empty($cart_item['quantity']) ? max(1, absint($cart_item['quantity'])) : 1;
+        if ($cart_quantity > 0 && $session_quantity <= 0) {
+          $quantity = $cart_quantity;
+        }
+        break;
+      }
+    }
+  }
+
+  if (function_exists('WC') && WC()->session && $product_id) {
+    $stored = WC()->session->get('twmp_ticket_quantity', array());
+    if (!is_array($stored)) {
+      $stored = array();
+    }
+
+    $stored[$product_id] = $quantity;
+    WC()->session->set('twmp_ticket_quantity', $stored);
+  }
+
+  return $quantity;
+}
+
 function twmp_checkout_render_ticket_detail_section()
 {
   $product_id = twmp_checkout_get_ticket_product_id();
@@ -601,19 +783,9 @@ function twmp_checkout_render_ticket_detail_section()
   }
 
   $state = twmp_checkout_get_ticket_selection_state($product_id);
-  $quantity = 1;
-  $cart_item_key = twmp_checkout_get_cart_item_key_by_product_id($product_id);
-
-  if ($cart_item_key && function_exists('WC') && WC()->cart) {
-    foreach (WC()->cart->get_cart() as $current_cart_item_key => $cart_item) {
-      if ($current_cart_item_key !== $cart_item_key) {
-        continue;
-      }
-
-      $quantity = !empty($cart_item['quantity']) ? max(1, absint($cart_item['quantity'])) : 1;
-      break;
-    }
-  }
+  $quantity = twmp_checkout_get_ticket_quantity_state($product_id);
+  $attendee_state = twmp_checkout_get_ticket_attendee_state_from_session($product_id);
+  $attendee_names = twmp_checkout_get_ticket_attendee_names_from_session();
 ?>
   <section class="twmp-checkout-card twmp-checkout-card--ticket-detail">
     <input type="hidden" name="twmp_ticket_product_id" value="<?php echo esc_attr($product_id); ?>">
@@ -693,29 +865,25 @@ function twmp_checkout_render_ticket_detail_section()
       </div>
 
       <?php
-      $attendee_names = twmp_checkout_get_ticket_attendee_names_from_session();
       $extra_attendee_count = max(0, $quantity - 1);
       ?>
       <div
         class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--attendees"
         data-ticket-attendees-wrapper
         <?php echo $extra_attendee_count > 0 ? '' : 'style="display:none;"'; ?>>
-        <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Ticket holder names', 'twmp-ath'); ?></p>
-        <p class="twmp-checkout-ticket-detail__hint"><?php echo esc_html__('Enter the name for each additional ticket holder.', 'twmp-ath'); ?></p>
+        <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Please write down all of their name. *', 'twmp-ath'); ?></p>
+        <input type="hidden" name="twmp_ticket_attendees_state" value="<?php echo esc_attr(wp_json_encode($attendee_state)); ?>" data-ticket-attendees-state>
         <input type="hidden" name="twmp_ticket_attendees_list" value="<?php echo esc_attr(twmp_checkout_format_ticket_attendee_list($attendee_names)); ?>" data-ticket-attendees-list>
         <div class="twmp-ticket-attendees" data-ticket-attendees-container>
           <?php for ($index = 2; $index <= $quantity; $index++) : ?>
             <div class="twmp-ticket-attendees__item">
-              <label class="twmp-ticket-attendees__label" for="twmp_ticket_attendees_<?php echo esc_attr($index); ?>">
-                <?php echo esc_html(sprintf(__('Name of ticket holder %d', 'twmp-ath'), $index)); ?>
-              </label>
               <input
                 type="text"
                 class="twmp-ticket-attendees__input"
                 id="twmp_ticket_attendees_<?php echo esc_attr($index); ?>"
                 name="twmp_ticket_attendees[<?php echo esc_attr($index); ?>]"
-                value="<?php echo esc_attr(!empty($attendee_names[$index]) ? $attendee_names[$index] : ''); ?>"
-                placeholder="<?php echo esc_attr(sprintf(__('Name of ticket holder %d', 'twmp-ath'), $index)); ?>"
+                value="<?php echo esc_attr(isset($attendee_state[$index]) ? $attendee_state[$index] : ''); ?>"
+                placeholder="<?php echo esc_attr(sprintf(__('Enter the %dnd person\'s name', 'twmp-ath'), $index)); ?>"
                 autocomplete="name"
                 required>
             </div>
@@ -740,13 +908,205 @@ function twmp_checkout_render_ticket_detail_section()
   checkoutRoot.setAttribute('data-ticket-attendees-init', '1');
 
   const quantityInput = checkoutRoot.querySelector('input[name="twmp_ticket_quantity"]');
+  const checkoutForm = checkoutRoot.closest('form.checkout') || document.querySelector('form.checkout');
   const attendeesWrapper = checkoutRoot.querySelector('[data-ticket-attendees-wrapper]');
   const attendeesContainer = checkoutRoot.querySelector('[data-ticket-attendees-container]');
   const attendeesList = checkoutRoot.querySelector('[data-ticket-attendees-list]');
+  const attendeesStateInput = checkoutRoot.querySelector('[data-ticket-attendees-state]');
+  let attendeeSyncTimer = null;
 
-  if (!quantityInput || !attendeesWrapper || !attendeesContainer || !attendeesList) {
+  // Serialize the checkout form the same way WooCommerce expects.
+  const serializeForm = form => {
+    const formData = new FormData(form);
+    return new URLSearchParams(formData).toString();
+  };
+
+  const checkoutStorageKey = 'twmp_checkout_state';
+  const persistedFieldNames = [
+    'billing_first_name',
+    'billing_last_name',
+    'billing_phone',
+    'billing_date_of_birth',
+    'billing_age',
+    'billing_email',
+    'twmp_ticket_performance',
+    'twmp_ticket_price_option',
+    'twmp_ticket_quantity',
+    'twmp_ticket_attendees_state',
+  ];
+
+  const storageAvailable = (() => {
+    try {
+      return !!window.sessionStorage;
+    } catch (error) {
+      return false;
+    }
+  })();
+
+  const getStoredCheckoutState = () => {
+    if (!storageAvailable) {
+      return {};
+    }
+
+    try {
+      return JSON.parse(window.sessionStorage.getItem(checkoutStorageKey) || '{}') || {};
+    } catch (error) {
+      return {};
+    }
+  };
+
+  const setStoredCheckoutState = state => {
+    if (!storageAvailable) {
+      return;
+    }
+
+    try {
+      window.sessionStorage.setItem(checkoutStorageKey, JSON.stringify(state || {}));
+    } catch (error) {
+      // Ignore storage quota / privacy mode failures.
+    }
+  };
+
+  const findField = name => checkoutForm.querySelector('[name="' + name + '"]');
+
+  const collectCheckoutState = () => {
+    const state = {};
+
+    persistedFieldNames.forEach(name => {
+      if (name === 'twmp_ticket_performance' || name === 'twmp_ticket_price_option') {
+        const checked = checkoutForm.querySelector('input[name="' + name + '"]:checked');
+        state[name] = checked ? checked.value || '' : '';
+        return;
+      }
+
+      const field = findField(name);
+      if (field) {
+        state[name] = field.value || '';
+      }
+    });
+
+    return state;
+  };
+
+  const persistCheckoutState = () => {
+    const currentState = collectCheckoutState();
+    setStoredCheckoutState(currentState);
+    return currentState;
+  };
+
+  const applyCheckoutState = state => {
+    if (!state || typeof state !== 'object') {
+      return;
+    }
+
+    persistedFieldNames.forEach(name => {
+      if (!Object.prototype.hasOwnProperty.call(state, name)) {
+        return;
+      }
+
+      if (name === 'twmp_ticket_performance' || name === 'twmp_ticket_price_option') {
+        checkoutForm.querySelectorAll('input[name="' + name + '"]').forEach(input => {
+          input.checked = input.value === String(state[name] || '');
+        });
+        return;
+      }
+
+      const field = findField(name);
+      if (field) {
+        field.value = String(state[name] || '');
+      }
+    });
+  };
+
+  if (!checkoutForm) {
     return;
   }
+
+  applyCheckoutState(getStoredCheckoutState());
+
+  if (!quantityInput || !attendeesWrapper || !attendeesContainer || !attendeesList || !attendeesStateInput) {
+    return;
+  }
+
+  const sanitizeState = state => {
+    const nextState = {};
+
+    if (!state || typeof state !== 'object') {
+      return nextState;
+    }
+
+    Object.keys(state).forEach(key => {
+      const index = Number.parseInt(key, 10);
+      if (!Number.isFinite(index) || index < 2) {
+        return;
+      }
+
+      nextState[index] = String(state[key] || '');
+    });
+
+    return nextState;
+  };
+
+  const writeState = state => {
+    const nextState = sanitizeState(state);
+    const values = Object.keys(nextState)
+      .map(key => nextState[key])
+      .map(value => (value || '').trim())
+      .filter(Boolean);
+
+    attendeesStateInput.value = JSON.stringify(nextState);
+    attendeesList.value = values.join(', ');
+    persistCheckoutState();
+
+    return nextState;
+  };
+
+  const updateCheckoutSession = () => {
+    if (
+      typeof window.wc_checkout_params === 'undefined' ||
+      !window.wc_checkout_params ||
+      !window.wc_checkout_params.wc_ajax_url ||
+      !checkoutForm
+    ) {
+      return Promise.resolve();
+    }
+
+    const body = new URLSearchParams();
+    body.append('security', window.wc_checkout_params.update_order_review_nonce || '');
+    body.append('post_data', serializeForm(checkoutForm));
+
+    const url = window.wc_checkout_params.wc_ajax_url.replace('%%endpoint%%', 'update_order_review');
+
+    return fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
+      body: body.toString(),
+    }).then(() => undefined);
+  };
+
+  const queueAttendeeSync = () => {
+    window.clearTimeout(attendeeSyncTimer);
+    attendeeSyncTimer = window.setTimeout(() => {
+      persistCheckoutState();
+      updateCheckoutSession().catch(() => undefined);
+    }, 120);
+  };
+
+  const readState = () => {
+    const rawState = attendeesStateInput.value || '';
+    if (rawState) {
+      try {
+        return sanitizeState(JSON.parse(rawState));
+      } catch (error) {
+        // Fall back to DOM state below.
+      }
+    }
+
+    return sanitizeState(getCurrentValues());
+  };
 
   const getQuantity = () => {
     const quantity = parseInt(quantityInput.value, 10);
@@ -768,26 +1128,18 @@ function twmp_checkout_render_ticket_detail_section()
   };
 
   const syncHiddenList = () => {
-    const values = [];
-    attendeesContainer.querySelectorAll('.twmp-ticket-attendees__input').forEach(input => {
-      const value = (input.value || '').trim();
-      if (value) {
-        values.push(value);
-      }
-    });
-
-    attendeesList.value = values.join(', ');
+    return writeState(getCurrentValues());
   };
 
-  const renderAttendees = () => {
+  const renderAttendees = (state = null) => {
     const quantity = getQuantity();
     const count = Math.max(0, quantity - 1);
-    const currentValues = getCurrentValues();
+    const currentValues = sanitizeState(state || readState());
 
     if (count === 0) {
       attendeesWrapper.style.display = 'none';
       attendeesContainer.innerHTML = '';
-      attendeesList.value = '';
+      writeState(currentValues);
       return;
     }
 
@@ -801,35 +1153,63 @@ function twmp_checkout_render_ticket_detail_section()
       const label = document.createElement('label');
       label.className = 'twmp-ticket-attendees__label';
       label.htmlFor = 'twmp_ticket_attendees_' + index;
-      label.textContent = 'Name of ticket holder ' + index;
+      label.textContent = '';
 
       const input = document.createElement('input');
       input.type = 'text';
       input.className = 'twmp-ticket-attendees__input';
       input.id = 'twmp_ticket_attendees_' + index;
       input.name = 'twmp_ticket_attendees[' + index + ']';
-      input.placeholder = 'Name of ticket holder ' + index;
+      input.placeholder = 'Enter the '+index+'nd person\'s name.';
       input.autocomplete = 'name';
       input.required = true;
       input.value = currentValues[index] || '';
 
-      input.addEventListener('input', syncHiddenList);
+      input.addEventListener('input', () => {
+        writeState({
+          ...readState(),
+          ...getCurrentValues(),
+        });
+        queueAttendeeSync();
+      });
       item.appendChild(label);
       item.appendChild(input);
       attendeesContainer.appendChild(item);
     }
 
-    syncHiddenList();
+    writeState(currentValues);
   };
 
   const syncAndUpdate = () => {
     const quantity = getQuantity();
+    const nextState = writeState({
+      ...readState(),
+      ...getCurrentValues(),
+    });
+
     quantityInput.value = String(quantity);
-    renderAttendees();
+    renderAttendees(nextState);
+    persistCheckoutState();
   };
 
   quantityInput.addEventListener('input', syncAndUpdate);
   quantityInput.addEventListener('change', syncAndUpdate);
+  checkoutForm.addEventListener('input', event => {
+    const target = event.target;
+    if (!target || !target.name || !persistedFieldNames.includes(target.name)) {
+      return;
+    }
+
+    persistCheckoutState();
+  });
+  checkoutForm.addEventListener('change', event => {
+    const target = event.target;
+    if (!target || !target.name || !persistedFieldNames.includes(target.name)) {
+      return;
+    }
+
+    persistCheckoutState();
+  });
   checkoutRoot.addEventListener('click', event => {
     const button = event.target && event.target.closest ? event.target.closest('[data-ticket-quantity-step]') : null;
     if (!button) {
@@ -842,7 +1222,10 @@ function twmp_checkout_render_ticket_detail_section()
   syncAndUpdate();
 
   if (window.jQuery) {
-    window.jQuery(document.body).on('updated_checkout', syncAndUpdate);
+    window.jQuery(document.body).on('updated_checkout', () => {
+      applyCheckoutState(getStoredCheckoutState());
+      syncAndUpdate();
+    });
   }
 })();
 JS;
@@ -930,6 +1313,8 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
 
   parse_str($posted_data, $data);
 
+  twmp_checkout_sync_checkout_field_state_to_session($data);
+
   $product_id = !empty($data['twmp_ticket_product_id']) ? absint($data['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
   if (!$product_id) {
     return;
@@ -942,7 +1327,11 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
 
   WC()->session->set('twmp_ticket_selection', $selection);
 
-  $attendees = array();
+  $attendees = twmp_checkout_get_ticket_attendee_state_from_session($product_id);
+  if (!empty($data['twmp_ticket_attendees_state'])) {
+    $attendees = array_merge($attendees, twmp_checkout_parse_ticket_attendee_state($data['twmp_ticket_attendees_state']));
+  }
+
   if (!empty($data['twmp_ticket_attendees']) && is_array($data['twmp_ticket_attendees'])) {
     foreach ($data['twmp_ticket_attendees'] as $index => $name) {
       $index = absint($index);
@@ -950,19 +1339,23 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
         continue;
       }
 
-      $name = sanitize_text_field(wp_unslash($name));
-      if ($name === '') {
-        continue;
-      }
-
-      $attendees[$index] = $name;
+      $attendees[$index] = sanitize_text_field(wp_unslash($name));
     }
   }
 
+  $attendees = twmp_checkout_normalize_ticket_attendee_state($attendees);
   WC()->session->set('twmp_ticket_attendees', $attendees);
+  WC()->session->set('twmp_ticket_attendees_state', $attendees);
 
   $quantity = !empty($data['twmp_ticket_quantity']) ? max(1, absint($data['twmp_ticket_quantity'])) : 0;
   if ($quantity > 0 && function_exists('WC') && WC()->cart) {
+    $stored_quantity = WC()->session->get('twmp_ticket_quantity', array());
+    if (!is_array($stored_quantity)) {
+      $stored_quantity = array();
+    }
+    $stored_quantity[$product_id] = $quantity;
+    WC()->session->set('twmp_ticket_quantity', $stored_quantity);
+
     $cart_item_key = twmp_checkout_get_cart_item_key_by_product_id($product_id);
     if ($cart_item_key) {
       $current_quantity = 0;
@@ -1010,6 +1403,10 @@ add_action('woocommerce_checkout_process', function () {
   $quantity = !empty($_POST['twmp_ticket_quantity']) ? max(1, absint(wp_unslash($_POST['twmp_ticket_quantity']))) : 1;
   $posted_attendees = array();
 
+  if (!empty($_POST['twmp_ticket_attendees_state'])) {
+    $posted_attendees = twmp_checkout_parse_ticket_attendee_state(wp_unslash($_POST['twmp_ticket_attendees_state']));
+  }
+
   if (!empty($_POST['twmp_ticket_attendees']) && is_array($_POST['twmp_ticket_attendees'])) {
     foreach ($_POST['twmp_ticket_attendees'] as $index => $name) {
       $index = absint($index);
@@ -1017,17 +1414,14 @@ add_action('woocommerce_checkout_process', function () {
         continue;
       }
 
-      $name = sanitize_text_field(wp_unslash($name));
-      if ($name === '') {
-        continue;
-      }
-
-      $posted_attendees[$index] = $name;
+      $posted_attendees[$index] = sanitize_text_field(wp_unslash($name));
     }
   }
 
+  $posted_attendees = twmp_checkout_normalize_ticket_attendee_state($posted_attendees);
+
   for ($index = 2; $index <= $quantity; $index++) {
-    if (empty($posted_attendees[$index])) {
+    if (empty(trim((string) ($posted_attendees[$index] ?? '')))) {
       wc_add_notice(sprintf(__('Please enter the name for ticket holder %d.', 'twmp-ath'), $index), 'error');
       break;
     }
@@ -1068,6 +1462,10 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
   }
 
   $attendee_names = array();
+  if (!empty($_POST['twmp_ticket_attendees_state'])) {
+    $attendee_names = twmp_checkout_parse_ticket_attendee_state(wp_unslash($_POST['twmp_ticket_attendees_state']));
+  }
+
   if (!empty($_POST['twmp_ticket_attendees']) && is_array($_POST['twmp_ticket_attendees'])) {
     foreach ($_POST['twmp_ticket_attendees'] as $index => $name) {
       $index = absint($index);
@@ -1075,16 +1473,11 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
         continue;
       }
 
-      $name = sanitize_text_field(wp_unslash($name));
-      if ($name === '') {
-        continue;
-      }
-
-      $attendee_names[$index] = $name;
+      $attendee_names[$index] = sanitize_text_field(wp_unslash($name));
     }
   }
 
-  ksort($attendee_names);
+  $attendee_names = twmp_checkout_normalize_ticket_attendee_state($attendee_names);
   $order->update_meta_data('_twmp_ticket_attendee_names', $attendee_names);
   $order->update_meta_data('_twmp_ticket_attendee_names_list', twmp_checkout_format_ticket_attendee_list($attendee_names));
 }, 20, 2);
@@ -1302,6 +1695,7 @@ function twmp_checkout_render_payment_step_section()
   $order = $state['order'];
   $config = !empty($state['config']) ? $state['config'] : twmp_checkout_get_payment_config();
   $order_total = $order->get_formatted_order_total();
+  $email = $order->get_billing_email();
   ?>
   <div class="twmp-checkout-stack twmp-checkout-stack--payment">
     <section class="twmp-checkout-card twmp-checkout-card--payment">
@@ -1313,7 +1707,7 @@ function twmp_checkout_render_payment_step_section()
       <div class="twmp-checkout-card__content">
         <div class="twmp-checkout-payment-stage" data-payment-stage data-order-id="<?php echo esc_attr($state['order_id']); ?>" data-order-key="<?php echo esc_attr($state['order_key']); ?>" data-payment-status="<?php echo esc_attr($state['proof_status']); ?>" data-payment-nonce="<?php echo esc_attr($state['nonce']); ?>">
           <div class="twmp-checkout-payment-stage__header">
-            <p class="twmp-checkout-payment-stage__description" data-payment-status-text>Scan the QR code below to pay <?php echo $order_total; ?>, and upload the confirmation receipt. After payment, we will send the tickets code via SMS to the email hai**com.</p>
+            <p class="twmp-checkout-payment-stage__description" data-payment-status-text>Scan the QR code below to pay <?php echo $order_total; ?>, and upload the confirmation receipt. After payment, we will send the tickets code via SMS to the email <?php echo esc_html($email); ?>.</p>
           </div>
 
           <div class="twmp-checkout-payment-stage__grid">
@@ -1328,59 +1722,63 @@ function twmp_checkout_render_payment_step_section()
             </div>
 
             <div class="twmp-checkout-payment-stage__info">
-              <h4 class="twmp-checkout-payment-stage__info-title"><?php echo esc_html(!empty($config['company_name']) ? $config['company_name'] : get_bloginfo('name')); ?></h4>
-
-              <ul class="twmp-checkout-payment-stage__list">
-                <?php if (!empty($config['bank_name'])) : ?>
-                  <li><strong><?php echo esc_html__('Bank', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['bank_name']); ?></li>
-                <?php endif; ?>
-                <?php if (!empty($config['account_name'])) : ?>
-                  <li><strong><?php echo esc_html__('Account name', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['account_name']); ?></li>
-                <?php endif; ?>
-                <?php if (!empty($config['account_number'])) : ?>
-                  <li><strong><?php echo esc_html__('Account number', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['account_number']); ?></li>
-                <?php endif; ?>
-                <?php if (!empty($config['branch'])) : ?>
-                  <li><strong><?php echo esc_html__('Branch', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['branch']); ?></li>
-                <?php endif; ?>
-                <li><strong><?php echo esc_html__('Order', 'twmp-ath'); ?>:</strong> #<?php echo esc_html($order->get_order_number()); ?></li>
-                <li><strong><?php echo esc_html__('Total', 'twmp-ath'); ?>:</strong> <?php echo wp_kses_post($order_total); ?></li>
-                <?php if (!empty($config['transfer_note'])) : ?>
-                  <li><strong><?php echo esc_html__('Transfer note', 'twmp-ath'); ?>:</strong> <?php echo esc_html($config['transfer_note']); ?></li>
-                <?php endif; ?>
-              </ul>
-
-              <?php if (!empty($config['company_address']) || !empty($config['company_phone']) || !empty($config['company_email'])) : ?>
-                <div class="twmp-checkout-payment-stage__company">
-                  <?php if (!empty($config['company_address'])) : ?>
-                    <p><?php echo esc_html($config['company_address']); ?></p>
+              <div class="twmp-checkout-payment-stage__info-wrap">
+                <div class="twmp-checkout-payment-stage__list">
+                  <?php if (!empty($config['bank_name'])) : ?>
+                    <span class="twmp-checkout-payment-stage__list-label"><?php echo esc_html__('Bank', 'twmp-ath'); ?>:</span>
+                    <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html($config['bank_name']); ?></span>
                   <?php endif; ?>
-                  <?php if (!empty($config['company_phone'])) : ?>
-                    <p><?php echo esc_html($config['company_phone']); ?></p>
+                  <?php if (!empty($config['company_name'])) : ?>
+                    <span class="twmp-checkout-payment-stage__list-label"><?php echo esc_html__('Bank account name', 'twmp-ath'); ?>:</span>
+                    <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html($config['company_name']); ?></span>
                   <?php endif; ?>
-                  <?php if (!empty($config['company_email'])) : ?>
-                    <p><?php echo esc_html($config['company_email']); ?></p>
+                  <?php if (!empty($config['account_name'])) : ?>
+                    <span class="twmp-checkout-payment-stage__list-label"><?php echo esc_html__('Account name', 'twmp-ath'); ?>:</span> <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html($config['account_name']); ?></span>
+                  <?php endif; ?>
+                  <?php if (!empty($config['account_number'])) : ?>
+                    <span class="twmp-checkout-payment-stage__list-label"><?php echo esc_html__('Account number', 'twmp-ath'); ?>:</span> <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html($config['account_number']); ?></span>
+                  <?php endif; ?>
+                  <?php if (!empty($config['branch'])) : ?>
+                    <span class="twmp-checkout-payment-stage__list-label"><?php echo esc_html__('Branch', 'twmp-ath'); ?>:</span>
+                    <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html($config['branch']); ?></span>
+                  <?php endif; ?>
+                  <?php if (!empty($config['transfer_note'])) : ?>
+                    <span class="twmp-checkout-payment-stage__list-label"><?php echo esc_html__('Description', 'twmp-ath'); ?>:</span> <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html($config['transfer_note']); ?></span>
                   <?php endif; ?>
                 </div>
-              <?php endif; ?>
+
+                <?php if (!empty($config['company_address']) || !empty($config['company_phone']) || !empty($config['company_email'])) : ?>
+                  <div class="twmp-checkout-payment-stage__company">
+                    <?php if (!empty($config['company_address'])) : ?>
+                      <p><?php echo esc_html($config['company_address']); ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($config['company_phone'])) : ?>
+                      <p><?php echo esc_html($config['company_phone']); ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($config['company_email'])) : ?>
+                      <p><?php echo esc_html($config['company_email']); ?></p>
+                    <?php endif; ?>
+                  </div>
+                <?php endif; ?>
+
+                <form class="twmp-checkout-proof-form" data-payment-proof-form enctype="multipart/form-data">
+                  <input type="hidden" name="order_id" value="<?php echo esc_attr($state['order_id']); ?>">
+                  <input type="hidden" name="order_key" value="<?php echo esc_attr($state['order_key']); ?>">
+                  <input type="hidden" name="nonce" value="<?php echo esc_attr($state['nonce']); ?>">
+
+                  <label class="twmp-checkout-proof-form__file">
+                    <input type="file" name="payment_bill" accept="image/*,application/pdf" data-payment-file>
+                    <?php echo twmp_get_svg_icon('upload'); ?>
+                    <span data-payment-file-label><?php echo esc_html__('Upload confirmation receipt.', 'twmp-ath'); ?></span>
+                  </label>
+
+                  <button type="submit" class="twmp-checkout-proof-form__button" data-payment-submit disabled aria-disabled="true">
+                    <span><?php echo esc_html($config['bill_title']); ?></span>
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
-
-          <form class="twmp-checkout-proof-form" data-payment-proof-form enctype="multipart/form-data">
-            <input type="hidden" name="order_id" value="<?php echo esc_attr($state['order_id']); ?>">
-            <input type="hidden" name="order_key" value="<?php echo esc_attr($state['order_key']); ?>">
-            <input type="hidden" name="nonce" value="<?php echo esc_attr($state['nonce']); ?>">
-
-            <label class="twmp-checkout-proof-form__file">
-              <input type="file" name="payment_bill" accept="image/*,application/pdf" data-payment-file>
-              <span data-payment-file-label><?php echo esc_html__('Choose bill file', 'twmp-ath'); ?></span>
-            </label>
-
-            <button type="submit" class="twmp-checkout-proof-form__button" data-payment-submit>
-              <?php echo twmp_get_svg_icon('upload'); ?>
-              <span><?php echo esc_html($config['bill_title']); ?></span>
-            </button>
-          </form>
 
           <style>
             .twmp-checkout-payment-popup {
@@ -1433,26 +1831,29 @@ function twmp_checkout_render_payment_step_section()
               display: inline-flex;
               align-items: center;
               justify-content: center;
-              width: 70px;
-              height: 70px;
+              width: 117px;
+              height: 117px;
               margin: 0 auto 22px;
               border-radius: 50%;
             }
 
             .twmp-checkout-payment-popup__title {
               margin: 0 0 12px;
-              color: #1f2747;
-              font-size: 34px;
-              line-height: 1.1;
+              color: #000A2C;
+              font-size: 30px;
+              line-height: 48px;
               font-weight: 500;
+              font-family: 'Beautique Display', serif;
             }
 
             .twmp-checkout-payment-popup__message {
               max-width: 480px;
               margin: 0 auto 26px;
-              color: #6b7182;
-              font-size: 14px;
-              line-height: 22px;
+              color: var(--system-content-1);
+              font-size: 18px;
+              line-height: 28px;
+              font-weight: 400;
+              font-family: 'Archivo', sans-serif;
             }
 
             .twmp-checkout-payment-popup__actions {
@@ -1473,15 +1874,20 @@ function twmp_checkout_render_payment_step_section()
               background: #fff;
               color: #1f2747;
               text-decoration: none;
-              font-size: 14px;
-              line-height: 20px;
-              font-weight: 600;
+              font-size: 18px;
+              line-height: 24px;
+              font-weight: 500;
+              font-family: 'Archivo', sans-serif;
             }
 
             .twmp-checkout-payment-popup__action--primary {
-              border-color: #f15a24;
-              background: #f15a24;
+              border-color: rgba(240, 76, 38, 1);
+              background: rgba(240, 76, 38, 1);
               color: #fff;
+            }
+
+            .twmp-checkout-payment-popup__action--primary:hover {
+              color: white;
             }
 
             .twmp-checkout-payment-popup__reopen {
@@ -1489,7 +1895,7 @@ function twmp_checkout_render_payment_step_section()
               width: fit-content;
               margin: 18px auto 0;
               padding: 10px 16px;
-              border: 1px solid #ece6dc;
+              border: 1px solid #E0E1E3;
               border-radius: 2px;
               background: #fff;
               color: #1f2747;
@@ -1506,17 +1912,14 @@ function twmp_checkout_render_payment_step_section()
             }
 
             .twmp-checkout-payment-popup.is-approved .twmp-checkout-payment-popup__icon {
-              background: #1fa84a;
               color: #fff;
             }
 
             .twmp-checkout-payment-popup.is-pending_review .twmp-checkout-payment-popup__icon {
-              background: #ff9800;
               color: #fff;
             }
 
             .twmp-checkout-payment-popup.is-rejected .twmp-checkout-payment-popup__icon {
-              background: #ff2f2f;
               color: #fff;
             }
 
@@ -1603,9 +2006,9 @@ function twmp_checkout_render_payment_step_section()
   let lastPopupPayload = {};
 
   const iconMap = {
-    approved: '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" width="32" height="32"><path fill="currentColor" d="M24 4a20 20 0 1 0 20 20A20.023 20.023 0 0 0 24 4Zm-3.2 28.2-7.1-7.1 2.8-2.8 4.3 4.3 10.7-10.7 2.8 2.8Z"/></svg>',
-    pending_review: '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" width="32" height="32"><path fill="currentColor" d="M12 8h18l6 6v26a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2Zm16 1.7V15h5.3Z"/><rect x="16" y="24" width="16" height="2.8" rx="1.4" fill="currentColor"/><rect x="16" y="30" width="12" height="2.8" rx="1.4" fill="currentColor"/></svg>',
-    rejected: '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" width="32" height="32"><path fill="currentColor" d="M24 4a20 20 0 1 0 20 20A20.023 20.023 0 0 0 24 4Zm7.1 25.3-2.8 2.8L24 26.8l-4.3 5.3-2.8-2.8 5.3-4.3-5.3-5.3 2.8-2.8 4.3 5.3 4.3-5.3 2.8 2.8-5.3 5.3Z"/></svg>'
+    approved: '<svg width="117" height="117" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M58.5 9.75c26.924 0 48.75 21.826 48.75 48.75s-21.826 48.75-48.75 48.75S9.75 85.424 9.75 58.5 31.576 9.75 58.5 9.75zm21.09 32.534a2.25 2.25 0 00-3.18 0L53.624 65.068l-8.16-8.159a2.25 2.25 0 10-3.18 3.182l9.75 9.75a2.25 2.25 0 003.18 0l24.376-24.375a2.25 2.25 0 000-3.182z" fill="#16A34A"/></svg>',
+    pending_review: '<svg width="117" height="117" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M85.487 16.887c.008.208.013.495.013.938v14.05H14.55c-.877 0-1.4-.002-1.787-.033a1.845 1.845 0 01-.362-.054.75.75 0 01-.315-.315 1.915 1.915 0 01-.053-.36c-.031-.388-.033-.91-.033-1.788v-9.9c0-.877.002-1.4.033-1.787.02-.234.044-.334.053-.362a.751.751 0 01.315-.315c.029-.009.128-.034.362-.053.387-.031.91-.033 1.787-.033h70c.443 0 .729.004.937.012zM7.5 24.375v-5.008c0-.78 0-1.497.049-2.096.052-.639.171-1.339.523-2.03a5.25 5.25 0 012.294-2.294c.691-.352 1.391-.47 2.03-.523.599-.05 1.316-.049 2.096-.049h70.111c.505 0 1.013 0 1.444.035.413.034.906.109 1.414.326l.219.102.292.164a4.25 4.25 0 011.401 1.401l.164.292.102.22c.217.507.292 1 .326 1.413.035.431.035.939.035 1.445v14.102h12.508c.78 0 1.497 0 2.096.049.559.046 1.164.143 1.77.402l.26.121.182.098a5.253 5.253 0 012.112 2.196c.352.691.471 1.391.523 2.03.049.599.049 1.316.049 2.096V56.25H98.922c-1.04 0-1.952 0-2.707.062-.806.065-1.63.213-2.428.62a6.25 6.25 0 00-2.73 2.73c-.407.798-.555 1.622-.62 2.428-.062.755-.062 1.667-.062 2.707v6.906c0 1.04 0 1.952.061 2.707.066.806.214 1.63.62 2.428a6.25 6.25 0 002.731 2.73c.798.407 1.622.555 2.428.62.755.062 1.667.062 2.707.062H109.5v17.383c0 .78 0 1.497-.049 2.096-.052.639-.171 1.339-.523 2.03a5.264 5.264 0 01-2.294 2.294c-.691.352-1.391.471-2.03.523-.599.049-1.315.049-2.096.049H14.492c-.78 0-1.497 0-2.096-.049-.639-.052-1.339-.171-2.03-.523a5.257 5.257 0 01-2.294-2.294c-.352-.691-.47-1.391-.523-2.03-.05-.599-.049-1.316-.049-2.096V24.375zm102 36.375v15H99.025c-1.157 0-1.89-.002-2.444-.047-.528-.043-.693-.114-.75-.143a1.752 1.752 0 01-.766-.765c-.029-.058-.1-.223-.143-.751-.045-.554-.047-1.287-.047-2.444v-6.7c0-1.157.002-1.89.047-2.444.043-.528.114-.693.143-.75.168-.33.436-.598.765-.766.058-.029.223-.1.751-.143.554-.045 1.287-.047 2.444-.047H109.5z" fill="#FF8E0A"/></svg>',
+    rejected: '<svg width="117" height="117" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M58.5 9.75c26.924 0 48.75 21.826 48.75 48.75s-21.826 48.75-48.75 48.75S9.75 85.424 9.75 58.5 31.576 9.75 58.5 9.75zm16.216 32.534a2.25 2.25 0 00-3.182 0L58.5 55.318 45.466 42.284a2.25 2.25 0 10-3.182 3.182L55.318 58.5 42.284 71.534a2.25 2.25 0 103.182 3.182L58.5 61.682l13.034 13.034a2.25 2.25 0 103.182-3.182L61.682 58.5l13.034-13.034a2.25 2.25 0 000-3.182z" fill="#FF2121"/></svg>'
   };
 
   const configMap = {
