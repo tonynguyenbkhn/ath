@@ -170,17 +170,8 @@ body:not(.home) {
 /*----------------------------------------*/
 /*  Icon Search
 /*----------------------------------------*/
-.header__menu-icons__item--search {
-	display: inline-flex;
+.header__menu-icons__icon-search {
 	cursor: pointer;
-
-	span {
-		display: block;
-
-		& svg {
-			fill: white;
-		}
-	}
 }
 
 /*----------------------------------------*/

@@ -15,6 +15,7 @@
 }
 
 .is-modal-activate {
+	overflow: hidden !important;
 	& .modal--visible {
 		@include fade-in;
 

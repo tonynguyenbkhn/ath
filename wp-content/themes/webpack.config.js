@@ -108,14 +108,6 @@ module.exports = (env, argv) => {
       }, {
         reload: true,
       })] : []),
-      ...(isProd ? [new PurgeCSSPlugin({
-        paths: glob.sync(`${themePath}/**/*.php`, { nodir: true }),
-        safelist: {
-          standard: ['body', 'html', /^wp-/],
-          deep: [/^is-/, /^has-/],
-          greedy: [/^twmp-/, /^woocommerce-/, /^calendar-/, /^fc-/]
-        }
-      })] : []),
       new CopyWebpackPlugin({
         patterns: [
           { from: path.resolve(srcPath, 'fonts'), to: 'fonts' },

@@ -48,7 +48,7 @@ const initFacetWpState = () => {
 		const maxInput = dateFacet.querySelector('.facetwp-date-max.fdate-alt-input')
 
 		if (minInput) {
-			minInput.placeholder = 'From date - To date'
+			minInput.placeholder = 'From date'
 		}
 
 		if (maxInput) {

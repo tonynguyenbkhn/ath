@@ -24,52 +24,52 @@ $payment_state = function_exists('twmp_checkout_get_payment_order_context') ? tw
 $is_payment_summary = function_exists('twmp_checkout_is_payment_step') && twmp_checkout_is_payment_step() && !empty($payment_state['order']) && $payment_state['order'] instanceof WC_Order;
 $is_checkout_summary = function_exists('is_checkout') && is_checkout();
 if ($is_payment_summary) :
-		$order = $payment_state['order'];
-		$order_items = function_exists('twmp_checkout_build_order_summary_data') ? twmp_checkout_build_order_summary_data($order) : array();
-		?>
-		<div class="twmp-checkout-summary twmp-checkout-summary--payment">
-			<div class="twmp-checkout-summary__card">
-				<header class="twmp-checkout-summary__header">
-					<h3 class="twmp-checkout-summary__title"><?php esc_html_e('Order summary', 'twmp-ath'); ?></h3>
-				</header>
+	$order = $payment_state['order'];
+	$order_items = function_exists('twmp_checkout_build_order_summary_data') ? twmp_checkout_build_order_summary_data($order) : array();
+?>
+	<div class="twmp-checkout-summary twmp-checkout-summary--payment">
+		<div class="twmp-checkout-summary__card">
+			<header class="twmp-checkout-summary__header">
+				<h3 class="twmp-checkout-summary__title"><?php esc_html_e('Order summary', 'twmp-ath'); ?></h3>
+			</header>
 
-				<div class="twmp-checkout-summary__content">
-					<?php if (!empty($order_items)) : ?>
-						<?php foreach ($order_items as $item) : ?>
-							<article class="twmp-checkout-summary__item">
-								<div class="twmp-checkout-summary__media">
-									<?php echo !empty($item['image']) ? wp_kses_post($item['image']) : ''; ?>
+			<div class="twmp-checkout-summary__content">
+				<?php if (!empty($order_items)) : ?>
+					<?php foreach ($order_items as $item) : ?>
+						<article class="twmp-checkout-summary__item">
+							<div class="twmp-checkout-summary__media">
+								<?php echo !empty($item['image']) ? wp_kses_post($item['image']) : ''; ?>
+							</div>
+							<div class="twmp-checkout-summary__body">
+								<div class="twmp-checkout-summary__meta">
+									<?php foreach (!empty($item['badges']) ? array_slice($item['badges'], 0, 3) : array() as $badge) : ?>
+										<span class="twmp-checkout-summary__badge"><?php echo esc_html($badge); ?></span>
+									<?php endforeach; ?>
 								</div>
-								<div class="twmp-checkout-summary__body">
-									<div class="twmp-checkout-summary__meta">
-										<?php foreach (!empty($item['badges']) ? array_slice($item['badges'], 0, 3) : array() as $badge) : ?>
-											<span class="twmp-checkout-summary__badge"><?php echo esc_html($badge); ?></span>
-										<?php endforeach; ?>
-									</div>
-									<h4 class="twmp-checkout-summary__name"><?php echo esc_html($item['name']); ?></h4>
-								</div>
-								<div class="twmp-checkout-summary__aside">
-									<div class="twmp-checkout-summary__qty"><?php echo esc_html('x' . absint($item['quantity'])); ?></div>
-								</div>
-							</article>
-						<?php endforeach; ?>
-					<?php else : ?>
-						<p class="twmp-checkout-summary__empty"><?php esc_html_e('Your order is ready for payment proof review.', 'twmp-ath'); ?></p>
-					<?php endif; ?>
-				</div>
+								<h4 class="twmp-checkout-summary__name"><?php echo esc_html($item['name']); ?></h4>
+							</div>
+							<div class="twmp-checkout-summary__aside">
+								<div class="twmp-checkout-summary__qty"><?php echo esc_html('x' . absint($item['quantity'])); ?></div>
+							</div>
+						</article>
+					<?php endforeach; ?>
+				<?php else : ?>
+					<p class="twmp-checkout-summary__empty"><?php esc_html_e('Your order is ready for payment proof review.', 'twmp-ath'); ?></p>
+				<?php endif; ?>
 			</div>
 		</div>
-		<?php wc_get_template('cart/cart-totals.php'); ?>
-		<?php
-		return;
-	endif;
+	</div>
+	<?php wc_get_template('cart/cart-totals.php'); ?>
+<?php
+	return;
+endif;
 
 if ($is_checkout_summary) :
 	$cart = function_exists('WC') ? WC()->cart : null;
 	$selection = function_exists('twmp_checkout_get_ticket_selection_state') ? twmp_checkout_get_ticket_selection_state() : array();
 	$selected_product_id = !empty($selection['product_id']) ? absint($selection['product_id']) : 0;
 	$ticket_data = $selected_product_id && function_exists('twmp_checkout_get_ticket_product_data') ? twmp_checkout_get_ticket_product_data($selected_product_id) : array();
-	?>
+?>
 	<div class="twmp-checkout-summary">
 		<div class="twmp-checkout-summary__card">
 			<header class="twmp-checkout-summary__header">
@@ -90,6 +90,7 @@ if ($is_checkout_summary) :
 						$thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
 						$product_name = apply_filters('woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key);
 						$terms = get_the_terms($product_id, 'product_cat');
+						$badges = function_exists('get_field') ? get_field('ath_badges', $product_id) : [];
 						$meta_lines = array();
 
 						if ($selected_product_id && $selected_product_id === $product_id && !empty($ticket_data['performances']) && !empty($selection['performance_key']) && !empty($ticket_data['performances'][$selection['performance_key']])) {
@@ -111,11 +112,26 @@ if ($is_checkout_summary) :
 								<?php echo wp_kses_post($thumbnail); ?>
 							</div>
 							<div class="twmp-checkout-summary__body">
-								<div class="twmp-checkout-summary__meta">
-									<?php foreach (array_slice(array_unique($meta_lines), 0, 3) as $meta_line) : ?>
-										<span class="twmp-checkout-summary__badge"><?php echo esc_html($meta_line); ?></span>
-									<?php endforeach; ?>
-								</div>
+								<?php
+								if (!empty($badges) && is_array($badges)) {
+									echo '<div class="product-badges">';
+
+									foreach ($badges as $badge) {
+										$text  = $badge['text'] ?? '';
+										$style = $badge['style'] ?? 'orange';
+
+										if ($text) {
+											printf(
+												'<span class="ath-badge ath-badge--%s">%s</span>',
+												esc_attr($style),
+												esc_html($text)
+											);
+										}
+									}
+
+									echo '</div>';
+								}
+								?>
 								<h4 class="twmp-checkout-summary__name"><?php echo wp_kses_post($product_name); ?></h4>
 								<?php if (!empty($meta_lines)) : ?>
 									<p class="twmp-checkout-summary__details"><?php echo esc_html(implode(' · ', array_slice(array_unique($meta_lines), 0, 2))); ?></p>
@@ -193,9 +209,9 @@ $total_cart_items = count(WC()->cart->get_cart());
 							$thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
 
 							if (! $product_permalink) {
-								echo wp_kses_post( $thumbnail ); // PHPCS: XSS ok.
+								echo wp_kses_post($thumbnail); // PHPCS: XSS ok.
 							} else {
-								printf('<a href="%s">%s</a>', esc_url($product_permalink), wp_kses_post( $thumbnail ) ); // PHPCS: XSS ok.
+								printf('<a href="%s">%s</a>', esc_url($product_permalink), wp_kses_post($thumbnail)); // PHPCS: XSS ok.
 							}
 							?>
 						</td>
@@ -233,11 +249,11 @@ $total_cart_items = count(WC()->cart->get_cart());
 									if ($_product->is_on_sale()) {
 										$regular_price_html = wc_price($_product->get_regular_price() * $quantity);
 										$sale_price_html    = wc_price($_product->get_sale_price() * $quantity);
-										echo '<del>' . wp_kses_post( $regular_price_html ) . '</del>';
-										echo '<ins style="text-decoration: none;">' . wp_kses_post( $sale_price_html ) . '</ins>';
+										echo '<del>' . wp_kses_post($regular_price_html) . '</del>';
+										echo '<ins style="text-decoration: none;">' . wp_kses_post($sale_price_html) . '</ins>';
 									} else {
 										$price_html = wc_price($_product->get_price() * $quantity);
-										echo wp_kses_post( $price_html );
+										echo wp_kses_post($price_html);
 									}
 									?>
 								</div>
@@ -246,7 +262,7 @@ $total_cart_items = count(WC()->cart->get_cart());
 									echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 										'woocommerce_cart_item_remove_link',
 										sprintf(
-											'<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">'.esc_html__( 'Delete', 'twmp-ath' ).'</a>',
+											'<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">' . esc_html__('Delete', 'twmp-ath') . '</a>',
 											esc_url(wc_get_cart_remove_url($cart_item_key)),
 											/* translators: %s is the product name */
 											esc_attr(sprintf(__('Remove %s from cart', 'twmp-ath'), wp_strip_all_tags($product_name))),

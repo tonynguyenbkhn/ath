@@ -86,6 +86,43 @@
 .woocommerce-checkout-custom {
 	overflow: hidden;
 
+	.product-badges {
+		margin-bottom: 0;
+
+		.ath-badge {
+			font-family: var(--font-inter);
+			@include typo-token(12, 20, 600);
+			background-color: transparent !important;
+			position: relative;
+			color: var(--system-content-1);
+			padding-top: 0;
+			padding-left: 14px;
+
+			&::before {
+				content: '';
+				background-color: transparent;
+				position: absolute;
+				left: 0;
+				top: 7px;
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+			}
+
+			&.ath-badge--orange {
+				&::before {
+					background-color: var(--primary-500);
+				}
+			}
+
+			&.ath-badge--green {
+				&::before {
+					background-color: rgb(47, 149, 0);
+				}
+			}
+		}
+	}
+
 	form.woocommerce-cart-form {
 		background-color: var(--white);
 		border-radius: 8px;
