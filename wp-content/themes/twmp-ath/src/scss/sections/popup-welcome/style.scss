@@ -28,6 +28,21 @@
   .wpcf7-spinner {
     display: none;
   }
+
+  .wpcf7-response-output {
+    display: none;
+    margin: 0;
+    padding: 12px 16px;
+    border: 1px solid #d92d20;
+    background: rgba(217, 45, 32, 0.08);
+    color: #d92d20;
+    border-radius: 8px;
+    @include typo-text-md(400);
+
+    &.is-visible {
+      display: block;
+    }
+  }
 }
 
 // .ath-popup-overlay {
@@ -186,6 +201,19 @@
 }
 
 .ath-field {
+  position: relative;
+
+  .ath-field-error {
+    display: none;
+    color: #d92d20;
+    @include typo-text-sm(400);
+    line-height: 1.3;
+    margin: 0 0 8px 16px;
+
+    &.is-visible {
+      display: block;
+    }
+  }
 
   input,
   select {
@@ -200,6 +228,14 @@
     height: 58px;
     @include typo-system-button-2();
     padding: 0 16px;
+  }
+
+  &.is-invalid {
+    input,
+    select {
+      border-bottom-color: #d92d20;
+      color: #d92d20;
+    }
   }
 
   &::placeholder {
@@ -217,6 +253,19 @@
   .register-form__field {
     width: 100%;
     margin-bottom: 0;
+    position: relative;
+
+    .ath-field-error {
+      display: none;
+      color: #d92d20;
+      @include typo-text-sm(400);
+      line-height: 1.3;
+      margin: 0 0 8px;
+
+      &.is-visible {
+        display: block;
+      }
+    }
   }
 
   .wpcf7-validates-as-date {

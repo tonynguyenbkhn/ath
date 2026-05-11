@@ -46,6 +46,7 @@ if (! defined('TWMP_DIST_CSS_DIR_PATH')) {
 
 require_once TWMP_DIR_PATH . '/inc/helpers/utility.php';
 require_once TWMP_DIR_PATH . '/inc/helpers/comments.php';
+require_once TWMP_DIR_PATH . '/inc/helpers/search.php';
 require_once TWMP_DIR_PATH . '/inc/helpers/autoloader.php';
 require_once TWMP_DIR_PATH . '/inc/helpers/template-functions.php';
 

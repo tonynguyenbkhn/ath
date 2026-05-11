@@ -113,6 +113,13 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
   return $fields;
 }, 20);
 
+/**
+ * Persist custom checkout fields:
+ * - billing_date_of_birth
+ * - billing_age
+ *
+ * Saved into WooCommerce order meta.
+ */
 add_action('woocommerce_checkout_create_order', function ($order, $data) {
   if (!$order instanceof WC_Order) {
     return;
@@ -125,6 +132,13 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
   $order->update_meta_data('_billing_age', $billing_age);
 }, 20, 2);
 
+/**
+ * Kiểm tra sự kiện còn có thể đặt chỗ trước khi thêm vào giỏ hàng.
+ *
+ * - Chặn thêm các sự kiện không còn khả dụng.
+ * - Hiển thị thông báo lỗi khi sự kiện đã hết chỗ / đóng booking.
+ * - Với luồng "Mua ngay", tự động xoá giỏ hàng hiện tại trước khi thêm sản phẩm mới.
+ */
 add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id, $quantity) {
   if (!twmp_is_event_bookable($product_id)) {
     wc_add_notice(__('This event is no longer available for booking.', 'twmp-ath'), 'error');
@@ -153,6 +167,12 @@ add_filter('woocommerce_add_to_cart_redirect', function ($redirect_url) {
   return $redirect_url;
 });
 
+/**
+ * Kiểm tra lại trạng thái booking của các sự kiện trong giỏ hàng trước khi checkout.
+ *
+ * - Ngăn người dùng thanh toán nếu sự kiện không còn khả dụng.
+ * - Hiển thị thông báo lỗi khi có sự kiện đã hết chỗ / đóng booking.
+ */
 add_action('woocommerce_checkout_process', function () {
   if (!function_exists('WC') || !WC()->cart) {
     return;
@@ -214,6 +234,15 @@ function twmp_checkout_page_close()
   echo '</div>';
 }
 
+/**
+ * Lấy và khởi tạo context thanh toán cho trang checkout.
+ *
+ * - Xác định bước checkout hiện tại (booking hoặc payment).
+ * - Lấy thông tin order từ request hoặc WooCommerce session.
+ * - Kiểm tra tính hợp lệ của order và order key.
+ * - Thiết lập trạng thái upload bill thanh toán.
+ * - Chuẩn bị dữ liệu bảo mật (nonce) và config cho frontend.
+ */
 // Lấy context đơn hàng cho trang thanh toán, bao gồm thông tin đơn hàng, trạng thái xác thực bill, và cấu hình thanh toán
 function twmp_checkout_get_payment_order_context()
 {

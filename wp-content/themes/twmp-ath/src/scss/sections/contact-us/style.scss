@@ -288,7 +288,11 @@
     clear: left;
 }
 
-.register-form__field::before {
+.register-form__field p {
+    position: relative;
+}
+
+.register-form__field p::before {
     content: "*";
     position: absolute;
     left: 12px;

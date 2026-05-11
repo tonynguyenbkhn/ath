@@ -33,9 +33,9 @@ class Assets_Theme
 		$bootstrap_css_context = '';
 		$critical_css_context = '';
 
-		$critical_css_context = file_get_contents(get_theme_file_path('assets/css/critical_frontend.min.css'));
+		// $critical_css_context = file_get_contents(get_theme_file_path('assets/css/critical_frontend.min.css'));
 
-		// $critical_css_context = file_get_contents(get_theme_file_path('assets/css/critical_frontend.css'));
+		$critical_css_context = file_get_contents(get_theme_file_path('assets/css/critical_frontend.css'));
 
 		if (!empty($variables_css_context)) {
 			wp_register_style('twmp-variables', false);
@@ -47,12 +47,12 @@ class Assets_Theme
 	public function twmp_frontend_assets()
 	{
 		// wp_enqueue_style('twmp-frontend', get_stylesheet_directory_uri() . '/assets/css/frontend.min.css', [], $this->theme_version);
-		wp_enqueue_style('twmp-frontend', get_stylesheet_directory_uri() . '/assets/css/frontend.min.css', [], null);
-		wp_enqueue_script('twmp-frontend', get_stylesheet_directory_uri() . '/assets/js/frontend.min.js', [], null);
+		// wp_enqueue_style('twmp-frontend', get_stylesheet_directory_uri() . '/assets/css/frontend.min.css', [], null);
+		// wp_enqueue_script('twmp-frontend', get_stylesheet_directory_uri() . '/assets/js/frontend.min.js', [], null);
 		// wp_enqueue_script('twmp-woocommerce', get_stylesheet_directory_uri() . '/assets/js/woocommerce.min.js', ['jquery'], $this->theme_version);
 
-		// wp_enqueue_style('twmp-frontend', get_stylesheet_directory_uri() . '/assets/css/frontend.css', [], null);
-		// wp_enqueue_script('twmp-frontend', get_stylesheet_directory_uri() . '/assets/js/frontend.js', [], null, ['strategy' => 'defer']);
+		wp_enqueue_style('twmp-frontend', get_stylesheet_directory_uri() . '/assets/css/frontend.css', [], null);
+		wp_enqueue_script('twmp-frontend', get_stylesheet_directory_uri() . '/assets/js/frontend.js', [], null, ['strategy' => 'defer']);
 		// wp_enqueue_script('twmp-woocommerce', get_stylesheet_directory_uri() . '/assets/js/woocommerce.js', ['jquery'], $this->theme_version);
 		// if (is_shop() || is_product_category()) {
 		// 	wp_enqueue_script('twmp-woocommerce-shop', get_stylesheet_directory_uri() . '/custom/shop.js', ['jquery'], $this->theme_version);
@@ -70,6 +70,7 @@ class Assets_Theme
 			'woocommerce' => array(
 				'checkoutUrl'    => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : '',
 				'addToCartUrl'    => function_exists('wc_get_cart_url') ? wc_get_cart_url() : '',
+				'shopUrl'        => function_exists('twmp_get_shop_url') ? twmp_get_shop_url() : (function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/')),
 			),
 			'ajax' => array(
 				// 'restUrl'    => get_rest_url(null, 'twmp/v1'),
