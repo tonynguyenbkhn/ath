@@ -204,7 +204,7 @@ function twmp_render_shop_layout_end()
 add_action('woocommerce_shop_loop_header', 'twmp_render_shop_header', 20);
 function twmp_render_shop_header()
 {
-    echo '<div class="twmp-shop-layout-wrapper"><div class="twmp-shop-layout__left"><div class="twmp-shop-layout__left-innner"><div class="twmp-shop-layout__left-wrap">' . do_shortcode('[facetwp facet="categories"]') . do_shortcode('[facetwp facet="search_form"]') . '</div>';
+    echo '<div class="twmp-shop-layout-wrapper" data-block="shop-page"><div class="twmp-shop-layout__left"><div class="twmp-shop-layout__left-innner"><div class="twmp-shop-layout__left-wrap">' . do_shortcode('[facetwp facet="categories"]') . get_product_search_form(false) . '</div>';
 }
 add_action('woocommerce_after_main_content', 'twmp_render_shop_header_end', 1);
 function twmp_render_shop_header_end()

@@ -181,58 +181,10 @@ class Calendar_Theme
 		$product_cat = $this->get_product_categories($product_id);
 		$timezone = wp_timezone();
 		$default_duration = 2 * HOUR_IN_SECONDS;
-		$rows = (array) get_field('ath_performance_schedule', $product_id);
 		$instances = [];
 
-		if (! empty($rows)) {
-			foreach ($rows as $row) {
-				$datetime_raw = isset($row['performance_datetime']) ? trim((string) $row['performance_datetime']) : '';
-
-				if ($datetime_raw === '') {
-					continue;
-				}
-
-				$instance_start = $this->parse_datetime($datetime_raw, $timezone);
-
-				if (! $instance_start) {
-					continue;
-				}
-
-				$instance_end = $this->resolve_end_timestamp($instance_start, $end_datetime, $default_duration);
-
-				if (! $this->is_in_range($instance_start, $instance_end, $range_start, $range_end)) {
-					continue;
-				}
-
-				if (! $this->passes_filters($type, $location_key, $status, $filters)) {
-					continue;
-				}
-
-				$instances[] = $this->format_event_item(
-					$product_id,
-					$product->post_title,
-					$instance_start,
-					$instance_end,
-					[
-						'type' => $type,
-						'status' => $status,
-						'location' => $location_key,
-						'location_label' => $location_label,
-						'short_info' => $short_info,
-						'age_display' => $age_display,
-						'language' => $language,
-						'format' => $format,
-						'subtitle' => $subtitle,
-						'demonstration' => $demonstration,
-						'thumbnail_url' => $thumbnail_url,
-						'thumbnail_alt' => $thumbnail_alt,
-						'permalink' => $permalink,
-						'product_cat' => $product_cat,
-						'badges' => is_array($badges) ? $badges : [],
-					]
-				);
-			}
-		} elseif ($start_datetime !== '') {
+		// Calendar shows one event per product, based on the main start/end datetime only.
+		if ($start_datetime !== '') {
 			$instance_start = $this->parse_datetime($start_datetime, $timezone);
 
 			if ($instance_start) {

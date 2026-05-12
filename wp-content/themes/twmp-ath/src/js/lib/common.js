@@ -34,6 +34,24 @@ const renderOptionContent = (value, label) => {
 	return `${iconUrl ? `<img src="${iconUrl}" alt="${iconAlt}">` : ''}<span>${optionLabel}</span>`
 }
 
+const bindDropdownCloseHandler = () => {
+	if (document.body.dataset.twmpDropdownCloseBound === '1') {
+		return
+	}
+
+	document.body.dataset.twmpDropdownCloseBound = '1'
+
+	document.addEventListener('click', event => {
+		document
+			.querySelectorAll('.lang-custom.is-open, .default-select-custom.is-open, .facetwp-dropdown-custom.is-open')
+			.forEach(custom => {
+				if (!custom.contains(event.target)) {
+					custom.classList.remove('is-open')
+				}
+			})
+	})
+}
+
 // Loading FacetWP
 const initFacetWpState = () => {
 	document.addEventListener('facetwp-loaded', () => {
@@ -120,13 +138,6 @@ const initLanguageSelect = () => {
 		wrapper.appendChild(custom)
 	})
 
-	document.addEventListener('click', event => {
-		document.querySelectorAll('.lang-custom.is-open').forEach(custom => {
-			if (!custom.contains(event.target)) {
-				custom.classList.remove('is-open')
-			}
-		})
-	})
 }
 
 // Custom select
@@ -182,13 +193,61 @@ const initDefaultSelect = () => {
 		wrapper.appendChild(custom)
 	})
 
-	document.addEventListener('click', event => {
-		document.querySelectorAll('.lang-custom.is-open').forEach(custom => {
-			if (!custom.contains(event.target)) {
-				custom.classList.remove('is-open')
+}
+
+// Custom FacetWp select
+const initFacetWpSelect = () => {
+	document.querySelectorAll('.facetwp-dropdown').forEach(select => {
+		const wrapper = select.closest('.facetwp-type-dropdown')
+
+		if (!wrapper || wrapper.querySelector('.facetwp-dropdown-custom')) {
+			return
+		}
+
+		const custom = document.createElement('div')
+		custom.className = 'facetwp-dropdown-custom'
+
+		const current = document.createElement('div')
+		current.className = 'facetwp-dropdown-current'
+
+		const label = getDefaultLabel(select)
+		const selectedOption = select.selectedOptions?.[0]
+		current.innerHTML = selectedOption?.value
+			? selectedOption.text
+			: label
+
+		const options = document.createElement('div')
+		options.className = 'facetwp-dropdown-options'
+
+		Array.from(select.options).forEach(option => {
+			if (!option.value) {
+				return
 			}
+
+			const item = document.createElement('div')
+			item.className = 'facetwp-dropdown-option'
+			item.dataset.value = option.value
+			item.innerHTML = option.text
+
+			item.addEventListener('click', () => {
+				select.value = option.value
+				current.innerHTML = option.text
+				custom.classList.remove('is-open')
+			})
+
+			options.appendChild(item)
 		})
+
+		current.addEventListener('click', event => {
+			event.stopPropagation()
+			custom.classList.toggle('is-open')
+		})
+
+		custom.appendChild(current)
+		custom.appendChild(options)
+		wrapper.appendChild(custom)
 	})
+
 }
 
 const initShowPicker = () => {
@@ -219,7 +278,13 @@ const initCommon = () => {
 	initLanguageSelect()
 	initDefaultSelect()
 	initShowPicker()
+	initFacetWpSelect()
+	bindDropdownCloseHandler()
 
+	document.addEventListener('facetwp-loaded', () => {
+		initDefaultSelect()
+		initFacetWpSelect()
+	})
 }
 
 export default initCommon

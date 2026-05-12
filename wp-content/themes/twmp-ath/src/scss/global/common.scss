@@ -405,9 +405,9 @@ span[data-name="admin-email"],
 }
 
 .clearfix::after {
-	content: "";
-	display: table;
-	clear: both;
+  content: "";
+  display: table;
+  clear: both;
 }
 
 // Custom css select
@@ -462,7 +462,7 @@ span[data-name="admin-email"],
   position: absolute;
   top: calc(100% + 5px);
   left: 0;
-  width: 100%;
+  width: calc(100% - 40px);
   z-index: 9999;
 }
 
@@ -487,10 +487,64 @@ span[data-name="admin-email"],
   border-bottom: 0;
 }
 
-.default-select-option img,
-.default-select-current img {
-  width: 31px;
-  height: 31px;
-  border-radius: 50%;
-  object-fit: cover;
+// Custom css facetwp select
+
+.facetwp-dropdown-wrap {
+  position: relative;
+}
+
+.facetwp-dropdown {
+  display: none;
+}
+
+.facetwp-dropdown-custom {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid var(--system-border);
+  font-family: inherit;
+}
+
+.facetwp-dropdown-current {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  @include typo-token(18, 24, 400);
+  color: rgba(58, 58, 58, 1);
+  cursor: pointer;
+}
+
+.facetwp-dropdown-options {
+  opacity: 0;
+  visibility: hidden;
+  background: #F6F4ED;
+  padding: 0 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .08);
+  transition: all 0.3s ease;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: calc(100% - 40px);
+  z-index: 9999;
+}
+
+.facetwp-dropdown-custom.is-open .facetwp-dropdown-options {
+  opacity: 1;
+  visibility: visible;
+  display: block;
+}
+
+.facetwp-dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--system-border);
+  cursor: pointer;
+  @include typo-text-lg(500);
+  color: var(--system-black);
+}
+
+.facetwp-dropdown-option:last-child {
+  border-bottom: 0;
 }

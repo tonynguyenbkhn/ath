@@ -153,16 +153,6 @@
     position: relative;
 }
 
-.register-form__field::before {
-    content: "*";
-    position: absolute;
-    left: 0;
-    top: 8px;
-    color: #ff0000;
-    font-size: 16px;
-    z-index: 2;
-}
-
 .register-form input,
 .register-form select {
     width: 100%;
@@ -295,7 +285,7 @@
 .register-form__field p::before {
     content: "*";
     position: absolute;
-    left: 12px;
+    left: 0;
     top: 17px;
     color: var(--primary-500);
     font-size: 16px;

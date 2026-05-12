@@ -66,22 +66,26 @@ get_header();
                     </div>
 
                     <div class="calendar-page__filters">
-                        <label class="calendar-page__select-wrap">
+                        <div class="calendar-page__select-wrap">
                             <span class="screen-reader-text"><?php echo esc_html__('Location', 'twmp-ath'); ?></span>
-                            <select class="calendar-page__select" data-calendar-filter="location">
-                                <?php foreach ($filter_options['locations'] as $value => $label) : ?>
-                                    <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($label); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </label>
-                        <label class="calendar-page__select-wrap">
+                            <div class="default-select-wrap">
+                                <select class="calendar-page__select default-select" data-calendar-filter="location">
+                                    <?php foreach ($filter_options['locations'] as $value => $label) : ?>
+                                        <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($label); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="calendar-page__select-wrap">
                             <span class="screen-reader-text"><?php echo esc_html__('Type', 'twmp-ath'); ?></span>
-                            <select class="calendar-page__select" data-calendar-filter="type">
-                                <?php foreach ($filter_options['types'] as $value => $label) : ?>
-                                    <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($label); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </label>
+                            <div class="default-select-wrap">
+                                <select class="calendar-page__select default-select" data-calendar-filter="type">
+                                    <?php foreach ($filter_options['types'] as $value => $label) : ?>
+                                        <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($label); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

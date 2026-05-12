@@ -264,5 +264,5 @@ export default el => {
 	const form = el.querySelector('.wpcf7-form')
 
 	bindSearchSubmit(form)
-	trigger('activate', el)
+	// trigger('activate', el)
 }
