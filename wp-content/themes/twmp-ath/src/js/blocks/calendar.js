@@ -81,6 +81,77 @@ const getMonthWindow = (year, startMonth) => {
 
 const getMeta = event => event.extendedProps || {}
 
+const escapeHtml = value =>
+	String(value ?? '').replace(/[&<>"']/g, char => {
+		switch (char) {
+			case '&':
+				return '&amp;'
+			case '<':
+				return '&lt;'
+			case '>':
+				return '&gt;'
+			case '"':
+				return '&quot;'
+			case "'":
+				return '&#39;'
+			default:
+				return char
+		}
+	})
+
+const getProductCategoryClass = meta => {
+	if (!Array.isArray(meta?.product_cat) || !meta.product_cat.length) {
+		return ''
+	}
+
+	return meta.product_cat
+		.map(item => item?.slug || '')
+		.filter(Boolean)
+		.join(' ')
+}
+
+const getEventColor = event => event.backgroundColor || '#F8B2A5'
+
+const getEventStartValue = event => {
+	if (!event?.start) {
+		return ''
+	}
+
+	return event.start instanceof Date ? event.start.toISOString() : String(event.start)
+}
+
+const renderEventCardBody = event => {
+	const meta = getMeta(event)
+	const title = escapeHtml(event.title || '')
+	const timeRange = escapeHtml(meta.timeRange || '')
+	const color = getEventColor(event)
+
+	return `
+		<span class="calendar-event-card__body" style="--event-color:${escapeHtml(color)};">
+			<span class="calendar-event-card__title">${title}</span>
+			${timeRange ? `<span class="calendar-event-card__meta">${timeRange}</span>` : ''}
+		</span>
+	`
+}
+
+const renderEventdotBody = event => {
+	const meta = getMeta(event)
+	const productCat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : ''
+	return `<span class="calendar-week__dot ${escapeHtml(productCat)}"></span>`
+}
+
+const getEventCardClassName = event => {
+	const meta = getMeta(event)
+	const productCat = getProductCategoryClass(meta)
+	return ['calendar-event-card', productCat].filter(Boolean).join(' ')
+}
+
+const renderEventCardButton = event => `
+	<button type="button" class="${getEventCardClassName(event)}" data-event-id="${escapeHtml(event.id)}" data-event-date="${escapeHtml(getEventStartValue(event))}">
+		${renderEventCardBody(event)}
+	</button>
+`
+
 const renderWeekRows = events => {
 	const firstWeekStart = getWeekStart(events.length ? getEventDay(events[0]) : new Date())
 	const lastWeekEnd = getWeekEnd(events.length ? getEventDay(events[events.length - 1]) : new Date())
@@ -108,22 +179,7 @@ const renderWeekRows = events => {
 						<div class="calendar-week__range">${new Intl.DateTimeFormat('en', { day: 'numeric' }).format(weekStart)}-${new Intl.DateTimeFormat('en', { day: 'numeric' }).format(weekEnd)}</div>
 					</div>
 					<div class="calendar-week__events">
-						${visibleEvents.map(event => {
-							const meta = getMeta(event)
-							const title = event.title || ''
-							const timeRange = meta.timeRange || ''
-							const color = event.backgroundColor || '#F8B2A5'
-                            const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
-
-							return `
-								<button type="button" class="calendar-event-card ${product_cat}" data-event-id="${event.id}" data-event-date="${event.start}">
-									<span class="calendar-event-card__body" style="--event-color:${color};">
-										<span class="calendar-event-card__title">${title}</span>
-										<span class="calendar-event-card__meta">${timeRange}</span>
-									</span>
-								</button>
-							`
-						}).join('')}
+						${visibleEvents.map(renderEventCardButton).join('')}
 						${moreCount > 0 ? `<div class="calendar-week__more">+${moreCount}</div>` : ''}
 					</div>
 				</div>
@@ -343,6 +399,51 @@ export default el => {
 			navLinks: false,
 			editable: false,
 			selectable: false,
+			eventClassNames: arg => getEventCardClassName(arg.event).split(/\s+/).filter(Boolean),
+			eventContent: arg => ({
+				html: renderEventCardBody(arg.event)
+			}),
+			eventDidMount: arg => {
+
+				const meta = getMeta(arg.event)
+				const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
+				const dots = document.createElement('div')
+				dots.className = `calendar-week__dot ${product_cat}`
+				dots.dataset.eventId = arg.event.id || ''
+				dots.innerHTML = renderEventdotBody(arg.event)
+				const dayFrame = arg.el.closest('.fc-daygrid-day-frame')
+				const dayEvents = dayFrame?.querySelector('.fc-daygrid-day-events')
+
+				if (dayEvents && dayEvents.parentElement) {
+					let dotsWrap = dayFrame?.querySelector('.calendar-week__dots')
+
+					if (!dotsWrap) {
+						dotsWrap = document.createElement('div')
+						dotsWrap.className = 'calendar-week__dots'
+						dayEvents.parentElement.insertBefore(dotsWrap, dayEvents)
+					}
+
+					dotsWrap.appendChild(dots)
+				} else {
+					arg.el.before(dots)
+				}
+
+				arg.el.style.setProperty('--event-color', getEventColor(arg.event))
+				arg.el.dataset.eventId = arg.event.id || ''
+				arg.el.dataset.eventDate = getEventStartValue(arg.event)
+			},
+			eventWillUnmount: arg => {
+				const dayFrame = arg.el.closest('.fc-daygrid-day-frame')
+				const dots = dayFrame?.querySelector(`.calendar-week__dots[data-event-id="${CSS.escape(arg.event.id || '')}"]`)
+				if (dots) {
+					dots.remove()
+				}
+
+				const dotsWrap = dayFrame?.querySelector('.calendar-week__dots-wrap')
+				if (dotsWrap && !dotsWrap.children.length) {
+					dotsWrap.remove()
+				}
+			},
 			eventSources: [
 				async (fetchInfo, successCallback, failureCallback) => {
 					try {
@@ -473,14 +574,26 @@ export default el => {
 						<div class="calendar-week__range">${new Intl.DateTimeFormat('en', { day: 'numeric' }).format(weekStart)}-${new Intl.DateTimeFormat('en', { day: 'numeric' }).format(weekEnd)}</div>
 					</div>
 					<div class="calendar-week__events">
+					<div class="calendar-week__dots">
+		${visibleEvents.map(event => {
+				const meta = getMeta(event)
+				const color = event.backgroundColor || '#F8B2A5'
+				const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
+				return `
+				<span 
+					class="calendar-week__dot ${product_cat}"
+				></span>
+			`
+			}).join('')}
+	</div>
 						${visibleEvents.map(event => {
-							const meta = getMeta(event)
-							const title = event.title || ''
-							const timeRange = meta.timeRange || ''
-							const color = event.backgroundColor || '#F8B2A5'
-                            const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
-                            
-							return `
+				const meta = getMeta(event)
+				const title = event.title || ''
+				const timeRange = meta.timeRange || ''
+				const color = event.backgroundColor || '#F8B2A5'
+				const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
+
+				return `
 								<button type="button" class="calendar-event-card ${product_cat}" data-event-id="${event.id}" data-event-date="${event.start}">
 									<span class="calendar-event-card__body" style="--event-color:${color};">
 										<span class="calendar-event-card__title">${title}</span>
@@ -488,7 +601,7 @@ export default el => {
 									</span>
 								</button>
 							`
-						}).join('')}
+			}).join('')}
 						${moreCount > 0 ? `<div class="calendar-week__more">+${moreCount}</div>` : ''}
 					</div>
 				</div>
