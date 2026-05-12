@@ -39,19 +39,23 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
-    <div class="about-us__light">
+    <div class="about-us__light desktop">
         <img width="1018px" height="508px" src="<?php echo esc_url(TWMP_IMG_URI . '/about-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
     </div>
+    <div class="glow"></div>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
 
         <div class="about-us__grid">
             <div class="about-us__content">
-                <div class="about-us__content-wrapper">
+                <div class="about-us__content-wrapper position-relative">
+                    <div class="about-us__light mobile">
+                        <img width="1018px" height="508px" src="<?php echo esc_url(TWMP_IMG_URI . '/about-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
+                    </div>
                     <?php
                     get_template_part('templates/components/heading', null, [
-                        'title_class' => 'about-us__title',
+                        'title_class' => 'about-us__title desktop',
                         'description_class' => 'about-us__description',
                         'class' => 'about-us__header flex-column',
                         'title' => $data && !empty($data['title']) ? $data['title'] : '',
@@ -117,10 +121,20 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
             </div>
 
             <div class="about-us__media">
+
+                <?php
+                get_template_part('templates/components/heading', null, [
+                    'title_class' => 'about-us__title mobile',
+                    'description_class' => 'about-us__description',
+                    'class' => 'about-us__header flex-column',
+                    'title' => $data && !empty($data['title']) ? $data['title'] : '',
+                    'description' => '',
+                ]);
+                ?>
                 <div class="about-us__media-accent" aria-hidden="true"></div>
 
                 <?php if (! empty($data['image_id'])) : ?>
-                    <div class="about-us__media-primary">
+                    <div class="about-us__media-primary position-relative">
                         <?php
                         get_template_part(
                             'templates/components/image',

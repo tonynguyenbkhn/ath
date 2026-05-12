@@ -44,6 +44,7 @@ if (!empty($product_categories) && !is_wp_error($product_categories)) : ?>
 	<div class="product-cat-grid__logo">
 		<img width="953px" height="406pxpx" src="<?php echo esc_url(TWMP_IMG_URI . '/logo-section.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
 	</div>
+	<div class="glow"></div>
 		<?php if ($data['enable_container']) : ?><div class="<?php echo esc_attr($_class_container); ?>"><?php endif; ?>
 			<?php
 			get_template_part('templates/components/heading', null, [

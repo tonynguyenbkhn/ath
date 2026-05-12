@@ -7,30 +7,96 @@
 }
 
 .about-us__grid {
-  display: block;
+  display: flex;
+  flex-direction: column-reverse;
 
   @include clearfix();
+
+  @media (min-width: 1024px) {
+    display: block;
+  }
 }
 
 .about-us__header {
   flex-direction: column;
   text-align: left;
-  margin-top: -50px;
+  margin-top: 0;
+
+  @media (min-width: 1024px) {
+    margin-top: -50px;
+  }
+}
+
+.about-us__media .about-us__header {
+  margin-top: 0;
 }
 
 .about-us__title {
   margin-bottom: 64px;
+
+  &.desktop {
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
+  }
+
+  &.mobile {
+    display: block;
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+}
+
+.product-cat-grid .glow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(237, 191, 27, 0.2);
+  filter: blur(144px);
+  bottom: -150px;
+  right: -50%;
+}
+
+.about-us .glow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(237, 191, 27, 0.2);
+  filter: blur(144px);
+  top: -150px;
+  right: -50%;
 }
 
 .about-us__light {
   position: absolute;
   top: -190px;
-  left: 0;
+  right: 0;
   z-index: 0;
-  transform: scale(1);
 
   @media (min-width: 1440px) {
-    transform: scale(1.5);
+    left: 0;
+  }
+
+  &.desktop {
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
+  }
+
+  &.mobile {
+    display: block;
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
   }
 }
 
@@ -46,7 +112,15 @@
 
 .about-us__stat {
   float: left;
-  width: 25%;
+  width: 50%;
+  margin-bottom: 40px;
+  text-align: center;
+
+  @media (min-width: 1024px) {
+    width: 25%;
+    margin-bottom: 0;
+    text-align: left;
+  }
 }
 
 .about-us__stat-value {
@@ -64,10 +138,19 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 60px;
+  margin-top: 0;
+
+  @media (min-width: 1024px) {
+    margin-top: 60px;
+  }
 }
 
-.about-us__button {}
+.about-us__button {
+  @media (max-width: 1023px) {
+    width: 100%;
+    text-align: center;
+  }
+}
 
 .about-us__button--primary {}
 
@@ -88,7 +171,31 @@
 .about-us__media {
   float: right;
   width: 100%;
-  padding-top: 20px;
+  padding-top: 0;
+  position: relative;
+  margin-bottom: 40px;
+
+  @media (min-width: 1024px) {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+
+  &::before {
+    background: var(--primary-500);
+    top: -5px;
+    content: "";
+    height: 243px;
+    left: 100px;
+    pointer-events: none;
+    position: absolute;
+    width: 243px;
+    z-index: 0;
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
+  }
 
   @media (min-width: 992px) {
     width: 50%;

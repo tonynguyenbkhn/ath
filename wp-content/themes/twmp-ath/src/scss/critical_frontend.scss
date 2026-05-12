@@ -2,6 +2,10 @@
 @import './global/index';
 @import './theme/critical_index';
 .home .flexible-content {
-    margin-top: -86px;
+    margin-top: 0;
+
+    @media(min-width: 1024px) {
+        margin-top: -86px;
+    }
 }
 @import './sections/hero-banner/style';

@@ -14,7 +14,7 @@ if (! empty($header_menus) && is_array($header_menus)) {
         <div class="th-menu-area text-center">
             <button class="th-menu-toggle"><?php echo twmp_get_svg_icon('close') ?></button>
             <div class="mobile-logo">
-                <?php get_template_part('template-parts/headers/logo', null, []); ?>
+                <span><?php echo esc_html__('Menu', 'twmp-ath') ?></span>
             </div>
             <div class="th-mobile-menu">
                 <ul>

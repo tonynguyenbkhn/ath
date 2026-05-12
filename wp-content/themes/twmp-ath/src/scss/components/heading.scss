@@ -5,12 +5,21 @@
     flex-direction: column-reverse;
 
     &__title {
-        @include typo-display-lg(400);
         color: var(--system-white);
+        @include typo-token(36, 48, 400);
+
+        @media (min-width: 1024px) {
+            @include typo-display-lg(400);
+        }
     }
 
     &__description {
-        @include typo-display-xs(400);
+
         color: var(--system-content-2);
+        @include typo-token(18, 30, 400);
+
+        @media (min-width: 1024px) {
+            @include typo-display-xs(400);
+        }
     }
 }

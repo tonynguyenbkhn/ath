@@ -2,9 +2,9 @@
 /*  Bootstrap header utilities
 /*----------------------------------------*/
 .container {
-	width: 100%;
-	padding-right: 16px;
-	padding-left: 16px;
+	width: calc(100% - 48px);
+	padding-right: 24px;
+	padding-left: 24px;
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -62,7 +62,7 @@ header {
 /*----------------------------------------*/
 $header--main-bg-color: #000000;
 $header--main-height: 86px;
-$header--main-height-mobile: 60px;
+$header--main-height-mobile: 56px;
 
 .header__main {
 	background-color: $header--main-bg-color;
@@ -71,10 +71,11 @@ $header--main-height-mobile: 60px;
 	align-items: center;
 	animation: 300ms ease-in-out 0s 1 normal none running fadeInUp;
 	height: $header--main-height-mobile;
-	opacity: 0.75;
+	opacity: 1;
 
 	@media (min-width: 1080px) {
 		height: $header--main-height;
+		opacity: 0.75;
 	}
 
 	.header__row {
@@ -152,8 +153,12 @@ body:not(.home) {
 /*----------------------------------------*/
 .site-logo {
 	img {
-		width: 95px;
+		width: 61px;
 		height: auto;
+
+		@media (min-width: 1024px) {
+			width: 95px;
+		}
 	}
 }
 
@@ -165,6 +170,16 @@ body:not(.home) {
 	align-items: center;
 	justify-content: flex-end;
 	gap: 16px;
+}
+
+/*----------------------------------------*/
+/*  Header BUtton
+/*----------------------------------------*/
+.header__menu-icons__button {
+	display: block;
+	@media (max-width: 767px) {
+		display: none;
+	}
 }
 
 /*----------------------------------------*/

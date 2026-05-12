@@ -1,8 +1,13 @@
 .product-cat-grid {
-    background: #050505;
-    padding-top: 120px;
-    padding-bottom: 290px;
+    background: #090808;
+    padding-top: 80px;
+    padding-bottom: 80px;
     position: relative;
+
+    @media (min-width: 1024px) {
+        padding-top: 120px;
+        padding-bottom: 290px;
+    }
 
     &__main-container {
         position: relative;
@@ -14,6 +19,20 @@
         left: 50%;
         transform: translateX(-50%);
         z-index: 0;
+        width: 100%;
+
+        @media (min-width: 1440px) {
+            width: auto;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+
+            @media (min-width: 1440px) {
+                width: auto;
+            }
+        }
     }
 
     &__logo {
@@ -22,6 +41,11 @@
         left: 50%;
         transform: translateX(-50%);
         z-index: 0;
+        display: none;
+
+        @media (min-width: 1440px) {
+            display: block;
+        }
     }
 
     &__wrapper {
@@ -42,6 +66,11 @@
             position: absolute;
             right: -40px;
             top: 0;
+            display: none;
+
+            @media (min-width: 1024px) {
+                display: block;
+            }
         }
 
         &::before {
@@ -51,23 +80,33 @@
             position: absolute;
             bottom: 0;
             left: -40px;
-            background: #F04C26;
+            background: var(--primary-500);
             pointer-events: none;
             z-index: 0;
+            display: none;
+
+            @media (min-width: 1024px) {
+                display: block;
+            }
         }
     }
 
     &__header {
-        margin-bottom: 80px;
+        margin-bottom: 40px;
+
+        @media (min-width: 1024px) {
+            margin-bottom: 80px;
+        }
+
     }
 
     &__item {
         position: relative;
         overflow: hidden;
         background: #111;
-
+        margin-right: 0;
         float: left;
-        margin-right: 30px;
+        margin-bottom: 20px;
         width: 100%;
 
         &::after {
@@ -83,19 +122,35 @@
         }
 
         &:nth-child(2) {
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+
+            @media (min-width: 1024px) {
+                margin-bottom: 40px;
+            }
         }
 
         &:nth-child(3) {
-            margin-top: 40px;
+            margin-top: 0;
+
+            @media (min-width: 1024px) {
+                margin-top: 40px;
+            }
         }
 
         &:nth-child(4) {
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+
+            @media (min-width: 1024px) {
+                margin-bottom: 40px;
+            }
         }
 
         &:nth-child(5) {
-            margin-top: 40px;
+            margin-top: 0;
+
+            @media (min-width: 1024px) {
+                margin-top: 40px;
+            }
         }
 
         &:last-child {
@@ -104,10 +159,12 @@
 
         @media (min-width: 768px) {
             width: 50%;
+            margin-right: 30px;
+            margin-bottom: 0;
         }
 
-        @media (min-width: 992px) {
-            width: calc(25% - 22.5px)
+        @media (min-width: 1024px) {
+            width: calc(25% - 22.5px);
         }
     }
 
@@ -121,7 +178,12 @@
     }
 
     & .image {
-        @include ratio(437/298);
+
+        @include ratio(207/342);
+
+        @media (min-width: 1024px) {
+            @include ratio(437/298);
+        }
     }
 
     &__label {

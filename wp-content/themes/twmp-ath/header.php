@@ -38,7 +38,7 @@ if (!defined('ABSPATH')) {
 								<?php get_template_part('template-parts/headers/icon-search', null, []); ?>
 							</div>
 							<div class="th-menu-toggle"><?php echo twmp_get_svg_icon('menu') ?></div>
-							<div>
+							<div class="header__menu-icons__button">
 								<?php get_template_part('templates/components/button', null, [
 									'class' => 'bg-primary-500 text-white typo-system-button button-default',
 									'button_text' => esc_html__('Get Started', 'twmp-ath'),
