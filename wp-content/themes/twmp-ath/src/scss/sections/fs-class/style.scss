@@ -2,8 +2,13 @@
   position: relative;
   overflow: hidden;
   background: var(--bg-body);
-  padding-top: 110px;
-  padding-bottom: 160px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+
+  @media (min-width: 1024px) {
+    padding-top: 110px;
+    padding-bottom: 160px;
+  }
 }
 
 .fs-class__main-container.full-right {
@@ -43,6 +48,11 @@
     top: 70px;
     width: 100%;
     z-index: 0;
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
   }
 
   .triangle {
@@ -54,6 +64,12 @@
     position: absolute;
     right: -190px;
     bottom: -70px;
+
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
   }
 }
 
@@ -73,6 +89,12 @@
       width: 456px;
       z-index: 0;
       border-radius: 50%;
+
+      display: none;
+
+      @media (min-width: 1024px) {
+        display: block;
+      }
     }
 
     .triangle {
@@ -94,6 +116,12 @@
       pointer-events: none;
       position: absolute;
       z-index: 0;
+
+      display: none;
+
+      @media (min-width: 1024px) {
+        display: block;
+      }
     }
   }
 }
@@ -116,7 +144,12 @@
   text-align: left;
 
   a {
-    display: inline-flex;
+    display: flex;
+    justify-content: center;
+
+    @media (min-width: 1024px) {
+      display: inline-flex;
+    }
   }
 
   svg {
@@ -133,15 +166,19 @@
 
 .fs-class-section__title {
   color: var(--system-black);
-  @include typo-token(72, 108, 400);
   margin-bottom: 32px;
+  @include typo-token(36, 48, 400);
+  font-family: var(--font-playfair-display);
+
+  @media (min-width: 1024px) {
+    @include typo-token(72, 108, 400);
+  }
 }
 
 .fs-class-section__description {
 
   p {
     color: var(--system-content-1);
-    @include typo-display-xs(400);
   }
 }
 
@@ -166,8 +203,12 @@
 
 .fs-class-section__slider-wrap {
   clear: both;
-  padding-top: 26px;
+  padding-top: 0;
   overflow: visible;
+
+  @media (min-width: 1024px) {
+    padding-top: 26px;
+  }
 }
 
 .fs-class-section .swiper-button {
@@ -200,7 +241,21 @@
 }
 
 .fs-class-section .swiper-button.swiper-button-prev {
-  right: 56px;
+  @media (max-width: 1023px) {
+    position: absolute;
+    left: 24px;
+    right: auto;
+    bottom: 375px;
+  }
+}
+
+.fs-class-section .swiper-button.swiper-button-next {
+  @media (max-width: 1023px) {
+    position: absolute;
+    left: auto;
+    right: 24px;
+    bottom: 375px;
+  }
 }
 
 .fs-class-section__swiper {
@@ -441,8 +496,6 @@
     linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(10, 10, 10, 0.88) 100%);
 }
 
-
-
 .fs-class-section__swiper .swiper-wrapper {
   overflow: visible;
 }
@@ -455,95 +508,6 @@
   z-index: 1;
 }
 
-// .fs-class-section__swiper .swiper-slide.swiper-slide-active {
-//   transform: scale(1.3) !important;
-//   z-index: 3;
-// }
-
-@media (max-width: 1199px) {
-  // .fs-class-section__intro {
-  //   width: 54%;
-  // }
-
-  // .fs-class-section__actions {
-  //   width: 40%;
-  // }
-
-  // .fs-class-section__swiper .swiper-pagination {
-  //   margin-left: 220px;
-  // }
-}
-
-@media (max-width: 991px) {
-  // .fs-class-section {
-  //   padding: 88px 0 90px;
-  // }
-
-  // .fs-class-section__intro,
-  // .fs-class-section__actions {
-  //   float: none;
-  //   width: 100%;
-  // }
-
-  // .fs-class-section__actions {
-  //   padding-top: 18px;
-  //   text-align: left;
-  // }
-
-  // .fs-class-section__slider-wrap .swiper-button {
-  //   top: -46px;
-  // }
-
-  // .fs-class-section__swiper .swiper-pagination {
-  //   margin-left: 0;
-  //   margin-right: 84px;
-  // }
-}
-
-// @media (max-width: 575px) {
-//   .fs-class-section {
-//     padding: 72px 0 76px;
-//   }
-
-//   .fs-class-section__swiper .swiper-pagination {
-//     margin-right: 0;
-//   }
-
-//   .fs-class-card {}
-
-//   .fs-class-card.is-featured {}
-
-//   .fs-class-card__body {
-//     padding-top: 110px;
-//   }
-
-//   .fs-class-card__title {
-//     font-size: 24px;
-//   }
-
-//   .fs-class-card.is-featured .fs-class-card__title {
-//     font-size: 28px;
-//   }
-
-//   .fs-class-card__location {
-//     font-size: 15px;
-//   }
-
-//   .fs-class-card__more {
-//     max-height: none;
-//     opacity: 1;
-//     transform: none;
-//   }
-// }
-
-// .fs-class__light {
-//   position: absolute;
-//   left: auto;
-//   right: 0;
-//   top: 0;
-//   z-index: 0;
-// }
-
 .fs-class .fs-class__main-container .swiper-horizontal>.swiper-pagination-progressbar,
 .fs-class .fs-class__main-container .swiper-pagination-progressbar.swiper-pagination-horizontal {
   height: 4px;
@@ -554,6 +518,17 @@
   position: unset;
   margin: 0;
   top: 25px;
+
+  @media (max-width: 1023px) {
+    width: calc(70%);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0;
+    margin: 0;
+    bottom: 75px;
+    top: auto;
+  }
 }
 
 .fs-class .fs-class__main-container .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {

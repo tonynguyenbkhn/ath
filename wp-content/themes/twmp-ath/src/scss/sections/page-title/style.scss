@@ -16,6 +16,20 @@
 .page__title {
     font-family: var(--font-beautique-display);
     color: var(--system-black);
-    @include typo-token(80, 120, 400);
     text-align: center;
+    @include typo-token(36, 48, 400);
+    font-family: var(--font-playfair-display);
+    margin-top: 28px;
+
+    @media (min-width: 1024px) {
+        @include typo-token(80, 120, 400);
+    }
+}
+
+#two-up-intro-default {
+    &.two-up-intro {
+        @media (max-width: 1023px) {
+            padding-bottom: 40px
+        }
+    }
 }

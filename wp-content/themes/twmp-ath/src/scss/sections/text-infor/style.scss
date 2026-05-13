@@ -1,7 +1,12 @@
 .text-infor {
   background: #f5f0e8;
   color: #000a2c;
-  padding: 96px 0;
+  padding-top: 0;
+  padding-bottom: 80px;
+
+  @media (min-width: 1024px) {
+    padding: 96px 0;
+  }
 }
 
 .text-infor__shell {
@@ -15,13 +20,24 @@
 
 .text-infor__title {
   color: var(--system-black);
-  @include typo-display-sm(700, 30);
+  @include typo-token(30, 48, 500);
+  font-family: var(--font-beautique-display);
+
+  @media (min-width: 1024px) {
+    @include typo-display-sm(700, 30);
+  }
 }
 
 .text-infor__panel {
   border: 1px solid rgba(0, 10, 44, 0.4);
   background: rgba(255, 255, 255, 0.32);
-  padding: 42px 24px 37px 65px;
+  padding: 20px;
+
+
+  @media (min-width: 1024px) {
+    padding: 20px;
+    padding: 42px 24px 37px 65px;
+  }
 }
 
 .text-infor__description {
@@ -44,8 +60,12 @@
 
 .text-infor__column {
   float: left;
-  width: 50%;
   box-sizing: border-box;
+  width: 100%;
+
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
 }
 
 .text-infor__column--left {
@@ -53,8 +73,17 @@
 }
 
 .text-infor__column--right {
-  padding-left: 45px;
-  border-left: 1px solid var(--system-border);
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid var(--system-border);
+
+  @media (min-width: 1024px) {
+    padding-left: 45px;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
+    border-left: 1px solid var(--system-border);
+  }
 }
 
 .text-infor__column-inner {
@@ -85,27 +114,4 @@
 .text-infor__button {
   display: inline-flex;
   align-items: center;
-}
-
-@media (max-width: 767px) {
-  .text-infor {
-    padding: 72px 0;
-  }
-
-  .text-infor__panel {
-    padding: 22px 18px 24px;
-  }
-
-  .text-infor__column {
-    float: none;
-    width: 100%;
-    padding: 0;
-  }
-
-  .text-infor__column--right {
-    border-left: 0;
-    border-top: 1px solid rgba(0, 10, 44, 0.12);
-    margin-top: 18px;
-    padding-top: 18px;
-  }
 }

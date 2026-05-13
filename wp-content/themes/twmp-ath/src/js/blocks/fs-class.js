@@ -52,9 +52,7 @@ export default el => {
 
 	return new Swiper(swiperEl, {
 		modules: [Navigation, Pagination],
-		slidesPerView: 3.3,
-		spaceBetween: 32,
-		loop: true,
+		loop: false,
 		...settings,
 		navigation,
 		pagination,

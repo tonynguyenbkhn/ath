@@ -472,6 +472,10 @@
         display: inline-block;
         vertical-align: top;
 
+        @media (max-width: 1023px) {
+            margin-bottom: 16px;
+        }
+
         label {
             padding: 6px 12px;
             border: 1px solid var(--system-border);
@@ -559,7 +563,7 @@
 .fs-contact-fields {
     display: grid;
     gap: 24px;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
 
     &.w-full {
         grid-template-columns: repeat(1, 1fr);
@@ -567,6 +571,10 @@
 
     .register-form__field {
         width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -607,6 +615,10 @@
 
 .fs-contact-field {
     position: relative;
+
+    .register-form__field--select.lang-wrap {
+        margin-bottom: 0;
+    }
 }
 
 .fs-contact-field::before {
@@ -617,6 +629,10 @@
     color: #ff0000;
     font-size: 16px;
     z-index: 2;
+}
+
+.fs-contact-fields .fs-contact-field:last-child:before {
+    top: 19px;
 }
 
 .fs-contact-field input,
@@ -677,6 +693,14 @@
     .fs-contact-search-box {
         margin: 25px 0 24px;
         padding: 0 16px 16px;
+
+        @media (max-width: 1023px) {
+            margin: 0 0 0;
+        }
+    }
+
+    .register-form__field p:before {
+        display: none;
     }
 
     .fs-contact-field textarea {
@@ -733,5 +757,9 @@
         &::before {
             content: none;
         }
+    }
+
+    .register-form__field p:before {
+        display: none;
     }
 }

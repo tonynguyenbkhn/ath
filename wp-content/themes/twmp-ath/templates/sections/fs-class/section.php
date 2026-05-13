@@ -43,7 +43,7 @@ foreach ($product_ids as $index => $product_id) {
 
     $badges = function_exists('get_field') ? get_field('ath_badges', $product_id) : [];
     $short_info = function_exists('get_field') ? (string) get_field('ath_short_info', $product_id) : '';
-	$location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
+    $location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
     $location = function_exists('get_field') ? (string) get_field('ath_location', $product_id) : '';
     $description_source = trim(wp_strip_all_tags((string) $product_post->post_content));
     $description = '';
@@ -160,20 +160,24 @@ if (! $has_intro && empty($slides)) {
                                 'autoPlay'        => false,
                                 'prevNextButtons' => false,
                                 'pagination'      => false,
-                                'slidesPerView'   => 1.15,
-                                'spaceBetween'    => 32,
+                                'slidesPerView'   => 1.3,
+                                'spaceBetween'    => 24,
+                                'centeredSlides'    => true,
                                 'breakpoints'     => [
                                     640  => [
                                         'slidesPerView' => 1.4,
                                         'spaceBetween'  => 32,
+                                        'centeredSlides'    => true
                                     ],
                                     992  => [
                                         'slidesPerView' => 2.3,
                                         'spaceBetween'  => 32,
+                                        'centeredSlides'    => false
                                     ],
                                     1200 => [
                                         'slidesPerView' => 3.3,
                                         'spaceBetween'  => 32,
+                                        'centeredSlides'    => false
                                     ],
                                 ],
                             ],

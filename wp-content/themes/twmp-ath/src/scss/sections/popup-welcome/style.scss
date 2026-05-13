@@ -231,6 +231,7 @@
   }
 
   &.is-invalid {
+
     input,
     select {
       border-bottom-color: #d92d20;
@@ -353,13 +354,17 @@
 
 .lang-current {
   height: 55px;
-  padding: 0 0 0 20px;
+  padding: 0 0 0 30px;
   display: flex;
   align-items: center;
   gap: 14px;
   color: var(--system-placeholder);
   @include typo-system-button-2();
   cursor: pointer;
+
+  @media (min-width: 1024px) {
+    padding: 0 0 0 20px;
+  }
 }
 
 .lang-current::after {

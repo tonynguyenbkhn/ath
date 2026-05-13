@@ -153,6 +153,10 @@
   background-color: rgba(246, 244, 237, 1);
   color: var(--system-black);
 
+  @media (max-width: 1023px) {
+    padding-top: 0;
+  }
+
   .for-school__title {
     color: var(--system-black);
     margin-bottom: 50px;
@@ -163,11 +167,11 @@
     @include typo-token(22, 30, 400);
   }
 
-  .for-school__image-wrap {
-    img {
-      max-width: unset;
-    }
-  }
+  // .for-school__image-wrap {
+  //   img {
+  //     max-width: unset;
+  //   }
+  // }
 
   @media (min-width: 992px) {
     .for-school__header {
@@ -183,12 +187,11 @@
 }
 
 #fc-for-company-1.for-school {
-  padding-top: 105px;
-  padding-bottom: 180px;
+  padding-top: 80px;
+  padding-bottom: 80px;
 
-  .for-school__image-wrap {
-    img {
-      max-width: unset;
-    }
+  @media (min-width: 1024px) {
+    padding-top: 105px;
+    padding-bottom: 180px;
   }
 }

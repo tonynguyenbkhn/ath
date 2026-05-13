@@ -10,7 +10,11 @@
 .two-up-intro__grid {
   display: block;
   position: relative;
-  padding-top: 60px;
+  padding-top: 0;
+
+  @media (min-width: 1024px) {
+    padding-top: 60px;
+  }
 
   @include clearfix();
 
@@ -24,6 +28,12 @@
     height: 404px;
     background: rgba(#AACF37, 0.3);
     left: calc(100px - 100%);
+
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
   }
 }
 
@@ -38,22 +48,34 @@
 
 .two-up-intro__description {
   color: var(--system-black);
-  @include typo-text-lg(400);
+  @include typo-text-md(400);
   padding-right: 0;
 
   @media (min-width: 992px) {
     padding-right: 40px;
+    @include typo-text-lg(400);
   }
 
   h2 {
     color: var(--system-black);
-    @include typo-display-sm(500, 48);
+    @include typo-display-xs(500);
+
+    @media (min-width: 992px) {
+      @include typo-display-sm(500, 48);
+    }
+
+    font-family: var(--font-playfair-display);
   }
 
   h3,
   h4 {
     color: var(--system-black);
-    @include typo-display-xs(600);
+    @include typo-token(18, 28, 500);
+    font-family: var(--font-playfair-display);
+
+    @media (min-width: 992px) {
+      @include typo-display-xs(500);
+    }
   }
 
   h2,
@@ -99,13 +121,21 @@
 
 .two-up-intro__content {
   float: left;
-  width: 50%;
+  width: 100%;
+
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
 }
 
 .two-up-intro__media {
   float: right;
-  width: 50%;
+  width: 100%;
   position: relative;
+
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
 
   &::after {
     content: '';
@@ -117,6 +147,11 @@
     position: absolute;
     bottom: -100px;
     right: -65px;
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
   }
 }
 
@@ -133,6 +168,12 @@
   z-index: 0;
   border: 0;
   border-radius: 50%;
+
+  display: none;
+
+  @media (min-width: 1024px) {
+    display: block;
+  }
 }
 
 #two-up-intro-image-content {

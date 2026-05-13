@@ -183,7 +183,7 @@ if (! $has_intro && empty($slides)) {
                                     'button_text'        => $data['button_text'],
                                     'button_url'         => $data['button_link'],
                                     'button_link_target' => '_self',
-                                    'svg_icon_after'     => '',
+                                    'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
                                 ]
                             );
                             ?>
