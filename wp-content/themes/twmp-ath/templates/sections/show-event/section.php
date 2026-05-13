@@ -104,7 +104,7 @@ if (! $has_intro && empty($slides)) {
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
-        <div class="position-relative">
+        <div class="position-relative event-control-wrap">
             <div class="event-control">
                 <div class="nav">
                     <div class="swiper-button swiper-button-prev"></div>
@@ -176,20 +176,24 @@ if (! $has_intro && empty($slides)) {
                                 'autoPlay'        => false,
                                 'prevNextButtons' => false,
                                 'pagination'      => false,
-                                'slidesPerView'   => 1.15,
-                                'spaceBetween'    => 32,
+                                'slidesPerView'   => 1.3,
+                                'spaceBetween'    => 24,
+                                'centeredSlides'    => true,
                                 'breakpoints'     => [
                                     640  => [
-                                        'slidesPerView' => 1.4,
-                                        'spaceBetween'  => 32,
+                                        'slidesPerView'     => 2,
+                                        'spaceBetween'      => 24,
+                                        'centeredSlides'    => true
                                     ],
                                     992  => [
-                                        'slidesPerView' => 2.3,
-                                        'spaceBetween'  => 32,
+                                        'slidesPerView'     => 2.3,
+                                        'spaceBetween'      => 32,
+                                        'centeredSlides'    => false
                                     ],
                                     1200 => [
-                                        'slidesPerView' => 3.3,
-                                        'spaceBetween'  => 0,
+                                        'slidesPerView'     => 3.3,
+                                        'spaceBetween'      => 0,
+                                        'centeredSlides'    => false
                                     ],
                                 ],
                             ],

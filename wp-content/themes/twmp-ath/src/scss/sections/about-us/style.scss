@@ -32,13 +32,14 @@
 }
 
 .about-us__title {
-  margin-bottom: 64px;
+  margin-bottom: 40px;
 
   &.desktop {
     display: none;
 
     @media (min-width: 1024px) {
       display: block;
+      margin-bottom: 64px;
     }
   }
 
@@ -60,6 +61,7 @@
   filter: blur(144px);
   bottom: -150px;
   right: -50%;
+  display: none;
 }
 
 .about-us .glow {
@@ -71,6 +73,11 @@
   filter: blur(144px);
   top: -150px;
   right: -50%;
+  display: none;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
 }
 
 .about-us__light {

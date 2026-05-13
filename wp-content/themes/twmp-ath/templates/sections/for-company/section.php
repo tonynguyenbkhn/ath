@@ -54,6 +54,15 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
                 <?php if (! empty($data['image_id'])) : ?>
                     <div class="for-company__media-primary">
                         <?php
+                        get_template_part('templates/components/heading', null, [
+                            'title_class' => 'for-company__title mobile',
+                            'description_class' => 'for-company__description',
+                            'class' => 'for-company__header flex-column',
+                            'title' => $data && !empty($data['title']) ? $data['title'] : '',
+                            'description' => '',
+                        ]);
+                        ?>
+                        <?php
                         get_template_part(
                             'templates/components/image',
                             null,
@@ -94,7 +103,7 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
                 <div class="for-company__content-wrap">
                     <?php
                     get_template_part('templates/components/heading', null, [
-                        'title_class' => 'for-company__title',
+                        'title_class' => 'for-company__title desktop',
                         'description_class' => 'for-company__description',
                         'class' => 'for-company__header flex-column',
                         'title' => $data && !empty($data['title']) ? $data['title'] : '',

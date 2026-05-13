@@ -80,7 +80,7 @@
     }
   }
 
-  & > .fs-class__main-container:first-child {
+  &>.fs-class__main-container:first-child {
     position: relative;
 
     &::before {
@@ -348,7 +348,7 @@
   line-height: 1.1;
 }
 
-.fs-class-card.is-featured .fs-class-card__title {
+.swiper-slide-active .fs-class-card .fs-class-card__title {
   font-size: 34px;
 }
 
@@ -415,7 +415,7 @@
 
 .fs-class-card:hover .fs-class-card__more,
 .fs-class-card:focus-within .fs-class-card__more,
-.fs-class-card.is-featured .fs-class-card__more {
+.swiper-slide-active .fs-class-card .fs-class-card__more {
   max-height: 220px;
   opacity: 1;
   transform: translateY(0);

@@ -51,16 +51,19 @@ $zalo_url = function_exists('get_field') ? (string) get_field('zalo', 'option') 
 $social_items = [
     [
         'icon' => 'contact-section-tiktok',
+        'icon-mobile' => 'contact-section-tiktok-mobile',
         'url' => $tiktok_url,
         'label' => 'TikTok',
     ],
     [
         'icon' => 'contact-section-facebook',
+        'icon-mobile' => 'contact-section-facebook-mobile',
         'url' => $facebook_url,
         'label' => 'Facebook',
     ],
     [
         'icon' => 'contact-section-zalo',
+        'icon-mobile' => 'contact-section-zalo-mobile',
         'url' => $zalo_url,
         'label' => 'Zalo',
     ],
@@ -118,6 +121,7 @@ $background_image_url = ! empty($data['background_image_id']) ? wp_get_attachmen
                             <?php foreach ($social_items as $item) : ?>
                                 <a class="contact-us__social-link" href="<?php echo esc_url($item['url']); ?>" target="_blank" rel="noopener nofollow" aria-label="<?php echo esc_attr($item['label']); ?>">
                                     <?php echo twmp_get_svg_icon($item['icon']); ?>
+                                    <?php echo twmp_get_svg_icon($item['icon-mobile']); ?>
                                 </a>
                             <?php endforeach; ?>
                         </div>

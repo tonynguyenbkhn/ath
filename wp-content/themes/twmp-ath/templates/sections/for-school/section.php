@@ -48,10 +48,12 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
 
         <div class="for-school__grid">
             <div class="for-school__content">
-
+                <div class="for-school__light">
+                    <img width="1018px" height="508px" src="<?php echo esc_url(TWMP_IMG_URI . '/about-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
+                </div>
                 <?php
                 get_template_part('templates/components/heading', null, [
-                    'title_class' => 'for-school__title',
+                    'title_class' => 'for-school__title desktop',
                     'description_class' => 'for-school__description',
                     'class' => 'for-school__header flex-column',
                     'title' => $data && !empty($data['title']) ? $data['title'] : '',
@@ -116,6 +118,16 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
             </div>
 
             <div class="for-school__media">
+
+                <?php
+                get_template_part('templates/components/heading', null, [
+                    'title_class' => 'for-school__title mobile',
+                    'description_class' => 'for-school__description',
+                    'class' => 'for-school__header flex-column',
+                    'title' => $data && !empty($data['title']) ? $data['title'] : '',
+                    'description' => '',
+                ]);
+                ?>
                 <div class="for-school__media-accent" aria-hidden="true"></div>
 
                 <?php if (! empty($data['image_id'])) : ?>

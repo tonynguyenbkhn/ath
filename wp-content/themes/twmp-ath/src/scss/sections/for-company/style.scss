@@ -4,13 +4,22 @@
       #1B1919 100%);
   color: #ffffff;
   position: relative;
-  padding: 160px 0;
+  padding: 80px 0;
+
+  @media (min-width: 1024px) {
+    padding: 160px 0;
+  }
 }
 
 .for-company__grid {
   display: block;
 
   @include clearfix();
+
+  @media (max-width: 1023px) {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .for-company__header {
@@ -20,6 +29,24 @@
 
 .for-company__title {
   margin-bottom: 64px;
+
+  &.desktop {
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
+  }
+
+  &.mobile {
+    display: block;
+    text-align: center;
+    margin-bottom: 24px;
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
 }
 
 .for-company__light {
@@ -28,7 +55,12 @@
   right: 0;
   top: 0;
   z-index: 0;
+
+  @media (min-width: 1440px) {
+    transform: scale(1.5);
+  }
 }
+
 
 .for-company__description {
   @include content-style();
@@ -38,7 +70,18 @@
   display: flex;
   flex-wrap: wrap;
   gap: 32px;
-  margin-top: 40px;
+  margin-top: 0;
+
+  @media (min-width: 1024px) {
+    margin-top: 40px;
+  }
+
+  a {
+    @media (max-width: 1023px) {
+      width: 100%;
+      text-align: center;
+    }
+  }
 }
 
 .for-company__button {
@@ -55,7 +98,11 @@
 
 .for-company__content {
   float: right;
-  width: 50%;
+  width: 100%;
+
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
 }
 
 .for-company__content-wrap {
@@ -68,7 +115,13 @@
 
 .for-company__media {
   float: left;
-  width: 50%;
+  width: 100%;
+  margin-bottom: 24px;
+
+  @media (min-width: 1024px) {
+    width: 50%;
+    margin-bottom: 0;
+  }
 
   &-primary {
     padding-top: 0;

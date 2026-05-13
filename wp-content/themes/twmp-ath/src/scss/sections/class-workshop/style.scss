@@ -1,7 +1,11 @@
 .class-workshop-section {
   position: relative;
-  padding: 160px 0;
+  padding: 80px 0;
   background: #F6F4ED;
+
+  @media (min-width: 1024px) {
+    padding: 160px 0;
+  }
 }
 
 
@@ -51,27 +55,38 @@
 .class-section__shell {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column-reverse;
 
   @include clearfix();
+
+  @media (min-width: 1024px) {
+    display: block;
+  }
 }
 
 .class-section__intro-row {
   float: right;
-  width: 42%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding-right: 0;
 
-
+  @media (min-width: 1024px) {
+    width: 42%;
+  }
 }
 
 .class-section__intro-row-wrapper {
-  padding-left: 65px;
-  padding-top: 25px;
-  padding-right: 0;
+  padding-left: 24px;
+  padding-top: 0;
+  padding-right: 24px;
 
   @media(min-width: 1440px) {
     padding-right: calc((100vw - 1280px) / 2);
+    padding-left: 65px;
+    padding-top: 25px;
+    padding-right: 0;
   }
 }
 
@@ -105,11 +120,23 @@
 
 .class-section__title {
   color: #3A3A3A;
-  text-align: left;
+  text-align: center;
+
+  @media (min-width: 1024px) {
+    text-align: left;
+  }
 }
 
 .class-section__description {
   @include content-style(var(--system-content-1), var(--system-black));
+
+  h3 {
+    text-align: center;
+
+    @media (min-width: 1024px) {
+      text-align: left;
+    }
+  }
 }
 
 // .class-section__slide {
@@ -118,15 +145,24 @@
 // }
 
 .class-section__button {
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
   border: 1px solid rgba(#000A2C, 0.2);
   background: transparent;
   color: var(--system-black);
+  display: flex;
+  padding: 15px 0;
+  align-items: center;
+  justify-content: center;
 
   span {
     display: flex;
+  }
+
+  @media (min-width: 1024px) {
+    display: inline-flex;
+    margin-top: 0;
+    align-items: center;
+    padding: 15px 60px;
   }
 }
 
@@ -134,7 +170,11 @@
   padding-top: 26px;
   overflow: visible;
   float: left;
-  width: 58%;
+  width: 100%;
+
+  @media (min-width: 1024px) {
+    width: 58%;
+  }
 }
 
 .class-section__slider {
@@ -159,12 +199,22 @@
 
 .class-workshop-section {
   .class-section__swiper {
-    padding-top: 28px;
-    direction: rtl;
+    padding-top: 0;
+    direction: ltr;
+
+    @media (min-width: 1024px) {
+      padding-top: 28px;
+      direction: rtl;
+    }
   }
 
   .swiper-slide {
-    direction: ltr;
+    direction: rtl;
+
+    @media (min-width: 1024px) {
+      padding-top: 28px;
+      direction: ltr;
+    }
   }
 }
 
@@ -181,7 +231,19 @@
 }
 
 .class-section__swiper .class-card {
-  transform-origin: left top;
+  transform-origin: left center;
+
+  @media (min-width: 1024px) {
+    transform-origin: left top;
+  }
+}
+
+.class-section__swiper .swiper-slide-prev .class-card {
+  transform-origin: right center;
+
+  @media (min-width: 1024px) {
+    transform-origin: left top;
+  }
 }
 
 .class-section__swiper .swiper-slide-active .class-card {
@@ -325,6 +387,13 @@
   margin-top: 0;
   color: var(--system-white);
   @include typo-text-lg(400);
+
+  display: none;
+
+  @media (min-width: 1024px) {
+    display: block;
+
+  }
 }
 
 .class-card__actions {
@@ -350,6 +419,15 @@
   justify-content: center;
   align-items: center;
   padding: 0;
+  cursor: pointer;
+}
+
+.class-card .cart-redirect-btn {
+  gap: 10px;
+
+  span {
+    display: flex;
+  }
 }
 
 .class-card__view-button {
@@ -363,7 +441,7 @@
 
 .class-card:hover .class-card__more,
 .class-card:focus-within .class-card__more,
-.class-card.is-featured .class-card__more {
+.swiper-slide-active .class-card .class-card__more {
   max-height: unset;
   opacity: 1;
   transform: translateY(0);
@@ -409,7 +487,11 @@
 // }
 
 .class-section__actions {
-  margin-top: 40px;
+  margin-top: 0;
+
+  @media (min-width: 1024px) {
+    margin-top: 40px;
+  }
 }
 
 .class__light {
@@ -431,6 +513,34 @@
     display: flex;
     gap: 10px;
   }
+
+  @media (max-width: 1023px) {
+    position: absolute;
+    bottom: -30px;
+  }
+}
+
+.class-section-control .swiper-button.swiper-button-prev {
+  right: 56px;
+
+  @media (max-width: 1023px) {
+    left: 10px;
+    top: -290px;
+    right: auto;
+    position: absolute;
+    transform: rotate(0)
+  }
+}
+
+.class-section-control .swiper-button.swiper-button-next {
+
+  @media (max-width: 1023px) {
+    position: absolute;
+    top: -290px;
+    right: 10px;
+    left: auto;
+    transform: rotate(0)
+  }
 }
 
 .class-workshop-section .class-section-control .swiper-horizontal>.swiper-pagination-progressbar,
@@ -443,6 +553,16 @@
   position: unset;
   margin: 0;
   top: 25px;
+
+  @media (max-width: 1023px) {
+    width: calc(70%);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0;
+    margin: 0;
+    top: 0;
+  }
 }
 
 .class-workshop-section .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {

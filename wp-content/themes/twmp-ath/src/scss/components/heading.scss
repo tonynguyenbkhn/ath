@@ -7,6 +7,7 @@
     &__title {
         color: var(--system-white);
         @include typo-token(36, 48, 400);
+        font-family: var(--font-playfair-display);
 
         @media (min-width: 1024px) {
             @include typo-display-lg(400);

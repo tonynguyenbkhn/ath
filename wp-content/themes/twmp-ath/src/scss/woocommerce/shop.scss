@@ -161,10 +161,6 @@
 		line-height: 1.1;
 	}
 
-	.product-card.is-featured .product-card__title {
-		font-size: 34px;
-	}
-
 	.product-card__short-info {
 		margin: 0 0 6px;
 		color: var(--system-white);
@@ -212,6 +208,9 @@
 	}
 }
 
+.swiper-slide-active .product-card .product-card__title {
+	font-size: 34px;
+}
 
 .product-card .twmp-buy-now-form {
 	margin: 0;
@@ -250,7 +249,8 @@
 			top: 18px;
 			background: transparent;
 
-			svg, path {
+			svg,
+			path {
 				fill: #000;
 			}
 		}
@@ -274,7 +274,7 @@
 
 .product-card:hover .product-card__more,
 .product-card:focus-within .product-card__more,
-.product-card.is-featured .product-card__more {
+.swiper-slide-active .product-card .product-card__more {
 	max-height: unset;
 	opacity: 1;
 	transform: translateY(0);
@@ -342,9 +342,11 @@
 	.facetwp-facet-categories {
 		display: none;
 	}
+
 	.woocommerce-product-search {
 		width: 100%;
 	}
+
 	.relevanssi-live-search-results {
 		display: none;
 	}

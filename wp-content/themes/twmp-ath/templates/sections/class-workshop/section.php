@@ -43,7 +43,7 @@ foreach ($product_ids as $index => $product_id) {
 
     $badges = function_exists('get_field') ? get_field('ath_badges', $product_id) : [];
     $short_info = function_exists('get_field') ? (string) get_field('ath_short_info', $product_id) : '';
-	$location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
+    $location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
     $location = function_exists('get_field') ? (string) get_field('ath_location', $product_id) : '';
     $description_source = trim(wp_strip_all_tags((string) $product_post->post_content));
     $description = '';
@@ -125,20 +125,24 @@ if (! $has_intro && empty($slides)) {
                                     'autoPlay'        => false,
                                     'pagination'      => false,
                                     'prevNextButtons' => false,
-                                    'slidesPerView'   => 1.15,
-                                    'spaceBetween'    => 32,
+                                    'slidesPerView'   => 1.3,
+                                    'spaceBetween'    => 24,
+                                    'centeredSlides'    => true,
                                     'breakpoints'     => [
                                         640  => [
                                             'slidesPerView' => 1.4,
                                             'spaceBetween'  => 32,
+                                            'centeredSlides'    => true
                                         ],
                                         992  => [
                                             'slidesPerView' => 2.3,
                                             'spaceBetween'  => 32,
+                                            'centeredSlides'    => false
                                         ],
                                         1200 => [
                                             'slidesPerView' => 1.8,
-                                            'spaceBetween'  => 0
+                                            'spaceBetween'  => 0,
+                                            'centeredSlides'    => false
                                         ],
                                     ],
                                 ],
@@ -179,7 +183,7 @@ if (! $has_intro && empty($slides)) {
                                     'button_text'        => $data['button_text'],
                                     'button_url'         => $data['button_link'],
                                     'button_link_target' => '_self',
-                                    'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                                    'svg_icon_after'     => '',
                                 ]
                             );
                             ?>

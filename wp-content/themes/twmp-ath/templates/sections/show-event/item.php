@@ -29,7 +29,6 @@ $data = wp_parse_args(
 $badge_rows = is_array($data['badges']) ? array_values(array_filter($data['badges'])) : [];
 
 $_class = 'event-card';
-$_class .= ! empty($data['featured']) ? ' is-featured' : '';
 $_class .= ! empty($data['theme_class']) ? esc_attr(' ' . $data['theme_class']) : '';
 ?>
 

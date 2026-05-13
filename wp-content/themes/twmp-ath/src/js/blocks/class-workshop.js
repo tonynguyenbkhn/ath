@@ -50,17 +50,9 @@ export default el => {
 	}
 
 	return new Swiper(swiperEl, {
+
 		modules: [Navigation, Pagination],
-
-		slidesPerView: 2.15,
-		spaceBetween: 32,
-
 		loop: false,
-		centeredSlides: false,
-
-		slidesOffsetBefore: 0,
-		// slidesOffsetAfter: 160,
-
 		...settings,
 		navigation,
 		pagination,

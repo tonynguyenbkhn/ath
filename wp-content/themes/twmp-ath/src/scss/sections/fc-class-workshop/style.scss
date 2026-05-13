@@ -439,7 +439,7 @@
 
 .class-card:hover .class-card__more,
 .class-card:focus-within .class-card__more,
-.class-card.is-featured .class-card__more {
+.swiper-slide-active .class-card .class-card__more {
   max-height: unset;
   opacity: 1;
   transform: translateY(0);
