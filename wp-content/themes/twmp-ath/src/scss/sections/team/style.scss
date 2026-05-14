@@ -98,7 +98,7 @@
 .team-section__slider-wrap {
 
   .swiper-button {
-    top: -50px;
+    top: -87px;
     left: auto;
     right: 0;
 
@@ -112,7 +112,8 @@
       left: 0;
 
       @media (min-width: 1024px) {
-        right: 50px;
+        right: 56px;
+        left: auto;
       }
     }
 
@@ -121,7 +122,7 @@
       left: auto;
 
       @media (min-width: 1024px) {
-        right: 50px;
+        right: 0;
       }
     }
   }

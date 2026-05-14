@@ -1809,169 +1809,6 @@ function twmp_checkout_render_payment_step_section()
             </div>
           </div>
 
-          <style>
-            .twmp-checkout-payment-popup {
-              position: fixed;
-              inset: 0;
-              z-index: 9999;
-              display: none;
-              align-items: center;
-              justify-content: center;
-              padding: 20px;
-            }
-
-            .twmp-checkout-payment-popup.is-open {
-              display: flex;
-            }
-
-            .twmp-checkout-payment-popup__backdrop {
-              position: absolute;
-              inset: 0;
-              background: rgba(31, 39, 71, 0.56);
-            }
-
-            .twmp-checkout-payment-popup__dialog {
-              position: relative;
-              width: min(100%, 640px);
-              padding: 42px 36px 32px;
-              border-radius: 2px;
-              background: #fbf7ef;
-              box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
-              text-align: center;
-              color: #1f2747;
-            }
-
-            .twmp-checkout-payment-popup__close {
-              position: absolute;
-              top: 14px;
-              right: 14px;
-              width: 36px;
-              height: 36px;
-              border: 0;
-              border-radius: 50%;
-              background: rgba(31, 39, 71, 0.08);
-              color: #1f2747;
-              font-size: 24px;
-              line-height: 1;
-              cursor: pointer;
-            }
-
-            .twmp-checkout-payment-popup__icon {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              width: 117px;
-              height: 117px;
-              margin: 0 auto 22px;
-              border-radius: 50%;
-            }
-
-            .twmp-checkout-payment-popup__title {
-              margin: 0 0 12px;
-              color: #000A2C;
-              font-size: 30px;
-              line-height: 48px;
-              font-weight: 500;
-              font-family: 'Beautique Display', serif;
-            }
-
-            .twmp-checkout-payment-popup__message {
-              max-width: 480px;
-              margin: 0 auto 26px;
-              color: var(--system-content-1);
-              font-size: 18px;
-              line-height: 28px;
-              font-weight: 400;
-              font-family: 'Archivo', sans-serif;
-            }
-
-            .twmp-checkout-payment-popup__actions {
-              display: flex;
-              flex-wrap: wrap;
-              gap: 14px;
-              justify-content: center;
-            }
-
-            .twmp-checkout-payment-popup__action {
-              min-width: 180px;
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              padding: 14px 22px;
-              border: 1px solid #ece6dc;
-              border-radius: 2px;
-              background: #fff;
-              color: #1f2747;
-              text-decoration: none;
-              font-size: 18px;
-              line-height: 24px;
-              font-weight: 500;
-              font-family: 'Archivo', sans-serif;
-            }
-
-            .twmp-checkout-payment-popup__action--primary {
-              border-color: rgba(240, 76, 38, 1);
-              background: rgba(240, 76, 38, 1);
-              color: #fff;
-            }
-
-            .twmp-checkout-payment-popup__action--primary:hover {
-              color: white;
-            }
-
-            .twmp-checkout-payment-popup__reopen {
-              display: none;
-              width: fit-content;
-              margin: 18px auto 0;
-              padding: 10px 16px;
-              border: 1px solid #E0E1E3;
-              border-radius: 2px;
-              background: #fff;
-              color: #1f2747;
-              font-size: 13px;
-              line-height: 18px;
-              font-weight: 600;
-              cursor: pointer;
-            }
-
-            .twmp-checkout-payment-popup__reopen.is-visible {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-            }
-
-            .twmp-checkout-payment-popup.is-approved .twmp-checkout-payment-popup__icon {
-              color: #fff;
-            }
-
-            .twmp-checkout-payment-popup.is-pending_review .twmp-checkout-payment-popup__icon {
-              color: #fff;
-            }
-
-            .twmp-checkout-payment-popup.is-rejected .twmp-checkout-payment-popup__icon {
-              color: #fff;
-            }
-
-            html.twmp-payment-popup-open body {
-              overflow: hidden;
-            }
-
-            @media (max-width: 767px) {
-              .twmp-checkout-payment-popup__dialog {
-                padding: 34px 22px 26px;
-              }
-
-              .twmp-checkout-payment-popup__title {
-                font-size: 28px;
-              }
-
-              .twmp-checkout-payment-popup__action {
-                width: 100%;
-                min-width: 0;
-              }
-            }
-          </style>
-
           <div class="twmp-checkout-payment-popup" data-payment-popup aria-live="polite" aria-hidden="true">
             <div class="twmp-checkout-payment-popup__backdrop" data-payment-popup-close></div>
             <div class="twmp-checkout-payment-popup__dialog" role="dialog" aria-modal="true" aria-labelledby="twmp-payment-popup-title">
@@ -2120,7 +1957,15 @@ function twmp_checkout_render_payment_step_section()
     }
 
     if (popupMessage) {
-      popupMessage.textContent = safeMessage;
+      if ( proofStatus === 'pending_review' ) {
+        popupMessage.textContent = 'We will confirm and send the tickets to haild***com in a few minutes.';
+      } else if ( proofStatus === 'approved' ) {
+        popupMessage.textContent = 'We send the tickets code via SMS to the email hai**com. Please check your email.';
+      } else {
+        popupMessage.textContent = 'We will confirm and send the tickets to haild***com in a few minutes.';
+      }
+      
+      
     }
 
     if (popupActions) {

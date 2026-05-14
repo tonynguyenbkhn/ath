@@ -18,5 +18,13 @@
 		}
 
 		color: var(--primary-500);
+
+		.woocommerce-breadcrumb-wrap {
+			align-items: flex-start;
+		}
+
+		.woocommerce-breadcrumb-wrap-text {
+			white-space: normal;
+		}
 	}
 }

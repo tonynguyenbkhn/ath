@@ -10,17 +10,75 @@
 	margin-top: 20px;
 }
 
+.filter-shop {
+	@media (max-width: 1023px) {
+		padding: 20px;
+		overflow: hidden;
+		position: relative;
+	}
+}
+
 .twmp-shop-layout-wrapper {
 	@include clearfix();
 
 	.twmp-shop-layout__left {
-		width: 75%;
 		float: right;
+		width: 100%;
+
+		@media (min-width: 1024px) {
+			width: 75%;
+		}
 	}
 
 	.twmp-shop-layout__right {
-		width: 25%;
 		float: left;
+		width: 80%;
+		opacity: 0;
+		visibility: hidden;
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100vh;
+		overflow-y: auto;
+		background-color: rgba(246, 244, 237, 1);
+
+		.close-filter {
+			display: none;
+			@media (max-width: 1023px) {
+				display: block;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+			}
+			button {
+				background-color: var(--primary-500);
+				color: white;
+				padding: 12px 0;
+				@include typo-system-button();
+			}
+		}
+
+		@media (min-width: 1024px) {
+			width: 25%;
+			opacity: 1;
+			visibility: visible;
+			display: block;
+			position: unset;
+			height: auto;
+		}
+
+		@media (max-width: 1023px) {
+			display: block;
+			width: 80%;
+			max-width: 420px;
+			transform: translateX(-100%);
+			transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+			will-change: transform;
+			z-index: 1000;
+			pointer-events: none;
+		}
 
 		.twmp-shop-layout__right-innner {
 			padding-right: 0;
@@ -31,12 +89,41 @@
 		}
 	}
 
+	&.is-filter-open {
+		.twmp-shop-layout__right {
+			@media (max-width: 1023px) {
+				opacity: 1;
+				visibility: visible;
+				transform: translateX(0);
+				pointer-events: auto;
+			}
+		}
+	}
+
 	ul {
 		@include clearfix();
 
 		li {
-			@include float-grid(3, 32px, 32px);
+			@include float-grid(1, 0, 32px);
+
+			@media (min-width: 1024px) {
+				@include float-grid(3, 32px, 32px);
+			}
 		}
+	}
+}
+
+body.is-shop-filter-lock {
+	overflow: hidden;
+	touch-action: none;
+	position: relative;
+
+	&::before {
+		content: "";
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.45);
+		z-index: 999;
 	}
 }
 
@@ -44,10 +131,14 @@
 	.page-title {
 		display: block;
 		font-family: var(--font-beautique-display);
-		@include typo-token(80, 120, 400);
+		@include typo-token(40, 48, 400);
 		color: #3A3A3A;
 		width: 100%;
 		margin-bottom: 50px;
+
+		@media (min-width: 1024px) {
+			@include typo-token(80, 120, 400);
+		}
 	}
 }
 
@@ -151,6 +242,7 @@
 		min-height: 100%;
 		padding: 20px;
 		bottom: 0;
+		width: calc( 100% - 40px );
 	}
 
 	.product-card__title {
@@ -236,12 +328,49 @@
 
 .twmp-shop-layout__left-wrap {
 	display: flex;
-	justify-content: space-between;
 	align-items: flex-end;
 	margin-bottom: 40px;
+	@include clearfix();
+
+	@media (max-width: 1023px) {
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: flex-start;
+
+		@include clearfix();
+	}
+
+	.facetwp-facet-categories {
+		float: left;
+		width: calc(100% - 156px);
+
+		@media (max-width: 1023px) {
+			float: left;
+			width: 100%;
+		}
+	}
+
+	.twmp-shop-search-filter {
+
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+
+		@media (min-width: 1024px) {
+			float: right;
+			width: 156px;
+		}
+
+	}
 
 	.woocommerce-product-search {
 		position: relative;
+
+		@media (max-width: 1023px) {
+			width: calc(100% - 66px);
+			float: left;
+			margin-bottom: 24px;
+		}
 
 		.search-submit {
 			left: 10px;
@@ -267,6 +396,23 @@
 				color: rgba(58, 58, 58, 1);
 				@include typo-token(18, 24, 400);
 			}
+
+			@media (max-width: 1023px) {
+				width: 100%;
+			}
+		}
+	}
+
+	.filter-mobile-event {
+		width: 56px;
+		height: 56px;
+		float: right;
+		background-color: var(--system-white);
+		@include flex-center();
+		display: block;
+
+		@media (min-width: 1024px) {
+			display: none;
 		}
 	}
 
@@ -340,11 +486,23 @@
 
 .twmp-shop-layout__left-wrap.is-search-active {
 	.facetwp-facet-categories {
-		display: none;
+		display: flex;
+
+		@media (min-width: 1024px) {
+			display: none;
+		}
+	}
+
+	.twmp-shop-search-filter {
+		width: 100%;
 	}
 
 	.woocommerce-product-search {
 		width: 100%;
+
+		@media (max-width: 1024px) {
+			width: calc(100% - 66px);
+		}
 	}
 
 	.relevanssi-live-search-results {
@@ -354,6 +512,17 @@
 
 .facetwp-facet.facetwp-facet-categories {
 	margin-bottom: 0;
+
+	@media (max-width: 1023px) {
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 .facetwp-facet-categories,
@@ -392,6 +561,30 @@
 		.facetwp-counter {
 			display: none;
 		}
+	}
+
+	@media (max-width: 1023px) {
+		flex-wrap: nowrap;
+		width: max-content;
+		min-width: 100%;
+
+		.facetwp-radio {
+			flex: 0 0 auto;
+		}
+	}
+}
+
+.facetwp-facet-age_group {
+	@media (max-width: 1023px) {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+}
+
+.facetwp-facet-age_group {
+	@media (max-width: 1023px) {
+		width: 100%;
 	}
 }
 

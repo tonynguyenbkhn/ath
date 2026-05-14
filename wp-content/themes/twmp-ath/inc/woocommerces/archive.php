@@ -204,7 +204,7 @@ function twmp_render_shop_layout_end()
 add_action('woocommerce_shop_loop_header', 'twmp_render_shop_header', 20);
 function twmp_render_shop_header()
 {
-    echo '<div class="twmp-shop-layout-wrapper" data-block="shop-page"><div class="twmp-shop-layout__left"><div class="twmp-shop-layout__left-innner"><div class="twmp-shop-layout__left-wrap">' . do_shortcode('[facetwp facet="categories"]') . get_product_search_form(false) . '</div>';
+    echo '<div class="twmp-shop-layout-wrapper" data-block="shop-page"><div class="twmp-shop-layout__left"><div class="twmp-shop-layout__left-innner"><div class="twmp-shop-layout__left-wrap">' . do_shortcode('[facetwp facet="categories"]') . '<div class="twmp-shop-search-filter">' . get_product_search_form(false) . '<button class="filter-mobile-event">'. twmp_get_svg_icon('filter') .'</button></div></div>';
 }
 add_action('woocommerce_after_main_content', 'twmp_render_shop_header_end', 1);
 function twmp_render_shop_header_end()
@@ -266,6 +266,10 @@ function twmp_render_shop_sidebar_main()
                     ?>
                 </div>
             </div>
+            <div class="close-filter">
+                <button class="w-100 btn-close-filter"><?php echo esc_html__('Close', 'twmp-ath'); ?></button>
+            </div>
+        </div>
     <?php
     }
 }
@@ -284,34 +288,39 @@ add_action('woocommerce_before_main_content', function () {
         return;
     }
 
-    if ( !is_shop() || !is_product_category() ) {
-        return;
-    }
+    if (is_shop() || is_product_category()) {
 
-    $banner_id = 0;
+        $banner_id = 0;
 
-    if (is_product_category()) {
-        $term = get_queried_object();
+        if (is_product_category()) {
+            $term = get_queried_object();
 
-        if ($term instanceof WP_Term) {
-            $banner_id = absint(function_exists('get_field') ? get_field('ath_product_cat_image', $term) : 0);
+            if ($term instanceof WP_Term) {
+                $banner_id = absint(function_exists('get_field') ? get_field('ath_product_cat_image', $term) : 0);
+            }
         }
-    }
 
-    if (!$banner_id) {
-        $banner_id = absint(function_exists('get_field') ? get_field('ath_banner_shop_page', 'option') : 0);
-    }
+        if (!$banner_id) {
+            $banner_id = absint(function_exists('get_field') ? get_field('ath_banner_shop_page', 'option') : 0);
+        }
 
-    if (!$banner_id) {
+        echo '<pre>';
+        print_r($banner_id);
+        echo '</pre>';
+
+        if (!$banner_id) {
+            return;
+        }
+        echo '<div class="twmp-shop-banner">';
+        get_template_part('templates/components/image', null, [
+            'image_id'    => $banner_id,
+            'image_size'  => 'full',
+            'lazyload'    => false,
+            'class'       => 'twmp-shop-banner__image image--cover image--default',
+            'image_class' => 'twmp-shop-banner__image',
+        ]);
+        echo '</div>';
+    } else {
         return;
     }
-    echo '<div class="twmp-shop-banner">';
-    get_template_part('templates/components/image', null, [
-        'image_id'    => $banner_id,
-        'image_size'  => 'full',
-        'lazyload'    => false,
-        'class'       => 'twmp-shop-banner__image image--cover image--default',
-        'image_class' => 'twmp-shop-banner__image',
-    ]);
-    echo '</div>';
 }, 5);

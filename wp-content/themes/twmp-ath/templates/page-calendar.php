@@ -47,11 +47,11 @@ get_header();
                 <h1 class="calendar-page__title"><?php echo esc_html(get_the_title() ?: __('Calendar', 'twmp-ath')); ?></h1>
                 <div class="calendar-page__subhead">
                     <div class="calendar-page__navigator">
-                        <button class="calendar-page__nav-button" type="button" data-calendar-prev aria-label="<?php echo esc_attr__('Previous period', 'twmp-ath'); ?>">
+                        <button class="calendar-page__nav-button calendar-page__nav-button-prev" type="button" data-calendar-prev aria-label="<?php echo esc_attr__('Previous period', 'twmp-ath'); ?>">
                             <?php echo twmp_get_svg_icon('arrow-right'); ?>
                         </button>
                         <div class="calendar-page__range" data-calendar-range><?php echo esc_html($initial_title); ?></div>
-                        <button class="calendar-page__nav-button" type="button" data-calendar-next aria-label="<?php echo esc_attr__('Next period', 'twmp-ath'); ?>">
+                        <button class="calendar-page__nav-button calendar-page__nav-button-next" type="button" data-calendar-next aria-label="<?php echo esc_attr__('Next period', 'twmp-ath'); ?>">
                             <?php echo twmp_get_svg_icon('arrow-right'); ?>
                         </button>
                     </div>
