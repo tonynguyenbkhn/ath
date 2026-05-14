@@ -10,9 +10,23 @@
     z-index: 1;
 }
 
-.calendar-page__header,
 .calendar-page__breadcrumbs {
-    // padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+
+    .calendar-page__breadcrumb-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        color: rgba(111, 114, 115, 1);
+    }
+
+    .calendar-page__breadcrumb-current {
+        color: var(--primary-500);
+    }
 }
 
 .calendar-page {
@@ -583,6 +597,7 @@
     width: 12px;
     height: 12px;
     background-color: var(--secondary-bg1);
+
     &.class-workshop {
         background-color: var(--secondary-bg4);
     }
