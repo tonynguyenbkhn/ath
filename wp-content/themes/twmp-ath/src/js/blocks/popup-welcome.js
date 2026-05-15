@@ -287,15 +287,15 @@ export default el => {
 		id: 'modal-popup-welcome'
 	})
 
-	const form = el.querySelector('.wpcf7-form')
+	// const form = el.querySelector('.wpcf7-form')
 
-	bindSearchSubmit(form)
+	// bindSearchSubmit(form)
 	
-	el.addEventListener('activate', () => {
-		setLastVisit(Date.now())
-	})
+	// el.addEventListener('activate', () => {
+	// 	setLastVisit(Date.now())
+	// })
 
-	if (shouldShow) { // shouldShow
+	if (2 > 1) { // shouldShow
 		trigger('activate', el)
 	}
 }

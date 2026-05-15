@@ -41,7 +41,7 @@ if (!defined('ABSPATH')) {
 							<div class="header__menu-icons__button">
 								<?php get_template_part('templates/components/button', null, [
 									'class' => 'bg-primary-500 text-white typo-system-button button-default',
-									'button_text' => esc_html__('Get Started', 'twmp-ath'),
+									'button_text' => esc_html__('Contact Us', 'twmp-ath'),
 									'button_url' => '#',
 									'button_link_target' => '_blank',
 								]); ?>
