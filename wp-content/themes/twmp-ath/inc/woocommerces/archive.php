@@ -4,6 +4,26 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function twmp_is_product_search_page()
+{
+    if (!is_search()) {
+        return false;
+    }
+
+    $post_type = get_query_var('post_type');
+
+    if (is_array($post_type)) {
+        return in_array('product', $post_type, true);
+    }
+
+    return 'product' === $post_type;
+}
+
+function twmp_is_shop_catalog_page()
+{
+    return is_shop() || is_product_category() || twmp_is_product_search_page();
+}
+
 // Tiếng việt: Để tùy chỉnh cách hiển thị sản phẩm trong vòng lặp sản phẩm WooCommerce, bạn có thể sử dụng hook 'woocommerce_before_shop_loop_item' để thay thế các phần tử mặc định bằng cách của riêng bạn. Dưới đây là một ví dụ về cách làm điều này:
 add_action('wp', function () {
     remove_action('woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10);
@@ -188,7 +208,7 @@ function twmp_render_product_card()
 add_action('woocommerce_before_main_content', 'twmp_render_shop_layout', 40);
 function twmp_render_shop_layout()
 {
-    if (is_shop() || is_product_category()):
+    if (twmp_is_shop_catalog_page()):
         echo '<div class="twmp-shop-layout"><div class="twmp-shop-layout__main"><div class="twmp-shop-layout__container container">';
     endif;
 }
@@ -196,7 +216,7 @@ function twmp_render_shop_layout()
 add_action('woocommerce_after_main_content', 'twmp_render_shop_layout_end', 9);
 function twmp_render_shop_layout_end()
 {
-    if (is_shop() || is_product_category()):
+    if (twmp_is_shop_catalog_page()):
         echo '</div></div></div>';
     endif;
 }
@@ -221,7 +241,7 @@ function twmp_render_shop_sidebar_start()
 add_action('woocommerce_after_main_content', 'twmp_render_shop_sidebar_main', 5);
 function twmp_render_shop_sidebar_main()
 {
-    if (class_exists('WooCommerce') && (is_shop() || is_product_taxonomy())) {
+    if (class_exists('WooCommerce') && twmp_is_shop_catalog_page()) {
     ?>
         <div class="filter-shop">
             <div class="filter-item__head">

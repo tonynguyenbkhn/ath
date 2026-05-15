@@ -7,41 +7,82 @@
 	margin-top: 20px;
 	margin-bottom: 30px;
 
-	& .page-numbers {
-		margin: 0 5px;
-		width: 30px;
-		height: 30px;
-		background-color: white;
-		color: var(--title);
-		text-decoration: none;
-		border-radius: 5px;
+	ul.page-numbers {
+
+		li {
+			margin-right: 0 !important;
+			margin-bottom: 0 !important;
+			width: auto;
+		}
+
+		.page-numbers {
+			margin: 0 5px;
+			width: 56px;
+			height: 56px;
+			background-color: transparent;
+			color: var(--system-black);
+			text-decoration: none;
+			border-radius: 0;
+			@include flex-center;
+			transition: background-color 0.3s ease, color 0.3s ease;
+			cursor: pointer;
+			@include typo-text-lg(600);
+			border: 1px solid var(--system-border);
+		}
+
+		.page-numbers.current {
+			background-color: var(--primary-500);
+			color: white;
+			border: 1px solid var(--primary-500);
+		}
+
+		// & .page-numbers:hover {
+		// 	background-color: var(--primary);
+		// 	color: white;
+		// }
+
+		.prev.page-numbers,
+		.next.page-numbers {
+			// background-color: var(--secondary);
+			// color: white;
+			border-radius: 5px;
+			text-decoration: none;
+			margin-left: 5px;
+			white-space: nowrap;
+		}
+
+		// & .next.page-numbers:hover {
+		// 	background-color: var(--secondary);
+		// }
+	}
+}
+
+.facetwp-facet-pagination {
+
+	.facetwp-pager {
 		@include flex-center;
-		transition: background-color 0.3s ease, color 0.3s ease;
-		cursor: pointer;
+		margin-top: 20px;
+		margin-bottom: 30px;
+
+		a.facetwp-page {
+			margin: 0 5px;
+			width: 56px;
+			height: 56px;
+			background-color: transparent;
+			color: var(--system-black);
+			text-decoration: none;
+			border-radius: 0;
+			@include flex-center;
+			transition: background-color 0.3s ease, color 0.3s ease;
+			cursor: pointer;
+			@include typo-text-lg(600);
+			border: 1px solid var(--system-border);
+
+			&.active {
+				background-color: var(--primary-500);
+				color: white;
+				border: 1px solid var(--primary-500);
+			}
+		}
 	}
-
-	& .page-numbers.current {
-		background-color: var(--primary);
-		color: white;
-		border-color: var(--primary);
-	}
-
-	// & .page-numbers:hover {
-	// 	background-color: var(--primary);
-	// 	color: white;
-	// }
-
-	& .prev.page-numbers,
-	& .next.page-numbers {
-		// background-color: var(--secondary);
-		// color: white;
-		border-radius: 5px;
-		text-decoration: none;
-		margin-left: 5px;
-		white-space: nowrap;
-	}
-
-	// & .next.page-numbers:hover {
-	// 	background-color: var(--secondary);
-	// }
 }

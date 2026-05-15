@@ -213,17 +213,20 @@ const renderSidebarContent = (sidebarTitleEl, sidebarContentEl, date, events, ac
 		const link = meta.permalink || event.url || '#'
 		const timeRange = meta.timeRange || ''
 		const details = [meta.ageDisplay, meta.language, meta.locationLabel].filter(Boolean).join(', ')
+		const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
 
 		return `
-			<article class="calendar-sidebar__item ${isActive ? 'is-active' : ''}">
+			<article class="calendar-sidebar__item ${product_cat} ${isActive ? 'is-active' : ''}">
 				<a class="calendar-sidebar__item-link" href="${link}">
 					${thumb ? `<span class="calendar-sidebar__thumb"><img src="${thumb}" alt="${(meta.thumbnailAlt || title).replace(/"/g, '&quot;')}" loading="lazy"></span>` : ''}
-					<span class="calendar-sidebar__item-body">
+					<div class="calendar-sidebar__item-body">
 						<span class="calendar-sidebar__item-title">${title}</span>
+						<div class="calendar-sidebar__item-time-meta">
 						${timeRange ? `<span class="calendar-sidebar__item-time">${timeRange}</span>` : ''}
 						${details ? `<span class="calendar-sidebar__item-meta">${details}</span>` : ''}
 						${meta.shortInfo ? `<span class="calendar-sidebar__item-copy">${meta.shortInfo}</span>` : ''}
-					</span>
+						</div>
+					</div>
 					<span class="calendar-sidebar__item-arrow" aria-hidden="true">&rsaquo;</span>
 				</a>
 			</article>

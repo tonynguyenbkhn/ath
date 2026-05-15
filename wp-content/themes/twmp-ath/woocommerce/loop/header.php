@@ -18,7 +18,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
+$has_products     = woocommerce_product_loop();
+if ( $has_products ) :
 ?>
 <header class="woocommerce-products-header">
 	<?php
@@ -45,3 +46,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 	do_action( 'woocommerce_archive_description' );
 	?>
 </header>
+<?php
+endif;

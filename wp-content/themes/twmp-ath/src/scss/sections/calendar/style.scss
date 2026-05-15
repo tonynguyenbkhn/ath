@@ -71,13 +71,13 @@
 //     color: var(--primary-500);
 // }
 
-.calendar-page__title {
+.calendar-page__header .calendar-page__title {
     margin: 0;
     color: rgba(58, 58, 58, 1);
     font-family: var(--font-playfair-display);
     @include typo-token(40, 48, 400);
 
-    @media (max-width: 1023px) {
+    @media (min-width: 1023px) {
         @include typo-display-lg(400);
     }
 }
@@ -252,6 +252,9 @@
 
 .calendar-page__layout {
     margin-top: 30px;
+    // @media (max-width: 1023px) {
+    //     background-color: var(--system-white);
+    // }
 }
 
 .calendar-page__panel {
@@ -310,7 +313,10 @@
 }
 
 .calendar-page .fc-view-harness {
-    // background: rgba(255, 255, 255, 0.94);
+    @media (max-width: 1023px) {
+        background-color: #ffffff;
+        padding-top: 10px;
+    }
 }
 
 .calendar-page .fc table {
@@ -351,6 +357,11 @@
     padding: 14px 10px;
     background: rgba(255, 255, 255, 1);
     border: 1px solid var(--system-border);
+
+    @media (max-width: 1023px) {
+        padding: 0;
+        border: 0;
+    }
 }
 
 .calendar-page .fc table.fc-col-header {
@@ -366,12 +377,22 @@
         padding: 0 10px;
         background: rgba(255, 255, 255, 1);
         border: 1px solid var(--system-border);
+
+        @media (max-width: 1023px) {
+            border: 0;
+            padding: 0;
+            min-height: unset;
+        }
     }
 }
 
 .calendar-page .fc .fc-col-header-cell-cushion {
     color: var(--system-content-1);
     @include typo-token(22, 28, 500);
+
+    @media (max-width: 1023px) {
+        @include typo-token(14, 20, 500);
+    }
 }
 
 .calendar-page .fc-theme-standard td {}
@@ -383,6 +404,11 @@
     color: var(--system-black);
     text-decoration: none;
     @include typo-token(18, 28, 600);
+    font-family: var(--font-archivo);
+
+    @media (max-width: 1023px) {
+        @include typo-token(14, 20, 400);
+    }
 }
 
 .calendar-page .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
@@ -395,6 +421,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 12px;
+
+    @media (max-width: 1023px) {
+        @include typo-token(14, 20, 400);
+        margin: 0;
+    }
 }
 
 .calendar-page .fc .fc-daygrid-day-frame {
@@ -418,12 +450,20 @@
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
+
+    @media (max-width: 1023px) {
+        justify-content: center;
+    }
 }
 
 .calendar-page .fc .fc-daygrid-day-events {
     display: flex;
     flex-direction: column;
     gap: 6px;
+
+    @media (max-width: 1023px) {
+        display: none;
+    }
 }
 
 .calendar-page .fc .fc-event {
@@ -545,6 +585,10 @@
     margin-bottom: 12px;
     color: var(--system-content-1);
     font-family: var(--font-inter);
+
+    @media (max-width: 1023px) {
+        margin-bottom: 0;
+    }
 }
 
 .calendar-week__label {
@@ -600,6 +644,14 @@
 
     &.class-workshop {
         background-color: var(--secondary-bg4);
+    }
+
+    @media (max-width: 1023px) {
+        width: 38px;
+        height: 38px;
+        position: absolute;
+        border-radius: 50%;
+        top: 0;
     }
 }
 
@@ -683,14 +735,13 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    display: none;
 }
 
 .calendar-sidebar__title {
     margin: 0;
-    font-family: var(--font-playfair-display);
-    font-size: clamp(28px, 3vw, 54px);
-    line-height: 1;
-    color: var(--system-content-1);
+    @include typo-display-sm(500, 48);
+    color: rgba(47, 47, 47, 1);
 }
 
 .calendar-sidebar__close {
@@ -708,12 +759,20 @@
 .calendar-sidebar__item {
     border: 1px solid rgba(43, 38, 38, 0.08);
     background: rgba(248, 178, 165, 0.18);
+
+    &.event-show {
+        background: var(--secondary-bg1);
+    }
+
+    &.class-workshop {
+        background: var(--secondary-bg4);
+    }
 }
 
-.calendar-sidebar__item.is-active {
-    border-color: rgba(240, 76, 38, 0.35);
-    background: rgba(240, 76, 38, 0.08);
-}
+// .calendar-sidebar__item.is-active {
+//     border-color: rgba(240, 76, 38, 0.35);
+//     background: rgba(240, 76, 38, 0.08);
+// }
 
 .calendar-sidebar__item-link {
     display: grid;
@@ -760,6 +819,10 @@
     line-height: 1.45;
 }
 
+.calendar-sidebar__item-copy {
+    display: none;
+}
+
 .calendar-sidebar__item-arrow {
     color: rgba(29, 29, 29, 0.75);
     font-size: 26px;
@@ -782,6 +845,18 @@
 @media (max-width: 991px) {
     .calendar-page__subhead {
         align-items: flex-start;
+
+        .calendar-page__navigator {
+            order: 3;
+        }
+
+        .calendar-page__modes {
+            order: 1;
+        }
+
+        .calendar-page__filters {
+            order: 2;
+        }
     }
 
     .calendar-page__filters {
@@ -813,6 +888,7 @@
 
     .calendar-page__navigator {
         width: 100%;
+        justify-content: center;
     }
 
     .calendar-page__modes {

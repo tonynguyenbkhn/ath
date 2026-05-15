@@ -24,4 +24,4 @@ if (! defined('ABSPATH')) {
 <?php if (!is_shop() && !is_product_category()) {
 	echo '<div class="product-scroll-wrapper">';
 } ?>
-<ul class="products columns-<?php echo esc_attr(wc_get_loop_prop('columns')); ?>">
+<ul class="products facetwp-template columns-<?php echo esc_attr(wc_get_loop_prop('columns')); ?>">
