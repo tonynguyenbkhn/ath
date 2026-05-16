@@ -61,6 +61,30 @@
         position: relative;
         z-index: 999;
     }
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
+
+        .hero-banner__left {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-banner__right {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .hero-banner__title {
+            text-align: left;
+            margin-left: 0;
+            margin-right: auto;
+        }
+    }
 }
 
 .hero-banner__left,
@@ -76,9 +100,9 @@
 
 
 .hero-banner__cta {
-    margin-top: 1rem;
 
     a {
+        display: inline-block;
         text-align: center;
     }
 }
