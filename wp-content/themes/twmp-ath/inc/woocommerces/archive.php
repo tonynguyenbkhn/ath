@@ -24,6 +24,141 @@ function twmp_is_shop_catalog_page()
     return is_shop() || is_product_category() || twmp_is_product_search_page();
 }
 
+function twmp_is_product_search_fallback()
+{
+    if (!empty($GLOBALS['twmp_product_search_fallback'])) {
+        return true;
+    }
+
+    return !empty(get_query_var('twmp_product_search_fallback'));
+}
+
+function twmp_flag_empty_product_search_query($query)
+{
+    if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || !$query->is_search()) {
+        return;
+    }
+
+    $post_type = $query->get('post_type');
+    $is_product_search = false;
+
+    if (is_array($post_type)) {
+        $is_product_search = in_array('product', $post_type, true);
+    } else {
+        $is_product_search = 'product' === $post_type;
+    }
+
+    if (!$is_product_search) {
+        return;
+    }
+
+    $search_term = (string) $query->get('s');
+    if ('' === trim($search_term)) {
+        return;
+    }
+
+    $check_query = new WP_Query(
+        array(
+            'post_type'           => 'product',
+            'post_status'         => 'publish',
+            's'                   => $search_term,
+            'posts_per_page'      => 1,
+            'no_found_rows'       => true,
+            'ignore_sticky_posts' => true,
+            'fields'              => 'ids',
+            'suppress_filters'    => true,
+        )
+    );
+
+    if (!$check_query->have_posts()) {
+        $query->set('twmp_product_search_fallback', 1);
+    }
+}
+
+add_action('pre_get_posts', 'twmp_flag_empty_product_search_query', 20);
+
+function twmp_expand_empty_product_search_results($posts, $query)
+{
+    if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || !$query->is_search()) {
+        return $posts;
+    }
+
+    $post_type = $query->get('post_type');
+    $is_product_search = false;
+
+    if (is_array($post_type)) {
+        $is_product_search = in_array('product', $post_type, true);
+    } else {
+        $is_product_search = 'product' === $post_type;
+    }
+
+    if (!$is_product_search) {
+        return $posts;
+    }
+
+    $GLOBALS['twmp_product_search_fallback'] = false;
+
+    if (!empty($posts)) {
+        return $posts;
+    }
+
+    $fallback_query = new WP_Query(
+        array(
+            'post_type'           => 'product',
+            'post_status'         => 'publish',
+            'ignore_sticky_posts' => true,
+            'posts_per_page'      => -1,
+            'no_found_rows'       => true,
+            'orderby'             => 'date',
+            'order'               => 'DESC',
+            'suppress_filters'    => true,
+        )
+    );
+
+    $fallback_posts = $fallback_query->posts;
+    $fallback_count = count($fallback_posts);
+
+    $GLOBALS['twmp_product_search_fallback'] = $fallback_count > 0;
+
+    $query->found_posts   = $fallback_count;
+    $query->post_count    = $fallback_count;
+    $query->max_num_pages = 1;
+    $query->set('posts_per_page', max(1, $fallback_count));
+    $query->set('no_found_rows', true);
+    $query->set('paged', 1);
+    $query->set('twmp_product_search_fallback', 1);
+
+    if (function_exists('wc_set_loop_prop')) {
+        wc_set_loop_prop('total', $fallback_count);
+        wc_set_loop_prop('total_pages', 1);
+        wc_set_loop_prop('current_page', 1);
+        wc_set_loop_prop('per_page', max(1, $fallback_count));
+    }
+
+    return $fallback_posts;
+}
+
+add_filter('the_posts', 'twmp_expand_empty_product_search_results', 20, 2);
+
+function twmp_adjust_facetwp_product_search_query_args($query_args, $renderer)
+{
+    if (empty($query_args['twmp_product_search_fallback']) && !twmp_is_product_search_fallback()) {
+        return $query_args;
+    }
+
+    return array(
+        'post_type'           => 'product',
+        'post_status'         => 'publish',
+        'ignore_sticky_posts' => true,
+        'posts_per_page'      => -1,
+        'no_found_rows'       => true,
+        'orderby'             => 'date',
+        'order'               => 'DESC',
+    );
+}
+
+add_filter('facetwp_query_args', 'twmp_adjust_facetwp_product_search_query_args', 20, 2);
+
 // Tiếng việt: Để tùy chỉnh cách hiển thị sản phẩm trong vòng lặp sản phẩm WooCommerce, bạn có thể sử dụng hook 'woocommerce_before_shop_loop_item' để thay thế các phần tử mặc định bằng cách của riêng bạn. Dưới đây là một ví dụ về cách làm điều này:
 add_action('wp', function () {
     remove_action('woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10);

@@ -20,8 +20,8 @@ defined('ABSPATH') || exit;
 
 get_header('shop');
 
-$has_products     = woocommerce_product_loop();
-$is_empty_search  = is_search() && ! $has_products;
+$has_products    = woocommerce_product_loop();
+$is_empty_search = is_search() && function_exists('twmp_is_product_search_fallback') && twmp_is_product_search_fallback();
 
 /**
  * Hook: woocommerce_before_main_content.
@@ -31,7 +31,19 @@ $is_empty_search  = is_search() && ! $has_products;
  * @hooked WC_Structured_Data::generate_website_data() - 30
  */
 do_action('woocommerce_before_main_content');
-if ($has_products) {
+if ($is_empty_search) {
+?>
+	<header class="woocommerce-products-header twmp-shop-search-empty__header">
+		<h1 class="woocommerce-products-header__title page-title">
+			<?php echo esc_html__("Don't have Result", 'twmp-ath'); ?>
+		</h1>
+		<p class="twmp-shop-search-empty__description">
+			<?php echo esc_html__('No results were found for you. Here are some products you may like.', 'twmp-ath'); ?>
+		</p>
+	</header>
+<?php
+	do_action('woocommerce_shop_loop_header');
+} elseif ($has_products) {
 	/**
 	 * Hook: woocommerce_shop_loop_header.
 	 *
@@ -87,68 +99,6 @@ if ($has_products) {
 	 * @hooked woocommerce_pagination - 10
 	 */
 	do_action('woocommerce_after_shop_loop');
-} elseif ($is_empty_search) {
-	$catalog_query = new WP_Query(
-		array(
-			'post_type'           => 'product',
-			'post_status'         => 'publish',
-			'ignore_sticky_posts' => true,
-			'posts_per_page'      => -1,
-			'no_found_rows'       => true,
-			'orderby'             => 'date',
-			'order'               => 'DESC',
-		)
-	);
-	if ($catalog_query->have_posts()) {
-		global $wp_query;
-
-		$main_query_backup = $wp_query;
-		$wp_query          = $catalog_query;
-
-		if (function_exists('wc_set_loop_prop')) {
-			$catalog_total = (int) $catalog_query->found_posts;
-
-			wc_set_loop_prop('total', $catalog_total);
-			wc_set_loop_prop('total_pages', 1);
-			wc_set_loop_prop('current_page', 1);
-			wc_set_loop_prop('per_page', max(1, $catalog_total));
-		}
-		/**
-		 * Hook: woocommerce_before_shop_loop.
-		 *
-		 * @hooked woocommerce_output_all_notices - 10
-		 * @hooked woocommerce_result_count - 20
-		 * @hooked woocommerce_catalog_ordering - 30
-		 */
-		do_action('woocommerce_before_shop_loop');
-
-		woocommerce_product_loop_start();
-
-		while ($catalog_query->have_posts()) :
-			$catalog_query->the_post();
-
-			/**
-			 * Hook: woocommerce_shop_loop.
-			 */
-			do_action('woocommerce_shop_loop');
-
-			wc_get_template_part('content', 'product');
-		endwhile;
-
-		woocommerce_product_loop_end();
-
-		/**
-		 * Hook: woocommerce_after_shop_loop.
-		 *
-		 * @hooked woocommerce_pagination - 10
-		 */
-		do_action('woocommerce_after_shop_loop');
-
-		$wp_query = $main_query_backup;
-		wp_reset_postdata();
-	} else {
-		do_action('woocommerce_no_products_found');
-	}
 } else {
 	/**
 	 * Hook: woocommerce_no_products_found.
