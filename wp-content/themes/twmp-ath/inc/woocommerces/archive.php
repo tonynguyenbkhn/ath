@@ -33,6 +33,85 @@ function twmp_is_product_search_fallback()
     return !empty(get_query_var('twmp_product_search_fallback'));
 }
 
+function twmp_is_empty_product_search_page()
+{
+    if (!is_search() || !function_exists('twmp_is_product_search_page') || !twmp_is_product_search_page()) {
+        return false;
+    }
+
+    $search_term = (string) get_query_var('twmp_product_search_term');
+
+    if ('' === trim($search_term)) {
+        $search_term = (string) get_search_query();
+    }
+
+    $search_term = trim($search_term);
+
+    if ('' === $search_term || !function_exists('twmp_product_search_has_results')) {
+        return false;
+    }
+
+    return !twmp_product_search_has_results($search_term);
+}
+
+function twmp_product_search_has_results($search_term)
+{
+    static $cache = array();
+
+    $search_term = trim((string) $search_term);
+
+    if ('' === $search_term) {
+        return false;
+    }
+
+    if (array_key_exists($search_term, $cache)) {
+        return $cache[$search_term];
+    }
+
+    $check_query = new WP_Query(
+        array(
+            'post_type'           => 'product',
+            'post_status'         => 'publish',
+            's'                   => $search_term,
+            'posts_per_page'      => 1,
+            'no_found_rows'       => true,
+            'ignore_sticky_posts' => true,
+            'fields'              => 'ids',
+            'suppress_filters'    => true,
+        )
+    );
+
+    $cache[$search_term] = $check_query->have_posts();
+
+    return $cache[$search_term];
+}
+
+function twmp_get_fallback_product_ids()
+{
+    static $cache = null;
+
+    if (null !== $cache) {
+        return $cache;
+    }
+
+    $fallback_query = new WP_Query(
+        array(
+            'post_type'           => 'product',
+            'post_status'         => 'publish',
+            'ignore_sticky_posts' => true,
+            'posts_per_page'      => -1,
+            'no_found_rows'       => true,
+            'orderby'             => 'date',
+            'order'               => 'DESC',
+            'fields'              => 'ids',
+        )
+    );
+
+    $cache = $fallback_query->posts;
+
+    return $cache;
+}
+
 function twmp_flag_empty_product_search_query($query)
 {
     if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || !$query->is_search()) {
@@ -57,22 +136,24 @@ function twmp_flag_empty_product_search_query($query)
         return;
     }
 
-    $check_query = new WP_Query(
-        array(
-            'post_type'           => 'product',
-            'post_status'         => 'publish',
-            's'                   => $search_term,
-            'posts_per_page'      => 1,
-            'no_found_rows'       => true,
-            'ignore_sticky_posts' => true,
-            'fields'              => 'ids',
-            'suppress_filters'    => true,
-        )
-    );
-
-    if (!$check_query->have_posts()) {
-        $query->set('twmp_product_search_fallback', 1);
+    if (twmp_product_search_has_results($search_term)) {
+        return;
     }
+
+    $query->set('twmp_product_search_fallback', 1);
+    $query->set('twmp_product_search_term', $search_term);
+    $query->set('s', '');
+    $query->set('post_type', 'product');
+    $query->set('post_status', 'publish');
+    $query->set('ignore_sticky_posts', true);
+    $query->set('posts_per_page', -1);
+    $query->set('no_found_rows', true);
+    $query->set('orderby', 'date');
+    $query->set('order', 'DESC');
+    $query->set('paged', 1);
+
+    $GLOBALS['twmp_product_search_fallback'] = true;
+    $GLOBALS['twmp_product_search_term'] = $search_term;
 }
 
 add_action('pre_get_posts', 'twmp_flag_empty_product_search_query', 20);
@@ -96,26 +177,11 @@ function twmp_expand_empty_product_search_results($posts, $query)
         return $posts;
     }
 
-    $GLOBALS['twmp_product_search_fallback'] = false;
-
     if (!empty($posts)) {
         return $posts;
     }
 
-    $fallback_query = new WP_Query(
-        array(
-            'post_type'           => 'product',
-            'post_status'         => 'publish',
-            'ignore_sticky_posts' => true,
-            'posts_per_page'      => -1,
-            'no_found_rows'       => true,
-            'orderby'             => 'date',
-            'order'               => 'DESC',
-            'suppress_filters'    => true,
-        )
-    );
-
-    $fallback_posts = $fallback_query->posts;
+    $fallback_posts = twmp_get_fallback_product_ids();
     $fallback_count = count($fallback_posts);
 
     $GLOBALS['twmp_product_search_fallback'] = $fallback_count > 0;
@@ -140,21 +206,79 @@ function twmp_expand_empty_product_search_results($posts, $query)
 
 add_filter('the_posts', 'twmp_expand_empty_product_search_results', 20, 2);
 
+function twmp_force_facetwp_fallback_ids($post_ids, $renderer)
+{
+    if (!twmp_is_product_search_fallback()) {
+        return $post_ids;
+    }
+
+    if (!empty($post_ids)) {
+        return $post_ids;
+    }
+
+    return twmp_get_fallback_product_ids();
+}
+
+add_filter('facetwp_pre_filtered_post_ids', 'twmp_force_facetwp_fallback_ids', 20, 2);
+
+function twmp_force_facetwp_filtered_fallback_ids($post_ids, $renderer)
+{
+    $normalized_post_ids = array_values((array) $post_ids);
+    $is_empty_post_ids = empty($normalized_post_ids) || (1 === count($normalized_post_ids) && 0 === (int) $normalized_post_ids[0]);
+
+    if (!twmp_is_product_search_fallback() || !$is_empty_post_ids || !($renderer instanceof FacetWP_Renderer)) {
+        return $post_ids;
+    }
+
+    foreach ((array) $renderer->facets as $facet) {
+        if (!empty($facet['selected_values'])) {
+            return $post_ids;
+        }
+    }
+
+    return twmp_get_fallback_product_ids();
+}
+
+add_filter('facetwp_filtered_post_ids', 'twmp_force_facetwp_filtered_fallback_ids', 20, 2);
+
 function twmp_adjust_facetwp_product_search_query_args($query_args, $renderer)
 {
-    if (empty($query_args['twmp_product_search_fallback']) && !twmp_is_product_search_fallback()) {
+    $post_type = $query_args['post_type'] ?? '';
+    $is_product_search = false;
+
+    if (is_array($post_type)) {
+        $is_product_search = in_array('product', $post_type, true);
+    } else {
+        $is_product_search = 'product' === $post_type;
+    }
+
+    if (!$is_product_search) {
         return $query_args;
     }
 
-    return array(
-        'post_type'           => 'product',
-        'post_status'         => 'publish',
-        'ignore_sticky_posts' => true,
-        'posts_per_page'      => -1,
-        'no_found_rows'       => true,
-        'orderby'             => 'date',
-        'order'               => 'DESC',
-    );
+    $is_fallback = !empty($query_args['twmp_product_search_fallback']) || twmp_is_product_search_fallback();
+
+    if (!$is_fallback) {
+        return $query_args;
+    }
+
+    $GLOBALS['twmp_product_search_fallback'] = true;
+
+    unset($query_args['s']);
+    unset($query_args['twmp_product_search_fallback']);
+    unset($query_args['product_cat']);
+    unset($query_args['taxonomy']);
+    unset($query_args['term']);
+
+    $query_args['post_type']           = 'product';
+    $query_args['post_status']         = 'publish';
+    $query_args['ignore_sticky_posts'] = true;
+    $query_args['posts_per_page']      = -1;
+    $query_args['no_found_rows']       = true;
+    $query_args['orderby']             = 'date';
+    $query_args['order']               = 'DESC';
+
+    return $query_args;
 }
 
 add_filter('facetwp_query_args', 'twmp_adjust_facetwp_product_search_query_args', 20, 2);
@@ -458,10 +582,6 @@ add_action('woocommerce_before_main_content', function () {
         if (!$banner_id) {
             $banner_id = absint(function_exists('get_field') ? get_field('ath_banner_shop_page', 'option') : 0);
         }
-
-        echo '<pre>';
-        print_r($banner_id);
-        echo '</pre>';
 
         if (!$banner_id) {
             return;

@@ -21,7 +21,7 @@ defined('ABSPATH') || exit;
 get_header('shop');
 
 $has_products    = woocommerce_product_loop();
-$is_empty_search = is_search() && function_exists('twmp_is_product_search_fallback') && twmp_is_product_search_fallback();
+$is_empty_search = function_exists('twmp_is_empty_product_search_page') && twmp_is_empty_product_search_page();
 
 /**
  * Hook: woocommerce_before_main_content.

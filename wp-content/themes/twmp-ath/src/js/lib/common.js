@@ -34,6 +34,16 @@ const renderOptionContent = (value, label) => {
 	return `${iconUrl ? `<img src="${iconUrl}" alt="${iconAlt}">` : ''}<span>${optionLabel}</span>`
 }
 
+const setSelectValue = (select, value) => {
+	if (!select) {
+		return
+	}
+
+	select.value = value
+	select.dispatchEvent(new Event('input', { bubbles: true }))
+	select.dispatchEvent(new Event('change', { bubbles: true }))
+}
+
 const bindDropdownCloseHandler = () => {
 	if (document.body.dataset.twmpDropdownCloseBound === '1') {
 		return
@@ -120,7 +130,7 @@ const initLanguageSelect = () => {
 			item.innerHTML = renderOptionContent(option.value, option.text)
 
 			item.addEventListener('click', () => {
-				select.value = option.value
+				setSelectValue(select, option.value)
 				current.innerHTML = renderOptionContent(option.value, option.text)
 				custom.classList.remove('is-open')
 			})
@@ -175,7 +185,7 @@ const initDefaultSelect = () => {
 			item.innerHTML = option.text
 
 			item.addEventListener('click', () => {
-				select.value = option.value
+				setSelectValue(select, option.value)
 				current.innerHTML = option.text
 				custom.classList.remove('is-open')
 			})
@@ -230,7 +240,7 @@ const initFacetWpSelect = () => {
 			item.innerHTML = option.text
 
 			item.addEventListener('click', () => {
-				select.value = option.value
+				setSelectValue(select, option.value)
 				current.innerHTML = option.text
 				custom.classList.remove('is-open')
 			})

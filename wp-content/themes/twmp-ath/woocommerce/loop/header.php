@@ -18,8 +18,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$has_products     = woocommerce_product_loop();
-if ( $has_products ) :
+
+if ( function_exists( 'twmp_is_empty_product_search_page' ) && twmp_is_empty_product_search_page() ) {
+	return;
+}
+
 ?>
 <header class="woocommerce-products-header">
 	<?php
@@ -46,5 +49,3 @@ if ( $has_products ) :
 	do_action( 'woocommerce_archive_description' );
 	?>
 </header>
-<?php
-endif;
