@@ -23,7 +23,7 @@ if (! empty($header_menus) && is_array($header_menus)) {
                         $admin_classes      = ! empty( $menu_item->classes ) ? implode( ' ', $menu_item->classes ) : '';
                         $li_classes         = trim( "$admin_classes $is_active" );
 						if (! $has_children) { ?>
-							<li class="menu-item <?php echo esc_attr($is_active); ?>">
+							<li class="menu-item <?php echo esc_attr($is_active); ?> <?php echo esc_attr($li_classes); ?>">
 								<a
 									href="<?php echo esc_url($menu_item->url); ?>"
 									target="<?php echo esc_attr($link_target); ?>"

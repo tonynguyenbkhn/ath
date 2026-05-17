@@ -33,6 +33,6 @@ class Woo_Theme
         // require_once get_theme_file_path('/inc/woocommerces/cart.php');
         require_once get_theme_file_path('/inc/woocommerces/checkout.php');
         // require_once get_theme_file_path('/inc/woocommerces/thank-you.php');
-        // require_once get_theme_file_path('/inc/woocommerces/account.php');
+        require_once get_theme_file_path('/inc/woocommerces/account.php');
     }
 }

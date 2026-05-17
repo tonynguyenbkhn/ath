@@ -1,8 +1,40 @@
 <?php
 
 if (!defined('ABSPATH')) {
-    exit;
+	exit;
 }
+
+$language_items = function_exists('pll_the_languages')
+	? pll_the_languages([
+		'raw'           => 1,
+		'hide_current'  => 0,
+		'hide_if_empty' => 0,
+	])
+	: [];
+
+$language_icon_map = [
+	'en' => 'english',
+	'vi' => 'vietnam',
+	'fr' => 'french',
+];
+
+$current_language_item = null;
+if (!empty($language_items) && is_array($language_items)) {
+	foreach ($language_items as $language_item) {
+		if (!empty($language_item['current_lang'])) {
+			$current_language_item = $language_item;
+			break;
+		}
+	}
+}
+
+if (empty($current_language_item) && !empty($language_items[0])) {
+	$current_language_item = $language_items[0];
+}
+
+$current_language_slug = !empty($current_language_item['slug']) ? sanitize_key($current_language_item['slug']) : '';
+$current_language_icon = isset($language_icon_map[$current_language_slug]) ? $language_icon_map[$current_language_slug] : $current_language_slug;
+$current_language_icon_uri = $current_language_icon ? get_theme_file_uri('/assets/images/icons/' . $current_language_icon . '.svg') : '';
 
 ?>
 
@@ -37,6 +69,56 @@ if (!defined('ABSPATH')) {
 							<div class="">
 								<?php get_template_part('template-parts/headers/icon-search', null, []); ?>
 							</div>
+							<?php if (!empty($language_items) && is_array($language_items) && !empty($current_language_icon_uri)) : ?>
+								<div class="header__menu-icons__language">
+									<button
+										type="button"
+										class="header__language-switcher-toggle button-reset"
+										aria-label="<?php echo esc_attr__('Select language', 'twmp-ath'); ?>"
+										aria-expanded="false"
+										onclick="var menu=this.nextElementSibling; var expanded=menu.hidden; menu.hidden=!expanded; this.setAttribute('aria-expanded', expanded ? 'true' : 'false');"
+									>
+										<img
+											src="<?php echo esc_url($current_language_icon_uri); ?>"
+											alt="<?php echo esc_attr($current_language_item['name'] ?? __('Language', 'twmp-ath')); ?>"
+											width="24"
+											height="24"
+											loading="eager"
+											decoding="async"
+										/>
+										<span class="screen-reader-text"><?php echo esc_html($current_language_item['name'] ?? __('Language', 'twmp-ath')); ?></span>
+									</button>
+									<div class="header__language-switcher-menu" hidden>
+										<?php foreach ($language_items as $language_item) :
+											$language_slug = !empty($language_item['slug']) ? sanitize_key($language_item['slug']) : '';
+											$language_icon = isset($language_icon_map[$language_slug]) ? $language_icon_map[$language_slug] : $language_slug;
+											$language_icon_uri = $language_icon ? get_theme_file_uri('/assets/images/icons/' . $language_icon . '.svg') : '';
+
+											if (empty($language_icon_uri)) {
+												continue;
+											}
+
+											$is_current_language = !empty($language_item['current_lang']);
+										?>
+											<a
+												class="header__language-switcher-item<?php echo $is_current_language ? ' is-current' : ''; ?>"
+												href="<?php echo esc_url($language_item['url']); ?>"
+												<?php echo $is_current_language ? 'aria-current="true"' : ''; ?>
+											>
+												<img
+													src="<?php echo esc_url($language_icon_uri); ?>"
+													alt="<?php echo esc_attr($language_item['name']); ?>"
+													width="24"
+													height="24"
+													loading="lazy"
+													decoding="async"
+												/>
+												<span class="screen-reader-text"><?php echo esc_html($language_item['name']); ?></span>
+											</a>
+										<?php endforeach; ?>
+									</div>
+								</div>
+							<?php endif; ?>
 							<div class="th-menu-toggle"><?php echo twmp_get_svg_icon('menu') ?></div>
 							<div class="header__menu-icons__button">
 								<?php get_template_part('templates/components/button', null, [

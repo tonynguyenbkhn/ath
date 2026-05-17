@@ -4,13 +4,14 @@
 		margin-bottom: 0;
 	}
 	ul {
+		@include list-reset();
 		li {
 			a {
 				display: inline-block;
 				@include button-style-outline-dark;
-				padding: 0.5em 1em;
-				color: var(--title);
-				width: 100%;
+				padding: 10px 16px;
+				color: var(--system-black);
+				width: calc( 100% - 32px );
 				text-transform: uppercase;
 				font-weight: bold;
 
@@ -27,9 +28,9 @@
 
 			&.is-active {
 				a {
-					border-color: var(--primary);
-					background-color: var(--primary);
-					color: var(--white);
+					border-color: var(--primary-500);
+					background-color: var(--primary-500);
+					color: var(--system-white);
 				}
 			}
 		}
@@ -38,6 +39,7 @@
 
 .page-block--account {
 	@include row(-1em);
+	overflow: hidden;
 
 	& > .woocommerce-MyAccount-navigation {
 		@include col(12, 1em);
@@ -49,20 +51,27 @@
 
 	& > .woocommerce-MyAccount-content {
 		@include col(12, 1em);
+		overflow-x: scroll;
 
 		@media (min-width: 1024px) {
 			@include col(8, 1em);
 		}
 
 		.woocommerce-info {
-			color: var(--primary);
+			color: var(--primary-500);
 			margin-bottom: 1em;
 		}
 
 		.shop_table {
 			@include table-border;
 
+			width: 100%;
+
 			margin: 0;
+
+			tbody th {
+				background-color: transparent
+			}
 		}
 
 		.woocommerce-customer-details .woocommerce-columns,
@@ -100,7 +109,7 @@
 				position: relative;
 
 				input[name='rememberme'] {
-					@include custom-checkbox(var(--primary), var(--title));
+					@include custom-checkbox(var(--primary-500), var(--system-black));
 				}
 
 				&.form-row-first,
@@ -126,7 +135,7 @@
 				}
 
 				span {
-					color: var(--title);
+					color: var(--system-black);
 					width: 100%;
 				}
 
@@ -186,7 +195,7 @@
 			}
 
 			input[name='rememberme'] {
-				@include custom-checkbox(var(--primary), var(--title));
+				@include custom-checkbox(var(--primary-500), var(--system-black));
 			}
 
 			label {
@@ -200,7 +209,7 @@
 			}
 
 			span {
-				color: var(--title);
+				color: var(--system-black);
 				width: 100%;
 			}
 
@@ -262,7 +271,7 @@
 			position: relative;
 
 			input[name='rememberme'] {
-				@include custom-checkbox(var(--primary), var(--title));
+				@include custom-checkbox(var(--primary-500), var(--system-black));
 			}
 
 			&.form-row-first,
@@ -288,7 +297,7 @@
 			}
 
 			span {
-				color: var(--title);
+				color: var(--system-black);
 				width: 100%;
 			}
 

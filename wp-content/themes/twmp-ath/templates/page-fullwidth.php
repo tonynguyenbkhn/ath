@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-get_template_part('templates/blocks/page-title', null, ['class' => 'reverse-title']);
+get_template_part('templates/sections/page-title/section', null, ['class' => '']);
 ?>
 <div class="page page-standard">
 	<div class="container page-standard__container">
