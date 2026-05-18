@@ -10,7 +10,8 @@ if (!defined('ABSPATH')) {
 }
 
 $calendar_service = \TWMP_THEME\Inc\Calendar_Theme::get_instance();
-$filter_options = $calendar_service->get_filter_options();
+$current_language = function_exists('pll_current_language') ? (string) pll_current_language('slug') : '';
+$filter_options = $calendar_service->get_filter_options($current_language);
 $current_year = (int) wp_date('Y');
 $current_month = (int) wp_date('n');
 $start_month = $current_month <= 6 ? 1 : 7;
@@ -22,6 +23,7 @@ $settings = [
     'initialMonth' => $current_month,
     'initialWindowStartMonth' => $start_month,
     'initialMode' => 'year',
+    'lang' => $current_language,
     'filters' => $filter_options,
 ];
 
@@ -71,7 +73,7 @@ get_header();
                             <div class="default-select-wrap">
                                 <select class="calendar-page__select default-select" data-calendar-filter="location">
                                     <?php foreach ($filter_options['locations'] as $value => $label) : ?>
-                                        <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($label); ?></option>
+                                        <option value="<?php echo esc_attr($value); ?>" <?php selected($value, 'all'); ?>><?php echo esc_html($label); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -81,7 +83,17 @@ get_header();
                             <div class="default-select-wrap">
                                 <select class="calendar-page__select default-select" data-calendar-filter="type">
                                     <?php foreach ($filter_options['types'] as $value => $label) : ?>
-                                        <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($label); ?></option>
+                                        <option value="<?php echo esc_attr($value); ?>" <?php selected($value, 'all'); ?>><?php echo esc_html($label); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: none" class="calendar-page__select-wrap">
+                            <span class="screen-reader-text"><?php echo esc_html__('Status', 'twmp-ath'); ?></span>
+                            <div class="default-select-wrap">
+                                <select class="calendar-page__select default-select" data-calendar-filter="status">
+                                    <?php foreach ($filter_options['statuses'] as $value => $label) : ?>
+                                        <option value="<?php echo esc_attr($value); ?>" <?php selected($value, 'all'); ?>><?php echo esc_html($label); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

@@ -327,6 +327,9 @@ export default el => {
 
 	const getFetchUrl = (start, end) => {
 		const url = new URL(endpoint, window.location.origin)
+		if (settings.lang) {
+			url.searchParams.set('lang', settings.lang)
+		}
 		url.searchParams.set('start', start.toISOString())
 		url.searchParams.set('end', end.toISOString())
 		url.searchParams.set('view', currentMode)

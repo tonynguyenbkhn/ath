@@ -8,6 +8,8 @@ class Calendar_Theme
 {
 	use Singleton;
 
+	protected $language = '';
+
 	protected function __construct()
 	{
 		$this->setup_hooks();
@@ -18,30 +20,23 @@ class Calendar_Theme
 		add_action('rest_api_init', [$this, 'register_routes']);
 	}
 
-	public function get_filter_options()
+	public function get_filter_options($language = '')
 	{
-		return [
-			'types' => [
-				'all' => __('All type', 'twmp-ath'),
-				'show_event_festival' => __('Show / Event / Festival', 'twmp-ath'),
-				'class_workshop' => __('Class / Workshop', 'twmp-ath'),
-				'for_school' => __('For School', 'twmp-ath'),
-				'for_company' => __('For Company', 'twmp-ath'),
-			],
-			'locations' => [
-				'all' => __('All location', 'twmp-ath'),
-				'lfay' => __('LFAY', 'twmp-ath'),
-				'ath_theatre' => __('ATH theatre', 'twmp-ath'),
-			],
-			'statuses' => [
-				'all' => __('All status', 'twmp-ath'),
-				'coming_soon' => __('Coming Soon', 'twmp-ath'),
-				'available' => __('Available', 'twmp-ath'),
-				'almost_full' => __('Almost Full', 'twmp-ath'),
-				'happening' => __('Happening', 'twmp-ath'),
-				'completed' => __('Completed', 'twmp-ath'),
-			],
+		$language = $this->normalize_language($language);
+		static $cache = [];
+		$cache_key = $language !== '' ? $language : '__default__';
+
+		if (isset($cache[$cache_key])) {
+			return $cache[$cache_key];
+		}
+
+		$cache[$cache_key] = [
+			'types' => $this->get_term_options('product_cat', __('All type', 'twmp-ath'), $language, ['uncategorized']),
+			'locations' => $this->get_term_options('ath_venue', __('All location', 'twmp-ath'), $language),
+			'statuses' => $this->get_term_options('ath_event_status', __('All status', 'twmp-ath'), $language),
 		];
+
+		return $cache[$cache_key];
 	}
 
 	public function register_routes()
@@ -59,6 +54,8 @@ class Calendar_Theme
 
 	public function rest_get_calendar_events(\WP_REST_Request $request)
 	{
+		$this->language = $this->normalize_language((string) $request->get_param('lang'));
+
 		$filters = [
 			'type' => sanitize_key((string) $request->get_param('type')),
 			'location' => sanitize_key((string) $request->get_param('location')),
@@ -91,6 +88,7 @@ class Calendar_Theme
 		}
 
 		$events = $this->query_events($start, $end, $filters);
+		$this->language = '';
 
 		return new \WP_REST_Response(
 			[
@@ -104,29 +102,69 @@ class Calendar_Theme
 
 	public function query_events($start, $end, array $filters = [])
 	{
-		$product_ids = get_posts(
-			[
-				'post_type' => 'product',
-				'post_status' => 'publish',
-				'posts_per_page' => -1,
-				'fields' => 'ids',
-				'orderby' => 'date',
-				'order' => 'DESC',
-				'no_found_rows' => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-				'tax_query' => [
-					[
-						'taxonomy' => 'product_cat',
-						'field'    => 'slug',
-						'terms'    => [
-							'event-show',
-							'class-workshop',
-						],
-					],
-				],
-			]
+		$query_args = [
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'fields' => 'ids',
+			'orderby' => 'date',
+			'order' => 'DESC',
+			'no_found_rows' => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		];
+
+		$language = $this->get_language();
+		if ($language !== '') {
+			$query_args['lang'] = $language;
+		}
+
+		$tax_query = ['relation' => 'AND'];
+		$type_options = $this->get_filter_options($language)['types'];
+		$type_terms = array_values(
+			array_filter(
+				array_keys($type_options),
+				static function ($slug) {
+					return 'all' !== $slug;
+				}
+			)
 		);
+
+		if (! empty($type_terms)) {
+			$tax_query[] = [
+				'taxonomy' => 'product_cat',
+				'field' => 'slug',
+				'terms' => $type_terms,
+				'include_children' => false,
+			];
+		}
+
+		$filter_taxonomies = [
+			'type' => 'product_cat',
+			'location' => 'ath_venue',
+			'status' => 'ath_event_status',
+		];
+
+		foreach ($filter_taxonomies as $filter_key => $taxonomy) {
+			$term_slug = sanitize_key((string) ($filters[$filter_key] ?? ''));
+
+			if ($term_slug === '' || 'all' === $term_slug) {
+				continue;
+			}
+
+			$tax_query[] = [
+				'taxonomy' => $taxonomy,
+				'field' => 'slug',
+				'terms' => [$term_slug],
+				'include_children' => false,
+			];
+		}
+
+		if (count($tax_query) > 1) {
+			$query_args['tax_query'] = $tax_query;
+		}
+
+		$product_ids = get_posts($query_args);
 
 		$range_start = $this->sanitize_timestamp($start);
 		$range_end = $this->sanitize_timestamp($end);
@@ -157,15 +195,23 @@ class Calendar_Theme
 		if (! $product instanceof \WP_Post || 'publish' !== $product->post_status) {
 			return [];
 		}
-		// TODO change to taxonomy
-		$type = sanitize_key((string) get_field('ath_event_type', $product_id));
-		// TODO change to taxonomy
-		$status = sanitize_key((string) get_field('ath_status', $product_id));
-		$location_key = sanitize_key((string) get_field('ath_location', $product_id));
+		$type = $this->get_primary_term_slug($product_id, 'product_cat');
+		if ($type === '') {
+			$type = sanitize_key((string) get_field('ath_event_type', $product_id));
+		}
+
+		$status = $this->get_primary_term_slug($product_id, 'ath_event_status');
+		if ($status === '') {
+			$status = sanitize_key((string) get_field('ath_status', $product_id));
+		}
+
+		$location_key = $this->get_primary_term_slug($product_id, 'ath_venue');
+		if ($location_key === '') {
+			$location_key = sanitize_key((string) get_field('ath_location', $product_id));
+		}
 		$location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
 		$location_label = $location_detail !== '' ? $location_detail : $this->get_location_label($location_key);
 		$short_info = trim((string) get_field('ath_short_info', $product_id));
-		// TODO change to taxonomy
 		$age_display = trim((string) get_field('ath_age_display', $product_id));
 		$language = $this->join_field_values(get_field('ath_language', $product_id));
 		$format = trim((string) get_field('ath_format', $product_id));
@@ -311,7 +357,7 @@ class Calendar_Theme
 
 	private function get_event_color($type, $status)
 	{
-		if ('class_workshop' === $type) {
+		if (in_array($type, ['class-workshop', 'class_workshop'], true)) {
 			return [
 				'background' => '#B8E0AA',
 				'border' => '#A2D392',
@@ -336,21 +382,21 @@ class Calendar_Theme
 
 	private function get_type_label($type)
 	{
-		$types = $this->get_filter_options()['types'];
+		$types = $this->get_filter_options($this->get_language())['types'];
 
 		return $types[$type] ?? $type;
 	}
 
 	private function get_status_label($status)
 	{
-		$statuses = $this->get_filter_options()['statuses'];
+		$statuses = $this->get_filter_options($this->get_language())['statuses'];
 
 		return $statuses[$status] ?? $status;
 	}
 
 	private function get_location_label($location)
 	{
-		$locations = $this->get_filter_options()['locations'];
+		$locations = $this->get_filter_options($this->get_language())['locations'];
 
 		return $locations[$location] ?? $location;
 	}
@@ -386,6 +432,69 @@ class Calendar_Theme
 				$terms
 			)
 		);
+	}
+
+	private function get_term_options($taxonomy, $all_label, $language = '', array $excluded_slugs = [])
+	{
+		$options = [
+			'all' => $all_label,
+		];
+
+		$args = [
+			'taxonomy' => $taxonomy,
+			'hide_empty' => false,
+			'orderby' => 'name',
+			'order' => 'ASC',
+		];
+
+		if ($language !== '') {
+			$args['lang'] = $language;
+		}
+
+		$terms = get_terms($args);
+
+		if (empty($terms) || is_wp_error($terms)) {
+			return $options;
+		}
+
+		foreach ($terms as $term) {
+			if (in_array($term->slug, $excluded_slugs, true)) {
+				continue;
+			}
+
+			$options[$term->slug] = $term->name;
+		}
+
+		return $options;
+	}
+
+	private function get_primary_term_slug($product_id, $taxonomy)
+	{
+		$terms = get_the_terms($product_id, $taxonomy);
+
+		if (empty($terms) || is_wp_error($terms)) {
+			return '';
+		}
+
+		$term = array_shift($terms);
+
+		return $term instanceof \WP_Term ? sanitize_key((string) $term->slug) : '';
+	}
+
+	private function get_language()
+	{
+		if ($this->language !== '') {
+			return $this->language;
+		}
+
+		return $this->normalize_language(function_exists('pll_current_language') ? (string) pll_current_language('slug') : '');
+	}
+
+	private function normalize_language($language)
+	{
+		$language = sanitize_key((string) $language);
+
+		return $language !== '' ? $language : '';
 	}
 
 	private function sanitize_datetime($value)
