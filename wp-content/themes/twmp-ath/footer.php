@@ -4,8 +4,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-get_template_part('templates/blocks/album-feedback', null, ['enable_container' => false]);
-
 if (is_active_sidebar('footer-top')) {
 ?>
     <div class="footer-top">

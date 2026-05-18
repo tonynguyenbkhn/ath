@@ -259,6 +259,8 @@
 
 .calendar-page__panel {
     display: none;
+    position: relative;
+    z-index: 1;
 }
 
 .calendar-page__panel.is-active {

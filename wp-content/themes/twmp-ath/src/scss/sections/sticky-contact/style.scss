@@ -4,7 +4,7 @@
 	bottom: 80px;
 	z-index: 100;
 	/* pointer-events: none; */
-	display: none;
+	display: block;
 
 	&.is-active {
 		pointer-events: inherit;

@@ -183,12 +183,33 @@ body.th-body-visible {
 }
 
 .th-mobile-menu ul li {
+	&.mobile.not_login {
+		display: none;
+	}
+
+	&.mobile.is_login {
+		display: block;
+	}
+
 	&.label {
 		a {
 			color: var(--system-content-1);
 			@include typo-text-md(400);
 		}
+
+		&.mobile.not_login {
+			display: none;
+		}
+
+		&.mobile.is_login {
+			display: block;
+		}
+
+		&.mobile.not_login.main {
+			display: block;
+		}
 	}
+
 	&.text-primary-500 {
 		a {
 			color: var(--primary-500);
@@ -320,5 +341,24 @@ body.th-body-visible {
 
 	.th-mobile-menu>ul {
 		padding: 0 20px;
+	}
+}
+
+// Custom section not login
+
+.not_login_mobile_menu {
+	.not_login_mobile_menu_wrap {
+		padding: 0 24px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		
+		a {
+			text-align: center;
+
+			&.not_login_mobile__register-account {
+				border: 1px solid var(--system-border);
+			}
+		}
 	}
 }

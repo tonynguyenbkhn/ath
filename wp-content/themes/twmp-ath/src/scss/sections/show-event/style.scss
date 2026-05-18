@@ -101,13 +101,12 @@
 
 .event-section__title {
   color: #fff;
-  text-align: left;
   line-height: 1;
   text-align: center;
   margin-bottom: 40px;
 
   @media (min-width: 1024px) {
-    text-align: unset;
+    text-align: left;
     margin-bottom: 0;
   }
 }

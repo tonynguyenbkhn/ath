@@ -1,13 +1,15 @@
 <?php
 
 if (!defined('ABSPATH')) {
-    exit;
+	exit;
 }
 
 $menu_class     = \TWMP_THEME\Inc\Menus_Theme::get_instance();
 $header_menu_id = $menu_class->get_menu_id('primary');
 $header_menus   = wp_get_nav_menu_items($header_menu_id);
 $current_id     = get_queried_object_id();
+$is_login 		= is_user_logged_in();
+$is_login_classes = $is_login ? 'is_login' : 'not_login';
 
 $twmp_menu_item_icon = static function (array $classes) {
 	if (empty($classes)) {
@@ -35,70 +37,104 @@ $twmp_menu_item_icon = static function (array $classes) {
 
 if (! empty($header_menus) && is_array($header_menus)) {
 ?>
-    <div class="th-menu-wrapper" data-block="thmobilemenu">
-        <div class="th-menu-area text-center">
-            <button class="th-menu-toggle"><?php echo twmp_get_svg_icon('close') ?></button>
-            <div class="mobile-logo">
-                <span><?php echo esc_html__('Menu', 'twmp-ath') ?></span>
-            </div>
-            <div class="th-mobile-menu">
-                <ul>
-                <?php foreach ($header_menus as $menu_item) {
-					if (! $menu_item->menu_item_parent) {
+	<div class="th-menu-wrapper" data-block="thmobilemenu">
+		<div class="th-menu-area text-center">
+			<button class="th-menu-toggle"><?php echo twmp_get_svg_icon('close') ?></button>
+			<div class="mobile-logo">
+				<span><?php echo esc_html__('Menu', 'twmp-ath') ?></span>
+			</div>
+			<?php if ( !is_user_logged_in() ): ?>
+			<div class="not_login_mobile_menu">
+				<div class="not_login_mobile_menu_wrap">
+					<span class="text-system-content-1 typo-text-md-regular"><?php echo esc_html__('You not login', 'twmp-ath'); ?></span>
+					<?php
+					get_template_part(
+						'templates/components/button',
+						null,
+						[
+							'class'              => 'not_login_mobile__login-now bg-primary-500 text-system-white typo-system-button button-medium ',
+							'button_text'        => esc_html__('Login Now', 'twmp-ath'),
+							'button_url'         => esc_url('/my-account/'),
+							'button_link_target' => '_self',
+						]
+					);
+					?>
+					<?php
+					get_template_part(
+						'templates/components/button',
+						null,
+						[
+							'class'              => 'not_login_mobile__register-account bg-system-white text-system-black typo-system-button button-medium ',
+							'button_text'        => esc_html__('Register Account', 'twmp-ath'),
+							'button_url'         => esc_url('/my-account/'),
+							'button_link_target' => '_self',
+						]
+					);
+					?>
+				</div>
+			</div>
+			<?php endif; ?>
+			<div class="th-mobile-menu">
+				<ul>
+					<?php foreach ($header_menus as $menu_item) {
+						if (! $menu_item->menu_item_parent) {
 
-						$child_menu_items   = $menu_class->get_child_menu_items($header_menus, $menu_item->ID);
-						$has_children       = ! empty($child_menu_items) && is_array($child_menu_items);
-						$has_sub_menu_class = ! empty($has_children) ? 'has-submenu' : '';
-						$link_target        = ! empty($menu_item->target) && '_blank' === $menu_item->target ? '_blank' : '_self';
-						$admin_classes      = ! empty( $menu_item->classes ) ? implode( ' ', $menu_item->classes ) : '';
-						$is_active          = ($menu_item->object_id == $current_id) ? 'active' : '';
-                        $li_classes         = trim( "$admin_classes $is_active" );
-						if (! $has_children) { ?>
-							<li class="menu-item <?php echo esc_attr($is_active); ?> <?php echo esc_attr($li_classes); ?>">
-								<a
-									href="<?php echo esc_url($menu_item->url); ?>"
-									target="<?php echo esc_attr($link_target); ?>"
-									title="<?php echo esc_attr($menu_item->title); ?>">
-									<?php echo $twmp_menu_item_icon($menu_item->classes); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-									<?php echo esc_html($menu_item->title); ?>                                    
-								</a>
-							</li>
-						<?php } else { ?>
-							<li class="menu-item-has-children th-item-has-children">
-								<a
-									href="<?php echo esc_url($menu_item->url); ?>"
-									target="<?php echo esc_attr($link_target); ?>"
-									title="<?php echo esc_attr($menu_item->title); ?>">
-									<?php echo $twmp_menu_item_icon($menu_item->classes); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-									<?php echo esc_html($menu_item->title); ?>
-                                    <span class="th-mean-expand"></span>
-								</a>
-								<ul class="sub-menu th-submenu d-none">
-									<?php foreach ($child_menu_items as $child_menu_item) {
-										$link_target = ! empty($child_menu_item->target) && '_blank' === $child_menu_item->target ? '_blank' : '_self';
-									?>
-										<li>
-											<a
-												href="<?php echo esc_url($child_menu_item->url); ?>"
-												target="<?php echo esc_attr($link_target); ?>"
-												title="<?php echo esc_attr($child_menu_item->title); ?>">
-												<?php echo $twmp_menu_item_icon($child_menu_item->classes); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-												<?php echo esc_html($child_menu_item->title); ?>
-											</a>
-										</li>
-									<?php } ?>
-								</ul>
-							</li>
-						<?php }
-						?>
+							$child_menu_items   = $menu_class->get_child_menu_items($header_menus, $menu_item->ID);
+							$has_children       = ! empty($child_menu_items) && is_array($child_menu_items);
+							$has_sub_menu_class = ! empty($has_children) ? 'has-submenu' : '';
+							$link_target        = ! empty($menu_item->target) && '_blank' === $menu_item->target ? '_blank' : '_self';
+							$admin_classes      = ! empty($menu_item->classes) ? implode(' ', $menu_item->classes) : '';
+							$is_active          = ($menu_item->object_id == $current_id) ? 'active' : '';
+							$li_classes         = trim("$admin_classes $is_active");
+							if (! $has_children) { ?>
+								<li class="<?php echo esc_attr($is_login_classes); ?> menu-item <?php echo esc_attr($is_active); ?> <?php echo esc_attr($li_classes); ?>">
+									<a
+										href="<?php echo esc_url($menu_item->url); ?>"
+										target="<?php echo esc_attr($link_target); ?>"
+										title="<?php echo esc_attr($menu_item->title); ?>">
+										<?php echo $twmp_menu_item_icon($menu_item->classes); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+										?>
+										<?php echo esc_html($menu_item->title); ?>
+									</a>
+								</li>
+							<?php } else { ?>
+								<li class="menu-item-has-children th-item-has-children">
+									<a
+										href="<?php echo esc_url($menu_item->url); ?>"
+										target="<?php echo esc_attr($link_target); ?>"
+										title="<?php echo esc_attr($menu_item->title); ?>">
+										<?php echo $twmp_menu_item_icon($menu_item->classes); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+										?>
+										<?php echo esc_html($menu_item->title); ?>
+										<span class="th-mean-expand"></span>
+									</a>
+									<ul class="sub-menu th-submenu d-none">
+										<?php foreach ($child_menu_items as $child_menu_item) {
+											$link_target = ! empty($child_menu_item->target) && '_blank' === $child_menu_item->target ? '_blank' : '_self';
+										?>
+											<li>
+												<a
+													href="<?php echo esc_url($child_menu_item->url); ?>"
+													target="<?php echo esc_attr($link_target); ?>"
+													title="<?php echo esc_attr($child_menu_item->title); ?>">
+													<?php echo $twmp_menu_item_icon($child_menu_item->classes); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+													?>
+													<?php echo esc_html($child_menu_item->title); ?>
+												</a>
+											</li>
+										<?php } ?>
+									</ul>
+								</li>
+							<?php }
+							?>
 
-				<?php }
-				}
-				?>
-                </ul>
-            </div>
-        </div>
-        <div class="th-menu-wrapper__overlay" data-th-menu-trigger></div>
-    </div>
+					<?php }
+					}
+					?>
+				</ul>
+			</div>
+		</div>
+		<div class="th-menu-wrapper__overlay" data-th-menu-trigger></div>
+	</div>
 
 <?php } ?>
