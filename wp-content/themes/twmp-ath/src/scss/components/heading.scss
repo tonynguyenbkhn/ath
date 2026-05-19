@@ -9,7 +9,7 @@
         @include typo-token(36, 48, 400);
         font-family: var(--font-playfair-display);
 
-        @media (min-width: 1024px) {
+        @media (min-width: 1200px) {
             @include typo-display-lg(400);
         }
     }
@@ -19,7 +19,7 @@
         color: var(--system-content-2);
         @include typo-token(18, 30, 400);
 
-        @media (min-width: 1024px) {
+        @media (min-width: 1200px) {
             @include typo-display-xs(400);
         }
 
@@ -27,7 +27,7 @@
             color: var(--system-content-2);
             @include typo-token(18, 30, 400);
 
-            @media (min-width: 1024px) {
+            @media (min-width: 1200px) {
                 @include typo-display-xs(400);
             }
         }

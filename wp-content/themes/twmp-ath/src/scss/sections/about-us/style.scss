@@ -6,13 +6,19 @@
   padding-bottom: 120px;
 }
 
+.about-us__image-wrap {
+  @media (max-width: 1199px) {
+    text-align: center;
+  }
+}
+
 .about-us__grid {
   display: flex;
   flex-direction: column-reverse;
 
   @include clearfix();
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     display: block;
   }
 }
@@ -22,7 +28,7 @@
   text-align: left;
   margin-top: 0;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     margin-top: -50px;
   }
 }
@@ -37,7 +43,7 @@
   &.desktop {
     display: none;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: block;
       margin-bottom: 64px;
     }
@@ -46,7 +52,7 @@
   &.mobile {
     display: block;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: none;
     }
   }
@@ -75,7 +81,7 @@
   right: -50%;
   display: none;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     display: none;
   }
 }
@@ -93,7 +99,7 @@
   &.desktop {
     display: none;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: block;
     }
   }
@@ -101,7 +107,7 @@
   &.mobile {
     display: block;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: none;
     }
   }
@@ -123,7 +129,7 @@
   margin-bottom: 40px;
   text-align: center;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     width: 25%;
     margin-bottom: 0;
     text-align: left;
@@ -147,13 +153,13 @@
   gap: 1rem;
   margin-top: 0;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     margin-top: 60px;
   }
 }
 
 .about-us__button {
-  @media (max-width: 1023px) {
+  @media (max-width: 1199px) {
     width: 100%;
     text-align: center;
   }
@@ -170,7 +176,7 @@
   float: left;
   width: 100%;
 
-  @media (min-width: 992px) {
+  @media (min-width: 1200px) {
     width: 50%;
   }
 }
@@ -182,7 +188,7 @@
   position: relative;
   margin-bottom: 40px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     margin-top: 20px;
     margin-bottom: 0;
   }
@@ -199,12 +205,12 @@
     z-index: 0;
     display: none;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: block;
     }
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 1200px) {
     width: 50%;
   }
 }
@@ -212,7 +218,7 @@
 .about-us__content-wrapper {
   padding-right: 0;
 
-  @media (min-width: 992px) {
+  @media (min-width: 1200px) {
     padding-right: 80px;
   }
 }

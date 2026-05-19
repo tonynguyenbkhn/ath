@@ -65,7 +65,7 @@ $footer-bg-color: #F7F7F7;
 			flex-flow: row wrap;
 		}
 
-		@media (min-width: 1024px) {
+		@media (min-width: 1200px) {
 			flex-wrap: nowrap;
 			gap: 20px;
 		}
@@ -148,7 +148,7 @@ $footer-bg-color: #F7F7F7;
 
 .footer-absolute-right {
 	div {
-		@media (max-width: 1023px) {
+		@media (max-width: 1199px) {
 			justify-content: center
 		}
 
@@ -157,7 +157,7 @@ $footer-bg-color: #F7F7F7;
 
 .footer-absolute-left {
 	p {
-		@media (max-width: 1023px) {
+		@media (max-width: 1199px) {
 			text-align: center;
 		}
 	}

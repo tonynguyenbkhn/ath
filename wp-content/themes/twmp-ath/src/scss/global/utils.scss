@@ -246,9 +246,9 @@ $theme-font-family-utils: (
 /* =========================
    RESPONSIVE FLEX UTILITIES
    sm: 576px
-   md: 768px
-   lg: 992px
-   xl: 1024px
+   md: 1200px
+   lg: 1200px
+   xl: 1200px
 ========================= */
 
 /* >= 576px */
@@ -378,8 +378,8 @@ $theme-font-family-utils: (
 	}
 }
 
-/* >= 768px */
-@media (min-width: 768px) {
+/* >= 1200px */
+@media (min-width: 1200px) {
 	.md\:d-flex {
 		display: flex;
 	}
@@ -505,8 +505,8 @@ $theme-font-family-utils: (
 	}
 }
 
-/* >= 992px */
-@media (min-width: 992px) {
+/* >= 1200px */
+@media (min-width: 1200px) {
 	.lg\:d-flex {
 		display: flex;
 	}
@@ -632,8 +632,8 @@ $theme-font-family-utils: (
 	}
 }
 
-/* >= 1024px */
-@media (min-width: 1024px) {
+/* >= 1200px */
+@media (min-width: 1200px) {
 	.xl\:d-flex {
 		display: flex;
 	}
@@ -828,7 +828,7 @@ $theme-font-family-utils: (
 }
 
 /* md */
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
 	.md\:d-none {
 		display: none;
 	}
@@ -863,7 +863,7 @@ $theme-font-family-utils: (
 }
 
 /* lg */
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
 	.lg\:d-none {
 		display: none;
 	}
@@ -898,7 +898,7 @@ $theme-font-family-utils: (
 }
 
 /* xl */
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
 	.xl\:d-none {
 		display: none;
 	}

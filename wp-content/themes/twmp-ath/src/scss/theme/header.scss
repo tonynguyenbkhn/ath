@@ -81,20 +81,10 @@ $header--main-height-mobile: 56px;
 	.header__row {
 		height: 58px;
 
-		// @media (min-width: 576px) {
-		// 	margin-left: -12px;
-		// 	margin-right: -12px;
-		// }
-
 		@include clearfix();
 
 		.header__col {
 
-
-			// @media (min-width: 576px) {
-			// 	padding-left: 12px;
-			// 	padding-right: 12px;
-			// }
 		}
 	}
 
@@ -156,7 +146,7 @@ body:not(.home) {
 		width: 61px;
 		height: auto;
 
-		@media (min-width: 1024px) {
+		@media (min-width: 1200px) {
 			width: 95px;
 		}
 	}
@@ -178,7 +168,7 @@ body:not(.home) {
 .header__menu-icons__button {
 	display: block;
 
-	@media (max-width: 767px) {
+	@media (max-width: 1199px) {
 		display: none;
 	}
 }
@@ -204,7 +194,7 @@ body:not(.home) {
 			&.mobile {
 				display: block;
 
-				@media (min-width: 1024px) {
+				@media (min-width: 1200px) {
 					display: none;
 				}
 			}

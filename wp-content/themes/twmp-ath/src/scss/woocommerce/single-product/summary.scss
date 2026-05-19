@@ -5,7 +5,7 @@
         color: var(--system-content-1);
         margin-top: 40px;
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1199px) {
             margin-top: 24px;
         }
 
@@ -50,7 +50,7 @@
                 font-size: 30px;
                 font-weight: bold;
 
-                @media (max-width: 991px) {
+                @media (max-width: 1199px) {
                     font-size: 20px;
                 }
             }
@@ -65,7 +65,7 @@
                 font-size: 30px;
                 font-weight: bold;
 
-                @media (max-width: 991px) {
+                @media (max-width: 1199px) {
                     font-size: 20px;
                 }
             }
@@ -83,7 +83,7 @@
                         font-weight: 400;
                         text-decoration: line-through;
 
-                        @media (max-width: 991px) {
+                        @media (max-width: 1199px) {
                             font-size: 16px;
                         }
                     }
@@ -137,19 +137,19 @@
         }
 
         .product-action-buttons {
-            @media (max-width: 1023px) {
+            @media (max-width: 1199px) {
                 flex-direction: column;
             }
 
             .cart-redirect-btn,
             .twmp-buy-now-form {
-                @media (max-width: 1023px) {
+                @media (max-width: 1199px) {
                     width: 100%;
                 }
             }
 
             .contact-us-btn {
-                @media (max-width: 1023px) {
+                @media (max-width: 1199px) {
                     width: calc( 100% - 40px );
                 }
             }

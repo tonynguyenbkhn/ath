@@ -127,7 +127,7 @@ $_class .= ! empty($data['theme_class']) ? esc_attr(' ' . $data['theme_class']) 
 									'button_text'        => esc_html__('View Detail', 'twmp-ath'),
 									'button_url'         => $data['permalink'],
 									'button_link_target' => '_self',
-									'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+									'svg_icon_after'     => '',
 								]
 							);
 							?>

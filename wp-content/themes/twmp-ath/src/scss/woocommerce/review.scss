@@ -109,7 +109,7 @@
     line-height: 1;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
     .woocommerce #reviews .average-rating .average-label {
         margin-top: 20px;
         text-align: center;
@@ -124,7 +124,7 @@
     margin: 0;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
     .woocommerce #reviews .average-rating .average-value {
         text-align: center;
     }
@@ -303,16 +303,16 @@
     flex-direction: column;
 }
 
-/* >= 768px (md) */
-@media (min-width: 768px) {
+/* >= 1200px (md) */
+@media (min-width: 1200px) {
     .flex-md-column {
         display: flex;
         flex-direction: column;
     }
 }
 
-/* >= 992px (lg) */
-@media (min-width: 992px) {
+/* >= 1200px (lg) */
+@media (min-width: 1200px) {
     .flex-lg-row {
         display: flex;
         flex-direction: row;

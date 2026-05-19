@@ -9,7 +9,7 @@
 		width: 100%;
 		position: relative;
 
-		@media (min-width: 1024px) {
+		@media (min-width: 1200px) {
 			width: 39%;
 		}
 	}
@@ -18,7 +18,7 @@
 		float: right;
 		width: 100%;
 
-		@media (min-width: 1024px) {
+		@media (min-width: 1200px) {
 			width: 61%;
 		}
 
@@ -28,7 +28,7 @@
 			flex-direction: column;
 			padding-left: 0;
 
-			@media (min-width: 992px) {
+			@media (min-width: 1200px) {
 				padding-left: 48px;
 			}
 		}
@@ -39,13 +39,13 @@
 		float: left;
 		width: 100%;
 
-		@media (max-width: 991px) {
+		@media (max-width: 1199px) {
 			order: 2;
 			margin-top: 20px;
 		}
 
 		.row {
-			@media (max-width: 991px) {
+			@media (max-width: 1199px) {
 				flex-direction: column-reverse;
 			}
 		}
@@ -61,7 +61,7 @@
 	gap: 8px;
 	margin-bottom: 24px;
 
-	@media (max-width: 1023px) {
+	@media (max-width: 1199px) {
 		margin-top: 24px;
 	}
 }
@@ -184,7 +184,7 @@
 	.woocommerce-tabs {
 		@include col(12, 0);
 
-		@media (min-width: 1024px) {
+		@media (min-width: 1200px) {
 			margin-top: 0;
 		}
 

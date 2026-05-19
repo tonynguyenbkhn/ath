@@ -6,7 +6,7 @@
   position: relative;
   padding: 80px 0;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     padding: 160px 0;
   }
 }
@@ -16,7 +16,7 @@
 
   @include clearfix();
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1199px) {
     display: flex;
     flex-direction: column;
   }
@@ -33,7 +33,7 @@
   &.desktop {
     display: none;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: block;
     }
   }
@@ -43,7 +43,7 @@
     text-align: center;
     margin-bottom: 24px;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: none;
     }
   }
@@ -72,12 +72,12 @@
   gap: 32px;
   margin-top: 0;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     margin-top: 40px;
   }
 
   a {
-    @media (max-width: 1023px) {
+    @media (max-width: 1199px) {
       width: 100%;
       text-align: center;
     }
@@ -100,7 +100,7 @@
   float: right;
   width: 100%;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     width: 50%;
   }
 }
@@ -108,7 +108,7 @@
 .for-company__content-wrap {
   padding-left: 0;
 
-  @media (min-width: 992px) {
+  @media (min-width: 1200px) {
     padding-left: 140px;
   }
 }
@@ -118,7 +118,7 @@
   width: 100%;
   margin-bottom: 24px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     width: 50%;
     margin-bottom: 0;
   }
@@ -126,8 +126,14 @@
   &-primary {
     padding-top: 0;
 
-    @media (min-width: 992px) {
+    @media (min-width: 1200px) {
       padding-top: 40px;
+    }
+
+    @media (max-width: 1199px) {
+      .image {
+        text-align: center;
+      }
     }
   }
 }

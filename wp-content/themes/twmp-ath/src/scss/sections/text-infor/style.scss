@@ -4,7 +4,7 @@
   padding-top: 0;
   padding-bottom: 80px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     padding: 96px 0;
   }
 }
@@ -23,7 +23,7 @@
   @include typo-token(30, 48, 500);
   font-family: var(--font-beautique-display);
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     @include typo-display-sm(700, 30);
   }
 }
@@ -34,7 +34,7 @@
   padding: 20px;
 
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     padding: 20px;
     padding: 42px 24px 37px 65px;
   }
@@ -63,7 +63,7 @@
   box-sizing: border-box;
   width: 100%;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     width: 50%;
   }
 }
@@ -77,7 +77,7 @@
   margin-top: 24px;
   border-top: 1px solid var(--system-border);
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     padding-left: 45px;
     padding-top: 0;
     margin-top: 0;

@@ -98,7 +98,7 @@ body.woocommerce-checkout.woocommerce-order-received {
 		font-size: 0.925rem;
 		margin: 1em 0;
 
-		@media (min-width: 1024px) {
+		@media (min-width: 1200px) {
 			margin: 1em -10px;
 			font-size: 1rem;
 		}
@@ -116,7 +116,7 @@ body.woocommerce-checkout.woocommerce-order-received {
 				@include col(2, 0.25em);
 			}
 
-			@media (min-width: 1024px) {
+			@media (min-width: 1200px) {
 				border: 0;
 				width: 50%;
 				margin-top: 10px;
@@ -228,7 +228,7 @@ body.woocommerce-checkout.woocommerce-order-received {
 	}
 
 	.woocommerce-shipping-fields__field-wrapper {
-		@media (min-width: 1024px) {
+		@media (min-width: 1200px) {
 			display: flex;
 			flex-wrap: wrap;
 			margin: 0 -10px;
@@ -237,7 +237,7 @@ body.woocommerce-checkout.woocommerce-order-received {
 
 		.woocommerce-shipping-fields {
 			.form-row {
-				@media (min-width: 1024px) {
+				@media (min-width: 1200px) {
 					width: 50%;
 					margin-top: 10px;
 					padding: 0 10px;
@@ -245,7 +245,7 @@ body.woocommerce-checkout.woocommerce-order-received {
 			}
 
 			.form-row:nth-child(-n + 2) {
-				@media (min-width: 1024px) {
+				@media (min-width: 1200px) {
 					margin-top: 0;
 				}
 			}

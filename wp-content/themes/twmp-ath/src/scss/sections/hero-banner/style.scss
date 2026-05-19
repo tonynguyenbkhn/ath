@@ -32,7 +32,7 @@
     display: flex;
     // align-items: center;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1199px) {
         position: unset;
         background-color: rgba(9, 8, 8, 1);
     }
@@ -42,7 +42,7 @@
     margin-bottom: 24px;
     max-width: 100%;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         margin-bottom: 60px;
         max-width: 380px;
     }
@@ -54,7 +54,7 @@
     gap: 20px;
     align-items: end;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1199px) {
         flex-direction: column-reverse;
         padding-bottom: 40px;
         margin-top: -100px;
@@ -62,7 +62,7 @@
         z-index: 999;
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         flex-direction: row;
 
         .hero-banner__left {
@@ -93,7 +93,7 @@
 }
 
 .hero-banner__title {
-    @media (max-width: 1023px) {
+    @media (max-width: 1199px) {
         @include typo-token(40, 48, 400);
     }
 }
@@ -117,13 +117,13 @@
     height: calc(1068px/3);
     bottom: 0;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1199px) {
         display: none;
     }
 }
 
 .typo-system-button {
-    @media (max-width: 1023px) {
+    @media (max-width: 1199px) {
         display: block;
     }
 }

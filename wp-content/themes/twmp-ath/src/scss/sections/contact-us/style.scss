@@ -4,7 +4,7 @@
     background-position: center;
     background-repeat: no-repeat;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         padding: 120px 0;
     }
 }
@@ -14,7 +14,7 @@
     border-radius: 8px;
     padding: 0;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         padding: 70px 70px 54px;
         background-color: #F6F4ED;
     }
@@ -24,7 +24,7 @@
     display: flex;
     flex-direction: column;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         display: flex;
         align-items: center;
         flex-direction: row;
@@ -49,7 +49,7 @@
     align-items: center;
     width: 100%;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         width: 50%;
     }
 }
@@ -57,7 +57,7 @@
 .contact-us__col--form {
     width: 100%;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         width: 50%;
     }
 }
@@ -67,7 +67,7 @@
     margin-bottom: 40px;
     color: var(--system-white);
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         color: var(--system-black);
     }
 }
@@ -91,7 +91,7 @@
     text-align: center;
     color: var(--system-white);
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         text-align: left;
         color: var(--system-black);
     }
@@ -134,7 +134,7 @@
     &:first-child {
         display: none;
 
-        @media (min-width: 1024px) {
+        @media (min-width: 1200px) {
             display: block;
         }
     }
@@ -142,19 +142,20 @@
     &:last-child {
         display: block;
 
-        @media (min-width: 1024px) {
+        @media (min-width: 1200px) {
             display: none;
         }
     }
 }
 
 .contact-us__form-wrap {
-    max-width: 504px;
+    width: 100%;
     // background-color: var(--system-white);
     // padding: 32px;
     margin-top: 34px;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
+        max-width: 504px;
         margin-top: 0;
     }
 }
@@ -184,7 +185,7 @@
         @include typo-token(16, 24, 400);
         color: var(--system-white);
 
-        @media (min-width: 1024px) {
+        @media (min-width: 1200px) {
             color: rgba(#000A2C, 0.7);
         }
     }
@@ -472,7 +473,7 @@
         display: inline-block;
         vertical-align: top;
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1199px) {
             margin-bottom: 16px;
         }
 
@@ -573,7 +574,7 @@
         width: 100%;
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -688,13 +689,14 @@
     .contact-us__form-wrap {
         background-color: var(--system-white);
         padding: 25px 32px 0 32px;
+        width: calc( 100% - 64px );
     }
 
     .fs-contact-search-box {
         margin: 25px 0 24px;
         padding: 0 16px 16px;
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1199px) {
             margin: 0 0 0;
         }
     }

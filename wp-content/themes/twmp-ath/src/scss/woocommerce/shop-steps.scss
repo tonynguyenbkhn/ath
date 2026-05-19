@@ -2,7 +2,7 @@
 	margin: 0.5em 0 0;
 	display: none;
 
-	@media (min-width: 1024px) {
+	@media (min-width: 1200px) {
 		display: block;
 	}
 }
@@ -43,7 +43,7 @@
 }
 
 a.shop-steps__item {
-	@media (min-width: 1024px) {
+	@media (min-width: 1200px) {
 		&:hover {
 			&::after {
 				background-color: var(--primary);

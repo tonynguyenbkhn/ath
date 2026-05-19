@@ -3,7 +3,7 @@
   padding: 80px 0;
   background: #F6F4ED;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     padding: 160px 0;
   }
 }
@@ -60,7 +60,7 @@
 
   @include clearfix();
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     display: block;
   }
 }
@@ -72,7 +72,7 @@
   flex-direction: column;
   padding-right: 0;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     width: 42%;
   }
 }
@@ -122,7 +122,7 @@
   color: #3A3A3A;
   text-align: center;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     text-align: left;
   }
 }
@@ -133,7 +133,7 @@
   h3 {
     text-align: center;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       text-align: left;
     }
   }
@@ -162,7 +162,7 @@
     display: flex;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     display: inline-flex;
     margin-top: 0;
     align-items: center;
@@ -176,7 +176,7 @@
   float: left;
   width: 100%;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     width: 58%;
   }
 }
@@ -206,7 +206,7 @@
     padding-top: 0;
     direction: ltr;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       padding-top: 28px;
       direction: rtl;
     }
@@ -215,7 +215,7 @@
   .swiper-slide {
     direction: rtl;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       padding-top: 28px;
       direction: ltr;
     }
@@ -237,7 +237,7 @@
 .class-section__swiper .class-card {
   transform-origin: left center;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     transform-origin: left top;
   }
 }
@@ -245,7 +245,7 @@
 .class-section__swiper .swiper-slide-prev .class-card {
   transform-origin: right center;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     transform-origin: left top;
   }
 }
@@ -394,7 +394,7 @@
 
   display: none;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     display: block;
 
   }
@@ -493,7 +493,7 @@
 .class-section__actions {
   margin-top: 0;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     margin-top: 40px;
   }
 }
@@ -518,7 +518,7 @@
     gap: 10px;
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1199px) {
     position: absolute;
     bottom: -30px;
   }
@@ -527,7 +527,7 @@
 .class-section-control .swiper-button.swiper-button-prev {
   right: 56px;
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1199px) {
     left: 10px;
     top: -290px;
     right: auto;
@@ -538,7 +538,7 @@
 
 .class-section-control .swiper-button.swiper-button-next {
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1199px) {
     position: absolute;
     top: -290px;
     right: 10px;
@@ -558,7 +558,7 @@
   margin: 0;
   top: 25px;
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1199px) {
     width: calc(70%);
     position: absolute;
     left: 50%;

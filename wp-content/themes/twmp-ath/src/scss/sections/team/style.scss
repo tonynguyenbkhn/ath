@@ -2,7 +2,7 @@
   padding-bottom: 80px;
   padding-top: 80px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     padding-bottom: 145px;
     padding-top: 120px;
   }
@@ -35,7 +35,7 @@
     display: flex;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     display: inline-flex;
     margin-top: 0;
     align-items: center;
@@ -63,6 +63,10 @@
 
   .team-card__description {
     display: none;
+
+    @media (max-width: 1199px) {
+      display: block;
+    }
   }
 }
 
@@ -75,7 +79,7 @@
     display: flex;
     flex-direction: column;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       flex-direction: column-reverse;
     }
   }
@@ -95,6 +99,15 @@
   }
 }
 
+.team-section__slide {
+  .team-card {
+    @media (max-width: 1199px) {
+      display: flex;
+      flex-direction: column !important;
+    }
+  }
+}
+
 .team-section__slider-wrap {
 
   .swiper-button {
@@ -102,7 +115,7 @@
     left: auto;
     right: 0;
 
-    @media (max-width: 1023px) {
+    @media (max-width: 1199px) {
       top: 50%;
       transform: translateY(-50%);
     }
@@ -111,7 +124,7 @@
       right: auto;
       left: 0;
 
-      @media (min-width: 1024px) {
+      @media (min-width: 1200px) {
         right: 56px;
         left: auto;
       }
@@ -121,7 +134,7 @@
       right: 0;
       left: auto;
 
-      @media (min-width: 1024px) {
+      @media (min-width: 1200px) {
         right: 0;
       }
     }
@@ -142,7 +155,7 @@
     z-index: -1;
     display: none;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: block;
     }
   }
@@ -161,7 +174,7 @@
     z-index: -1;
     display: none;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       display: block;
     }
   }
@@ -174,7 +187,7 @@
   .swiper-wrapper {
     padding-top: 0;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       padding-top: 50px;
     }
   }
@@ -191,6 +204,10 @@
       width: 255px;
       height: 255px;
       background-color: rgba($color: #0050A2, $alpha: 0.2);
+
+      @media (max-width: 1199px) {
+        display: none;
+      }
     }
   }
 }
@@ -199,4 +216,10 @@
   color: #646464;
   @include typo-display-xs(400);
   margin: 10px 0;
+}
+
+.team-card__media {
+  .image {
+    @include ratio(1/1);
+  }
 }

@@ -478,7 +478,7 @@
   @include typo-system-button();
 
   &:hover {
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       color: white;
       background: var(--system-black);
     }
@@ -491,7 +491,7 @@
 //   transition: background 0.3s ease, color 0.3s ease;
 
 //   &:hover {
-//     @media (min-width: 1024px) {
+//     @media (min-width: 1200px) {
 //       background: var(--primary);
 //       color: var(--white);
 //     }
@@ -507,7 +507,7 @@
   @include typo-system-button();
 
   &:hover {
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       background: var(--primary-500);
       color: var(--system-white);
     }
@@ -523,7 +523,7 @@
   @include typo-system-button();
 
   &:hover {
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       background: var(--primary-500);
       color: var(--system-white);
     }
@@ -539,7 +539,7 @@
   @include typo-system-button();
 
   &:hover {
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       border-color: var(--system-black);
     }
   }
@@ -554,7 +554,7 @@
   @include typo-system-button();
 
   &:hover {
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       border-color: var(--primary-500);
     }
   }
@@ -569,7 +569,7 @@
   @include typo-system-button();
 
   &:hover {
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       border-color: var(--primary-500);
     }
   }
@@ -625,7 +625,7 @@
     line-height: 48px;
     transition: color 0.3s cubic-bezier(0.1, 0.1, 0.25, 1);
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       line-height: 36px;
     }
 
@@ -639,7 +639,7 @@
       border: 1px solid $border;
       transition: border-color 0.3s cubic-bezier(0.1, 0.1, 0.25, 1);
 
-      @media (min-width: 1024px) {
+      @media (min-width: 1200px) {
         top: 7px;
       }
     }
@@ -655,7 +655,7 @@
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
       opacity: 0;
 
-      @media (min-width: 1024px) {
+      @media (min-width: 1200px) {
         top: 11px;
       }
     }
