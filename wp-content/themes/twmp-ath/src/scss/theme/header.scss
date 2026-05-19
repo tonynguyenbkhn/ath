@@ -9,30 +9,6 @@
 	margin-left: auto;
 }
 
-@media (min-width: 600px) {
-	.container {
-		max-width: 540px;
-	}
-}
-
-@media (min-width: 782px) {
-	.container {
-		max-width: 720px;
-	}
-}
-
-@media (min-width: 960px) {
-	.container {
-		max-width: 960px;
-	}
-}
-
-@media (min-width: 1080px) {
-	.container {
-		max-width: 1080px;
-	}
-}
-
 @media (min-width: 1200px) {
 	.container {
 		max-width: 1312px;

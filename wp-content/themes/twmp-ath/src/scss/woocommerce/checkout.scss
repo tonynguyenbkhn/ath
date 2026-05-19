@@ -962,7 +962,6 @@
 	}
 
 	.twmp-checkout-steps__line {
-		width: 180px;
 		height: 2px;
 		background: linear-gradient(90deg, var(--primary-500) 0 50%, #E7E7E7 50% 100%);
 		border-radius: 999px;
@@ -970,10 +969,9 @@
 		top: 20px;
 		position: absolute;
 		width: 170px;
-
-		@media (max-width: 1199px) {
-			left: 127px;
-		}
+		left: 50%;
+		transform: translateX(-50%);
+		margin-left: 25px;
 	}
 
 	.twmp-checkout-stack {

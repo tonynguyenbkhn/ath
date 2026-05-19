@@ -58,6 +58,7 @@
 
 		.close-filter {
 			display: none;
+
 			@media (max-width: 1199px) {
 				display: block;
 				position: absolute;
@@ -65,6 +66,7 @@
 				left: 0;
 				width: 100%;
 			}
+
 			button {
 				background-color: var(--primary-500);
 				color: white;
@@ -117,7 +119,12 @@
 		@include clearfix();
 
 		li {
+
 			@include float-grid(1, 0, 32px);
+
+			@media (max-width: 1199px) {
+				@include float-grid(2, 24px, 32px);
+			}
 
 			@media (min-width: 1200px) {
 				@include float-grid(3, 32px, 32px);
@@ -255,7 +262,7 @@ body.is-shop-filter-lock {
 		min-height: 100%;
 		padding: 20px;
 		bottom: 0;
-		width: calc( 100% - 40px );
+		width: calc(100% - 40px);
 	}
 
 	.product-card__title {
