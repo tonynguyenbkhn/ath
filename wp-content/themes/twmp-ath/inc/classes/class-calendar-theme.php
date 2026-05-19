@@ -31,9 +31,9 @@ class Calendar_Theme
 		}
 
 		$cache[$cache_key] = [
-			'types' => $this->get_term_options('product_cat', __('All type', 'twmp-ath'), $language, ['uncategorized']),
-			'locations' => $this->get_term_options('ath_venue', __('All location', 'twmp-ath'), $language),
-			'statuses' => $this->get_term_options('ath_event_status', __('All status', 'twmp-ath'), $language),
+			'types' => $this->get_term_options('product_cat', __('All Categories', 'twmp-ath'), $language, ['uncategorized']),
+			'locations' => $this->get_term_options('ath_venue', __('All Location', 'twmp-ath'), $language),
+			'statuses' => $this->get_term_options('ath_event_status', __('All Status', 'twmp-ath'), $language),
 		];
 
 		return $cache[$cache_key];
