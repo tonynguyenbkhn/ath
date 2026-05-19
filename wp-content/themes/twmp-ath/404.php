@@ -9,21 +9,38 @@
  */
 
 if (!defined('ABSPATH')) {
-    exit;
+	exit;
 }
 
 get_header();
-?>
 
+$contact_page = get_page_by_path('contact-us');
+$contact_url = $contact_page ? get_permalink($contact_page) : home_url('/contact-us/');
+?>
 
 <div class="not-found-page">
 	<div class="container">
 		<div class="not-found-content">
-			<h1 class="not-found-title"><?php esc_html_e('404', 'twmp-ath'); ?></h1>
-			<p class="not-found-message"><?php esc_html_e('Oops! The page you are looking for doesn’t exist.', 'twmp-ath'); ?></p>
-			<a href="<?php echo esc_url(home_url('/')); ?>" class="not-found-btn">
-				<?php esc_html_e('Back to Home', 'twmp-ath'); ?>
-			</a>
+			<div class="not-found-eyebrow">
+				<?php esc_html_e('Error 404', 'twmp-ath'); ?>
+			</div>
+			<h1 class="not-found-title"><?php esc_html_e('Page not found', 'twmp-ath'); ?></h1>
+			<p class="not-found-message">
+				<?php esc_html_e('The page you are looking for may have been removed, renamed, or never existed.', 'twmp-ath'); ?>
+			</p>
+			<div class="not-found-actions">
+				<?php get_template_part('templates/components/button', null, [
+					'class' => 'button-default button-style-primary',
+					'button_text' => esc_html__('Contact Us', 'twmp-ath'),
+					'button_url' => $contact_url,
+				]); ?>
+
+				<?php get_template_part('templates/components/button', null, [
+					'class' => 'button-default button-style-outline-dark',
+					'button_text' => esc_html__('Back Home', 'twmp-ath'),
+					'button_url' => home_url('/'),
+				]); ?>
+			</div>
 		</div>
 	</div>
 </div>
