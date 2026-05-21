@@ -152,3 +152,5 @@ wp-content/ai1wm-backups/
 wp-content/themes/twmp-ath/assets/
 .vscode
 .idea
+
+*.mp4
