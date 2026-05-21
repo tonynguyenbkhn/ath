@@ -44,16 +44,16 @@ $sticky_links = function_exists('get_field') ? get_field('sticky_links', 'option
 //     return '';
 // };
 
-$tiktok_url = function_exists('get_field') ? (string) get_field('tiktok', 'option') : '';
+$whatsapp_url = function_exists('get_field') ? (string) get_field('whatsapp', 'option') : '';
 $facebook_url = function_exists('get_field') ? (string) get_field('facebook', 'option') : '';
 $zalo_url = function_exists('get_field') ? (string) get_field('zalo', 'option') : '';
 
 $social_items = [
     [
-        'icon' => 'contact-section-tiktok',
-        'icon-mobile' => 'contact-section-tiktok-mobile',
-        'url' => $tiktok_url,
-        'label' => 'TikTok',
+        'icon' => 'contact-section-whatsapp',
+        'icon-mobile' => 'contact-section-whatsapp-mobile',
+        'url' => $whatsapp_url,
+        'label' => 'Whatsapp',
     ],
     [
         'icon' => 'contact-section-facebook',

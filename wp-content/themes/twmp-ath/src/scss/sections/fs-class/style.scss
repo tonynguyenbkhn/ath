@@ -17,6 +17,10 @@
   padding-left: calc((100% - 1280px) / 2);
 }
 
+.fs-class__main-container .position-relative {
+  z-index: 1;
+}
+
 // .fs-class-section::before,
 // .fs-class-section::after {
 //   content: "";
@@ -130,6 +134,7 @@
   padding-bottom: 48px;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 }
 
 .fs-class-section__intro-row::after {

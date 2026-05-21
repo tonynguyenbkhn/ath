@@ -204,7 +204,7 @@
 .class-workshop-section {
   .class-section__swiper {
     padding-top: 0;
-    direction: ltr;
+    direction: rtl;
 
     @media (min-width: 1200px) {
       padding-top: 28px;
@@ -213,7 +213,7 @@
   }
 
   .swiper-slide {
-    direction: rtl;
+    direction: ltr;
 
     @media (min-width: 1200px) {
       padding-top: 28px;
@@ -234,8 +234,9 @@
   z-index: 2;
 }
 
+.class-section__swiper .swiper-slide-next .class-card,
 .class-section__swiper .class-card {
-  transform-origin: left center;
+  transform-origin: right center;
 
   @media (min-width: 1200px) {
     transform-origin: left top;
@@ -243,7 +244,7 @@
 }
 
 .class-section__swiper .swiper-slide-prev .class-card {
-  transform-origin: right center;
+  transform-origin: left center;
 
   @media (min-width: 1200px) {
     transform-origin: left top;
@@ -364,6 +365,7 @@
   min-height: 100%;
   padding: 20px;
   bottom: 0;
+  width: calc( 100% - 40px );
 }
 
 .class-card__short-info {
@@ -391,10 +393,9 @@
   margin-top: 0;
   color: var(--system-white);
   @include typo-text-lg(400);
-
   display: none;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 768px) {
     display: block;
 
   }

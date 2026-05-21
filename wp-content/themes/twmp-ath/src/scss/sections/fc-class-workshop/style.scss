@@ -88,6 +88,8 @@
 .fc-class-section__heading {
   flex-direction: column;
   text-align: left;
+  position: relative;
+  z-index: 1;
 }
 
 .fc-class-section__title {
@@ -295,6 +297,7 @@
   min-height: 100%;
   padding: 20px;
   bottom: 0;
+  width: calc( 100% - 40px );
 }
 
 .class-card__short-info {
@@ -604,8 +607,9 @@
 
 #awareness-performances.fc-class-workshop-section {
   padding-bottom: 80px;
+
   @media (min-width: 1200px) {
-  padding-bottom: 120px;
+    padding-bottom: 120px;
   }
 
   &::before {

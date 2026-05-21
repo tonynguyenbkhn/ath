@@ -110,6 +110,7 @@ class Assets_Theme
 	padding: 0 10px;
 	left: 0;
 	bottom: 30px;
+	pointer-events: none;
 }
 .woocommerce-product-gallery .twmp-thumb-nav__button {
 	align-items: center;
@@ -130,6 +131,7 @@ class Assets_Theme
 	transition: background-color .2s ease, color .2s ease, border-color .2s ease, opacity .2s ease;
 	position: relative;
 	flex: 0 0 28px;
+	pointer-events: auto;
 }
 .woocommerce-product-gallery .twmp-thumb-nav__button:hover:not(:disabled) {
 	background: rgba(255, 255, 255, 0.12);

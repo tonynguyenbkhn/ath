@@ -81,9 +81,9 @@
             "maxlength": ""
         },
         {
-            "key": "field_ath_tiktok",
-            "label": "TikTok",
-            "name": "tiktok",
+            "key": "field_ath_whatsapp",
+            "label": "Whatsapp",
+            "name": "whatsapp",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -196,7 +196,8 @@
                     "choices": {
                         "messenger": "Messenger",
                         "zalo": "Zalo",
-                        "phone": "Phone"
+                        "phone": "Phone",
+                        "whatsapp": "whatsapp"
                     },
                     "default_value": "messenger",
                     "return_format": "value",

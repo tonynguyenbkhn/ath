@@ -1,5 +1,6 @@
 .relate-product-section {
   margin-top: 75px;
+
   .swiper-button {
     position: unset;
     margin: 0;
@@ -15,6 +16,14 @@
     width: 100%;
     top: -55px;
     bottom: auto;
+    z-index: 9;
+
+    @media (max-width: 1023px) {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);  
+      justify-content: center;
+    }
 
     .nav {
       display: flex;
@@ -130,6 +139,10 @@
 
   .swiper-wrapper {
     padding-top: 20px;
+
+    @media (max-width: 1023px) {
+      padding-top: 60px;
+    }
   }
 
   // .swiper-slide-next {
