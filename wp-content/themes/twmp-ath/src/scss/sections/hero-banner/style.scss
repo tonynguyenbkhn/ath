@@ -3,6 +3,7 @@
     position: relative;
     overflow: hidden;
     display: block;
+    height: 100vh;
 }
 
 .hero-banner__media {
@@ -109,9 +110,7 @@
 
 .hero-banner__overlay {
     position: absolute;
-    background: linear-gradient(to right,
-            rgba(9, 8, 8, 0) 0%,
-            rgba(9, 8, 8, 0.9) 72%);
+    background: linear-gradient(to top, rgba(9, 8, 8, .9) 0%, rgba(9, 8, 8, 0) 72%);
     z-index: 1;
     width: 100%;
     height: calc(1068px/3);
