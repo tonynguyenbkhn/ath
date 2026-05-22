@@ -98,115 +98,118 @@ if (! $has_intro && empty($slides)) {
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
 
-    <div class="event__light">
-        <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-    </div>
-    <?php if ($data['enable_container']) : ?>
-        <div class="<?php echo esc_attr($_class_container); ?>">
-        <?php endif; ?>
-        <div class="position-relative event-control-wrap">
-            <div class="event-control">
-                <div class="nav">
-                    <div class="swiper-button swiper-button-prev"></div>
-                    <div class="swiper-button swiper-button-next"></div>
-                </div>
-                <div class="swiper-pagination event-swiper-pagination"></div>
+    <div class="show-event__viewport">
+        <div class="show-event__track">
+            <div class="event__light">
+                <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
             </div>
-            <div class="event-section__shell">
-                <div class="event-section__intro-row">
-                    <div class="event-section__intro">
-                        <?php
-                        get_template_part(
-                            'templates/components/heading',
-                            null,
-                            [
-                                'title_class'       => 'event-section__title',
-                                'description_class' => 'event-section__description',
-                                'class'             => 'event-section__heading flex-column',
-                                'title'             => $data['title'],
-                                'description'       => '',
-                            ]
-                        );
-                        ?>
-                    </div>
-                    <div class="event-section__actions">
-                        <div class="heading__description event-section__description">
-                            <?php echo wp_kses_post(wpautop($data['description'])); ?>
+            <?php if ($data['enable_container']) : ?>
+                <div class="<?php echo esc_attr($_class_container); ?>">
+                <?php endif; ?>
+                <div class="position-relative event-control-wrap">
+                    <div class="event-control">
+                        <div class="nav">
+                            <div class="swiper-button swiper-button-prev"></div>
+                            <div class="swiper-button swiper-button-next"></div>
                         </div>
+                        <div class="swiper-pagination event-swiper-pagination"></div>
+                    </div>
+                    <div class="event-section__shell">
+                        <div class="event-section__intro-row">
+                            <div class="event-section__intro">
+                                <?php
+                                get_template_part(
+                                    'templates/components/heading',
+                                    null,
+                                    [
+                                        'title_class'       => 'event-section__title',
+                                        'description_class' => 'event-section__description',
+                                        'class'             => 'event-section__heading flex-column',
+                                        'title'             => $data['title'],
+                                        'description'       => '',
+                                    ]
+                                );
+                                ?>
+                            </div>
+                            <div class="event-section__actions">
+                                <div class="heading__description event-section__description">
+                                    <?php echo wp_kses_post(wpautop($data['description'])); ?>
+                                </div>
 
-                        <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
-
+                                <?php if (! empty($data['button_text']) && ! empty($data['button_link'])) : ?>
+                                    <?php
+                                    get_template_part(
+                                        'templates/components/button',
+                                        null,
+                                        [
+                                            'class'              => 'event-section__button button-medium typo-system-button',
+                                            'button_text'        => $data['button_text'],
+                                            'button_url'         => $data['button_link'],
+                                            'button_link_target' => '_self',
+                                            'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                                        ]
+                                    );
+                                    ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php if ($data['enable_container']) : ?>
+                </div>
+            <?php endif; ?>
+            <?php if ($data['enable_container']) : ?>
+                <div class="<?php echo esc_attr($_class_container); ?> full-right">
+                <?php endif; ?>
+                <div class="event-section__shell">
+                    <?php if (! empty($slides)) : ?>
+                        <div class="event-section__slider-wrap position-relative">
+                            <div class="triangle"></div>
+                            <div class="circle"></div>
                             <?php
                             get_template_part(
-                                'templates/components/button',
+                                'templates/components/swiper',
                                 null,
                                 [
-                                    'class'              => 'event-section__button button-medium typo-system-button',
-                                    'button_text'        => $data['button_text'],
-                                    'button_url'         => $data['button_link'],
-                                    'button_link_target' => '_self',
-                                    'svg_icon_after'     => twmp_get_svg_icon('arrow-right'),
+                                    'class'            => 'event-section__swiper',
+                                    'data_block'       => 'show-event',
+                                    'enable_container' => false,
+                                    'settings'         => [
+                                        'autoPlay'        => false,
+                                        'prevNextButtons' => false,
+                                        'pagination'      => false,
+                                        'slidesPerView'   => 1.3,
+                                        'spaceBetween'    => 24,
+                                        'centeredSlides'  => true,
+                                        'breakpoints'     => [
+                                            640  => [
+                                                'slidesPerView'  => 1.3,
+                                                'spaceBetween'   => 24,
+                                                'centeredSlides' => true,
+                                            ],
+                                            992  => [
+                                                'slidesPerView'  => 2.3,
+                                                'spaceBetween'   => 24,
+                                                'centeredSlides' => true,
+                                            ],
+                                            1200 => [
+                                                'slidesPerView'  => 3.3,
+                                                'spaceBetween'   => 0,
+                                                'centeredSlides' => false,
+                                            ],
+                                        ],
+                                    ],
+                                    'items'            => $slides,
                                 ]
                             );
                             ?>
-                    </div>
-                <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-            </div>
-        </div>
-        <?php if ($data['enable_container']) : ?>
-        </div>
-    <?php endif; ?>
-    <?php if ($data['enable_container']) : ?>
-        <div class="<?php echo esc_attr($_class_container); ?> full-right">
-        <?php endif; ?>
-        <div class="event-section__shell">
-            <?php if (! empty($slides)) : ?>
-                <div class="event-section__slider-wrap position-relative">
-                    <div class="triangle"></div>
-                    <div class="circle"></div>
-                    <?php
-                    get_template_part(
-                        'templates/components/swiper',
-                        null,
-                        [
-                            'class'            => 'event-section__swiper',
-                            'data_block'       => 'show-event',
-                            'enable_container' => false,
-                            'settings'         => [
-                                'autoPlay'        => false,
-                                'prevNextButtons' => false,
-                                'pagination'      => false,
-                                'slidesPerView'   => 1.3,
-                                'spaceBetween'    => 24,
-                                'centeredSlides'    => true,
-                                'breakpoints'     => [
-                                    640  => [
-                                        'slidesPerView'     => 1.3,
-                                        'spaceBetween'      => 24,
-                                        'centeredSlides'    => true
-                                    ],
-                                    992  => [
-                                        'slidesPerView'     => 2.3,
-                                        'spaceBetween'      => 24,
-                                        'centeredSlides'    => true,
-                                    ],
-                                    1200 => [
-                                        'slidesPerView'     => 3.3,
-                                        'spaceBetween'      => 0,
-                                        'centeredSlides'    => false
-                                    ],
-                                ],
-                            ],
-                            'items'            => $slides,
-                        ]
-                    );
-                    ?>
+
+                <?php if ($data['enable_container']) : ?>
                 </div>
             <?php endif; ?>
         </div>
-
-        <?php if ($data['enable_container']) : ?>
-        </div>
-    <?php endif; ?>
+    </div>
 </section>

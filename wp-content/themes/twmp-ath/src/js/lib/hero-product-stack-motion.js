@@ -19,10 +19,10 @@ const initHeroProductStackMotion = () => {
 		return null
 	}
 
-	if (hasReducedMotion()) {
-		gsap.set([hero, product], { clearProps: 'all' })
-		return null
-	}
+	// if (hasReducedMotion()) {
+	// 	gsap.set([hero, product], { clearProps: 'all' })
+	// 	return null
+	// }
 
 	gsap.set(hero, {
 		position: 'relative',
@@ -92,14 +92,14 @@ const initHeroProductStackMotion = () => {
 	tl.to(product, {
 		autoAlpha: 1,
 		y: 0,
-		duration: 0.9,
+		duration: 0.5,
 	}, 0)
 
 	if (header) {
 		tl.to(header, {
 			autoAlpha: 1,
 			y: 0,
-			duration: 0.7,
+			duration: 0.5,
 		}, 0.35)
 	}
 
@@ -107,7 +107,7 @@ const initHeroProductStackMotion = () => {
 		tl.to(light, {
 			autoAlpha: 1,
 			y: 0,
-			duration: 0.8,
+			duration: 0.5,
 		}, 0.4)
 	}
 
@@ -115,8 +115,8 @@ const initHeroProductStackMotion = () => {
 		tl.to(firstItems, {
 			autoAlpha: 1,
 			y: 0,
-			duration: 0.7,
-			stagger: 0.12,
+			duration: 1,
+			stagger: 0.2,
 		}, 0.55)
 	}
 
@@ -124,8 +124,8 @@ const initHeroProductStackMotion = () => {
 		tl.to(laterItems, {
 			autoAlpha: 1,
 			y: 0,
-			duration: 0.7,
-			stagger: 0.12,
+			duration: 1,
+			stagger: 0.2,
 		}, 0.95)
 	}
 

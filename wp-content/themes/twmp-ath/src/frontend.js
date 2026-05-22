@@ -4,8 +4,8 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/grid'
 
-import { Fancybox } from "@fancyapps/ui";
-import "@fancyapps/ui/dist/fancybox/fancybox.css";
+// import { Fancybox } from "@fancyapps/ui";
+// import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 import init from 'lib/init-blocks'
 import initCommon from 'lib/common'
@@ -14,13 +14,13 @@ import initHeroBannerMotion from 'lib/hero-banner-motion'
 import initHeroProductStackMotion from 'lib/hero-product-stack-motion'
 import initShowEventMotion from 'lib/show-event-motion'
 
-initAboutUsMotion()
 initHeroBannerMotion()
+initAboutUsMotion()
 initHeroProductStackMotion()
 initShowEventMotion()
 
 document.addEventListener('DOMContentLoaded', () => {
-    Fancybox.bind("[data-fancybox]", {});
+    // Fancybox.bind("[data-fancybox]", {});
     initCommon()
 
     init({

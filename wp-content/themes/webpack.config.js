@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 const glob = require('glob');
 
@@ -14,7 +13,6 @@ module.exports = (env, argv) => {
   const themePath = path.resolve(__dirname, theme);
   const srcPath = path.resolve(themePath, 'src');
   const assetsPath = path.resolve(themePath, 'assets');
-  const proxyUrl = env.proxy || 'http://localhost/2026/ath';
 
 	const entry = {
 		frontend: path.resolve(srcPath, 'frontend.js'),
@@ -94,19 +92,13 @@ module.exports = (env, argv) => {
       new MiniCssExtractPlugin({
         filename: isProd ? 'css/[name].min.css' : 'css/[name].css'
       }),
-      ...(!isProd ? [new BrowserSyncPlugin({
-        proxy: proxyUrl,
-        files: [
-          `${themePath}/**/*.php`,
-          `${themePath}/theme.json`,
-          `${themePath}/assets/**/*.css`,
-          `${themePath}/assets/**/*.js`,
-        ],
-        notify: false,
-        open: false,
-        ghostMode: false,
-      }, {
-        reload: true,
+      ...(isProd ? [new PurgeCSSPlugin({
+        paths: glob.sync(`${themePath}/**/*.php`, { nodir: true }),
+        safelist: {
+          standard: ['body', 'html', /^wp-/],
+          deep: [/^is-/, /^has-/],
+          greedy: [/^twmp-/, /^woocommerce-/, /^calendar-/, /^fc-/]
+        }
       })] : []),
       new CopyWebpackPlugin({
         patterns: [

@@ -56,14 +56,14 @@ const initHeroBannerMotion = () => {
 		return null
 	}
 
-	if (hasReducedMotion()) {
-		heroes.forEach(hero => {
-			gsap.set(hero.querySelectorAll('.hero-banner__left, .hero-banner__right'), {
-				clearProps: 'all',
-			})
-		})
-		return null
-	}
+	// if (hasReducedMotion()) {
+	// 	heroes.forEach(hero => {
+	// 		gsap.set(hero.querySelectorAll('.hero-banner__left, .hero-banner__right'), {
+	// 			clearProps: 'all',
+	// 		})
+	// 	})
+	// 	return null
+	// }
 
 	heroes.forEach(hero => {
 		const left = hero.querySelector('.hero-banner__left')

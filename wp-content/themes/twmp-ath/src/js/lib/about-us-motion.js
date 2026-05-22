@@ -114,21 +114,21 @@ const initAboutUsMotion = () => {
 		return null
 	}
 
-	if (hasReducedMotion()) {
-		sections.forEach(section => {
-			const { introTargets, detailTargets } = getSectionTargets(section)
+	// if (hasReducedMotion()) {
+	// 	sections.forEach(section => {
+	// 		const { introTargets, detailTargets } = getSectionTargets(section)
 
-			gsap.set(section, {
-				clearProps: 'zIndex',
-			})
+	// 		gsap.set(section, {
+	// 			clearProps: 'zIndex',
+	// 		})
 
-			gsap.set([...introTargets, ...detailTargets], {
-				clearProps: 'all',
-			})
-		})
+	// 		gsap.set([...introTargets, ...detailTargets], {
+	// 			clearProps: 'all',
+	// 		})
+	// 	})
 
-		return null
-	}
+	// 	return null
+	// }
 
 	sections.forEach(initSectionMotion)
 

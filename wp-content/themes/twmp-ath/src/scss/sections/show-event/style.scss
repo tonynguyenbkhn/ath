@@ -1,14 +1,7 @@
 .show-event {
   position: relative;
   overflow: hidden;
-  padding: 80px 0;
-  background: linear-gradient(to right,
-      #1B1818 0%,
-      #1B1919 100%);
-
-  @media (min-width: 1200px) {
-    padding: 160px 0;
-  }
+  background: transparent;
 
   .triangle {
     width: 0;
@@ -33,6 +26,26 @@
     width: 386px;
     border: 70px solid rgba(#ED378F, 0.4);
     border-radius: 50%;
+  }
+}
+
+.show-event__viewport {
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.show-event__track {
+  min-height: 100vh;
+  padding: 80px 0;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(to right,
+      #1B1818 0%,
+      #1B1919 100%);
+
+  @media (min-width: 1200px) {
+    padding: 160px 0;
   }
 }
 
@@ -207,7 +220,7 @@
   }
 
   @media (min-width: 1200px) {
-    bottom: -70px;
+    bottom: -175px;
   }
 }
 

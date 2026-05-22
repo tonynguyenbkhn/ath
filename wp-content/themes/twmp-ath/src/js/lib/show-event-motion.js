@@ -22,19 +22,19 @@ const getPreviousSection = section => {
 }
 
 const getTargets = section => {
-	const contentLayers = toArray(section.children)
+	const viewport = section.querySelector('.show-event__viewport')
+	const track = section.querySelector('.show-event__track')
 	const intro = section.querySelector('.event-section__intro')
 	const heading = section.querySelector('.event-section__heading')
-	const sliderWrap = section.querySelector('.event-section__slider-wrap')
 	const triangle = section.querySelector('.triangle')
 	const circle = section.querySelector('.circle')
 	const slides = toArray(section.querySelectorAll('.event-section__swiper .swiper-slide'))
 
 	return {
-		contentLayers,
+		viewport,
+		track,
 		intro,
 		heading,
-		sliderWrap,
 		triangle,
 		circle,
 		slides,
@@ -43,9 +43,9 @@ const getTargets = section => {
 
 const initSectionMotion = section => {
 	const previousSection = getPreviousSection(section)
-	const { contentLayers, intro, heading, triangle, circle, slides } = getTargets(section)
+	const { viewport, track, intro, heading, triangle, circle, slides } = getTargets(section)
 
-	if (!intro && !heading && !triangle && !circle && !slides.length) {
+	if (!viewport || !track || (!intro && !heading && !triangle && !circle && !slides.length)) {
 		return
 	}
 
@@ -55,13 +55,15 @@ const initSectionMotion = section => {
 		autoAlpha: 1,
 	})
 
-	if (contentLayers.length) {
-		gsap.set(contentLayers, {
-			xPercent: 100,
-			x: 0,
-			y: 0,
-		})
-	}
+	gsap.set(viewport, {
+		position: 'relative',
+		overflow: 'hidden',
+	})
+
+	gsap.set(track, {
+		xPercent: 100,
+		x: 0,
+	})
 
 	if (triangle) {
 		gsap.set(triangle, {
@@ -83,14 +85,14 @@ const initSectionMotion = section => {
 	if (intro) {
 		gsap.set(intro, {
 			autoAlpha: 0,
-			y: 56,
+			x: 96,
 		})
 	}
 
 	if (heading) {
 		gsap.set(heading, {
 			autoAlpha: 0,
-			y: 40,
+			x: 72,
 		})
 	}
 
@@ -110,7 +112,7 @@ const initSectionMotion = section => {
 		ScrollTrigger.create({
 			trigger: previousSection,
 			start: 'top 100px',
-			endTrigger: section,
+			endTrigger: viewport,
 			end: 'top top',
 			pin: true,
 			pinSpacing: false,
@@ -125,10 +127,10 @@ const initSectionMotion = section => {
 			overwrite: 'auto',
 		},
 		scrollTrigger: {
-			trigger: section,
+			trigger: viewport,
 			start: 'top -100px',
-			end: () => `+=${Math.max(window.innerWidth * 1.4, 1600)}`,
-			scrub: 1.4,
+			end: "+=800px",
+			scrub: 1.3,
 			pin: true,
 			pinSpacing: true,
 			anticipatePin: 1,
@@ -136,13 +138,10 @@ const initSectionMotion = section => {
 		},
 	})
 
-	if (contentLayers.length) {
-		masterTimeline.to(contentLayers, {
-			xPercent: 0,
-			duration: 1.5,
-			stagger: 0,
-		}, 0)
-	}
+	masterTimeline.to(track, {
+		xPercent: 0,
+		duration: 1.5,
+	}, 0)
 
 	if (triangle) {
 		masterTimeline.to(triangle, {
@@ -164,7 +163,7 @@ const initSectionMotion = section => {
 	if (intro) {
 		masterTimeline.to(intro, {
 			autoAlpha: 1,
-			y: 0,
+			x: 0,
 			duration: 0.6,
 		}, 0.75)
 	}
@@ -172,7 +171,7 @@ const initSectionMotion = section => {
 	if (heading) {
 		masterTimeline.to(heading, {
 			autoAlpha: 1,
-			y: 0,
+			x: 0,
 			duration: 0.6,
 		}, 0.95)
 	}
@@ -194,24 +193,24 @@ const initShowEventMotion = () => {
 		return null
 	}
 
-	if (hasReducedMotion()) {
-		sections.forEach(section => {
-			const previousSection = getPreviousSection(section)
-			const { contentLayers, intro, heading, triangle, circle, slides } = getTargets(section)
+	// if (hasReducedMotion()) {
+	// 	sections.forEach(section => {
+	// 		const previousSection = getPreviousSection(section)
+	// 		const { viewport, track, intro, heading, triangle, circle, slides } = getTargets(section)
 
-			if (previousSection) {
-				gsap.set(previousSection, {
-					clearProps: 'all',
-				})
-			}
+	// 		if (previousSection) {
+	// 			gsap.set(previousSection, {
+	// 				clearProps: 'all',
+	// 			})
+	// 		}
 
-			gsap.set([section, ...contentLayers, intro, heading, triangle, circle, ...slides].filter(Boolean), {
-				clearProps: 'all',
-			})
-		})
+	// 		gsap.set([section, viewport, track, intro, heading, triangle, circle, ...slides].filter(Boolean), {
+	// 			clearProps: 'all',
+	// 		})
+	// 	})
 
-		return null
-	}
+	// 	return null
+	// }
 
 	sections.forEach(initSectionMotion)
 
