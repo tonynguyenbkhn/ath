@@ -12,10 +12,12 @@ import initCommon from 'lib/common'
 import initAboutUsMotion from 'lib/about-us-motion'
 import initHeroBannerMotion from 'lib/hero-banner-motion'
 import initHeroProductStackMotion from 'lib/hero-product-stack-motion'
+import initShowEventMotion from 'lib/show-event-motion'
 
 initAboutUsMotion()
 initHeroBannerMotion()
 initHeroProductStackMotion()
+initShowEventMotion()
 
 document.addEventListener('DOMContentLoaded', () => {
     Fancybox.bind("[data-fancybox]", {});

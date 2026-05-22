@@ -1,6 +1,10 @@
 @import './mixins/index';
 @import './global/index';
 @import './theme/critical_index';
+
+.flexible-content {
+    background-color: #090808;
+}
 .home .flexible-content {
     margin-top: 0;
 

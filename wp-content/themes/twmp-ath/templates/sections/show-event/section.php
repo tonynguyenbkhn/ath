@@ -163,7 +163,8 @@ if (! $has_intro && empty($slides)) {
         <div class="event-section__shell">
             <?php if (! empty($slides)) : ?>
                 <div class="event-section__slider-wrap position-relative">
-                    <div class="triangle "></div>
+                    <div class="triangle"></div>
+                    <div class="circle"></div>
                     <?php
                     get_template_part(
                         'templates/components/swiper',
