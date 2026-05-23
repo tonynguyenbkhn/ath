@@ -5,11 +5,30 @@ gsap.registerPlugin(ScrollTrigger)
 
 const SECTION_SELECTOR = '.show-event'
 const PREVIOUS_SECTION_SELECTOR = '.about-us'
+const HORIZONTAL_SCROLL_DISTANCE = 800
 
 const toArray = value => Array.from(value || [])
 
 const hasReducedMotion = () =>
 	window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false
+
+const createProgressLogger = label => {
+	let previousProgress = -1
+
+	return self => {
+		const progress = Math.round(self.progress * 100)
+
+		if (progress !== previousProgress && progress % 10 === 0) {
+			previousProgress = progress
+			console.log(`[${label}] progress`, {
+				progress,
+				start: self.start,
+				end: self.end,
+				scroll: self.scroll(),
+			})
+		}
+	}
+}
 
 const getPreviousSection = section => {
 	const previous = section.previousElementSibling
@@ -111,13 +130,41 @@ const initSectionMotion = section => {
 
 		ScrollTrigger.create({
 			trigger: previousSection,
-			start: 'top 100px',
-			endTrigger: viewport,
-			end: 'top top',
+			start: 'top 80px',
+			end: "+=2000",
 			pin: true,
 			pinSpacing: false,
 			anticipatePin: 1,
 			invalidateOnRefresh: true,
+			onEnter: self => {
+				console.log('[about-us pin] enter', {
+					start: self.start,
+					end: self.end,
+					scroll: self.scroll(),
+				})
+			},
+			onLeave: self => {
+				console.log('[about-us pin] leave', {
+					start: self.start,
+					end: self.end,
+					scroll: self.scroll(),
+				})
+			},
+			onEnterBack: self => {
+				console.log('[about-us pin] enter back', {
+					start: self.start,
+					end: self.end,
+					scroll: self.scroll(),
+				})
+			},
+			onLeaveBack: self => {
+				console.log('[about-us pin] leave back', {
+					start: self.start,
+					end: self.end,
+					scroll: self.scroll(),
+				})
+			},
+			onUpdate: createProgressLogger('about-us pin'),
 		})
 	}
 
@@ -129,18 +176,47 @@ const initSectionMotion = section => {
 		scrollTrigger: {
 			trigger: viewport,
 			start: 'top -100px',
-			end: "+=800px",
-			scrub: 1.3,
+			end: "+=800",
+			scrub: 0.8,
 			pin: true,
 			pinSpacing: true,
 			anticipatePin: 1,
 			invalidateOnRefresh: true,
+			onEnter: self => {
+				console.log('[show-event viewport] enter', {
+					start: self.start,
+					end: self.end,
+					scroll: self.scroll(),
+				})
+			},
+			onLeave: self => {
+				console.log('[show-event viewport] leave', {
+					start: self.start,
+					end: self.end,
+					scroll: self.scroll(),
+				})
+			},
+			onEnterBack: self => {
+				console.log('[show-event viewport] enter back', {
+					start: self.start,
+					end: self.end,
+					scroll: self.scroll(),
+				})
+			},
+			onLeaveBack: self => {
+				console.log('[show-event viewport] leave back', {
+					start: self.start,
+					end: self.end,
+					scroll: self.scroll(),
+				})
+			},
+			onUpdate: createProgressLogger('show-event viewport'),
 		},
 	})
 
 	masterTimeline.to(track, {
 		xPercent: 0,
-		duration: 1.5,
+		duration: 1,
 	}, 0)
 
 	if (triangle) {
@@ -148,7 +224,7 @@ const initSectionMotion = section => {
 			autoAlpha: 1,
 			scale: 1,
 			rotation: 180,
-			duration: 0.7,
+			duration: 0.5,
 		}, 0.2)
 	}
 
@@ -156,33 +232,33 @@ const initSectionMotion = section => {
 		masterTimeline.to(circle, {
 			autoAlpha: 1,
 			scale: 1,
-			duration: 0.7,
-		}, 0.28)
+			duration: 0.5,
+		}, 0.2)
 	}
 
 	if (intro) {
 		masterTimeline.to(intro, {
 			autoAlpha: 1,
 			x: 0,
-			duration: 0.6,
-		}, 0.75)
+			duration: 0.5,
+		}, 0.4)
 	}
 
 	if (heading) {
 		masterTimeline.to(heading, {
 			autoAlpha: 1,
 			x: 0,
-			duration: 0.6,
-		}, 0.95)
+			duration: 0.5,
+		}, 0.6)
 	}
 
 	if (slides.length) {
 		masterTimeline.to(slides, {
 			autoAlpha: 1,
 			x: 0,
-			duration: 0.75,
-			stagger: 0.14,
-		}, 1.2)
+			duration: 0.5,
+			stagger: 0.1,
+		}, 0.8)
 	}
 }
 
