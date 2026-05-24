@@ -1,0 +1,15 @@
+.section-shape {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  display: block;
+}
+
+.section-shape--triangle {
+  width: 0;
+  height: 0;
+}
+
+.section-shape--circle {
+  border-radius: 50%;
+}

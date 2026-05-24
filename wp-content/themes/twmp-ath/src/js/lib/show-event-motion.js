@@ -45,8 +45,8 @@ const getTargets = section => {
 	const track = section.querySelector('.show-event__track')
 	const intro = section.querySelector('.event-section__intro')
 	const heading = section.querySelector('.event-section__heading')
-	const triangle = section.querySelector('.triangle')
-	const circle = section.querySelector('.circle')
+	const triangle = section.querySelector('.section-shape--triangle')
+	const circle = section.querySelector('.section-shape--circle')
 	const slides = toArray(section.querySelectorAll('.event-section__swiper .swiper-slide'))
 
 	return {
@@ -176,8 +176,8 @@ const initSectionMotion = section => {
 		scrollTrigger: {
 			trigger: viewport,
 			start: 'top -100px',
-			end: "+=800",
-			scrub: 0.8,
+			end: "+=2000",
+			scrub: 1.4,
 			pin: true,
 			pinSpacing: true,
 			anticipatePin: 1,

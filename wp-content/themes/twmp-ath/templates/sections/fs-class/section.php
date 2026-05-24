@@ -90,6 +90,7 @@ foreach ($product_ids as $index => $product_id) {
 }
 
 $has_intro = ! empty($data['title']) || ! empty($data['description']) || (! empty($data['button_text']) && ! empty($data['button_link']));
+$section_id = sanitize_file_name(strtolower((string) $data['id']));
 
 if (! $has_intro && empty($slides)) {
     return;
@@ -101,7 +102,29 @@ if (! $has_intro && empty($slides)) {
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
         <div class="position-relative">
+            <?php if ('awareness-performances' === $section_id) : ?>
+                <?php
+                get_template_part(
+                    'templates/components/section-shape',
+                    null,
+                    [
+                        'type'  => 'circle',
+                        'class' => 'fs-class-section__shape fs-class-section__shape--circle',
+                    ]
+                );
+                ?>
+            <?php endif; ?>
             <div class="fs-class-section__shell has-rectangle">
+                <?php
+                get_template_part(
+                    'templates/components/section-shape',
+                    null,
+                    [
+                        'type'  => 'rectangle',
+                        'class' => 'fs-class-section__shape fs-class-section__shape--rectangle',
+                    ]
+                );
+                ?>
                 <div class="fs-class-section__intro-row">
                     <div class="fs-class-section__intro">
                         <?php
@@ -147,7 +170,16 @@ if (! $has_intro && empty($slides)) {
         <div class="fs-class-section__shell">
             <?php if (! empty($slides)) : ?>
                 <div class="fs-class-section__slider-wrap position-relative">
-                    <div class="triangle "></div>
+                    <?php
+                    get_template_part(
+                        'templates/components/section-shape',
+                        null,
+                        [
+                            'type'  => 'triangle',
+                            'class' => 'fs-class-section__shape fs-class-section__shape--triangle',
+                        ]
+                    );
+                    ?>
                     <?php
                     get_template_part(
                         'templates/components/swiper',

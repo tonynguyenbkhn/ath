@@ -3,23 +3,16 @@
   overflow: hidden;
   background: transparent;
 
-  .triangle {
-    width: 0;
-    height: 0;
+  .section-shape--triangle {
     border-left: 130px solid transparent;
     border-right: 130px solid transparent;
     border-bottom: 245px solid rgba(#48BDA6, 0.3);
     transform: rotate(180deg);
-    position: absolute;
     left: -152px;
     top: 50px;
   }
 
-  .circle {
-    content: "";
-    position: absolute;
-    pointer-events: none;
-    z-index: 0;
+  .section-shape--circle {
     bottom: -310px;
     height: 386px;
     right: -190px;
@@ -40,9 +33,7 @@
   padding: 80px 0;
   position: relative;
   z-index: 1;
-  background: linear-gradient(to right,
-      #1B1818 0%,
-      #1B1919 100%);
+  background: var(--bg-body);
 
   @media (min-width: 1200px) {
     padding: 160px 0;
@@ -54,23 +45,6 @@
   max-width: 100%;
   padding-left: calc((100% - 1280px) / 2);
 }
-
-// .show-event-section::before,
-// .show-event-section::after {
-//   content: "";
-//   position: absolute;
-//   pointer-events: none;
-//   z-index: 0;
-// }
-
-// .show-event-section::after {
-//   bottom: -130px;
-//   height: 386px;
-//   right: -190px;
-//   width: 386px;
-//   border: 70px solid rgba(#ED378F, 0.4);
-//   border-radius: 50%;
-// }
 
 .event-section__shell {
   position: relative;

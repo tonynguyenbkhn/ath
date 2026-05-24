@@ -1,7 +1,7 @@
 .fs-class-section {
   position: relative;
   overflow: hidden;
-  background: var(--bg-body);
+  // background: var(--bg-body);
   padding-top: 80px;
   padding-bottom: 80px;
 
@@ -21,37 +21,16 @@
   z-index: 1;
 }
 
-// .fs-class-section::before,
-// .fs-class-section::after {
-//   content: "";
-//   position: absolute;
-//   pointer-events: none;
-//   z-index: 0;
-// }
-
-// .fs-class-section::after {
-//   right: -90px;
-//   bottom: -100px;
-//   width: 456px;
-//   height: 456px;
-//   border: 48px solid rgba(#ED378F, 0.4);
-//   border-radius: 50%;
-// }
-
 .fs-class-section__shell {
   position: relative;
   z-index: 1;
 
-  &.has-rectangle::before {
+  &.has-rectangle .section-shape--rectangle {
     background: rgba(170, 207, 55, .3);
-    content: "";
     height: 404px;
     left: calc(30px - 100%);
-    pointer-events: none;
-    position: absolute;
     top: 70px;
     width: 100%;
-    z-index: 0;
     display: none;
 
     @media (min-width: 1200px) {
@@ -59,13 +38,10 @@
     }
   }
 
-  .triangle {
-    width: 0;
-    height: 0;
+  .section-shape--triangle {
     border-left: 130px solid transparent;
     border-right: 130px solid transparent;
     border-bottom: 245px solid rgba(#DE1F26, 0.4);
-    position: absolute;
     right: -190px;
     bottom: -70px;
 
@@ -82,16 +58,12 @@
     position: relative;
     z-index: 1;
 
-    &.has-rectangle::before {
+    &.has-rectangle .section-shape--rectangle {
       background: rgba(#48BDA6, 0.2);
-      content: "";
       height: 456px;
-      left: -200;
-      pointer-events: none;
-      position: absolute;
+      left: -200px;
       top: 0;
       width: 456px;
-      z-index: 0;
       border-radius: 50%;
 
       display: none;
@@ -101,7 +73,7 @@
       }
     }
 
-    .triangle {
+    .section-shape--triangle {
       display: none;
     }
   }
@@ -109,17 +81,13 @@
   &>.fs-class__main-container:first-child {
     position: relative;
 
-    &::before {
+    .section-shape--circle {
       background-color: rgba(48, 189, 166, .2);
       border-radius: 50%;
       top: 0;
       height: 456px;
       left: -24%;
       width: 456px;
-      content: "";
-      pointer-events: none;
-      position: absolute;
-      z-index: 0;
 
       display: none;
 

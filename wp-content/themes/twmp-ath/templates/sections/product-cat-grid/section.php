@@ -56,7 +56,24 @@ if (!empty($product_categories) && !is_wp_error($product_categories)) : ?>
 			]);
 			?>
 			<div class="product-cat-grid__wrapper">
-				<div class="triangle "></div>
+				<?php
+				get_template_part(
+					'templates/components/section-shape',
+					null,
+					[
+						'type'  => 'square',
+						'class' => 'product-cat-grid__shape product-cat-grid__shape--square',
+					]
+				);
+				get_template_part(
+					'templates/components/section-shape',
+					null,
+					[
+						'type'  => 'triangle',
+						'class' => 'product-cat-grid__shape product-cat-grid__shape--triangle',
+					]
+				);
+				?>
 				<?php foreach ($product_categories as $category) :
 					$term_id = $category->term_id ?? 0;
 

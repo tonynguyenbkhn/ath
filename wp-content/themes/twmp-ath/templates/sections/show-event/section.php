@@ -164,8 +164,24 @@ if (! $has_intro && empty($slides)) {
                 <div class="event-section__shell">
                     <?php if (! empty($slides)) : ?>
                         <div class="event-section__slider-wrap position-relative">
-                            <div class="triangle"></div>
-                            <div class="circle"></div>
+                            <?php
+                            get_template_part(
+                                'templates/components/section-shape',
+                                null,
+                                [
+                                    'type'  => 'triangle',
+                                    'class' => 'show-event__shape show-event__shape--triangle',
+                                ]
+                            );
+                            get_template_part(
+                                'templates/components/section-shape',
+                                null,
+                                [
+                                    'type'  => 'circle',
+                                    'class' => 'show-event__shape show-event__shape--circle',
+                                ]
+                            );
+                            ?>
                             <?php
                             get_template_part(
                                 'templates/components/swiper',

@@ -140,7 +140,7 @@ if (! $has_intro && empty($slides)) {
                                             'centeredSlides'    => true,
                                         ],
                                         1200 => [
-                                            'slidesPerView'     => 3.3,
+                                            'slidesPerView'     => 1.9,
                                             'spaceBetween'      => 0,
                                             'centeredSlides'    => false
                                         ],
