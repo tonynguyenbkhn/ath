@@ -3,7 +3,9 @@
     position: relative;
     overflow: hidden;
     display: block;
-    height: 100vh;
+    @media (min-width: 1024px) {
+        height: 100vh;
+    }
 }
 
 .hero-banner__media {

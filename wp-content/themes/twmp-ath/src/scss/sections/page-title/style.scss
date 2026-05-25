@@ -7,7 +7,7 @@
     }
 
     .page__description {
-        color: var(--system-content-1);
+        color: var(--system-content-2);
         @include typo-display-xs(400);
         text-align: center;
     }
@@ -15,7 +15,7 @@
 
 .page__title {
     font-family: var(--font-beautique-display);
-    color: var(--system-black);
+    color: var(--system-white);
     text-align: center;
     @include typo-token(36, 48, 400);
     font-family: var(--font-playfair-display);

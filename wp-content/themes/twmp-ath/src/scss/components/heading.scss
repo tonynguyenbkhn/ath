@@ -7,10 +7,10 @@
     &__title {
         color: var(--system-white);
         @include typo-token(36, 48, 400);
-        font-family: var(--font-playfair-display);
+        font-family: var(--font-archivo);
 
         @media (min-width: 1200px) {
-            @include typo-display-lg(400);
+            @include typo-token(80, 120, 400);
         }
     }
 

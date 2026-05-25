@@ -3,6 +3,10 @@
   pointer-events: none;
   z-index: 0;
   display: block;
+
+  @media (max-width: 1199px) {
+    display: none;
+  }
 }
 
 .section-shape--triangle {

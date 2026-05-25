@@ -14,7 +14,7 @@
 		}
 
 		a {
-			color: var(--system-content-1);
+			color: var(--system-content-2);
 		}
 
 		color: var(--primary-500);
@@ -25,6 +25,10 @@
 
 		.woocommerce-breadcrumb-wrap-text {
 			white-space: normal;
+		}
+
+		svg path {
+			fill: var(--system-content-2);
 		}
 	}
 }

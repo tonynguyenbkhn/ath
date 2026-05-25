@@ -100,44 +100,40 @@ $background_image_url = ! empty($data['background_image_id']) ? wp_get_attachmen
                     ]);
                     ?>
 
-                    <div class="contact-us__col contact-us__col--form">
-                        <?php if ($data && $data['shortcode']): ?>
-                            <div class="contact-us__form-wrap">
-                                <?php echo do_shortcode('' . $data["shortcode"] . ''); ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="contact-us__col--inner">
-                        <div class="contact-us__col-text">
-                            <?php if ('' !== trim($address)) : ?>
-                                <div class="contact-us__meta-item contact-us__meta-item--address">
-                                    <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-pin'); ?></span>
-                                    <span class="contact-us__meta-text"><?php echo esc_html($address); ?></span>
-                                </div>
-                            <?php endif; ?>
-
-                            <?php if ('' !== trim($hotline)) : ?>
-                                <div class="contact-us__meta-item contact-us__meta-item--hotline">
-                                    <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-phone'); ?></span>
-                                    <a class="contact-us__meta-text contact-us__meta-link" href="<?php echo esc_url('tel:' . preg_replace('/[^0-9+]/', '', $hotline)); ?>">
-                                        <?php echo esc_html($hotline); ?>
-                                    </a>
-                                </div>
-                            <?php endif; ?>
+                    <?php if ('' !== trim($address)) : ?>
+                        <div class="contact-us__meta-item contact-us__meta-item--address">
+                            <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-pin'); ?></span>
+                            <span class="contact-us__meta-text"><?php echo esc_html($address); ?></span>
                         </div>
+                    <?php endif; ?>
 
-                        <?php if (! empty($social_items)) : ?>
-                            <div class="contact-us__socials">
-                                <?php foreach ($social_items as $item) : ?>
-                                    <a class="contact-us__social-link" href="<?php echo esc_url($item['url']); ?>" target="_blank" rel="noopener nofollow" aria-label="<?php echo esc_attr($item['label']); ?>">
-                                        <?php echo twmp_get_svg_icon($item['icon']); ?>
-                                        <?php echo twmp_get_svg_icon($item['icon-mobile']); ?>
-                                    </a>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
+                    <?php if ('' !== trim($hotline)) : ?>
+                        <div class="contact-us__meta-item contact-us__meta-item--hotline">
+                            <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-phone'); ?></span>
+                            <a class="contact-us__meta-text contact-us__meta-link" href="<?php echo esc_url('tel:' . preg_replace('/[^0-9+]/', '', $hotline)); ?>">
+                                <?php echo esc_html($hotline); ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (! empty($social_items)) : ?>
+                        <div class="contact-us__socials">
+                            <?php foreach ($social_items as $item) : ?>
+                                <a class="contact-us__social-link" href="<?php echo esc_url($item['url']); ?>" target="_blank" rel="noopener nofollow" aria-label="<?php echo esc_attr($item['label']); ?>">
+                                    <?php echo twmp_get_svg_icon($item['icon']); ?>
+                                    <?php echo twmp_get_svg_icon($item['icon-mobile']); ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                           
+                <div class="contact-us__col contact-us__col--form">
+                    <?php if( $data && $data['shortcode'] ): ?>
+                    <div class="contact-us__form-wrap">
+                        <?php echo do_shortcode(''.$data["shortcode"].''); ?>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

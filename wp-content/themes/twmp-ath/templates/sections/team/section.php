@@ -60,12 +60,14 @@ if (! $has_intro && empty($slides)) {
 }
 ?>
 
-<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
-	<?php if ($data['enable_container']) : ?>
-		<div class="<?php echo esc_attr($_class_container); ?>">
-		<?php endif; ?>
-
-		<div class="team-section__shell">
+<section class="position-relative <?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
+    <div class="our-team__light">
+        <img width="1095px" height="941px" src="<?php echo esc_url(TWMP_IMG_URI . '/our-team-light.png'); ?>" alt="<?php echo esc_attr__('Class Workshop', 'twmp-ath'); ?>">
+    </div>
+	<div class="team-section__shell">
+		<?php if ($data['enable_container']) : ?>
+			<div class="<?php echo esc_attr($_class_container); ?>">
+			<?php endif; ?>
 			<div class="team-section__header">
 				<div class="team-section__intro">
 					<?php
@@ -101,9 +103,14 @@ if (! $has_intro && empty($slides)) {
 					<?php endif; ?>
 				</div>
 			</div>
-
-			<?php if (! empty($slides)) : ?>
-				<div class="team-section__slider-wrap position-relative">
+			<?php if ($data['enable_container']) : ?>
+			</div>
+		<?php endif; ?>
+		<?php if (! empty($slides)) : ?>
+			<div class="team-section__slider-wrap position-relative">
+				<?php if ($data['enable_container']) : ?>
+					<div class="<?php echo esc_attr($_class_container); ?>">
+					<?php endif; ?>
 					<div class="swiper-button swiper-button-prev">
 						<?php if (! empty($data['settings']['prevSvgButton'])) {
 							echo twmp_get_svg_icon($data['settings']['prevSvgButton']);
@@ -114,44 +121,49 @@ if (! $has_intro && empty($slides)) {
 							echo twmp_get_svg_icon($data['settings']['nextSvgButton']);
 						} ?>
 					</div>
-					<?php
-					get_template_part(
-						'templates/components/swiper',
-						null,
-						[
-							'class'            => 'team-section__swiper',
-							'data_block'       => 'team',
-							'enable_container' => false,
-							'settings'         => [
-								'autoPlay'        => false,
-								'pagination'      => false,
-								'prevNextButtons' => false,
-								'slidesPerView'   => 1.15,
-								'spaceBetween'    => 32,
-								'breakpoints'     => [
-									640  => [
-										'slidesPerView' => 1.4,
-										'spaceBetween'  => 36,
-									],
-									992  => [
-										'slidesPerView' => 2.3,
-										'spaceBetween'  => 40,
-									],
-									1200 => [
-										'slidesPerView' => 3.3,
-										'spaceBetween'  => 48,
-									],
+					<?php if ($data['enable_container']) : ?>
+					</div>
+				<?php endif; ?>
+				<div class="team-section__slider-inner">
+				<?php
+				get_template_part(
+					'templates/components/swiper',
+					null,
+					[
+						'class'            => 'team-section__swiper',
+						'data_block'       => 'team',
+						'enable_container' => false,
+						'settings'         => [
+							'autoPlay'        => false,
+							'pagination'      => false,
+							'prevNextButtons' => false,
+							'slidesPerView'   => 1.15,
+							'spaceBetween'    => 32,
+							'breakpoints'     => [
+								640  => [
+									'slidesPerView' => 1.4,
+									'spaceBetween'  => 36,
+								],
+								992  => [
+									'slidesPerView' => 2.3,
+									'spaceBetween'  => 40,
+								],
+								1200 => [
+									'slidesPerView' => 3.3,
+									'spaceBetween'  => 48,
 								],
 							],
-							'items'            => $slides,
-						]
-					);
-					?>
+						],
+						'items'            => $slides,
+					]
+				);
+				?>
 				</div>
-			<?php endif; ?>
-		</div>
+			</div>
+		<?php endif; ?>
+	</div>
 
-		<?php if ($data['enable_container']) : ?>
+	<?php if ($data['enable_container']) : ?>
 		</div>
 	<?php endif; ?>
 </section>

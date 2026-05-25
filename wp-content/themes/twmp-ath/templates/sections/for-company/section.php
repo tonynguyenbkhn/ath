@@ -49,6 +49,7 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
         <div class="for-company__grid">
 
             <div class="for-company__media">
+                <div class="section-shape for-company__shape for-company__shape--square" aria-hidden="true"></div>
                 <div class="for-company__media-accent" aria-hidden="true"></div>
 
                 <?php if (! empty($data['image_id'])) : ?>

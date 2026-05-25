@@ -23,6 +23,7 @@
 .contact-us__inner {
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     @media (min-width: 1200px) {
         display: flex;
@@ -48,19 +49,15 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-
-    @media (min-width: 1200px) {
-        width: 50%;
-    }
 }
 
-.contact-us__col--form {
-    width: 100%;
+// .contact-us__col--form {
+//     width: 100%;
 
-    @media (min-width: 1200px) {
-        width: 50%;
-    }
-}
+//     @media (min-width: 1200px) {
+//         width: 50%;
+//     }
+// }
 
 .contact-us__title {
 
@@ -76,7 +73,6 @@
     align-items: flex-start;
     display: flex;
     gap: 12px;
-    margin-bottom: 16px;
 }
 
 .contact-us__meta-icon {
@@ -105,9 +101,7 @@
     color: #f04c26;
 }
 
-.contact-us__socials {
-    margin-top: 28px;
-}
+.contact-us__socials {}
 
 .contact-us__socials::after {
     clear: both;
@@ -155,7 +149,7 @@
     margin-top: 34px;
 
     @media (min-width: 1200px) {
-        max-width: 504px;
+        // max-width: 504px;
         margin-top: 0;
     }
 }
@@ -689,7 +683,7 @@
     .contact-us__form-wrap {
         background-color: var(--system-white);
         padding: 25px 32px 0 32px;
-        width: calc( 100% - 64px );
+        width: calc(100% - 64px);
     }
 
     .fs-contact-search-box {
@@ -763,5 +757,73 @@
 
     .register-form__field p:before {
         display: none;
+    }
+}
+
+.contact-us__col--inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    @media (max-width: 1023px) {
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+.contact-us__col-text {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    @media (max-width: 1023px) {
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+}
+
+.contact-us__col.contact-us__col--form {
+    width: 100%;
+
+    p {
+        @include clearfix();
+        width: 100%;
+
+        label {
+            float: left;
+            width: 100%;
+
+            @media (min-width: 1024px) {
+                width: calc(100% - 220px);
+            }
+
+            .wpcf7-form-control-wrap {
+                width: 100%;
+            }
+
+            input {
+                height: 56px;
+                width: calc(100% - 32px);
+                padding: 0 16px;
+            }
+        }
+
+        .wpcf7-submit {
+            height: 56px;
+            width: 100%;
+            float: right;
+            border: 0;
+            background-color: var(--primary-500);
+            color: var(--system-white);
+            @include typo-system-button();
+            margin-top: 16px;
+
+            @media (min-width: 1024px) {
+                width: 200px;
+                margin-top: 0;
+            }
+        }
     }
 }

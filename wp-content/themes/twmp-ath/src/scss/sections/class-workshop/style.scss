@@ -174,9 +174,9 @@
 
 .class-section__button {
   gap: 8px;
-  border: 1px solid rgba(#000A2C, 0.2);
+  border: 1px solid var(--system-border);
   background: transparent;
-  color: var(--system-black);
+  color: var(--system-white);
   display: flex;
   padding: 15px 0;
   align-items: center;
@@ -184,6 +184,11 @@
 
   span {
     display: flex;
+  }
+
+  svg,
+  svg path {
+    fill: white;
   }
 
   @media (min-width: 1200px) {
@@ -537,6 +542,7 @@
   flex-direction: row-reverse;
   gap: 16px;
   width: 100%;
+  display: none;
 
   .nav {
     display: flex;

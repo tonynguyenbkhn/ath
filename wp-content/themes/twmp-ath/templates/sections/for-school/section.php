@@ -118,7 +118,8 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
             </div>
 
             <div class="for-school__media">
-
+                <div class="section-shape for-school__shape for-school__shape--square" aria-hidden="true"></div>
+                <div class="section-shape for-school__shape for-school__shape--circle" aria-hidden="true"></div>
                 <?php
                 get_template_part('templates/components/heading', null, [
                     'title_class' => 'for-school__title mobile',

@@ -26,11 +26,15 @@
 	}
 
 	& a {
-		color: var(--primary);
+		color: var(--system-content-2);
 
 		&:hover {
 			text-decoration: underline;
 		}
+	}
+
+	svg path {
+		fill: var(--system-content-2);
 	}
 }
 

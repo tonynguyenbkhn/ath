@@ -15,11 +15,11 @@ import initHeroProductStackMotion from 'lib/hero-product-stack-motion'
 import initShowEventMotion from 'lib/show-event-motion'
 import initClassWorkshopMotion from 'lib/class-workshop-motion'
 
-initHeroBannerMotion()
-initAboutUsMotion()
-initHeroProductStackMotion()
-initShowEventMotion()
-initClassWorkshopMotion()
+// initHeroBannerMotion()
+// initAboutUsMotion()
+// initHeroProductStackMotion()
+// initShowEventMotion()
+// initClassWorkshopMotion()
 
 document.addEventListener('DOMContentLoaded', () => {
     // Fancybox.bind("[data-fancybox]", {});

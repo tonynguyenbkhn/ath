@@ -126,7 +126,13 @@
 
 .for-school__media {
   float: right;
+  position: relative;
   width: 100%;
+
+  > :not(.for-school__shape) {
+    position: relative;
+    z-index: 1;
+  }
 
   @media (min-width: 1200px) {
     width: 50%;
@@ -139,6 +145,29 @@
       padding-left: 60px;
     }
   }
+}
+
+.for-school__shape {
+  bottom: -40px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.for-school__shape--square {
+  background-color: #1ac2ec;
+  left: 0;
+  width: 308px;
+  height: 361px;
+}
+
+.for-school__shape--circle {
+  border: 41px solid #712b8f;
+  border-radius: 50%;
+  left: 100px;
+  top: -65px;
+  height: 275px;
+  width: 275px;
 }
 
 .for-school__media-primary {

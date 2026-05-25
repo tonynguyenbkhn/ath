@@ -492,7 +492,7 @@ span[data-name="admin-email"],
 .facetwp-dropdown-custom {
   position: relative;
   width: 100%;
-  border-bottom: 1px solid var(--system-border);
+  border-bottom: 1px solid rgba($color: #ffffff, $alpha: 0.12);
   font-family: inherit;
 }
 
@@ -502,7 +502,7 @@ span[data-name="admin-email"],
   align-items: center;
   gap: 14px;
   @include typo-token(18, 24, 400);
-  color: rgba(58, 58, 58, 1);
+  color: #ffffff;
   cursor: pointer;
 }
 
