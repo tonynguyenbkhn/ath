@@ -98,6 +98,12 @@ if (! $has_intro && empty($slides)) {
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
+    <div class="event__light">
+        <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
+    </div>
+    <div class="our-team__light">
+        <img width="1095px" height="941px" src="<?php echo esc_url(TWMP_IMG_URI . '/our-team-light.png'); ?>" alt="<?php echo esc_attr__('Class Workshop', 'twmp-ath'); ?>">
+    </div>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
@@ -116,14 +122,16 @@ if (! $has_intro && empty($slides)) {
             <?php endif; ?>
             <div class="fs-class-section__shell has-rectangle">
                 <?php
-                get_template_part(
-                    'templates/components/section-shape',
-                    null,
-                    [
-                        'type'  => 'rectangle',
-                        'class' => 'fs-class-section__shape fs-class-section__shape--rectangle',
-                    ]
-                );
+                if ('awareness-performances' !== $section_id) :
+                    get_template_part(
+                        'templates/components/section-shape',
+                        null,
+                        [
+                            'type'  => 'rectangle',
+                            'class' => 'fs-class-section__shape fs-class-section__shape--rectangle',
+                        ]
+                    );
+                endif;
                 ?>
                 <div class="fs-class-section__intro-row">
                     <div class="fs-class-section__intro">
@@ -171,14 +179,16 @@ if (! $has_intro && empty($slides)) {
             <?php if (! empty($slides)) : ?>
                 <div class="fs-class-section__slider-wrap position-relative">
                     <?php
-                    get_template_part(
-                        'templates/components/section-shape',
-                        null,
-                        [
-                            'type'  => 'triangle',
-                            'class' => 'fs-class-section__shape fs-class-section__shape--triangle',
-                        ]
-                    );
+                    if ('awareness-performances' !== $section_id) :
+                        get_template_part(
+                            'templates/components/section-shape',
+                            null,
+                            [
+                                'type'  => 'triangle',
+                                'class' => 'fs-class-section__shape fs-class-section__shape--triangle',
+                            ]
+                        );
+                    endif;
                     ?>
                     <?php
                     get_template_part(
@@ -208,7 +218,7 @@ if (! $has_intro && empty($slides)) {
                                     ],
                                     1200 => [
                                         'slidesPerView'     => 3.3,
-                                        'spaceBetween'      => 0,
+                                        'spaceBetween'      => 32,
                                         'centeredSlides'    => false
                                     ],
                                 ],

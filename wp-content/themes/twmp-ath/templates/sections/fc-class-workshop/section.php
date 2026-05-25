@@ -96,7 +96,10 @@ if (! $has_intro && empty($slides)) {
 }
 ?>
 
-<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
+<section class="position-relative <?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
+    <div class="our-team__light">
+        <img width="1095px" height="941px" src="<?php echo esc_url(TWMP_IMG_URI . '/our-team-light.png'); ?>" alt="<?php echo esc_attr__('Class Workshop', 'twmp-ath'); ?>">
+    </div>
     <div class="container">
         <?php
         get_template_part(

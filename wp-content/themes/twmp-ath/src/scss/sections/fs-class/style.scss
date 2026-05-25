@@ -9,12 +9,26 @@
     padding-top: 110px;
     padding-bottom: 160px;
   }
+
+  .our-team__light {
+    display: none;
+  }
+}
+
+#awareness-performances.fs-class-section {
+  .our-team__light {
+    display: block;
+  }
+
+  .event__light {
+    display: none;
+  }
 }
 
 .fs-class__main-container.full-right {
-  width: calc(1280px + (100% - 1280px) / 2);
+  width: calc(1280px + (100% - 1280px) / 2 + 14px);
   max-width: 100%;
-  padding-left: calc((100% - 1280px) / 2);
+  padding-left: calc((100% - 1280px - 28px) / 2);
 }
 
 .fs-class__main-container .position-relative {
@@ -26,9 +40,9 @@
   z-index: 1;
 
   &.has-rectangle .section-shape--rectangle {
-    background: rgba(170, 207, 55, .3);
+    background: rgba(170, 207, 55, 1);
     height: 404px;
-    left: calc(30px - 100%);
+    left: calc((16px + 100%)*-1);
     top: 70px;
     width: 100%;
     display: none;
@@ -138,7 +152,7 @@
 }
 
 .fs-class-section__title {
-  color: var(--system-black);
+  color: var(--system-white);
   margin-bottom: 32px;
   @include typo-token(36, 48, 400);
   font-family: var(--font-playfair-display);
@@ -151,7 +165,7 @@
 .fs-class-section__description {
 
   p {
-    color: var(--system-content-1);
+    color: var(--system-content-2);
   }
 }
 
@@ -164,13 +178,17 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(#000A2C, 0.4);
+  border: 1px solid rgba(#ffffff, 0.4);
   background: transparent;
-  color: var(--system-black);
+  color: var(--system-white);
   margin-top: 28px;
 
   span {
     display: flex;
+  }
+
+  svg path {
+    fill: var(--system-white);
   }
 }
 
@@ -189,8 +207,8 @@
   left: auto;
   right: 0;
   background-color: transparent;
-  border-color: var(--system-black);
-  color: var(--system-black);
+  border-color: var(--system-white);
+  color: var(--system-white);
   bottom: 0;
   position: unset;
   margin: 0;
@@ -487,7 +505,7 @@
   width: 100%;
   left: auto;
   right: 0;
-  background-color: rgba($color: #000A2C, $alpha: 0.3);
+  background-color: rgba($color: #ffffff, $alpha: 0.3);
   position: unset;
   margin: 0;
   top: 25px;
@@ -505,5 +523,5 @@
 }
 
 .fs-class .fs-class__main-container .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-  background-color: rgba($color: #000A2C, $alpha: 1);
+  background-color: rgba($color: #ffffff, $alpha: 1);
 }

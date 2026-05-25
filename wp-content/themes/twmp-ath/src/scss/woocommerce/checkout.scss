@@ -34,6 +34,24 @@
 		display: flex;
 		align-items: stretch;
 
+		&::before {
+			content: "";
+			position: absolute;
+			pointer-events: none;
+			z-index: 0;
+			top: 0;
+			width: 404px;
+			height: 404px;
+			background: rgba(#AACF37, 1);
+			left: -125px;
+			z-index: 0;
+			display: none;
+
+			@media (min-width: 1200px) {
+				display: block;
+			}
+		}
+
 		@media (max-width: 1199px) {
 			flex-direction: column;
 		}
@@ -85,6 +103,28 @@
 		@media (max-width: 1199px) {
 			flex: 0 0 100%;
 			margin-top: 24px;
+		}
+
+		.woocommerce {
+			position: relative;
+
+			&::after {
+				border-bottom: 130px solid #de1f26;
+				border-left: 80px solid transparent;
+				border-right: 80px solid transparent;
+				bottom: 120px;
+				content: "";
+				display: none;
+				height: 0;
+				position: absolute;
+				right: -150px;
+				width: 0;
+				z-index: 0;
+
+				@media (min-width: 1200px) {
+					display: block;
+				}
+			}
 		}
 	}
 
@@ -985,6 +1025,8 @@
 		border-radius: 12px;
 		box-shadow: 0 1px 0 var(--system-border);
 		border: 1px solid rgba($color: #ffffff, $alpha: 0.4);
+		position: relative;
+		z-index: 1;
 	}
 
 	.twmp-checkout-card {
@@ -1229,6 +1271,7 @@
 		margin: 0;
 		flex-shrink: 0;
 		position: relative;
+		background-color: #ffffff;
 	}
 
 	.twmp-ticket-option input:checked,
@@ -1247,7 +1290,7 @@
 	.twmp-ticket-option__day {
 		color: var(--system-white);
 		@include typo-text-lg(500);
-		border-right: 1px solid rgba($color: #ffffff, $alpha: 1.0);
+		border-right: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 		padding-right: 10px;
 	}
 
@@ -1293,7 +1336,8 @@
 		align-items: center;
 		gap: 16px;
 		width: fit-content;
-		border-bottom: 1px solid var(--system-border);
+		border-bottom: 1px solid rgba($color: #ffffff, $alpha: 0.4);
+		background-color: rgba($color: #ffffff, $alpha: 0.12);
 	}
 
 	.twmp-ticket-quantity__button {
@@ -1302,7 +1346,7 @@
 		border: 0;
 		border-radius: 50%;
 		background: transparent;
-		color: #1f2747;
+		color: #ffffff;
 		font-size: 20px;
 		line-height: 1;
 		font-weight: 400;
@@ -1314,12 +1358,17 @@
 		width: 100px;
 		border: 0;
 		background: transparent;
-		color: #444444;
+		color: #ffffff;
 		@include typo-token(18, 24, 500);
 		text-align: center;
 		padding: 0;
 		font-family: var(--font-archivo);
 		height: 56px;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+		}
 	}
 
 	.twmp-checkout-payment {
@@ -1333,10 +1382,11 @@
 
 	.twmp-checkout-summary__card {
 		padding: 30px 23px 16px;
+		position: relative;
 	}
 
 	.twmp-checkout-summary__header {
-		border-bottom: 1px solid var(--system-border);
+		border-bottom: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 		margin-bottom: 40px;
 		padding-bottom: 32px;
 	}
@@ -1358,7 +1408,7 @@
 		gap: 12px;
 		align-items: start;
 		padding-bottom: 14px;
-		border-bottom: 1px solid #ece6dc;
+		border-bottom: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 	}
 
 	.twmp-checkout-summary__media img {
@@ -1408,7 +1458,8 @@
 	}
 
 	.twmp-checkout-summary__totals {
-		padding: 18px;
+		padding: 18px 23px;
+		position: relative;
 	}
 
 	.twmp-checkout-summary__total-row {
@@ -1417,7 +1468,7 @@
 		justify-content: space-between;
 		gap: 12px;
 		padding: 12px 0 16px;
-		border-bottom: 1px solid #ece6dc;
+		border-bottom: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 	}
 
 	.twmp-checkout-summary__total-label {
@@ -1566,7 +1617,7 @@
 	}
 
 	.twmp-checkout-payment-stage__list-label {
-		color: rgba(58, 58, 58, 0.7);
+		color: var(--system-content-2);
 		@include typo-text-md(400)
 	}
 
@@ -1579,7 +1630,7 @@
 		padding: 14px 16px;
 		border-radius: 12px;
 		background: #fbfaf7;
-		border: 1px solid #ece6dc;
+		border: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 
 		p {
 			margin: 0;
@@ -1648,7 +1699,7 @@
 		padding: 14px 16px;
 		border-radius: 12px;
 		background: #fbfaf7;
-		border: 1px solid #ece6dc;
+		border: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 		color: #5a606f;
 		font-size: 14px;
 		line-height: 22px;
@@ -1681,7 +1732,7 @@
 		padding: 14px 16px;
 		border-radius: 12px;
 		background: #fbfaf7;
-		border: 1px solid #ece6dc;
+		border: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 		display: grid;
 		gap: 8px;
 	}
@@ -1861,7 +1912,7 @@
 	align-items: center;
 	justify-content: center;
 	padding: 14px 22px;
-	border: 1px solid #ece6dc;
+	border: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 	border-radius: 2px;
 	background: #fff;
 	color: #1f2747;
