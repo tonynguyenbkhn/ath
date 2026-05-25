@@ -41,7 +41,7 @@
   .section-shape--triangle {
     border-left: 130px solid transparent;
     border-right: 130px solid transparent;
-    border-bottom: 245px solid rgba(#DE1F26, 0.4);
+    border-bottom: 245px solid rgba(#DE1F26, 1);
     right: -190px;
     bottom: -70px;
 
@@ -59,7 +59,7 @@
     z-index: 1;
 
     &.has-rectangle .section-shape--rectangle {
-      background: rgba(#48BDA6, 0.2);
+      background: rgba(#48BDA6, 1);
       height: 456px;
       left: -200px;
       top: 0;
@@ -82,7 +82,7 @@
     position: relative;
 
     .section-shape--circle {
-      background-color: rgba(48, 189, 166, .2);
+      background-color: rgba(48, 189, 166, 1);
       border-radius: 50%;
       top: 0;
       height: 456px;

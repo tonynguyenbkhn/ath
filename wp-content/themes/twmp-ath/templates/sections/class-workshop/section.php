@@ -97,6 +97,9 @@ if (! $has_intro && empty($slides)) {
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
+    <div class="class-workshop__light">
+        <img width="1095px" height="941px" src="<?php echo esc_url(TWMP_IMG_URI . '/class-workshop-light.png'); ?>" alt="<?php echo esc_attr__('Class Workshop', 'twmp-ath'); ?>">
+    </div>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
@@ -157,6 +160,17 @@ if (! $has_intro && empty($slides)) {
             <div class="class-section__intro-row">
                 <div class="class-section__intro-row-wrapper">
                     <div class="class-section__intro">
+                        <?php
+                        get_template_part(
+                            'templates/components/section-shape',
+                            null,
+                            [
+                                'type'  => 'square',
+                                'class' => 'class-section__shape class-section__shape--square',
+                                'style' => 'width:404px;height:404px;background:#AACF37;',
+                            ]
+                        );
+                        ?>
                         <?php
                         get_template_part(
                             'templates/components/heading',

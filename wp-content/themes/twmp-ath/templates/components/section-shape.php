@@ -9,6 +9,7 @@ $data = wp_parse_args(
     [
         'type'  => '',
         'class' => '',
+        'style' => '',
     ]
 );
 
@@ -28,4 +29,4 @@ if (! empty($data['class'])) {
 }
 ?>
 
-<div class="<?php echo esc_attr(implode(' ', array_filter($classes))); ?>" aria-hidden="true"></div>
+<div class="<?php echo esc_attr(implode(' ', array_filter($classes))); ?>"<?php if (! empty($data['style'])) : ?> style="<?php echo esc_attr($data['style']); ?>"<?php endif; ?> aria-hidden="true"></div>

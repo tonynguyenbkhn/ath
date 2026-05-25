@@ -131,7 +131,7 @@ const initSectionMotion = section => {
 		ScrollTrigger.create({
 			trigger: previousSection,
 			start: 'top 80px',
-			end: "+=2000",
+			end: "+=2200",
 			pin: true,
 			pinSpacing: false,
 			anticipatePin: 1,
