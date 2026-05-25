@@ -97,9 +97,19 @@ if (! $has_intro && empty($slides)) {
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
-    <div class="class-workshop__light">
-        <img width="1095px" height="941px" src="<?php echo esc_url(TWMP_IMG_URI . '/class-workshop-light.png'); ?>" alt="<?php echo esc_attr__('Class Workshop', 'twmp-ath'); ?>">
-    </div>
+    <?php
+    get_template_part(
+        'templates/components/image-light',
+        null,
+        [
+            'side' => 'right',
+            'src' => TWMP_IMG_URI . '/class-workshop-light.png',
+            'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+            'width' => 1095,
+            'height' => 941,
+        ]
+    );
+    ?>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>

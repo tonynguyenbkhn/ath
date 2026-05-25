@@ -97,29 +97,31 @@ if (! $has_intro && empty($slides)) {
 }
 ?>
 
-<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
+<section class="position-relative <?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
     <div class="event__light">
         <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
     </div>
     <div class="our-team__light">
         <img width="1095px" height="941px" src="<?php echo esc_url(TWMP_IMG_URI . '/our-team-light.png'); ?>" alt="<?php echo esc_attr__('Class Workshop', 'twmp-ath'); ?>">
     </div>
+    <?php if ('awareness-performances' === $section_id) : ?>
+        <?php
+        get_template_part(
+            'templates/components/section-shape',
+            null,
+            [
+                'type'  => 'circle',
+                'class' => 'fs-class-section__shape fs-class-section__shape--circle',
+            ]
+        );
+        ?>
+    <?php endif; ?>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
+
         <div class="position-relative">
-            <?php if ('awareness-performances' === $section_id) : ?>
-                <?php
-                get_template_part(
-                    'templates/components/section-shape',
-                    null,
-                    [
-                        'type'  => 'circle',
-                        'class' => 'fs-class-section__shape fs-class-section__shape--circle',
-                    ]
-                );
-                ?>
-            <?php endif; ?>
+
             <div class="fs-class-section__shell has-rectangle">
                 <?php
                 if ('awareness-performances' !== $section_id) :

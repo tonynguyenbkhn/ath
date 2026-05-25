@@ -38,13 +38,23 @@ $grid_css_class = $data['grid_css_class'] ? $data['grid_css_class'] : 'col-12 co
 if (!empty($product_categories) && !is_wp_error($product_categories)) : ?>
 
 	<div class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
-	<div class="product-cat-grid__light">
-		<img width="496px" height="645px" src="<?php echo esc_url(TWMP_IMG_URI . '/product-cat-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-	</div>
-	<div class="product-cat-grid__logo">
-		<img width="953px" height="406pxpx" src="<?php echo esc_url(TWMP_IMG_URI . '/logo-section.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-	</div>
-	<div class="glow"></div>
+		<?php
+		get_template_part(
+			'templates/components/image-light',
+			null,
+			[
+				'side' => 'right',
+				'src' => TWMP_IMG_URI . '/what-we-offer.png',
+				'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+				'width' => 908,
+				'height' => 551,
+			]
+		);
+		?>
+		<div class="product-cat-grid__logo">
+			<img width="953" height="406" src="<?php echo esc_url(TWMP_IMG_URI . '/logo-section.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
+		</div>
+		<div class="glow"></div>
 		<?php if ($data['enable_container']) : ?><div class="<?php echo esc_attr($_class_container); ?>"><?php endif; ?>
 			<?php
 			get_template_part('templates/components/heading', null, [

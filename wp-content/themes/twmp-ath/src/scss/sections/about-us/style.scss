@@ -3,8 +3,14 @@
   color: #ffffff;
   overflow: unset;
   position: relative;
-  padding-bottom: 120px;
+  padding-bottom: 80px;
+  padding-top: 80px;
   z-index: 3;
+
+  @media (min-width: 1200px) {
+    padding-bottom: 120px;
+    padding-top: 290px;
+  }
 }
 
 .about-us__image-wrap {
@@ -29,9 +35,9 @@
   text-align: left;
   margin-top: 0;
 
-  @media (min-width: 1200px) {
-    margin-top: -50px;
-  }
+  // @media (min-width: 1200px) {
+  //   margin-top: -50px;
+  // }
 }
 
 .about-us__media .about-us__header {
@@ -87,32 +93,32 @@
   }
 }
 
-.about-us__light {
-  position: absolute;
-  top: -190px;
-  right: 0;
-  z-index: 0;
+// .about-us__light {
+//   position: absolute;
+//   top: -190px;
+//   right: 0;
+//   z-index: 0;
 
-  @media (min-width: 1440px) {
-    left: 0;
-  }
+//   @media (min-width: 1440px) {
+//     left: 0;
+//   }
 
-  &.desktop {
-    display: none;
+//   &.desktop {
+//     display: none;
 
-    @media (min-width: 1200px) {
-      display: block;
-    }
-  }
+//     @media (min-width: 1200px) {
+//       display: block;
+//     }
+//   }
 
-  &.mobile {
-    display: block;
+//   &.mobile {
+//     display: block;
 
-    @media (min-width: 1200px) {
-      display: none;
-    }
-  }
-}
+//     @media (min-width: 1200px) {
+//       display: none;
+//     }
+//   }
+// }
 
 .about-us__description {
   @include content-style();

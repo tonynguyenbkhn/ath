@@ -24,7 +24,7 @@
 }
 
 .testimonials-section__title {
-	color: var(--system-black);
+	color: var(--system-white);
 	margin-bottom: 25px;
 }
 
@@ -51,8 +51,8 @@
 }
 
 .testimonial-card-wrapper {
-	background: #F5F5F2;
-	border: 1px solid var(--system-border);
+	background: rgba($color: #ffffff, $alpha: 0.12);
+	border: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 	padding: 24px;
 }
 
@@ -97,20 +97,20 @@
 
 .testimonial-card__name {
 	margin: 0;
-	color: var(--system-black);
+	color: var(--system-white);
 	@include typo-token(32, 48, 400);
 	font-family: var(--font-beautique-display);
 }
 
 .testimonial-card__school {
 	margin: 0;
-	color: var(--system-content-1);
+	color: var(--system-content-2);
 	@include typo-text-lg(400);
 }
 
 .testimonial-card__content {
 	margin-top: 10px;
-	color: var(--system-content-1);
+	color: var(--system-content-2);
 	@include typo-text-lg(400);
 }
 
@@ -120,14 +120,14 @@
 
 .testimonials-section .testimonials-section__slider-wrap .swiper-horizontal>.swiper-pagination-progressbar,
 .testimonials-section .testimonials-section__slider-wrap .swiper-pagination-progressbar.swiper-pagination-horizontal {
-	background-color: rgba(#000A2C, 0.3);
+	background-color: rgba(#ffffff, 0.12);
 	width: 30%;
 	left: 50%;
 	transform: translateX(-50%);
 }
 
 .testimonials-section .testimonials-section__slider-wrap .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-	background-color: rgba(#000A2C, 0.8);
+	background-color: rgba(#ffffff, 1);
 }
 
 .testimonials-section .testimonial-card-wrapper {

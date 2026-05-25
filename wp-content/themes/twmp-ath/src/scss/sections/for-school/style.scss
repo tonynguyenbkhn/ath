@@ -156,17 +156,17 @@
 
 .for-school__shape--square {
   background-color: #1ac2ec;
-  left: 0;
-  width: 308px;
-  height: 361px;
+  height: 375px;
+  left: 60px;
+  width: 315px;
 }
 
 .for-school__shape--circle {
   border: 41px solid #712b8f;
   border-radius: 50%;
-  left: 100px;
-  top: -65px;
   height: 275px;
+  left: 125px;
+  top: 0px;
   width: 275px;
 }
 
@@ -185,15 +185,14 @@
 }
 
 #our-approach.for-school {
-  background-color: rgba(246, 244, 237, 1);
-  color: var(--system-black);
+  color: var(--system-white);
 
   @media (max-width: 1199px) {
     padding-top: 0;
   }
 
   .for-school__title {
-    color: var(--system-black);
+    color: var(--system-white);
     margin-bottom: 50px;
   }
 
@@ -207,6 +206,14 @@
   //     max-width: unset;
   //   }
   // }
+
+  .for-school__shape--circle {
+    display: none;
+  }
+
+  .for-school__shape--square {
+    background-color: #aacf37;
+  }
 
   @media (min-width: 1200px) {
     .for-school__header {

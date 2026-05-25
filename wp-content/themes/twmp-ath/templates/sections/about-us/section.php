@@ -39,9 +39,20 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
-    <div class="about-us__light desktop">
-        <img width="1018px" height="508px" src="<?php echo esc_url(TWMP_IMG_URI . '/about-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-    </div>
+    <?php
+    get_template_part(
+        'templates/components/image-light',
+        null,
+        [
+            'side' => 'left',
+            'class' => 'desktop',
+            'src' => TWMP_IMG_URI . '/about-light.png',
+            'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+            'width' => 1018,
+            'height' => 508,
+        ]
+    );
+    ?>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>
@@ -49,9 +60,20 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
         <div class="about-us__grid">
             <div class="about-us__content">
                 <div class="about-us__content-wrapper position-relative">
-                    <div class="about-us__light mobile">
-                        <img width="1018px" height="508px" src="<?php echo esc_url(TWMP_IMG_URI . '/about-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-                    </div>
+                    <?php
+                    get_template_part(
+                        'templates/components/image-light',
+                        null,
+                        [
+                            'side' => 'left',
+                            'class' => 'mobile',
+                            'src' => TWMP_IMG_URI . '/about-light.png',
+                            'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+                            'width' => 1018,
+                            'height' => 508,
+                        ]
+                    );
+                    ?>
                     <?php
                     get_template_part('templates/components/heading', null, [
                         'title_class' => 'about-us__title desktop',

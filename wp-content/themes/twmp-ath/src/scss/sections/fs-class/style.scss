@@ -67,6 +67,20 @@
   }
 }
 
+.section-shape--circle {
+  width: 456px;
+  height: 456px;
+  background-color: #48BDA6;
+  left: 80px;
+  bottom: 185px;
+
+  display: none;
+
+  @media (min-width: 1200px) {
+    display: block;
+  }
+}
+
 #awareness-performances {
   .fs-class-section__shell {
     position: relative;

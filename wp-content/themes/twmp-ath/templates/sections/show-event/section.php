@@ -43,7 +43,7 @@ foreach ($product_ids as $index => $product_id) {
 
     $badges = function_exists('get_field') ? get_field('ath_badges', $product_id) : [];
     $short_info = function_exists('get_field') ? (string) get_field('ath_short_info', $product_id) : '';
-	$location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
+    $location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
     $location = function_exists('get_field') ? (string) get_field('ath_location', $product_id) : '';
     $description_source = trim(wp_strip_all_tags((string) $product_post->post_content));
     $description = '';
@@ -100,9 +100,19 @@ if (! $has_intro && empty($slides)) {
 
     <div class="show-event__viewport">
         <div class="show-event__track">
-            <div class="event__light">
-                <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-            </div>
+            <?php
+            get_template_part(
+                'templates/components/image-light',
+                null,
+                [
+                    'side' => 'right',
+                    'src' => TWMP_IMG_URI . '/event-light.png',
+                    'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+                    'width' => 1052,
+                    'height' => 816,
+                ]
+            );
+            ?>
             <?php if ($data['enable_container']) : ?>
                 <div class="<?php echo esc_attr($_class_container); ?>">
                 <?php endif; ?>

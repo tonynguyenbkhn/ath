@@ -6,33 +6,11 @@
 
     @media (min-width: 1200px) {
         padding-top: 120px;
-        padding-bottom: 290px;
+        padding-bottom: 0;
     }
 
     &__main-container {
         position: relative;
-    }
-
-    &__light {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 0;
-        width: 100%;
-
-        @media (min-width: 1440px) {
-            width: auto;
-        }
-
-        img {
-            width: 100%;
-            height: auto;
-
-            @media (min-width: 1440px) {
-                width: auto;
-            }
-        }
     }
 
     &__logo {
