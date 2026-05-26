@@ -98,11 +98,11 @@
 		/* Artist Name */
 		.twmp-artist-name {
 			@include typo-display-sm(400, 48);
-			color: #3A3A3A;
+			color: #ffffff;
 		}
 
 		.twmp-artist-name a {
-			color: #333;
+			color: #ffffff;
 			text-decoration: none;
 			transition: color 0.2s ease-in-out;
 		}
@@ -116,14 +116,14 @@
 		/* Artist Position */
 		.twmp-artist-position {
 			@include typo-display-xs(400);
-			color: #646464;
+			color: rgba($color: #ffffff, $alpha: 0.7);
 		}
 
 		/* Artist Description */
 		.twmp-artist-description {
 			font-size: 0.9rem;
 			line-height: 1.6;
-			color: #555;
+			color: rgba($color: #ffffff, $alpha: 0.7);
 			margin: 0;
 		}
 

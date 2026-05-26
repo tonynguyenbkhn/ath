@@ -67,12 +67,41 @@ foreach ($testimonial_items as $item) {
 
 $has_intro = ! empty($data['title']) || ! empty($data['description']);
 
+$section_id = sanitize_file_name(strtolower((string) $data['id']));
+
 if (! $has_intro && empty($slides)) {
 	return;
 }
 ?>
 
-<section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
+<section class="position-relative <?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
+	<?php
+	if ('our-feedback-fc' === $section_id):
+		get_template_part(
+			'templates/components/image-light',
+			null,
+			[
+				'side' => 'right',
+				'src' => TWMP_IMG_URI . '/what-we-offer.png',
+				'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+				'width' => 908,
+				'height' => 551,
+			]
+		);
+	else :
+		get_template_part(
+			'templates/components/image-light',
+			null,
+			[
+				'side' => 'left',
+				'src' => TWMP_IMG_URI . '/our-team-light.png',
+				'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+				'width' => 1095,
+				'height' => 941,
+			]
+		);
+	endif;
+	?>
 	<?php if ($data['enable_container']) : ?>
 		<div class="<?php echo esc_attr($_class_container); ?>">
 		<?php endif; ?>

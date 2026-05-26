@@ -38,6 +38,20 @@
 		margin-top: 140px;
 		float: left;
 		width: 100%;
+		position: relative;
+
+		&::after {
+			border-bottom: 245px solid #de1f26;
+			border-left: 130px solid transparent;
+			border-right: 130px solid transparent;
+			top: 0;
+			content: "";
+			height: 0;
+			position: absolute;
+			right: -130px;
+			width: 0;
+			z-index: 0;
+		}
 
 		@media (max-width: 1199px) {
 			order: 2;
@@ -190,7 +204,9 @@
 
 		@include typo-token(18, 28, 400);
 		font-family: var(--font-archivo);
-		color: var(--system-content-1);
+		color: var(--system-content-2);
+		position: relative;
+		z-index: 1;
 
 		ul.tabs {
 			display: flex;
@@ -203,21 +219,21 @@
 				border-radius: 0;
 				padding: 10px 54px;
 				padding-bottom: 10px;
-				border-bottom: 2px solid var(--system-border);
+				border-bottom: 2px solid rgba($color: #ffffff, $alpha: 0.4);
 				transition: all 0.3s ease;
 
 				a {
 					@include typo-token(18, 28, 400);
 					font-family: var(--font-archivo);
-					color: var(--system-content-1);
+					color: var(--system-content-2);
 				}
 
 				&.active {
 					padding-bottom: 10px;
-					border-bottom: 2px solid var(--system-black);
+					border-bottom: 2px solid var(--system-white);
 
 					a {
-						color: var(--system-black);
+						color: var(--system-white);
 					}
 				}
 			}
@@ -230,67 +246,47 @@
 			&>div {
 				border-radius: 0;
 			}
+
+			.single__content {
+				@include content-style();
+			}
+
+			ul.page-numbers {
+				border: 0;
+			}
 		}
+
+		svg path {
+			fill: var(--system-content-2);
+		}
+
 	}
 }
 
-/*----------------------------------------*/
-/*  Related Event Section
-/*----------------------------------------*/
+.single-product-container {
+	position: relative;
+
+	&::before {
+		background: #aacf37;
+		content: "";
+		height: 404px;
+		left: -100%;
+		pointer-events: none;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: 0;
+		z-index: 0;
+	}
+}
+
+
 @import './single-product/section';
-
-/*----------------------------------------*/
-/*  Related
-/*----------------------------------------*/
-.related {
-	margin-top: 0;
-	padding: 24px 10px 30px;
-	overflow: hidden;
-	order: 2;
-
-	@media (max-width: 576px) {
-		order: 4;
-	}
-
-	.related-wrapper {
-		box-shadow: 0px 3px 7px 1px rgba(0, 0, 0, 0.3);
-		background-color: #ffffff;
-		border-radius: var(--border-radius);
-		flex: 0 0 100%;
-		max-width: 100%;
-		padding: 16px;
-
-		&>h2 {
-			margin-bottom: 1em;
-			padding: 10px;
-			background-color: var(--primary);
-			border-radius: 0;
-			color: var(--black);
-			font-size: 16px;
-			font-weight: 700;
-			text-transform: capitalize;
-			line-height: 22px;
-			width: 250px;
-		}
-	}
-
-	.woocommerce-loop-product__link {
-		box-shadow: none !important;
-		border: 1px solid #c3c3c9d1;
-		border-radius: 0;
-	}
-
-	.product-link__image {
-		border-radius: 0;
-	}
-}
-
 /*----------------------------------------*/
 /*  Artists Section
 /*----------------------------------------*/
 @import './single-product/artists';
-
 /*----------------------------------------*/
-/*  Artists Section
+/*  Related Event Section
 /*----------------------------------------*/
 @import './single-product/relate-product';

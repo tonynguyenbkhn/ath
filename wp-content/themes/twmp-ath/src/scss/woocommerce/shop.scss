@@ -8,6 +8,38 @@
 
 .twmp-shop-layout__main {
 	margin-top: 20px;
+
+	.twmp-shop-layout__container {
+		position: relative;
+		z-index: 1;
+
+		&::before {
+			background: #aacf37;
+			content: "";
+			height: 404px;
+			left: -100%;
+			pointer-events: none;
+			position: absolute;
+			top: 130px;
+			width: 100%;
+			z-index: 0;
+			z-index: 0;
+		}
+
+		&::after {
+			border-bottom: 245px solid #de1f26;
+			border-left: 130px solid transparent;
+			border-right: 130px solid transparent;
+			bottom: 75px;
+			content: "";
+			height: 0;
+			position: absolute;
+			right: -130px;
+			width: 0;
+			z-index: 0;
+		}
+	}
+
 }
 
 .twmp-shop-search-empty__description {
@@ -33,6 +65,8 @@
 
 .twmp-shop-layout-wrapper {
 	@include clearfix();
+	position: relative;
+	z-index: 1;
 
 	.twmp-shop-layout__left {
 		float: right;

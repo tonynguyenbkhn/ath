@@ -52,6 +52,18 @@
 			}
 		}
 
+		// &::after {
+		// 	border-bottom: 150px solid #de1f26;
+		// 	border-left: 75px solid transparent;
+		// 	border-right: 75px solid transparent;
+		// 	top: 30%;
+		// 	content: "";
+		// 	height: 0;
+		// 	position: absolute;
+		// 	right: -55px;
+		// 	width: 0;
+		// }
+
 		@media (max-width: 1199px) {
 			flex-direction: column;
 		}

@@ -91,15 +91,42 @@ foreach ($product_ids as $index => $product_id) {
 
 $has_intro = ! empty($data['title']) || ! empty($data['description']) || (! empty($data['button_text']) && ! empty($data['button_link']));
 
+$section_id = sanitize_file_name(strtolower((string) $data['id']));
+
 if (! $has_intro && empty($slides)) {
     return;
 }
 ?>
 
 <section class="position-relative <?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
-    <div class="our-team__light">
-        <img width="1095px" height="941px" src="<?php echo esc_url(TWMP_IMG_URI . '/our-team-light.png'); ?>" alt="<?php echo esc_attr__('Class Workshop', 'twmp-ath'); ?>">
-    </div>
+    <?php
+    if ('coaching-team-development' === $section_id):
+        get_template_part(
+            'templates/components/image-light',
+            null,
+            [
+                'side' => 'right',
+                'src' => TWMP_IMG_URI . '/event-light.png',
+                'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+                'width' => 1052,
+                'height' => 816,
+            ]
+        );
+    endif;
+    if ('awareness-performances' === $section_id):
+        get_template_part(
+            'templates/components/image-light',
+            null,
+            [
+                'side' => 'left',
+                'src' => TWMP_IMG_URI . '/our-team-light.png',
+                'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+                'width' => 1095,
+                'height' => 941,
+            ]
+        );
+    endif;
+    ?>
     <div class="container">
         <?php
         get_template_part(

@@ -15,6 +15,19 @@ if ($data && $data['twmp_checkout_step'] === '2') {
     $is_step_2 = true;
 }
 
+get_template_part(
+    'templates/components/image-light',
+    null,
+    [
+        'class' => 'event__light',
+        'side' => 'right',
+        'src' => TWMP_IMG_URI . '/event-light.png',
+        'alt' => esc_html(get_the_title()),
+        'width' => 1052,
+        'height' => 816,
+    ]
+);
+
 get_template_part('templates/sections/page-title/section', null, ['class' => 'page-checkout-title']);
 
 ?>

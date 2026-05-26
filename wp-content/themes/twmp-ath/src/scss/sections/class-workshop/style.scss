@@ -133,20 +133,21 @@
 
 .class-section__title {
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: 24px;
 
   @media (min-width: 1200px) {
     text-align: left;
+    margin-bottom: 64px;
   }
 }
 
-.class-workshop__light {
-  position: absolute;
-  left: auto;
-  right: 0;
-  top: 0;
-  z-index: 0;
-}
+// .class-workshop__light {
+//   position: absolute;
+//   left: auto;
+//   right: 0;
+//   top: 0;
+//   z-index: 0;
+// }
 
 .class-section__description {
   // @include content-style(var(--system-content-2), var(--system-white));
@@ -528,13 +529,13 @@
   }
 }
 
-.class__light {
-  position: absolute;
-  left: auto;
-  right: 0;
-  top: 0;
-  z-index: 0;
-}
+// .class__light {
+//   position: absolute;
+//   left: auto;
+//   right: 0;
+//   top: 0;
+//   z-index: 0;
+// }
 
 .class-section-control {
   display: flex;

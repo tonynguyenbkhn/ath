@@ -279,7 +279,7 @@
   & p {
     @include typo-token(18, 28, 400);
     font-family: var(--font-archivo);
-    color: var(--system-content-1);
+    color: var(--system-content-2);
   }
 
   & h1,
@@ -293,12 +293,12 @@
   }
 
   & a {
-    color: var(--primary);
+    color: var(--primary-500);
     text-decoration: underline;
     overflow-wrap: anywhere;
 
     &:hover {
-      color: var(--system-black);
+      color: var(--system-white);
     }
   }
 
@@ -363,7 +363,7 @@
     font-style: italic;
     position: relative;
     font-size: 1.2em;
-    color: var(--system-content-1);
+    color: var(--system-content-2);
     box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.1);
   }
 
@@ -383,7 +383,7 @@
 
   & code {
     background-color: var(--system-border);
-    color: var(--system-content-1);
+    color: var(--system-content-2);
     font-family: 'Fira Code', 'Courier New', monospace;
     padding: 0.2em 0.4em;
     border-radius: 4px;

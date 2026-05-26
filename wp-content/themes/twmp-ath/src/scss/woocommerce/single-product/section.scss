@@ -18,10 +18,10 @@
 		min-width: 56px;
 		height: 56px;
 		padding: 0 18px;
-		border: 1px solid var(--system-border);
+		border: 1px solid rgba($color: #ffffff, $alpha: 0.4);
 		border-radius: 0;
 		background: transparent;
-		color: var(--system-black);
+		color: var(--system-white);
 		font-family: var(--font-inter);
 		@include typo-token(14, 18, 600);
 		text-decoration: none;
@@ -29,7 +29,7 @@
 	}
 
 	.single-related-event__filter {
-		color: var(--system-black);
+		color: var(--system-white);
 		font-family: var(--font-inter);
 		@include typo-token(16, 28, 600);
 		height: 40px;
@@ -90,12 +90,12 @@
 	.single-related-event__pagination .page-numbers.dots {
 		border-color: transparent;
 		background: transparent;
-		color: var(--system-content-1);
+		color: var(--system-content-2);
 	}
 
 	.single-related-event__empty {
 		padding: 24px 0;
-		color: var(--system-content-1);
+		color: var(--system-content-2);
 	}
 
 	@media (max-width: 1199px) {

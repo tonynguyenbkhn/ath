@@ -189,6 +189,12 @@
   }
 }
 
+#two-up-intro-default {
+  .image__light {
+    display: none;
+  }
+}
+
 #two-up-intro-image-content {
   .two-up-intro__content {
     float: right;
@@ -205,5 +211,10 @@
     @media (min-width: 1200px) {
       padding-left: 40px;
     }
+  }
+
+  .image__light {
+    transform: scaleX(-1);
+    top: -250px;
   }
 }

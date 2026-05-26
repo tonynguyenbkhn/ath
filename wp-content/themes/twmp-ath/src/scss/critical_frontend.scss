@@ -3,7 +3,11 @@
 @import './theme/critical_index';
 
 .flexible-content {
-    background-color: #090808;
+    background-color: var(--bg-body);
+
+    .image__light {
+        Z-index: 99;
+    }
 }
 .home .flexible-content {
     margin-top: 0;

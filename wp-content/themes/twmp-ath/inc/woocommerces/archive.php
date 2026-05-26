@@ -483,7 +483,7 @@ function twmp_render_shop_layout_end()
 add_action('woocommerce_shop_loop_header', 'twmp_render_shop_header', 20);
 function twmp_render_shop_header()
 {
-    echo '<div class="twmp-shop-layout-wrapper" data-block="shop-page"><div class="twmp-shop-layout__left"><div class="twmp-shop-layout__left-innner"><div class="twmp-shop-layout__left-wrap">' . do_shortcode('[facetwp facet="categories"]') . '<div class="twmp-shop-search-filter">' . get_product_search_form(false) . '<button class="filter-mobile-event">'. twmp_get_svg_icon('filter') .'</button></div></div>';
+    echo '<div class="twmp-shop-layout-wrapper" data-block="shop-page"><div class="twmp-shop-layout__left"><div class="twmp-shop-layout__left-innner"><div class="twmp-shop-layout__left-wrap">' . do_shortcode('[facetwp facet="categories"]') . '<div class="twmp-shop-search-filter">' . get_product_search_form(false) . '<button class="filter-mobile-event">' . twmp_get_svg_icon('filter') . '</button></div></div>';
 }
 add_action('woocommerce_after_main_content', 'twmp_render_shop_header_end', 1);
 function twmp_render_shop_header_end()
@@ -549,7 +549,7 @@ function twmp_render_shop_sidebar_main()
                 <button class="w-100 btn-close-filter"><?php echo esc_html__('Close', 'twmp-ath'); ?></button>
             </div>
         </div>
-    <?php
+<?php
     }
 }
 
@@ -594,8 +594,33 @@ add_action('woocommerce_before_main_content', function () {
             'class'       => 'twmp-shop-banner__image image--cover image--default',
             'image_class' => 'twmp-shop-banner__image',
         ]);
+
         echo '</div>';
     } else {
         return;
     }
 }, 5);
+
+add_action('woocommerce_before_main_content', function () {
+    if (!class_exists('WooCommerce')) {
+        return;
+    }
+
+    if (is_shop() || is_product_category() || is_product()) {
+
+        get_template_part(
+            'templates/components/image-light',
+            null,
+            [
+                'class' => 'event__light',
+                'side' => 'right',
+                'src' => TWMP_IMG_URI . '/event-light.png',
+                'alt' => esc_html(get_the_title()),
+                'width' => 1052,
+                'height' => 816,
+            ]
+        );
+    } else {
+        return;
+    }
+}, 25);

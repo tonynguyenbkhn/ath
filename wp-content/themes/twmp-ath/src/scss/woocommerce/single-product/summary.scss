@@ -2,7 +2,7 @@
 
     div.product {
         position: relative;
-        color: var(--system-content-1);
+        color: var(--system-content-2);
         margin-top: 40px;
 
         @media (max-width: 1199px) {
@@ -14,7 +14,7 @@
             @include typo-token(36, 48, 500);
             margin-bottom: 8;
             font-family: var(--font-playfair-display);
-            color: rgba(58, 58, 58, 1);
+            color: var(--system-white);
         }
 
         // product-subtitle
@@ -106,13 +106,13 @@
                 display: flex;
                 align-items: center;
                 gap: 8px;
-                color: var(--system-content-1);
+                color: var(--system-content-2);
                 font-family: var(--font-archivo);
                 @include typo-token(18, 28, 400);
             }
 
             &__item-text {
-                color: #3A3A3A
+                color: #fff
             }
         }
 

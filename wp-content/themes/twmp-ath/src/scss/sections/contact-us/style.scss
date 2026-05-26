@@ -10,13 +10,13 @@
 }
 
 .contact-us__box {
-    background-color: transparent;
+    background-color: #F6F4ED;
     border-radius: 8px;
     padding: 0;
+    padding: 70px 70px 54px;
 
-    @media (min-width: 1200px) {
-        padding: 70px 70px 54px;
-        background-color: #F6F4ED;
+    @media (max-width: 1199px) {
+        padding: 32px 16px;
     }
 }
 
@@ -60,12 +60,9 @@
 // }
 
 .contact-us__title {
+    color: var(--system-black);
 
-    margin-bottom: 40px;
-    color: var(--system-white);
-
-    @media (min-width: 1200px) {
-        color: var(--system-black);
+    @media (max-width: 1199px) {
     }
 }
 
@@ -85,11 +82,10 @@
 .contact-us__meta-text {
     @include typo-text-lg(400);
     text-align: center;
-    color: var(--system-white);
+    color: var(--system-black);
 
     @media (min-width: 1200px) {
         text-align: left;
-        color: var(--system-black);
     }
 }
 
@@ -681,8 +677,7 @@
 
 #fs-contact-us.contact-us {
     .contact-us__form-wrap {
-        background-color: var(--system-white);
-        padding: 25px 32px 0 32px;
+        background-color: transparent;
         width: calc(100% - 64px);
     }
 
@@ -724,7 +719,7 @@
 
 #fc-contact-us.contact-us {
     .contact-us__form-wrap {
-        background-color: var(--system-white);
+        background-color: transparent;
         padding: 25px 32px 0 32px;
     }
 
@@ -765,6 +760,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-top: 32px;
 
     @media (max-width: 1023px) {
         flex-direction: column;

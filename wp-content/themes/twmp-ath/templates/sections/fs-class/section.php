@@ -98,12 +98,34 @@ if (! $has_intro && empty($slides)) {
 ?>
 
 <section class="position-relative <?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
-    <div class="event__light">
-        <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-    </div>
-    <div class="our-team__light">
-        <img width="1095px" height="941px" src="<?php echo esc_url(TWMP_IMG_URI . '/our-team-light.png'); ?>" alt="<?php echo esc_attr__('Class Workshop', 'twmp-ath'); ?>">
-    </div>
+    <?php
+    get_template_part(
+        'templates/components/image-light',
+        null,
+        [
+            'class' => 'event__light',
+            'side' => 'right',
+            'src' => TWMP_IMG_URI . '/event-light.png',
+            'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+            'width' => 1052,
+            'height' => 816,
+        ]
+    );
+    ?>
+    <?php
+    get_template_part(
+        'templates/components/image-light',
+        null,
+        [
+            'class' => 'our-team__light',
+            'side' => 'left',
+            'src' => TWMP_IMG_URI . '/our-team-light.png',
+            'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+            'width' => 1095,
+            'height' => 941,
+        ]
+    );
+    ?>
     <?php if ('awareness-performances' === $section_id) : ?>
         <?php
         get_template_part(

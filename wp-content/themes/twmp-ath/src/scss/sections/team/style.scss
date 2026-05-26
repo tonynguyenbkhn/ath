@@ -10,6 +10,7 @@
 
 .team-section__header {
   margin-bottom: 40px;
+
   @media (min-width: 1200px) {
     margin-bottom: 120px;
   }
@@ -216,7 +217,7 @@
   }
 
   @media(min-width: 1200px) {
-    padding-left: calc(( (100vw - 1280px) / 2 ) - 24px);
+    padding-left: calc(((100vw - 1280px) / 2) - 24px);
     padding-right: 0;
   }
 }
@@ -265,10 +266,10 @@
   }
 }
 
-.our-team__light {
-  position: absolute;
-  left: 0;
-  right: auto;
-  top: 0;
-  z-index: 0;
-}
+// .our-team__light {
+//   position: absolute;
+//   left: 0;
+//   right: auto;
+//   top: 0;
+//   z-index: 0;
+// }

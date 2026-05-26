@@ -39,9 +39,19 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
-    <div class="for-company__light">
-        <img width="1052px" height="816px" src="<?php echo esc_url(TWMP_IMG_URI . '/event-light.png'); ?>" alt="<?php echo esc_attr__('Our service', 'twmp-ath'); ?>">
-    </div>
+    <?php
+    get_template_part(
+        'templates/components/image-light',
+        null,
+        [
+            'side' => 'right',
+            'src' => TWMP_IMG_URI . '/event-light.png',
+            'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+            'width' => 1052,
+            'height' => 816,
+        ]
+    );
+    ?>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>

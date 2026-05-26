@@ -9,6 +9,10 @@
     padding-top: 75px;
     padding-bottom: 120px;
   }
+
+  .image__light.mobile {
+    left: -24px;
+  }
 }
 
 .for-school__grid {
@@ -28,7 +32,7 @@
   padding-right: 0;
 
   @media (min-width: 1200px) {
-    padding-right: 120px;
+    padding-right: 100px;
   }
 }
 
@@ -54,34 +58,34 @@
   }
 }
 
-.for-school__light {
-  position: absolute;
-  left: 0;
-  z-index: 0;
-  top: 0;
-  display: none;
+// .for-school__light {
+//   position: absolute;
+//   left: 0;
+//   z-index: 0;
+//   top: 0;
+//   display: none;
 
-  @media (min-width: 1200px) {
-    display: block;
-  }
+//   @media (min-width: 1200px) {
+//     display: block;
+//   }
 
-  @media (min-width: 1440px) {
-    transform: scale(1.5);
-  }
-}
+//   @media (min-width: 1440px) {
+//     transform: scale(1.5);
+//   }
+// }
 
-.for-school__content .for-school__light {
-  position: absolute;
-  left: 0;
-  z-index: 0;
-  top: 0;
-  display: block;
-  left: -24px;
+// .for-school__content .for-school__light {
+//   position: absolute;
+//   left: 0;
+//   z-index: 0;
+//   top: 0;
+//   display: block;
+//   left: -24px;
 
-  @media (min-width: 1200px) {
-    display: none;
-  }
-}
+//   @media (min-width: 1200px) {
+//     display: none;
+//   }
+// }
 
 .for-school__description {
   @include content-style();
@@ -128,6 +132,7 @@
   float: right;
   position: relative;
   width: 100%;
+  margin-top: 0;
 
   > :not(.for-school__shape) {
     position: relative;
@@ -136,6 +141,7 @@
 
   @media (min-width: 1200px) {
     width: 50%;
+    margin-top: 200px;
   }
 
   &-primary {
@@ -157,7 +163,7 @@
 .for-school__shape--square {
   background-color: #1ac2ec;
   height: 375px;
-  left: 60px;
+  left: 0;
   width: 315px;
 }
 
@@ -166,7 +172,7 @@
   border-radius: 50%;
   height: 275px;
   left: 125px;
-  top: 0px;
+  top: -60px;
   width: 275px;
 }
 
@@ -197,7 +203,7 @@
   }
 
   .for-school__description ul li {
-    color: rgba(100, 100, 100, 1);
+    color: rgba(255, 255, 255, 0.7);
     @include typo-token(22, 30, 400);
   }
 
@@ -213,6 +219,9 @@
 
   .for-school__shape--square {
     background-color: #aacf37;
+    right: 45px;
+    bottom: 35px;
+    left: auto;
   }
 
   @media (min-width: 1200px) {
@@ -235,5 +244,15 @@
   @media (min-width: 1200px) {
     padding-top: 105px;
     padding-bottom: 180px;
+  }
+
+  .for-school__shape--circle {
+    display: none;
+  }
+
+  .for-school__shape--square {
+    background-color: #FDD300;
+    left: 0;
+    bottom: 70px;
   }
 }

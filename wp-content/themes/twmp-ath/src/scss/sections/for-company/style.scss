@@ -49,17 +49,17 @@
   }
 }
 
-.for-company__light {
-  position: absolute;
-  left: auto;
-  right: 0;
-  top: 0;
-  z-index: 0;
+// .for-company__light {
+//   position: absolute;
+//   left: auto;
+//   right: 0;
+//   top: 0;
+//   z-index: 0;
 
-  @media (min-width: 1440px) {
-    transform: scale(1.5);
-  }
-}
+//   @media (min-width: 1440px) {
+//     transform: scale(1.5);
+//   }
+// }
 
 
 .for-company__description {

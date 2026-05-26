@@ -410,7 +410,6 @@ export default el => {
 				html: renderEventCardBody(arg.event)
 			}),
 			eventDidMount: arg => {
-
 				const meta = getMeta(arg.event)
 				const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
 				const dots = document.createElement('div')
@@ -428,8 +427,9 @@ export default el => {
 						dotsWrap.className = 'calendar-week__dots'
 						dayEvents.parentElement.insertBefore(dotsWrap, dayEvents)
 					}
-
+					
 					dotsWrap.appendChild(dots)
+					dayFrame.classList.add('has-events')
 				} else {
 					arg.el.before(dots)
 				}

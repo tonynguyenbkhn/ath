@@ -19,6 +19,8 @@
     width: 386px;
     border: 70px solid rgba(#ED378F, 1);
     border-radius: 50%;
+    background-color: transparent;
+    left: auto;
   }
 }
 
@@ -287,13 +289,13 @@
   z-index: 1;
 }
 
-.event__light {
-  position: absolute;
-  left: auto;
-  right: 0;
-  top: 0;
-  z-index: 0;
-}
+// .event__light {
+//   position: absolute;
+//   left: auto;
+//   right: 0;
+//   top: 0;
+//   z-index: 0;
+// }
 
 .show-event .show-event__main-container .swiper-horizontal>.swiper-pagination-progressbar,
 .show-event .show-event__main-container .swiper-pagination-progressbar.swiper-pagination-horizontal {
