@@ -18,7 +18,6 @@
     color: var(--system-white);
     text-align: center;
     @include typo-token(36, 48, 400);
-    font-family: var(--font-archivo);
     margin-top: 28px;
 
     @media (min-width: 1200px) {

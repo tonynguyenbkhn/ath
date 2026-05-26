@@ -51,7 +51,7 @@ $zalo_url = function_exists('get_field') ? (string) get_field('zalo', 'option') 
 $social_items = [
     [
         'icon' => 'contact-section-whatsapp',
-        'icon-mobile' => 'contact-section-whatsapp-mobile',
+        'icon-mobile' => 'contact-section-whatsapp',
         'url' => $whatsapp_url,
         'label' => 'Whatsapp',
     ],

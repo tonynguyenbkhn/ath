@@ -678,7 +678,6 @@
 #fs-contact-us.contact-us {
     .contact-us__form-wrap {
         background-color: transparent;
-        width: calc(100% - 64px);
     }
 
     .fs-contact-search-box {
@@ -720,7 +719,7 @@
 #fc-contact-us.contact-us {
     .contact-us__form-wrap {
         background-color: transparent;
-        padding: 25px 32px 0 32px;
+        // padding: 25px 32px 0 32px;
     }
 
     .fs-contact-search-box {
@@ -765,6 +764,7 @@
     @media (max-width: 1023px) {
         flex-direction: column;
         justify-content: center;
+        margin-top: 0;
     }
 }
 

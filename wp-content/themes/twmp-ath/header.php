@@ -49,6 +49,71 @@ $current_language_icon_uri = $current_language_icon ? get_theme_file_uri('/asset
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<style>
+		@font-face {
+			font-family: 'Beautique Display';
+			src: url(<?php echo get_theme_file_uri('/assets/fonts/BeautiqueDisplay-Regular.otf'); ?>) format('opentype');
+			font-weight: 400;
+			font-style: normal;
+			font-display: swap;
+		}
+
+		@font-face {
+			font-family: 'Beautique Display';
+			src: url(<?php echo get_theme_file_uri('/assets/fonts/BeautiqueDisplay-Italic.otf'); ?>) format('opentype');
+			font-weight: 400;
+			font-style: italic;
+			font-display: swap;
+		}
+
+		@font-face {
+			font-family: 'Beautique Display';
+			src: url(<?php echo get_theme_file_uri('/assets/fonts/BeautiqueDisplay-Medium.otf'); ?>) format('opentype');
+			font-weight: 500;
+			font-style: normal;
+			font-display: swap;
+		}
+
+		@font-face {
+			font-family: 'Beautique Display';
+			src: url(<?php echo get_theme_file_uri('/assets/fonts/BeautiqueDisplay-MediumItalic.otf'); ?>) format('opentype');
+			font-weight: 500;
+			font-style: italic;
+			font-display: swap;
+		}
+
+		@font-face {
+			font-family: 'Beautique Display';
+			src: url(<?php echo get_theme_file_uri('/assets/fonts/BeautiqueDisplay-Bold.otf'); ?>) format('opentype');
+			font-weight: 700;
+			font-style: normal;
+			font-display: swap;
+		}
+
+		@font-face {
+			font-family: 'Beautique Display';
+			src: url(<?php echo get_theme_file_uri('/assets/fonts/BeautiqueDisplay-BoldItalic.otf'); ?>) format('opentype');
+			font-weight: 700;
+			font-style: italic;
+			font-display: swap;
+		}
+
+		@font-face {
+			font-family: 'Beautique Display';
+			src: url(<?php echo get_theme_file_uri('/assets/fonts/BeautiqueDisplay-Black.otf'); ?>) format('opentype');
+			font-weight: 900;
+			font-style: normal;
+			font-display: swap;
+		}
+
+		@font-face {
+			font-family: 'Beautique Display';
+			src: url(<?php echo get_theme_file_uri('/assets/fonts/BeautiqueDisplay-BlackItalic.otf'); ?>) format('opentype');
+			font-weight: 900;
+			font-style: italic;
+			font-display: swap;
+		}
+	</style>
 	<?php wp_head(); ?>
 </head>
 
@@ -76,16 +141,14 @@ $current_language_icon_uri = $current_language_icon ? get_theme_file_uri('/asset
 										class="header__language-switcher-toggle button-reset"
 										aria-label="<?php echo esc_attr__('Select language', 'twmp-ath'); ?>"
 										aria-expanded="false"
-										onclick="var menu=this.nextElementSibling; var expanded=menu.hidden; menu.hidden=!expanded; this.setAttribute('aria-expanded', expanded ? 'true' : 'false');"
-									>
+										onclick="var menu=this.nextElementSibling; var expanded=menu.hidden; menu.hidden=!expanded; this.setAttribute('aria-expanded', expanded ? 'true' : 'false');">
 										<img
 											src="<?php echo esc_url($current_language_icon_uri); ?>"
 											alt="<?php echo esc_attr($current_language_item['name'] ?? __('Language', 'twmp-ath')); ?>"
 											width="24"
 											height="24"
 											loading="eager"
-											decoding="async"
-										/>
+											decoding="async" />
 										<span class="screen-reader-text"><?php echo esc_html($current_language_item['name'] ?? __('Language', 'twmp-ath')); ?></span>
 									</button>
 									<div class="header__language-switcher-menu" hidden>
@@ -103,16 +166,14 @@ $current_language_icon_uri = $current_language_icon ? get_theme_file_uri('/asset
 											<a
 												class="header__language-switcher-item<?php echo $is_current_language ? ' is-current' : ''; ?>"
 												href="<?php echo esc_url($language_item['url']); ?>"
-												<?php echo $is_current_language ? 'aria-current="true"' : ''; ?>
-											>
+												<?php echo $is_current_language ? 'aria-current="true"' : ''; ?>>
 												<img
 													src="<?php echo esc_url($language_icon_uri); ?>"
 													alt="<?php echo esc_attr($language_item['name']); ?>"
 													width="24"
 													height="24"
 													loading="lazy"
-													decoding="async"
-												/>
+													decoding="async" />
 												<span class="screen-reader-text"><?php echo esc_html($language_item['name']); ?></span>
 											</a>
 										<?php endforeach; ?>

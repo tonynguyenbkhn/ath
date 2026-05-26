@@ -64,14 +64,14 @@
       @include typo-display-sm(500, 48);
     }
 
-    font-family: var(--font-playfair-display);
+    font-family: var(--font-beautique-display);
   }
 
   h3,
   h4 {
     color: var(--system-white);
     @include typo-token(18, 28, 500);
-    font-family: var(--font-playfair-display);
+    font-family: var(--font-beautique-display);
 
     @media (min-width: 1200px) {
       @include typo-display-xs(500);

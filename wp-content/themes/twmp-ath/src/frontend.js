@@ -4,8 +4,8 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/grid'
 
-// import { Fancybox } from "@fancyapps/ui";
-// import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import { Fancybox } from "@fancyapps/ui";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 import init from 'lib/init-blocks'
 import initCommon from 'lib/common'

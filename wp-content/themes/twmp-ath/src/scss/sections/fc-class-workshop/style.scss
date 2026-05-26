@@ -97,7 +97,7 @@
   color: #ffffff;
   margin-bottom: 32px;
   @include typo-token(36, 48, 400);
-  font-family: var(--font-playfair-display);
+  font-family: var(--font-beautique-display);
 
   @media (min-width: 1200px) {
     @include typo-token(72, 108, 400);

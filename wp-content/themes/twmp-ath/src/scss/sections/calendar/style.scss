@@ -105,7 +105,7 @@
 .calendar-page__header .calendar-page__title {
     margin: 0;
     color: #ffffff;
-    font-family: var(--font-playfair-display);
+    font-family: var(--font-beautique-display);
     @include typo-token(40, 48, 400);
 
     @media (min-width: 1199px) {
@@ -132,7 +132,7 @@
 
 .calendar-page__range {
     color: #ffffff;
-    font-family: var(--font-playfair-display);
+    font-family: var(--font-beautique-display);
     @include typo-display-sm(700, 36);
 }
 

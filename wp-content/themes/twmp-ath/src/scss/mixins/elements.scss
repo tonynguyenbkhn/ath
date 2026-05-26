@@ -867,22 +867,22 @@ $theme-font-family-typo: (
 
 // Display XL
 @mixin typo-display-xl($weight) {
-  @include typography-style(96, 100, $weight, var(--font-playfair-display));
+  @include typography-style(96, 100, $weight, var(--font-beautique-display));
 }
 
 // Display LG
 @mixin typo-display-lg($weight) {
-  @include typography-style(80, 120, $weight, var(--font-playfair-display));
+  @include typography-style(80, 120, $weight, var(--font-beautique-display));
 }
 
 // Display MD
 @mixin typo-display-md($weight, $line-height) {
-  @include typography-style(60, $line-height, $weight, var(--font-playfair-display));
+  @include typography-style(60, $line-height, $weight, var(--font-beautique-display));
 }
 
 // Display SM
 @mixin typo-display-sm($weight, $line-height) {
-  @include typography-style(36, $line-height, $weight, var(--font-playfair-display));
+  @include typography-style(36, $line-height, $weight, var(--font-beautique-display));
 }
 
 // Display XS

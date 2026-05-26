@@ -63,130 +63,64 @@ $theme-font-family-typo: (
 	inter: --font-inter
 );
 
-/* assets/fonts/BeautiqueDisplay */
-
-@font-face {
-	font-family: 'Beautique Display';
-	src: url('./../fonts/BeautiqueDisplay-Regular.otf') format('opentype');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Beautique Display';
-	src: url('./../fonts/BeautiqueDisplay-Italic.otf') format('opentype');
-	font-weight: 400;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Beautique Display';
-	src: url('./../fonts/BeautiqueDisplay-Medium.otf') format('opentype');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Beautique Display';
-	src: url('./../fonts/BeautiqueDisplay-MediumItalic.otf') format('opentype');
-	font-weight: 500;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Beautique Display';
-	src: url('./../fonts/BeautiqueDisplay-Bold.otf') format('opentype');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Beautique Display';
-	src: url('./../fonts/BeautiqueDisplay-BoldItalic.otf') format('opentype');
-	font-weight: 700;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Beautique Display';
-	src: url('./../fonts/BeautiqueDisplay-Black.otf') format('opentype');
-	font-weight: 900;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Beautique Display';
-	src: url('./../fonts/BeautiqueDisplay-BlackItalic.otf') format('opentype');
-	font-weight: 900;
-	font-style: italic;
-	font-display: swap;
-}
-
 .typo-display-xl-bold {
 	@include typo-token(96, 100, $bold);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-xl-semibold {
 	@include typo-token(96, 100, $semibold);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-xl-regular {
 	@include typo-token(96, 100, $regular);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-lg-bold {
 	@include typo-token(80, 120, $bold);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-lg-semibold {
 	@include typo-token(80, 120, $semibold);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-lg-regular {
 	@include typo-token(80, 120, $regular);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-md-bold {
 	@include typo-token(60, 42, $bold);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-md-semibold {
 	@include typo-token(60, 40, $semibold);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-md-regular {
 	@include typo-token(60, 80, $regular);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-sm-regular {
 	@include typo-token(36, 48, $regular);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-sm-medium {
 	@include typo-token(36, 48, $medium);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-sm-bold {
 	@include typo-token(36, 36, $bold);
-	font-family: var(--font-playfair-display);
+	font-family: var(--font-beautique-display);
 }
 
 .typo-display-xs-bold {
