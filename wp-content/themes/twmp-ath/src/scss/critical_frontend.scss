@@ -5,6 +5,13 @@
 .flexible-content {
     background-color: var(--bg-body);
 }
+
+.page-about {
+    .image__light {
+        Z-index: 0;
+    }
+}
+
 .home .flexible-content {
     margin-top: 0;
 
@@ -12,4 +19,5 @@
         margin-top: -86px;
     }
 }
+
 @import './sections/hero-banner/style';

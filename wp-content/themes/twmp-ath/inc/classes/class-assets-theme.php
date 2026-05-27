@@ -25,6 +25,22 @@ class Assets_Theme
 	{
 		add_action('wp_enqueue_scripts', [$this, 'twmp_critical_frontend_assets']);
 		add_action('wp_enqueue_scripts', [$this, 'twmp_frontend_assets']);
+
+
+		add_filter('body_class', [$this, 'twmp_add_page_slug_body_class']);
+	}
+
+	function twmp_add_page_slug_body_class($classes)
+	{
+		if (is_page()) {
+			global $post;
+
+			if (!empty($post->post_name)) {
+				$classes[] = 'page-' . sanitize_html_class($post->post_name);
+			}
+		}
+
+		return $classes;
 	}
 
 	public function twmp_critical_frontend_assets()
@@ -192,23 +208,6 @@ class Assets_Theme
 		}
 	};
 
-	const scrollToSectionTabTitle = function() {
-		if (!shouldOpenSectionTab()) {
-			return;
-		}
-
-		const sectionTabTitle = document.getElementById('tab-title-section');
-
-		if (!sectionTabTitle) {
-			return;
-		}
-
-		sectionTabTitle.scrollIntoView({
-			behavior: 'auto',
-			block: 'start'
-		});
-	};
-
 	const openSectionTab = function() {
 		if (!shouldOpenSectionTab()) {
 			return;
@@ -249,8 +248,6 @@ class Assets_Theme
 			sectionTabLink.setAttribute('aria-selected', 'true');
 			sectionTabLink.setAttribute('tabindex', '0');
 		}
-
-		window.requestAnimationFrame(scrollToSectionTabTitle);
 	};
 
 	const boot = function() {
@@ -258,7 +255,6 @@ class Assets_Theme
 		window.setTimeout(openSectionTab, 50);
 		window.setTimeout(openSectionTab, 250);
 		window.setTimeout(openSectionTab, 1000);
-		window.setTimeout(scrollToSectionTabTitle, 1500);
 	};
 
 	if (document.readyState === 'loading') {

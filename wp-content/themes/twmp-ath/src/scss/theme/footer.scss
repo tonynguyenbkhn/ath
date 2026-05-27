@@ -175,6 +175,42 @@ $footer-bg-color: #F7F7F7;
 			margin-right: 10px;
 		}
 	}
+
+	@media (max-width: 1199px) {
+		margin: 0 auto !important;
+
+		p {
+			font-size: 14px;
+		}
+	}
+}
+
+.footer__primary-wrapper {
+	.gap-32 {
+
+		@media (max-width: 1199px) {
+			gap: 10px;
+		}
+	}
+
+	.wp-block-gallery {
+		@media (max-width: 1199px) {
+			margin: auto;
+		}
+	}
+
+	&>div {
+		@media (max-width: 1199px) {
+			text-align: center;
+		}
+
+		div {
+			@media (max-width: 1199px) {
+				align-items: center;
+				justify-content: center;
+			}
+		}
+	}
 }
 
 /*----------------------------------------*/

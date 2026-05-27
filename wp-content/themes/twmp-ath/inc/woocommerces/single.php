@@ -144,7 +144,6 @@ function render_product_section_tab()
 	$paged = isset($_GET['paged']) ? max(1, absint(wp_unslash($_GET['paged']))) : max(1, absint(get_query_var('paged')));
 
 	$years = twmp_get_related_event_years($product);
-	$section_tab_fragment = '#tab-title-section';
 
 	$query_args = [
 		'post_type'           => 'product',
@@ -183,12 +182,12 @@ function render_product_section_tab()
 			$all_url = remove_query_arg(['paged']);
 			$all_url = add_query_arg('event_year', 0, $all_url);
 			?>
-			<a class="single-related-event__filter<?php echo 0 === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($all_url . $section_tab_fragment); ?>">
+			<a class="single-related-event__filter<?php echo 0 === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($all_url); ?>">
 				<?php echo esc_html__('All', 'twmp-ath'); ?>
 			</a>
 			<?php foreach ($years as $year) : ?>
 				<?php $year_url = add_query_arg('event_year', $year, $base_url); ?>
-				<a class="single-related-event__filter<?php echo $year === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($year_url . $section_tab_fragment); ?>">
+				<a class="single-related-event__filter<?php echo $year === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($year_url); ?>">
 					<?php echo esc_html($year); ?>
 				</a>
 			<?php endforeach; ?>
@@ -218,7 +217,7 @@ function render_product_section_tab()
 			</div>
 
 			<div class="single-related-event__pagination">
-				<?php twmp_render_related_event_pagination((int) $related_query->max_num_pages, $paged, $section_tab_fragment); ?>
+				<?php twmp_render_related_event_pagination((int) $related_query->max_num_pages, $paged); ?>
 			</div>
 		<?php else : ?>
 			<div class="single-related-event__empty">
