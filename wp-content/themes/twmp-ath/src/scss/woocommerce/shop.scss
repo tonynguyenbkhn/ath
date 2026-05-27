@@ -1,5 +1,5 @@
 .twmp-shop-banner {
-	margin-top: -86px;
+	// margin-top: -86px;
 
 	img {
 		width: 100%;
@@ -195,6 +195,7 @@ body.is-shop-filter-lock {
 }
 
 .woocommerce-products-header {
+	z-index: 1;
 	.page-title {
 		display: block;
 		font-family: var(--font-beautique-display);

@@ -12,9 +12,9 @@
 			@include typo-token(16, 28, 400);
 
 			&::after {
-				content: ' / ';
+				content: "›";
 				display: flex;
-				padding: 0 3px;
+				padding: 0 10px;
 			}
 
 			&.breadcrumbs__item--end {

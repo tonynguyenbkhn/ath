@@ -47,6 +47,13 @@ get_template_part(
     ]
 );
 
+$breadcrumb_custom = '';
+if ( $initial_type ) {
+    $category = get_term_by('slug', $initial_type, 'product_cat');
+    $breadcrumb_custom = $category ? $category->name : '';
+}
+
+
 ?>
 
 <div class="page page-calendar">
@@ -61,6 +68,12 @@ get_template_part(
                     <span><?php echo esc_html__('Home', 'twmp-ath'); ?></span>
                 </a>
                 <span class="calendar-page__breadcrumb-separator">›</span>
+                <?php if ($breadcrumb_custom) : ?>
+                    <a class="calendar-page__breadcrumb-link" href="<?php echo esc_url(get_term_link($category)); ?>">
+                        <?php echo esc_html($breadcrumb_custom); ?>
+                    </a>
+                    <span class="calendar-page__breadcrumb-separator">›</span>
+                <?php endif; ?>
                 <span class="calendar-page__breadcrumb-current"><?php echo esc_html__('Calendar', 'twmp-ath'); ?></span>
             </nav>
 

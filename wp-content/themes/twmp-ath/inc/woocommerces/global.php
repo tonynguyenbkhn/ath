@@ -10,7 +10,7 @@ remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_fo
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10);
 
 add_filter('woocommerce_breadcrumb_defaults', function ($args) {
-    $args['wrap_before'] = '<nav class="woocommerce-breadcrumb" aria-label="Breadcrumb"><div class="container woocommerce-breadcrumb__container"><div class="d-flex items-center gap-8 woocommerce-breadcrumb-wrap">'. twmp_get_svg_icon('home') .'<div class="text-primary-500 woocommerce-breadcrumb-wrap-text">';
+    $args['wrap_before'] = '<nav class="woocommerce-breadcrumb" aria-label="Breadcrumb"><div class="container woocommerce-breadcrumb__container"><div class="d-flex items-center gap-8 woocommerce-breadcrumb-wrap">' . twmp_get_svg_icon('home') . '<div class="text-primary-500 woocommerce-breadcrumb-wrap-text">';
     $args['wrap_after'] = '</div></div></div></nav>';
 
     return $args;
@@ -32,3 +32,27 @@ add_filter('woocommerce_get_image_size_gallery_thumbnail', function ($size) {
         'crop'   => false,
     ];
 });
+
+function twmp_custom_event_show_breadcrumb($crumbs, $breadcrumb)
+{
+	if (is_product_category('event-show') || is_product_category('class-workshop')) {
+
+		$crumbs[] = [
+			__('All Shows', 'twmp-ath'),
+			''
+		];
+	}
+
+	return $crumbs;
+}
+
+add_filter('woocommerce_get_breadcrumb', 'twmp_custom_event_show_breadcrumb', 10, 2);
+
+add_filter('woocommerce_breadcrumb_defaults', 'twmp_change_breadcrumb_delimiter');
+
+function twmp_change_breadcrumb_delimiter($defaults)
+{
+	$defaults['delimiter'] = ' › ';
+
+	return $defaults;
+}
