@@ -180,6 +180,105 @@ class Assets_Theme
 
 			wp_add_inline_script('twmp-frontend', <<<JS
 (function() {
+	const shouldOpenSectionTab = function() {
+		if (window.location.hash === '#tab-title-section' || window.location.hash === '#tab-section') {
+			return true;
+		}
+
+		try {
+			return new URLSearchParams(window.location.search).has('event_year');
+		} catch (error) {
+			return window.location.search.indexOf('event_year=') !== -1;
+		}
+	};
+
+	const scrollToSectionTabTitle = function() {
+		if (!shouldOpenSectionTab()) {
+			return;
+		}
+
+		const sectionTabTitle = document.getElementById('tab-title-section');
+
+		if (!sectionTabTitle) {
+			return;
+		}
+
+		sectionTabTitle.scrollIntoView({
+			behavior: 'auto',
+			block: 'start'
+		});
+	};
+
+	const openSectionTab = function() {
+		if (!shouldOpenSectionTab()) {
+			return;
+		}
+
+		const tabsWrapper = document.querySelector('.wc-tabs-wrapper, .woocommerce-tabs');
+
+		if (!tabsWrapper) {
+			return;
+		}
+
+		const tabs = tabsWrapper.querySelector('.wc-tabs, ul.tabs');
+		const sectionTabTitle = tabsWrapper.querySelector('#tab-title-section');
+		const sectionTabLink = sectionTabTitle ? sectionTabTitle.querySelector('a[role="tab"], a') : null;
+		const sectionPanel = tabsWrapper.querySelector('#tab-section');
+
+		if (!tabs || !sectionTabTitle || !sectionPanel) {
+			return;
+		}
+
+		tabs.querySelectorAll('li').forEach(function(tabTitle) {
+			tabTitle.classList.remove('active');
+		});
+
+		tabs.querySelectorAll('a[role="tab"]').forEach(function(tabLink) {
+			tabLink.setAttribute('aria-selected', 'false');
+			tabLink.setAttribute('tabindex', '-1');
+		});
+
+		tabsWrapper.querySelectorAll('.wc-tab, .woocommerce-tabs .panel:not(.panel .panel)').forEach(function(panel) {
+			panel.style.display = 'none';
+		});
+
+		sectionTabTitle.classList.add('active');
+		sectionPanel.style.display = 'block';
+
+		if (sectionTabLink) {
+			sectionTabLink.setAttribute('aria-selected', 'true');
+			sectionTabLink.setAttribute('tabindex', '0');
+		}
+
+		window.requestAnimationFrame(scrollToSectionTabTitle);
+	};
+
+	const boot = function() {
+		openSectionTab();
+		window.setTimeout(openSectionTab, 50);
+		window.setTimeout(openSectionTab, 250);
+		window.setTimeout(openSectionTab, 1000);
+		window.setTimeout(scrollToSectionTabTitle, 1500);
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', boot, { once: true });
+	} else {
+		boot();
+	}
+
+	window.addEventListener('load', openSectionTab, { once: true });
+
+	if (window.jQuery) {
+		window.jQuery(document.body).on('init.twmpSectionTab', '.wc-tabs-wrapper, .woocommerce-tabs', function() {
+			window.setTimeout(openSectionTab, 0);
+		});
+	}
+})();
+JS);
+
+			wp_add_inline_script('twmp-frontend', <<<JS
+(function() {
 	const state = {
 		observer: null,
 		raf: 0,

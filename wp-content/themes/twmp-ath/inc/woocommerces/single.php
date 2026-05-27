@@ -45,10 +45,11 @@ function twmp_field_to_string($value)
 /**
  * Render pagination if available.
  */
-function twmp_render_related_event_pagination($total, $current)
+function twmp_render_related_event_pagination($total, $current, $fragment = '')
 {
 	$total = absint($total);
 	$current = absint($current);
+	$fragment = is_string($fragment) ? $fragment : '';
 
 	if ($total < 2) {
 		return;
@@ -62,6 +63,7 @@ function twmp_render_related_event_pagination($total, $current)
 		'prev_text' => '&laquo;',
 		'next_text' => '&raquo;',
 		'type'      => 'list',
+		'add_fragment' => $fragment,
 	]);
 }
 
@@ -138,14 +140,11 @@ function render_product_section_tab()
 		return;
 	}
 
-	$current_year = absint(wp_date('Y'));
 	$selected_year = isset($_GET['event_year']) ? absint(wp_unslash($_GET['event_year'])) : 0;
 	$paged = isset($_GET['paged']) ? max(1, absint(wp_unslash($_GET['paged']))) : max(1, absint(get_query_var('paged')));
 
 	$years = twmp_get_related_event_years($product);
-	if (0 === $selected_year && in_array($current_year, $years, true)) {
-		$selected_year = $current_year;
-	}
+	$section_tab_fragment = '#tab-title-section';
 
 	$query_args = [
 		'post_type'           => 'product',
@@ -184,12 +183,12 @@ function render_product_section_tab()
 			$all_url = remove_query_arg(['paged']);
 			$all_url = add_query_arg('event_year', 0, $all_url);
 			?>
-			<a class="single-related-event__filter<?php echo 0 === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($all_url); ?>">
+			<a class="single-related-event__filter<?php echo 0 === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($all_url . $section_tab_fragment); ?>">
 				<?php echo esc_html__('All', 'twmp-ath'); ?>
 			</a>
 			<?php foreach ($years as $year) : ?>
 				<?php $year_url = add_query_arg('event_year', $year, $base_url); ?>
-				<a class="single-related-event__filter<?php echo $year === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($year_url); ?>">
+				<a class="single-related-event__filter<?php echo $year === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($year_url . $section_tab_fragment); ?>">
 					<?php echo esc_html($year); ?>
 				</a>
 			<?php endforeach; ?>
@@ -219,7 +218,7 @@ function render_product_section_tab()
 			</div>
 
 			<div class="single-related-event__pagination">
-				<?php twmp_render_related_event_pagination((int) $related_query->max_num_pages, $paged); ?>
+				<?php twmp_render_related_event_pagination((int) $related_query->max_num_pages, $paged, $section_tab_fragment); ?>
 			</div>
 		<?php else : ?>
 			<div class="single-related-event__empty">
