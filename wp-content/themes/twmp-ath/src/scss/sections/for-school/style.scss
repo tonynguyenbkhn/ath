@@ -4,14 +4,19 @@
   position: relative;
   padding-top: 80px;
   padding-bottom: 80px;
+  overflow: unset;
 
   @media (min-width: 1200px) {
-    padding-top: 75px;
-    padding-bottom: 120px;
+    padding-top: 180px;
+    padding-bottom: 75px;
   }
 
   .image__light.mobile {
     left: -24px;
+  }
+
+  .image__light.desktop {
+    top: -135px
   }
 }
 
@@ -190,11 +195,24 @@
   }
 }
 
+#fc-for-company-1 .image__light--right,
+#overview .image__light--right {
+  display: none;
+}
+
 #our-approach.for-school {
   color: var(--system-white);
 
+  .image__light--left {
+    display: none;
+  }
+
   @media (max-width: 1199px) {
     padding-top: 0;
+  }
+
+  .for-school__media {
+    margin-top: 0;
   }
 
   .for-school__title {

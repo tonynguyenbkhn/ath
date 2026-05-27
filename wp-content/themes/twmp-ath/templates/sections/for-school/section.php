@@ -40,19 +40,47 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
     <?php
-    get_template_part(
-        'templates/components/image-light',
-        null,
-        [
-            'class' => 'desktop',
-            'side' => 'left',
-            'src' => TWMP_IMG_URI . '/about-light.png',
-            'alt' => $data && !empty($data['title']) ? $data['title'] : '',
-            'width' => 1018,
-            'height' => 508,
-        ]
-    );
+    if (is_front_page()) {
+        get_template_part(
+            'templates/components/image-light',
+            null,
+            [
+                'class' => 'desktop',
+                'side' => 'left',
+                'src' => TWMP_IMG_URI . '/left-light-1.png',
+                'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+                'width' => 1120,
+                'height' => 1069,
+            ]
+        );
+    } else {
+        get_template_part(
+            'templates/components/image-light',
+            null,
+            [
+                'class' => 'page-for-school__image-light',
+                'side' => 'left',
+                'src' => TWMP_IMG_URI . '/left-light-2.png',
+                'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+                'width' => 1120,
+                'height' => 1069,
+            ]
+        );
+
+        get_template_part(
+            'templates/components/image-light',
+            null,
+            [
+                'side' => 'right',
+                'src' => TWMP_IMG_URI . '/right-light-1.png',
+                'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+                'width' => 1081,
+                'height' => 1069,
+            ]
+        );
+    }
     ?>
+
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">
         <?php endif; ?>

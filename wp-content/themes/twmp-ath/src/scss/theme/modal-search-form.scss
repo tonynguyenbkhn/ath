@@ -7,6 +7,14 @@
 	& .modal__wrapper {
 		width: 45%;
 		background-color: transparent;
+
+		@media (max-width: 1199px) {
+			width: calc(100% - 40px);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 	}
 
 	& .modal__header {
@@ -37,16 +45,29 @@
 		width: 60px;
 		z-index: 9999;
 
+		@media (max-width: 1199px) {
+			top: 0;
+
+		}
 
 		& svg {
 			width: 18px;
 			height: 18px;
 		}
 	}
+
+	@media (max-width: 1199px) {
+		top: 0;
+		width: 100%;
+		padding: 0;
+		background: #000000;
+	}
 }
+
 .admin-bar .modal--search-form {
 	top: 45px;
 }
+
 .modal--search-form {
 	.woocommerce-product-search {
 		position: relative;
@@ -76,7 +97,7 @@
 		& .search-field {
 			position: relative;
 			width: 100%;
-			padding: 0.5em 2.5em 0.5em 1.25em;
+			padding: 16px 16px 16px 40px;
 			height: 40px;
 			color: var(--system-content-2);
 			background: transparent;
@@ -231,6 +252,7 @@
 
 .rlv-has-spinner {
 	border-color: var(--primary-500);
+
 	&::after {
 		display: none;
 	}

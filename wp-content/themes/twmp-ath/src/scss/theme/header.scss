@@ -27,10 +27,14 @@ $header--top-height: 34px;
 $header--top-search-form-height: 28px;
 $header--top-search-form-width: 270px;
 $header--top-search-form-bg-color: rgba(240, 240, 240, 0.3);
-
+.home {
+	header {
+		z-index: 999;
+	}
+}
 header {
 	position: relative;
-	z-index: 999;
+	z-index: 1;
 }
 
 /*----------------------------------------*/
@@ -306,6 +310,7 @@ body:not(.home) {
 }
 
 .header__language-switcher-menu {
+	display: none !important;
 	position: absolute;
 	top: calc(100% + 10px);
 	right: 0;

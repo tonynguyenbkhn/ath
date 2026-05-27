@@ -24,6 +24,7 @@ $_class_container = 'container';
 $_class_container .= ! empty($data['class_container']) ? ' ' . esc_attr($data['class_container']) : '';
 
 $address = function_exists('get_field') ? (string) get_field('address', 'option') : '';
+$address_link = function_exists('get_field') ? (string) get_field('address_link', 'option') : '';
 $hotline = function_exists('get_field') ? (string) get_field('hotline', 'option') : '';
 
 $social_links = function_exists('get_field') ? get_field('social_links', 'option') : [];
@@ -113,7 +114,9 @@ $background_image_url = ! empty($data['background_image_id']) ? wp_get_attachmen
                             <?php if ('' !== trim($address)) : ?>
                                 <div class="contact-us__meta-item contact-us__meta-item--address">
                                     <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-pin'); ?></span>
-                                    <span class="contact-us__meta-text"><?php echo esc_html($address); ?></span>
+                                    <a class="contact-us__meta-text" href="<?php echo esc_url($address_link); ?>" target="_blank" rel="noopener noreferrer">
+                                        <?php echo esc_html($address); ?>
+                                    </a>
                                 </div>
                             <?php endif; ?>
 

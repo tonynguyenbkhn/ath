@@ -106,10 +106,10 @@ if (! $has_intro && empty($slides)) {
                 null,
                 [
                     'side' => 'right',
-                    'src' => TWMP_IMG_URI . '/event-light.png',
+                    'src' => TWMP_IMG_URI . '/show-event-light.png',
                     'alt' => $data && !empty($data['title']) ? $data['title'] : '',
-                    'width' => 1052,
-                    'height' => 816,
+                    'width' => 898,
+                    'height' => 965,
                 ]
             );
             ?>

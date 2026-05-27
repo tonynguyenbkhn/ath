@@ -194,15 +194,37 @@ function twmp_filter_products_shortcode()
 }
 add_shortcode('filter_products', 'twmp_filter_products_shortcode');
 
-
 function twmp_icon_shortcode($atts)
 {
     $atts = shortcode_atts([
-        'name' => '',
+        'name'   => '',
+        'link'   => '',
+        'target' => '',
     ], $atts, 'twmp_icon');
 
-    return twmp_get_svg_icon($atts['name']);
+    $icon = twmp_get_svg_icon($atts['name']);
+
+    // Có link → bọc thẻ a
+    if (!empty($atts['link'])) {
+
+        $target = '';
+
+        if ($atts['target'] === 'blank') {
+            $target = ' target="_blank" rel="noopener noreferrer"';
+        }
+
+        return sprintf(
+            '<a href="%s"%s>%s</a>',
+            esc_url($atts['link']),
+            $target,
+            $icon
+        );
+    }
+
+    // Không có link → chỉ trả icon
+    return $icon;
 }
+
 add_shortcode('twmp_icon', 'twmp_icon_shortcode');
 
 add_shortcode('order-tracking', function () {

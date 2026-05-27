@@ -43,7 +43,7 @@
 			width: 404px;
 			height: 404px;
 			background: rgba(#AACF37, 1);
-			left: -125px;
+			left: calc(((100% - 1280px) / 2) - 434px);
 			z-index: 0;
 			display: none;
 

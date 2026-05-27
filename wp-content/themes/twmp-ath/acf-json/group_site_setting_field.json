@@ -40,6 +40,26 @@
             "append": "",
             "maxlength": ""
         },
+                {
+            "key": "field_ath_address_link",
+            "label": "Đường dẫn bản đồ",
+            "name": "address_link",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
         {
             "key": "field_ath_hotline",
             "label": "Hotline",

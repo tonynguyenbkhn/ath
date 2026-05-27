@@ -185,7 +185,7 @@ $current_language_icon_uri = $current_language_icon ? get_theme_file_uri('/asset
 								<?php get_template_part('templates/components/button', null, [
 									'class' => 'bg-primary-500 text-white typo-system-button button-default',
 									'button_text' => esc_html__('Contact Us', 'twmp-ath'),
-									'button_url' => '#',
+									'button_url' => esc_url(home_url('/contact-us/')),
 									'button_link_target' => '_blank',
 								]); ?>
 							</div>

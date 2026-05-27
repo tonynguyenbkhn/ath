@@ -347,6 +347,7 @@ body.th-body-visible {
 // Custom section not login
 
 .not_login_mobile_menu {
+	display: none;
 	.not_login_mobile_menu_wrap {
 		padding: 0 24px;
 		display: flex;

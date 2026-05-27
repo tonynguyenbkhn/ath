@@ -6,6 +6,7 @@
 
   @media (min-width: 1200px) {
     padding: 160px 0;
+    padding-top: 200px;
   }
 }
 
@@ -543,7 +544,6 @@
   flex-direction: row-reverse;
   gap: 16px;
   width: 100%;
-  display: none;
 
   .nav {
     display: flex;
@@ -579,13 +579,18 @@
   }
 }
 
+.class-section-control .swiper-button {
+  color: var(--system-white);
+  border-color: var(--system-white);
+}
+
 .class-workshop-section .class-section-control .swiper-horizontal>.swiper-pagination-progressbar,
 .class-workshop-section .class-section-control .swiper-pagination-progressbar.swiper-pagination-horizontal {
   height: 4px;
   width: calc(100% - 94px - 16px);
   left: 0;
   right: auto;
-  background-color: rgba($color: #000A2C, $alpha: 0.3);
+  background-color: rgba($color: #ffffff, $alpha: 0.3);
   position: unset;
   margin: 0;
   top: 25px;
@@ -602,5 +607,5 @@
 }
 
 .class-workshop-section .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-  background-color: rgba($color: #000A2C, $alpha: 1);
+  background-color: rgba($color: #ffffff, $alpha: 1);
 }

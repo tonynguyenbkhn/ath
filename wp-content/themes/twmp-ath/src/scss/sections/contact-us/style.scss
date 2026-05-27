@@ -87,6 +87,10 @@
     @media (min-width: 1200px) {
         text-align: left;
     }
+
+    &:hover {
+        color: var(--system-black);
+    }
 }
 
 .contact-us__meta-link {
@@ -777,6 +781,7 @@
         flex-direction: column;
         justify-content: center;
         margin-bottom: 16px;
+        display: none;
     }
 }
 

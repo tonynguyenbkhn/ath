@@ -79,7 +79,6 @@
         float: left;
         margin-bottom: 20px;
         width: 100%;
-        border: 1px solid rgba(255, 255, 255, .7);
 
         &::after {
             content: '';
@@ -176,6 +175,19 @@
         height: 100%;
         color: #fff;
         text-decoration: none;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(#ffffff, 0.7);
+            transform: scale(0.5);
+            transform-origin: 0 0;
+            width: calc(200% - 3px);
+            height: calc(200% - 2px);
+            pointer-events: none;
+            z-index: 99;
+        }
     }
 
     & .image {
@@ -194,7 +206,7 @@
         bottom: 22px;
         z-index: 2;
         color: var(--system-white);
-        @include typo-token(36, 48, 400);
+        @include typo-token(30, 48, 400);
         font-family: var(--font-beautique-display);
         text-align: center;
     }

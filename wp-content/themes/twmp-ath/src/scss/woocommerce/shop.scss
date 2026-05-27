@@ -24,6 +24,11 @@
 			width: 100%;
 			z-index: 0;
 			z-index: 0;
+			display: none;
+
+			@media (min-width: 1200px) {
+				display: block;
+			}
 		}
 
 		&::after {
@@ -37,6 +42,11 @@
 			right: -130px;
 			width: 0;
 			z-index: 0;
+			display: none;
+
+			@media (min-width: 1200px) {
+				display: block;
+			}
 		}
 	}
 
@@ -175,13 +185,13 @@ body.is-shop-filter-lock {
 	touch-action: none;
 	position: relative;
 
-	&::before {
-		content: "";
-		position: fixed;
-		inset: 0;
-		background: rgba(0, 0, 0, 0.45);
-		z-index: 999;
-	}
+	// &::before {
+	// 	content: "";
+	// 	position: fixed;
+	// 	inset: 0;
+	// 	background: rgba(0, 0, 0, 0.45);
+	// 	z-index: 999;
+	// }
 }
 
 .woocommerce-products-header {
@@ -302,13 +312,13 @@ body.is-shop-filter-lock {
 		width: calc(100% - 40px);
 	}
 
-	.product-card__title {
-		margin: 0 0 10px;
-		color: #fff;
-		font-family: var(--font-beautique-display);
-		font-size: 28px;
-		line-height: 1.1;
-	}
+	// .product-card__title {
+	// 	margin: 0 0 10px;
+	// 	color: #fff;
+	// 	font-family: var(--font-beautique-display);
+	// 	font-size: 28px;
+	// 	line-height: 1.1;
+	// }
 
 	.product-card__short-info {
 		margin: 0 0 6px;
@@ -445,7 +455,7 @@ body.is-shop-filter-lock {
 			height: 56px;
 			padding: 0 12px 0 45px;
 			color: #ffffff;
-			@include typo-token(18, 24, 400);
+			@include typo-token(16, 22, 400);
 			width: 156px;
 			min-width: unset;
 			background-color: rgba($color: #ffffff, $alpha: 0.12);
@@ -454,7 +464,6 @@ body.is-shop-filter-lock {
 
 			&::-webkit-input-placeholder {
 				color: #ffffff;
-				@include typo-token(18, 24, 400);
 			}
 
 			@media (max-width: 1199px) {
@@ -516,27 +525,35 @@ body.is-shop-filter-lock {
 
 	.filter-item__title {
 		font-family: var(--font-inter);
-		@include typo-token(24, 32, 500);
+		@include typo-token(18, 26, 500);
 		color: #ffffff;
 	}
 
 	.filter-item__reset {
 		font-family: var(--font-inter);
-		@include typo-token(18, 32, 400);
+		@include typo-token(16, 30, 400);
 		color: var(--system-content-2);
 		background-color: transparent;
 		cursor: pointer;
+
+		svg path {
+			fill: var(--system-white);
+		}
 	}
 }
 
 .filter-item {
 	.filter-item__label {
 		font-family: var(--font-inter);
-		@include typo-token(20, 24, 500);
+		@include typo-token(18, 22, 500);
 		color: #ffffff;
 		margin-bottom: 15px;
 		display: block;
 		width: 100%;
+	}
+
+	.facetwp-dropdown-current {
+		font-size: 16px;
 	}
 }
 
@@ -665,7 +682,7 @@ body.is-shop-filter-lock {
 		border-bottom: 1px solid rgba($color: #ffffff, $alpha: 0.12);
 		background: transparent;
 		font-family: var(--font-inter);
-		@include typo-token(18, 24, 400);
+		@include typo-token(16, 22, 400);
 		color: #ffffff;
 		outline: none;
 		cursor: pointer;
@@ -771,6 +788,10 @@ body.is-shop-filter-lock {
 		background-size: contain;
 		background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%2307102A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 	}
+
+	.facetwp-dropdown-option {
+		font-size: 16px;
+	}
 }
 
 .facetwp-facet-event_type,
@@ -787,7 +808,7 @@ body.is-shop-filter-lock {
 		padding-left: 40px;
 		background: transparent;
 		font-family: var(--font-inter);
-		@include typo-token(18, 24, 400);
+		@include typo-token(16, 22, 400);
 		color: #ffffff;
 		cursor: pointer;
 

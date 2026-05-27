@@ -51,6 +51,12 @@
 			right: -130px;
 			width: 0;
 			z-index: 0;
+
+			display: none;
+
+			@media (min-width: 1200px) {
+				display: block;
+			}
 		}
 
 		@media (max-width: 1199px) {
@@ -277,6 +283,11 @@
 		width: 100%;
 		z-index: 0;
 		z-index: 0;
+		display: none;
+
+		@media (min-width: 1200px) {
+			display: block;
+		}
 	}
 }
 

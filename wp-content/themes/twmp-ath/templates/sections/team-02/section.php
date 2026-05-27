@@ -136,24 +136,20 @@ if (! $has_intro && empty($slides)) {
 								'autoPlay'        => false,
 								'pagination'      => false,
 								'prevNextButtons' => false,
-								'grid'            => [
-									'rows' => 2
-								],
-								'slidesPerView'   => 1,
-								'slidesPerGroup'  => 1,
-								'spaceBetween'    => 24,
+								'slidesPerView'   => 1.15,
+								'spaceBetween'    => 32,
 								'breakpoints'     => [
 									640  => [
-										'slidesPerView'  => 2,
-										'slidesPerGroup' => 2,
+										'slidesPerView' => 1.4,
+										'spaceBetween'  => 36,
 									],
 									992  => [
-										'slidesPerView'  => 4,
-										'slidesPerGroup' => 4,
+										'slidesPerView' => 2.3,
+										'spaceBetween'  => 40,
 									],
 									1200 => [
-										'slidesPerView'  => 4,
-										'slidesPerGroup' => 4,
+										'slidesPerView' => 4,
+										'spaceBetween'  => 48,
 									],
 								],
 							],

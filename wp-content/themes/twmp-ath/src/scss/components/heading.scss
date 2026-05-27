@@ -6,11 +6,11 @@
 
     &__title {
         color: var(--system-white);
-        @include typo-token(36, 48, 400);
+        @include typo-token(30, 42, 400);
         font-family: var(--font-beautique-display);
 
         @media (min-width: 1200px) {
-            @include typo-token(80, 120, 400);
+            @include typo-token(75, 115, 400);
         }
     }
 

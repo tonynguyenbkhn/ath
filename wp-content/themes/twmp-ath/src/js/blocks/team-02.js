@@ -1,5 +1,5 @@
 import Swiper from 'swiper'
-import { Grid, Navigation, Pagination } from 'swiper/modules'
+import { Navigation, Pagination } from 'swiper/modules'
 
 const parseSettings = el => {
 	const rawSettings = el.getAttribute('data-settings')
@@ -56,7 +56,7 @@ export default el => {
 	}
 
 	return new Swiper(swiperEl, {
-		modules: [Grid, Navigation, Pagination],
+		modules: [Navigation, Pagination],
 		slidesPerView: 1.15,
 		spaceBetween: 24,
 		...settings,
