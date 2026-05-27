@@ -102,6 +102,10 @@
 //     color: var(--primary-500);
 // }
 
+.calendar-page__header {
+    z-index: 2;
+}
+
 .calendar-page__header .calendar-page__title {
     margin: 0;
     color: #ffffff;

@@ -17,6 +17,8 @@ $current_month = (int) wp_date('n');
 $start_month = $current_month <= 6 ? 1 : 7;
 $end_month = $start_month + 5;
 $initial_title = sprintf('%s %d', wp_date('M'), $current_year);
+$initial_type = isset($_GET['category']) ? sanitize_key(wp_unslash($_GET['category'])) : '';
+$initial_type = '' !== $initial_type && isset($filter_options['types'][$initial_type]) ? $initial_type : 'all';
 $settings = [
     'endpoint' => esc_url_raw(rest_url('twmp/v1/calendar-events')),
     'initialYear' => $current_year,
@@ -25,6 +27,9 @@ $settings = [
     'initialMode' => 'year',
     'lang' => $current_language,
     'filters' => $filter_options,
+    'initialFilters' => [
+        'type' => $initial_type,
+    ],
 ];
 
 get_header();
@@ -97,7 +102,7 @@ get_template_part(
                             <div class="default-select-wrap">
                                 <select class="calendar-page__select default-select" data-calendar-filter="type">
                                     <?php foreach ($filter_options['types'] as $value => $label) : ?>
-                                        <option value="<?php echo esc_attr($value); ?>" <?php selected($value, 'all'); ?>><?php echo esc_html($label); ?></option>
+                                        <option value="<?php echo esc_attr($value); ?>" <?php selected($value, $initial_type); ?>><?php echo esc_html($label); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

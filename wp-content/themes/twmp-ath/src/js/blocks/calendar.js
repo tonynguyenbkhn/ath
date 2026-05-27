@@ -120,6 +120,25 @@ const getEventStartValue = event => {
 	return event.start instanceof Date ? event.start.toISOString() : String(event.start)
 }
 
+const normalizeFilterValue = value =>
+	String(value || '')
+		.trim()
+		.toLowerCase()
+		.replace(/[^a-z0-9_-]/g, '')
+
+const getUrlFilterValue = filterKey => {
+	try {
+		const params = new URLSearchParams(window.location.search)
+		const paramName = filterKey === 'type' ? 'category' : filterKey
+		return normalizeFilterValue(params.get(paramName) || params.get(filterKey) || '')
+	} catch (error) {
+		return ''
+	}
+}
+
+const hasSelectOption = (selectEl, value) =>
+	!!selectEl && Array.from(selectEl.options || []).some(option => option.value === value)
+
 const renderEventCardBody = event => {
 	const meta = getMeta(event)
 	const title = escapeHtml(event.title || '')
@@ -265,6 +284,25 @@ export default el => {
 	}
 	let cachedEvents = []
 	let loadingRequests = 0
+
+	const syncInitialFilters = () => {
+		const initialFilters = settings.initialFilters && typeof settings.initialFilters === 'object' ? settings.initialFilters : {}
+
+		filterInputs.forEach(input => {
+			const key = input.getAttribute('data-calendar-filter')
+			const initialValue = normalizeFilterValue(getUrlFilterValue(key) || initialFilters[key] || '')
+
+			if (!key || !initialValue || !hasSelectOption(input, initialValue)) {
+				return
+			}
+
+			activeFilters = {
+				...activeFilters,
+				[key]: initialValue
+			}
+			input.value = initialValue
+		})
+	}
 
 	const isMonthMode = () => currentMode === 'month'
 	const setClassState = (el, className, active) => {
@@ -648,6 +686,8 @@ export default el => {
 	}
 
 	const mount = () => {
+		syncInitialFilters()
+
 		if (sidebar) {
 			Modal(sidebar, {
 				id: 'calendar-sidebar',
