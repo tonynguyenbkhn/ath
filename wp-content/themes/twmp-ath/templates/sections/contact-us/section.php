@@ -45,16 +45,16 @@ $sticky_links = function_exists('get_field') ? get_field('sticky_links', 'option
 //     return '';
 // };
 
-$whatsapp_url = function_exists('get_field') ? (string) get_field('whatsapp', 'option') : '';
+$youtube_url = function_exists('get_field') ? (string) get_field('youtube', 'option') : '';
 $facebook_url = function_exists('get_field') ? (string) get_field('facebook', 'option') : '';
-$zalo_url = function_exists('get_field') ? (string) get_field('zalo', 'option') : '';
+$instagram_url = function_exists('get_field') ? (string) get_field('instagram', 'option') : '';
 
 $social_items = [
     [
-        'icon' => 'contact-section-whatsapp',
-        'icon-mobile' => 'contact-section-whatsapp',
-        'url' => $whatsapp_url,
-        'label' => 'Whatsapp',
+        'icon' => 'contact-section-instagram',
+        'icon-mobile' => 'contact-section-instagram-mobile',
+        'url' => $instagram_url,
+        'label' => 'Instagram',
     ],
     [
         'icon' => 'contact-section-facebook',
@@ -63,12 +63,16 @@ $social_items = [
         'label' => 'Facebook',
     ],
     [
-        'icon' => 'contact-section-zalo',
-        'icon-mobile' => 'contact-section-zalo-mobile',
-        'url' => $zalo_url,
-        'label' => 'Zalo',
-    ],
+        'icon' => 'contact-section-youtube',
+        'icon-mobile' => 'contact-section-youtube-mobile',
+        'url' => $youtube_url,
+        'label' => 'YouTube',
+    ]
 ];
+
+echo '<pre>';
+var_dump($social_links);
+echo '</pre>';
 
 $social_items = array_values(
     array_filter(
@@ -135,7 +139,6 @@ $background_image_url = ! empty($data['background_image_id']) ? wp_get_attachmen
                                 <?php foreach ($social_items as $item) : ?>
                                     <a class="contact-us__social-link" href="<?php echo esc_url($item['url']); ?>" target="_blank" rel="noopener nofollow" aria-label="<?php echo esc_attr($item['label']); ?>">
                                         <?php echo twmp_get_svg_icon($item['icon']); ?>
-                                        <?php echo twmp_get_svg_icon($item['icon-mobile']); ?>
                                     </a>
                                 <?php endforeach; ?>
                             </div>

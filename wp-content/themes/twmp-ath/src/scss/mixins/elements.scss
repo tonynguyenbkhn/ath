@@ -556,6 +556,7 @@
   &:hover {
     @media (min-width: 1200px) {
       border-color: var(--primary-500);
+      background: var(--primary-500);
     }
   }
 }

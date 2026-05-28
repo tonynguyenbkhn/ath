@@ -122,9 +122,12 @@
     display: flex;
   }
 
+  svg path {
+    fill: var(--system-white);
+  }
+
   @media (min-width: 1200px) {
     display: inline-flex;
-
   }
 }
 

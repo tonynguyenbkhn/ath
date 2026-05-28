@@ -122,24 +122,8 @@
 
 .contact-us__social-link svg {
     display: block;
-    height: 32px;
-    width: 32px;
-
-    &:first-child {
-        display: none;
-
-        @media (min-width: 1200px) {
-            display: block;
-        }
-    }
-
-    &:last-child {
-        display: block;
-
-        @media (min-width: 1200px) {
-            display: none;
-        }
-    }
+    // height: 32px;
+    // width: 32px;
 }
 
 .contact-us__form-wrap {

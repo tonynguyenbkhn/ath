@@ -103,6 +103,7 @@ if (!empty($product_categories) && !is_wp_error($product_categories)) : ?>
 						[
 							'term_id' => $term_id,
 							'term_name' => $category->name ?? '',
+							'term_slug' => $category->slug ?? '',
 						]
 					);
 				endforeach; ?>

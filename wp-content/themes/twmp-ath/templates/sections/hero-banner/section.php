@@ -46,7 +46,7 @@ if ($image_id) {
 
 <?php if ($image_url || $title || $description || $button_text): ?>
 <section class="hero-banner" role="banner"<?php echo $section_id ? ' id="' . esc_attr($section_id) . '"' : ''; ?>>
-  <div class="hero-banner__media">
+  <div class="hero-banner__media position-relative">
     <?php if ($image_id): ?>
       <?php get_template_part('templates/components/images', null, [
         'id' => $image_id,
@@ -57,13 +57,14 @@ if ($image_id) {
         'sizes' => $image_sizes,
       ]); ?>
     <?php endif; ?>
+    <div class="hero-banner__overlay"></div>
   </div>
   <div class="hero-banner__overlay"></div>
   <div class="hero-banner__content">
     <div class="container">
       <div class="hero-banner__grid">
         <div class="hero-banner__left">
-          <?php if ($description): ?><p class="hero-banner__desc typo-text-lg-regular text-system-content-2"><?php echo nl2br(esc_html($description)); ?></p><?php endif; ?>
+          <?php if ($description): ?><p class="hero-banner__desc typo-text-lg-regular text-system-content-2"><?php echo $description; ?></p><?php endif; ?>
           <?php if ($button_text && $button_link): ?>
             <p class="hero-banner__cta">
               <?php get_template_part('templates/components/button', null, [

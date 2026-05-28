@@ -105,8 +105,14 @@
       @include typo-display-xs(400);
       text-align: center;
       padding-top: 0;
+      color: rgba(#ffffff, 0.7);
     }
   }
+}
+
+.sub_description p {
+  color: rgba(#ffffff, 0.7);
+  margin-top: 16px;
 }
 
 #section-02.team-02-section {

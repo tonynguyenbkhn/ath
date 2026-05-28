@@ -223,6 +223,12 @@ $footer-bg-color: #F7F7F7;
 	@media (max-width: 1199px) {
 		gap: 0px;
 	}
+
+	hr {
+		width: 100px;
+		border-color: rgba(#ffffff, 0.4);
+		border-width: 1px;
+	}
 }	
 
 /*----------------------------------------*/

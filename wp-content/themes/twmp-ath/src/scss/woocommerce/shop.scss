@@ -1,9 +1,17 @@
 .twmp-shop-banner {
-	// margin-top: -86px;
+	margin-top: 0;
 
 	img {
 		width: 100%;
 	}
+
+	@media (min-width: 1200px) {
+		margin-top: -86px;
+	}
+}
+
+.archive.woocommerce-page header {
+	opacity: 0.75;
 }
 
 .twmp-shop-layout__main {

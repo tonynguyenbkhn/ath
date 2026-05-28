@@ -50,7 +50,7 @@
     "default_term": {
         "default_term_enabled": "0"
     },
-    "sort": false,
+    "sort": true,
     "meta_box": "default",
     "meta_box_cb": "",
     "meta_box_sanitize_cb": "",
