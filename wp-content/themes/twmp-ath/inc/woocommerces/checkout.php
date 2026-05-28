@@ -16,8 +16,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     'billing_first_name',
     'billing_last_name',
     'billing_phone',
-    'billing_date_of_birth',
-    'billing_age',
+    // 'billing_date_of_birth',
+    // 'billing_age',
     'billing_email',
   );
 
@@ -81,28 +81,28 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_email']['priority'] = 90;
   }
 
-  $fields['billing']['billing_date_of_birth'] = array(
-    'type'        => 'date',
-    'label'       => esc_html__('Date of birth', 'twmp-ath'),
-    'placeholder' => esc_html__('Date of birth', 'twmp-ath'),
-    'required'    => true,
-    'class'       => array('form-row-first', 'twmp-checkout-field'),
-    'priority'    => 40,
-  );
+  // $fields['billing']['billing_date_of_birth'] = array(
+  //   'type'        => 'date',
+  //   'label'       => esc_html__('Date of birth', 'twmp-ath'),
+  //   'placeholder' => esc_html__('Date of birth', 'twmp-ath'),
+  //   'required'    => true,
+  //   'class'       => array('form-row-first', 'twmp-checkout-field'),
+  //   'priority'    => 40,
+  // );
 
-  $fields['billing']['billing_age'] = array(
-    'type'              => 'number',
-    'label'             => esc_html__('Age', 'twmp-ath'),
-    'placeholder'       => esc_html__('Age', 'twmp-ath'),
-    'required'          => true,
-    'class'             => array('form-row-last', 'twmp-checkout-field'),
-    'custom_attributes' => array(
-      'min'       => 1,
-      'step'      => 1,
-      'inputmode' => 'numeric',
-    ),
-    'priority'          => 100,
-  );
+  // $fields['billing']['billing_age'] = array(
+  //   'type'              => 'number',
+  //   'label'             => esc_html__('Age', 'twmp-ath'),
+  //   'placeholder'       => esc_html__('Age', 'twmp-ath'),
+  //   'required'          => true,
+  //   'class'             => array('form-row-last', 'twmp-checkout-field'),
+  //   'custom_attributes' => array(
+  //     'min'       => 1,
+  //     'step'      => 1,
+  //     'inputmode' => 'numeric',
+  //   ),
+  //   'priority'          => 100,
+  // );
 
   foreach (array('shipping', 'account', 'order') as $group_key) {
     if (isset($fields[$group_key])) {
@@ -161,7 +161,26 @@ add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id,
 
 add_filter('woocommerce_add_to_cart_redirect', function ($redirect_url) {
   if (!empty($_REQUEST['twmp_buy_now'])) {
-    return wc_get_checkout_url();
+    $checkout_url = wc_get_checkout_url();
+    $product_id   = 0;
+
+    if (isset($_REQUEST['add-to-cart']) && !is_array($_REQUEST['add-to-cart'])) {
+      $product_id = absint(wp_unslash($_REQUEST['add-to-cart']));
+    }
+
+    if ($product_id) {
+      $terms = get_the_terms($product_id, 'product_cat');
+
+      if (!empty($terms) && !is_wp_error($terms)) {
+        $term = reset($terms);
+
+        if ($term instanceof WP_Term && !empty($term->slug)) {
+          return add_query_arg('category', $term->slug, $checkout_url);
+        }
+      }
+    }
+
+    return $checkout_url;
   }
 
   return $redirect_url;
@@ -1262,8 +1281,12 @@ JS;
     wc_enqueue_js($js);
   }
 }
-
-add_action('woocommerce_checkout_after_customer_details', 'twmp_checkout_render_ticket_detail_section', 20);
+if (
+  isset($_GET['category']) &&
+  'event-show' === sanitize_key(wp_unslash($_GET['category']))
+) {
+  add_action('woocommerce_checkout_after_customer_details', 'twmp_checkout_render_ticket_detail_section', 20);
+}
 
 function twmp_checkout_get_cart_item_key_by_product_id($product_id = 0)
 {

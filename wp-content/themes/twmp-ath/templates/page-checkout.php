@@ -28,7 +28,7 @@ get_template_part(
     ]
 );
 
-get_template_part('templates/sections/page-title/section', null, ['class' => 'page-checkout-title']);
+get_template_part('templates/sections/page-title/section-checkout', null, ['class' => 'page-checkout-title']);
 
 ?>
 
