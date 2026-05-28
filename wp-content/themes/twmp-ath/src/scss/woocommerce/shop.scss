@@ -869,6 +869,15 @@ body.is-shop-filter-lock {
 	}
 }
 
+.facetwp-facet-event_status {
+	.facetwp-checkbox {
+		&:nth-child(1) { order: 4; }
+		&:nth-child(2) { order: 1; }
+		&:nth-child(3) { order: 2; }
+		&:nth-child(4) { order: 3;}
+	}
+}
+
 .filter-group__title {
 	position: relative;
 	padding-right: 24px;

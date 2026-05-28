@@ -192,8 +192,6 @@
 
     & .image {
 
-        @include ratio(207/342);
-
         @media (min-width: 1200px) {
             @include ratio(437/298);
         }

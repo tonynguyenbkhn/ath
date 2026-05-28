@@ -35,10 +35,18 @@ add_filter('woocommerce_get_image_size_gallery_thumbnail', function ($size) {
 
 function twmp_custom_event_show_breadcrumb($crumbs, $breadcrumb)
 {
-	if (is_product_category('event-show') || is_product_category('class-workshop')) {
+	if (is_product_category('event-show')) {
 
 		$crumbs[] = [
-			__('All Shows', 'twmp-ath'),
+			__('All Events & Shows', 'twmp-ath'),
+			''
+		];
+	}
+
+	if (is_product_category('class-workshop')) {
+
+		$crumbs[] = [
+			__('All Classes & Workshops', 'twmp-ath'),
 			''
 		];
 	}
