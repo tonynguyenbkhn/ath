@@ -28,7 +28,16 @@ get_template_part(
     ]
 );
 
-get_template_part('templates/sections/page-title/section-checkout', null, ['class' => 'page-checkout-title']);
+$title = '';
+
+if (
+  isset($_GET['category']) &&
+  'class-workshop' === sanitize_key(wp_unslash($_GET['category']))
+) {
+  $title = __('Register', 'twmp-ath');
+}
+
+get_template_part('templates/sections/page-title/section-checkout', null, ['class' => 'page-checkout-title', 'title'=> $title]);
 
 ?>
 

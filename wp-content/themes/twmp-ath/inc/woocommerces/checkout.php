@@ -477,6 +477,59 @@ function twmp_checkout_get_payment_action_label($status)
 
 
 // Các hàm hỗ trợ cho tính năng vé sự kiện, bao gồm lấy dữ liệu sản phẩm vé, lưu trữ lựa chọn vé vào session, và render phần chi tiết vé trên trang thanh toán
+function twmp_checkout_is_event_show_product($product_id)
+{
+  $product_id = absint($product_id);
+  static $cache = array();
+
+  if (!$product_id) {
+    return false;
+  }
+
+  if (!array_key_exists($product_id, $cache)) {
+    $cache[$product_id] = has_term('event-show', 'product_cat', $product_id);
+  }
+
+  return $cache[$product_id];
+}
+
+function twmp_checkout_get_product_category_slug($product_id)
+{
+  $product_id = absint($product_id);
+  if (!$product_id) {
+    return '';
+  }
+
+  $terms = get_the_terms($product_id, 'product_cat');
+  if (empty($terms) || is_wp_error($terms)) {
+    return '';
+  }
+
+  $term = reset($terms);
+
+  return $term instanceof WP_Term ? sanitize_key($term->slug) : '';
+}
+
+function twmp_checkout_get_order_product_category_slug($order)
+{
+  if (!$order instanceof WC_Order) {
+    return '';
+  }
+
+  foreach ($order->get_items('line_item') as $item) {
+    if (!$item instanceof WC_Order_Item_Product) {
+      continue;
+    }
+
+    $category_slug = twmp_checkout_get_product_category_slug($item->get_product_id());
+    if ($category_slug) {
+      return $category_slug;
+    }
+  }
+
+  return '';
+}
+
 function twmp_checkout_get_ticket_product_data($product_id = 0)
 {
   $product_id = absint($product_id);
@@ -553,6 +606,10 @@ function twmp_checkout_get_ticket_product_id()
   foreach (WC()->cart->get_cart() as $cart_item) {
     $product_id = !empty($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
     if (!$product_id) {
+      continue;
+    }
+
+    if (!twmp_checkout_is_event_show_product($product_id)) {
       continue;
     }
 
@@ -1368,7 +1425,7 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
   twmp_checkout_sync_checkout_field_state_to_session($data);
 
   $product_id = !empty($data['twmp_ticket_product_id']) ? absint($data['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
-  if (!$product_id) {
+  if (!$product_id || !twmp_checkout_is_event_show_product($product_id)) {
     return;
   }
 
@@ -1428,7 +1485,7 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
 // Validation khi submit checkout: đảm bảo user đã chọn đủ performance + ticket type nếu sản phẩm đó yêu cầu
 add_action('woocommerce_checkout_process', function () {
   $product_id = !empty($_POST['twmp_ticket_product_id']) ? absint($_POST['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
-  if (!$product_id) {
+  if (!$product_id || !twmp_checkout_is_event_show_product($product_id)) {
     return;
   }
 
@@ -1483,7 +1540,7 @@ add_action('woocommerce_checkout_process', function () {
 // Khi tạo order, lưu lại lựa chọn vé vào order meta để hiển thị trong admin và email
 add_action('woocommerce_checkout_create_order', function ($order, $data) {
   $product_id = !empty($_POST['twmp_ticket_product_id']) ? absint($_POST['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
-  if (!$product_id) {
+  if (!$product_id || !twmp_checkout_is_event_show_product($product_id)) {
     return;
   }
 
@@ -1547,7 +1604,7 @@ add_action('woocommerce_before_calculate_totals', function ($cart) {
 
   $selection = (array) WC()->session->get('twmp_ticket_selection', array());
   $product_id = !empty($selection['product_id']) ? absint($selection['product_id']) : twmp_checkout_get_ticket_product_id();
-  if (!$product_id) {
+  if (!$product_id || !twmp_checkout_is_event_show_product($product_id)) {
     return;
   }
 
@@ -1689,12 +1746,19 @@ add_filter('woocommerce_get_checkout_order_received_url', function ($order_recei
     WC()->session->set('twmp_checkout_payment_order_key', $order->get_order_key());
   }
 
-  return add_query_arg(array(
+  $query_args = array(
     'twmp_checkout_step' => 2,
     'order_id'           => $order->get_id(),
     'order_key'          => $order->get_order_key(),
     'key'                => $order->get_order_key(),
-  ), wc_get_checkout_url());
+  );
+
+  $category_slug = twmp_checkout_get_order_product_category_slug($order);
+  if ($category_slug) {
+    $query_args['category'] = $category_slug;
+  }
+
+  return add_query_arg($query_args, wc_get_checkout_url());
 }, 20, 2);
 
 // Mỗi khi order status thay đổi, tự động cập nhật lại trạng thái xác thực bill tương ứng vào order meta, giúp đồng bộ hóa trạng thái giữa order status và payment proof status, đồng thời đảm bảo hiển thị đúng thông tin cho khách hàng và admin khi xem đơn hàng
