@@ -298,6 +298,17 @@ add_filter('the_posts', 'twmp_expand_empty_product_search_results', 20, 2);
 
 function twmp_force_facetwp_fallback_ids($post_ids, $renderer)
 {
+    // If not already flagged, detect empty product category pages directly
+    if (!twmp_is_product_search_fallback()) {
+        if (is_product_category()) {
+            $term = get_queried_object();
+            if ($term instanceof WP_Term && isset($term->count) && 0 === absint($term->count)) {
+                $GLOBALS['twmp_product_search_fallback'] = true;
+                $GLOBALS['twmp_product_search_fallback_from_category'] = true;
+            }
+        }
+    }
+
     if (!twmp_is_product_search_fallback()) {
         return $post_ids;
     }
@@ -315,6 +326,16 @@ function twmp_force_facetwp_filtered_fallback_ids($post_ids, $renderer)
 {
     $normalized_post_ids = array_values((array) $post_ids);
     $is_empty_post_ids = empty($normalized_post_ids) || (1 === count($normalized_post_ids) && 0 === (int) $normalized_post_ids[0]);
+
+    if (!twmp_is_product_search_fallback()) {
+        if (is_product_category()) {
+            $term = get_queried_object();
+            if ($term instanceof WP_Term && isset($term->count) && 0 === absint($term->count)) {
+                $GLOBALS['twmp_product_search_fallback'] = true;
+                $GLOBALS['twmp_product_search_fallback_from_category'] = true;
+            }
+        }
+    }
 
     if (!twmp_is_product_search_fallback() || !$is_empty_post_ids || !($renderer instanceof FacetWP_Renderer)) {
         return $post_ids;
@@ -452,7 +473,7 @@ function twmp_apply_fallback_loop_props_after_setup()
 
         if (!empty($fallback_post_objects)) {
             $wp_query->posts = $fallback_post_objects;
-            $wp_query->posts_per_page = count($fallback_post_objects);
+            $wp_query->query_vars['posts_per_page'] = count($fallback_post_objects);
             $wp_query->max_num_pages = 1;
             $wp_query->post_count = count($fallback_post_objects);
             $wp_query->found_posts = count($fallback_post_objects);
