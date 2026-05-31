@@ -154,13 +154,79 @@ function twmp_flag_empty_product_search_query($query)
 
     $GLOBALS['twmp_product_search_fallback'] = true;
     $GLOBALS['twmp_product_search_term'] = $search_term;
+
+    // Pre-fill WC loop props so templates reading wc_get_loop_prop() earlier see fallback values
+    $fallback_posts = twmp_get_fallback_product_ids();
+    $fallback_count = count($fallback_posts);
+    if (function_exists('wc_set_loop_prop')) {
+        wc_set_loop_prop('total', $fallback_count);
+        wc_set_loop_prop('total_pages', 1);
+        wc_set_loop_prop('current_page', 1);
+        wc_set_loop_prop('per_page', max(1, $fallback_count));
+    }
+    if (!isset($GLOBALS['woocommerce_loop']) || !is_array($GLOBALS['woocommerce_loop'])) {
+        $GLOBALS['woocommerce_loop'] = array();
+    }
+    $GLOBALS['woocommerce_loop']['total'] = $fallback_count;
+    $GLOBALS['woocommerce_loop']['total_pages'] = 1;
+    $GLOBALS['woocommerce_loop']['current_page'] = 1;
+    $GLOBALS['woocommerce_loop']['per_page'] = max(1, $fallback_count);
 }
 
 add_action('pre_get_posts', 'twmp_flag_empty_product_search_query', 20);
 
+// Nếu vào danh mục sản phẩm mà danh mục không có sản phẩm, bật fallback tương tự search
+function twmp_flag_empty_product_category_query($query)
+{
+    if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || !$query->is_product_category()) {
+        return;
+    }
+
+    $term = get_queried_object();
+    if (!($term instanceof WP_Term)) {
+        return;
+    }
+
+    $term_count = isset($term->count) ? absint($term->count) : 0;
+    if ($term_count > 0) {
+        return;
+    }
+
+    // Đánh dấu fallback (nguồn từ category)
+    $query->set('twmp_product_search_fallback', 1);
+    $query->set('twmp_product_search_term', isset($term->slug) ? (string) $term->slug : '');
+    $GLOBALS['twmp_product_search_fallback'] = true;
+    $GLOBALS['twmp_product_search_term'] = isset($term->slug) ? (string) $term->slug : '';
+    $GLOBALS['twmp_product_search_fallback_from_category'] = true;
+    // Pre-fill WC loop props so templates reading wc_get_loop_prop() earlier see fallback values
+    $fallback_posts = twmp_get_fallback_product_ids();
+    $fallback_count = count($fallback_posts);
+    if (function_exists('wc_set_loop_prop')) {
+        wc_set_loop_prop('total', $fallback_count);
+        wc_set_loop_prop('total_pages', 1);
+        wc_set_loop_prop('current_page', 1);
+        wc_set_loop_prop('per_page', max(1, $fallback_count));
+    }
+    if (!isset($GLOBALS['woocommerce_loop']) || !is_array($GLOBALS['woocommerce_loop'])) {
+        $GLOBALS['woocommerce_loop'] = array();
+    }
+    $GLOBALS['woocommerce_loop']['total'] = $fallback_count;
+    $GLOBALS['woocommerce_loop']['total_pages'] = 1;
+    $GLOBALS['woocommerce_loop']['current_page'] = 1;
+    $GLOBALS['woocommerce_loop']['per_page'] = max(1, $fallback_count);
+    // Debug: log fallback and loop props for runtime inspection
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('[twmp] category fallback: term=' . (isset($term->slug) ? $term->slug : '') . ' fallback_count=' . $fallback_count);
+        error_log('[twmp] pre_get_posts $wp_query->found_posts=' . (isset($GLOBALS['wp_query']->found_posts) ? $GLOBALS['wp_query']->found_posts : 'unset'));
+        error_log('[twmp] pre_get_posts $woocommerce_loop=' . print_r($GLOBALS['woocommerce_loop'], true));
+    }
+}
+
+add_action('pre_get_posts', 'twmp_flag_empty_product_category_query', 9);
+
 function twmp_expand_empty_product_search_results($posts, $query)
 {
-    if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || !$query->is_search()) {
+    if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || (!$query->is_search() && !$query->is_product_category())) {
         return $posts;
     }
 
@@ -201,7 +267,31 @@ function twmp_expand_empty_product_search_results($posts, $query)
         wc_set_loop_prop('per_page', max(1, $fallback_count));
     }
 
-    return $fallback_posts;
+    // Also ensure the global array is populated so wc_get_loop_prop() reads correct values
+    if (!isset($GLOBALS['woocommerce_loop']) || !is_array($GLOBALS['woocommerce_loop'])) {
+        $GLOBALS['woocommerce_loop'] = array();
+    }
+    $GLOBALS['woocommerce_loop']['total'] = $fallback_count;
+    $GLOBALS['woocommerce_loop']['total_pages'] = 1;
+    $GLOBALS['woocommerce_loop']['current_page'] = 1;
+    $GLOBALS['woocommerce_loop']['per_page'] = max(1, $fallback_count);
+
+    // Ensure we return WP_Post objects so the main loop's have_posts()/the_post() work.
+    $fallback_post_objects = array();
+    foreach ((array) $fallback_posts as $post_id) {
+        $p = get_post(absint($post_id));
+        if ($p instanceof WP_Post) {
+            $fallback_post_objects[] = $p;
+        }
+    }
+    // Debug: log expanded posts and loop props
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('[twmp] the_posts replacement: fallback_count=' . $fallback_count);
+        error_log('[twmp] the_posts $query->found_posts=' . $query->found_posts);
+        error_log('[twmp] the_posts $woocommerce_loop=' . print_r($GLOBALS['woocommerce_loop'], true));
+    }
+
+    return $fallback_post_objects;
 }
 
 add_filter('the_posts', 'twmp_expand_empty_product_search_results', 20, 2);
@@ -266,9 +356,12 @@ function twmp_adjust_facetwp_product_search_query_args($query_args, $renderer)
 
     unset($query_args['s']);
     unset($query_args['twmp_product_search_fallback']);
-    unset($query_args['product_cat']);
-    unset($query_args['taxonomy']);
-    unset($query_args['term']);
+    // Nếu fallback bắt nguồn từ category thì giữ product_cat để FacetWP vẫn lọc theo danh mục
+    if (empty($GLOBALS['twmp_product_search_fallback_from_category'])) {
+        unset($query_args['product_cat']);
+        unset($query_args['taxonomy']);
+        unset($query_args['term']);
+    }
 
     $query_args['post_type']           = 'product';
     $query_args['post_status']         = 'publish';
@@ -282,6 +375,99 @@ function twmp_adjust_facetwp_product_search_query_args($query_args, $renderer)
 }
 
 add_filter('facetwp_query_args', 'twmp_adjust_facetwp_product_search_query_args', 20, 2);
+
+// Debug helper: log WC loop state early in shop loop so we can see what wc_get_loop_prop() returns
+function twmp_log_woocommerce_loop_state()
+{
+    if (!defined('WP_DEBUG') || !WP_DEBUG) {
+        return;
+    }
+
+    global $wp_query;
+
+    $total_prop = function_exists('wc_get_loop_prop') ? wc_get_loop_prop('total') : 'wc_get_loop_prop_unavailable';
+    error_log('[twmp] woocommerce_before_shop_loop hook: wc_get_loop_prop(total)=' . print_r($total_prop, true));
+    error_log('[twmp] woocommerce_before_shop_loop hook: $wp_query->found_posts=' . (isset($wp_query->found_posts) ? $wp_query->found_posts : 'unset'));
+    error_log('[twmp] woocommerce_before_shop_loop hook: $GLOBALS["woocommerce_loop"]=' . print_r($GLOBALS['woocommerce_loop'], true));
+}
+
+add_action('woocommerce_before_shop_loop', 'twmp_log_woocommerce_loop_state', 5);
+
+// After WC sets up its loop (usually priority 10), re-apply our fallback loop props
+function twmp_apply_fallback_loop_props_after_setup()
+{
+    $should_apply = false;
+    if (function_exists('twmp_is_product_search_fallback') && twmp_is_product_search_fallback()) {
+        $should_apply = true;
+        $apply_reason = 'flag';
+    } else {
+        // Fallback: if we're on a product category page and the term has zero products, apply fallback
+        if (is_product_category()) {
+            $term = get_queried_object();
+            if ($term instanceof WP_Term && isset($term->count) && 0 === absint($term->count)) {
+                $should_apply = true;
+                $apply_reason = 'empty_category_direct_detect';
+            }
+        }
+    }
+
+    if (!$should_apply) {
+        return;
+    }
+
+    $fallback_posts = twmp_get_fallback_product_ids();
+    $fallback_count = count($fallback_posts);
+
+    if (function_exists('wc_set_loop_prop')) {
+        wc_set_loop_prop('total', $fallback_count);
+        wc_set_loop_prop('total_pages', 1);
+        wc_set_loop_prop('current_page', 1);
+        wc_set_loop_prop('per_page', max(1, $fallback_count));
+    }
+
+    if (!isset($GLOBALS['woocommerce_loop']) || !is_array($GLOBALS['woocommerce_loop'])) {
+        $GLOBALS['woocommerce_loop'] = array();
+    }
+    $GLOBALS['woocommerce_loop']['total'] = $fallback_count;
+    $GLOBALS['woocommerce_loop']['total_pages'] = 1;
+    $GLOBALS['woocommerce_loop']['current_page'] = 1;
+    $GLOBALS['woocommerce_loop']['per_page'] = max(1, $fallback_count);
+
+    global $wp_query;
+    if ($wp_query instanceof WP_Query) {
+        $wp_query->found_posts = $fallback_count;
+        $wp_query->post_count = $fallback_count;
+        // don't overwrite posts here; the_posts filter will provide WP_Post objects
+    }
+
+    // Ensure $wp_query->posts contains WP_Post objects so have_posts() and the loop work
+    if ($wp_query instanceof WP_Query) {
+        $fallback_post_objects = array();
+        foreach ((array) $fallback_posts as $post_id) {
+            $p = get_post(absint($post_id));
+            if ($p instanceof WP_Post) {
+                $fallback_post_objects[] = $p;
+            }
+        }
+
+        if (!empty($fallback_post_objects)) {
+            $wp_query->posts = $fallback_post_objects;
+            $wp_query->posts_per_page = count($fallback_post_objects);
+            $wp_query->max_num_pages = 1;
+            $wp_query->post_count = count($fallback_post_objects);
+            $wp_query->found_posts = count($fallback_post_objects);
+        }
+    }
+
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('[twmp] after wc_setup_loop: reapplied fallback_count=' . $fallback_count . ' reason=' . ($apply_reason ?? 'unknown'));
+        error_log('[twmp] after wc_setup_loop: wc_get_loop_prop(total)=' . (function_exists('wc_get_loop_prop') ? wc_get_loop_prop('total') : 'unavailable'));
+        error_log('[twmp] after wc_setup_loop: $wp_query->found_posts=' . (isset($wp_query->found_posts) ? $wp_query->found_posts : 'unset'));
+        error_log('[twmp] after wc_setup_loop: $GLOBALS["woocommerce_loop"]=' . print_r($GLOBALS['woocommerce_loop'], true));
+    }
+}
+
+add_action('woocommerce_before_shop_loop', 'twmp_apply_fallback_loop_props_after_setup', 11);
 
 // Tiếng việt: Để tùy chỉnh cách hiển thị sản phẩm trong vòng lặp sản phẩm WooCommerce, bạn có thể sử dụng hook 'woocommerce_before_shop_loop_item' để thay thế các phần tử mặc định bằng cách của riêng bạn. Dưới đây là một ví dụ về cách làm điều này:
 add_action('wp', function () {
@@ -626,3 +812,7 @@ add_action('woocommerce_before_main_content', function () {
         return;
     }
 }, 25);
+
+add_filter( 'woocommerce_default_catalog_orderby', function() {
+    return 'date';
+} );

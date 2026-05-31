@@ -21,7 +21,20 @@ defined('ABSPATH') || exit;
 get_header('shop');
 
 $has_products    = woocommerce_product_loop();
-$is_empty_search = function_exists('twmp_is_empty_product_search_page') && twmp_is_empty_product_search_page();
+// Consider category-empty as fallback source as well (covers cases where the global flag isn't set)
+$is_fallback_flag = (function_exists('twmp_is_product_search_fallback') && twmp_is_product_search_fallback()) || (
+	is_product_category() && function_exists('get_queried_object') &&
+	($term = get_queried_object()) instanceof WP_Term && isset($term->count) && 0 === absint($term->count)
+);
+// If fallback is active (search or category fallback), ensure loop renders fallback products
+if ($is_fallback_flag) {
+	$has_products = true;
+}
+// Treat empty product category like empty search so we show the "Don't have Result" header
+$is_empty_search = (function_exists('twmp_is_empty_product_search_page') && twmp_is_empty_product_search_page()) || (
+	is_product_category() && function_exists('get_queried_object') &&
+	($term = get_queried_object()) instanceof WP_Term && isset($term->count) && 0 === absint($term->count)
+);
 
 /**
  * Hook: woocommerce_before_main_content.
@@ -67,6 +80,12 @@ if ($is_empty_search) {
 }
 
 if ($has_products) {
+	if (defined('WP_DEBUG') && WP_DEBUG) {
+		error_log('[twmp] archive-product template: $has_products=' . ($has_products ? '1' : '0'));
+		error_log('[twmp] archive-product template: wc_get_loop_prop(total)=' . (function_exists('wc_get_loop_prop') ? wc_get_loop_prop('total') : 'unavailable'));
+		error_log('[twmp] archive-product template: $GLOBALS["woocommerce_loop"]=' . print_r($GLOBALS['woocommerce_loop'], true));
+		error_log('[twmp] archive-product template: $wp_query->found_posts=' . (isset($wp_query->found_posts) ? $wp_query->found_posts : 'unset'));
+	}
 	/**
 	 * Hook: woocommerce_before_shop_loop.
 	 *
@@ -77,6 +96,12 @@ if ($has_products) {
 	do_action('woocommerce_before_shop_loop');
 
 	woocommerce_product_loop_start();
+
+	if (defined('WP_DEBUG') && WP_DEBUG) {
+		error_log('[twmp] before have_posts: wc_get_loop_prop(total)=' . (function_exists('wc_get_loop_prop') ? wc_get_loop_prop('total') : 'unavailable'));
+		error_log('[twmp] before have_posts: $GLOBALS["woocommerce_loop"]=' . print_r($GLOBALS['woocommerce_loop'], true));
+		error_log('[twmp] before have_posts: $wp_query->found_posts=' . (isset($wp_query->found_posts) ? $wp_query->found_posts : 'unset'));
+	}
 
 	if (wc_get_loop_prop('total')) {
 		while (have_posts()) {
