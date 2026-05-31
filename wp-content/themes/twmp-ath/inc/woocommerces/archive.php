@@ -146,11 +146,10 @@ function twmp_flag_empty_product_search_query($query)
     $query->set('post_type', 'product');
     $query->set('post_status', 'publish');
     $query->set('ignore_sticky_posts', true);
-    $query->set('posts_per_page', -1);
+    // Keep posts_per_page as requested (do not force -1) so pagination works
     $query->set('no_found_rows', true);
     $query->set('orderby', 'date');
     $query->set('order', 'DESC');
-    $query->set('paged', 1);
 
     $GLOBALS['twmp_product_search_fallback'] = true;
     $GLOBALS['twmp_product_search_term'] = $search_term;
@@ -203,9 +202,10 @@ function twmp_flag_empty_product_category_query($query)
     $fallback_count = count($fallback_posts);
     if (function_exists('wc_set_loop_prop')) {
         wc_set_loop_prop('total', $fallback_count);
+        // Use a placeholder per_page here; real values will be set later in the_posts filter
         wc_set_loop_prop('total_pages', 1);
         wc_set_loop_prop('current_page', 1);
-        wc_set_loop_prop('per_page', max(1, $fallback_count));
+        wc_set_loop_prop('per_page', max(1, get_option('posts_per_page')));
     }
     if (!isset($GLOBALS['woocommerce_loop']) || !is_array($GLOBALS['woocommerce_loop'])) {
         $GLOBALS['woocommerce_loop'] = array();
@@ -213,7 +213,7 @@ function twmp_flag_empty_product_category_query($query)
     $GLOBALS['woocommerce_loop']['total'] = $fallback_count;
     $GLOBALS['woocommerce_loop']['total_pages'] = 1;
     $GLOBALS['woocommerce_loop']['current_page'] = 1;
-    $GLOBALS['woocommerce_loop']['per_page'] = max(1, $fallback_count);
+    $GLOBALS['woocommerce_loop']['per_page'] = max(1, get_option('posts_per_page'));
     // Debug: log fallback and loop props for runtime inspection
     if (defined('WP_DEBUG') && WP_DEBUG) {
         error_log('[twmp] category fallback: term=' . (isset($term->slug) ? $term->slug : '') . ' fallback_count=' . $fallback_count);
@@ -252,41 +252,49 @@ function twmp_expand_empty_product_search_results($posts, $query)
 
     $GLOBALS['twmp_product_search_fallback'] = $fallback_count > 0;
 
-    $query->found_posts   = $fallback_count;
-    $query->post_count    = $fallback_count;
-    $query->max_num_pages = 1;
-    $query->set('posts_per_page', max(1, $fallback_count));
+    // Determine paging
+    $paged = max(1, (int) $query->get('paged') ?: (int) get_query_var('paged') ?: 1);
+    $per_page = (int) $query->get('posts_per_page') ?: (int) get_option('posts_per_page') ?: 10;
+    $total_pages = $per_page > 0 ? (int) ceil($fallback_count / $per_page) : 1;
+
+    $offset = ($paged - 1) * $per_page;
+    $sliced_ids = array_slice((array) $fallback_posts, $offset, $per_page);
+
+    $query->found_posts = $fallback_count;
+    $query->post_count = count($sliced_ids);
+    $query->max_num_pages = $total_pages;
+    $query->set('posts_per_page', $per_page);
     $query->set('no_found_rows', true);
-    $query->set('paged', 1);
+    $query->set('paged', $paged);
     $query->set('twmp_product_search_fallback', 1);
 
     if (function_exists('wc_set_loop_prop')) {
         wc_set_loop_prop('total', $fallback_count);
-        wc_set_loop_prop('total_pages', 1);
-        wc_set_loop_prop('current_page', 1);
-        wc_set_loop_prop('per_page', max(1, $fallback_count));
+        wc_set_loop_prop('total_pages', $total_pages);
+        wc_set_loop_prop('current_page', $paged);
+        wc_set_loop_prop('per_page', $per_page);
     }
 
-    // Also ensure the global array is populated so wc_get_loop_prop() reads correct values
     if (!isset($GLOBALS['woocommerce_loop']) || !is_array($GLOBALS['woocommerce_loop'])) {
         $GLOBALS['woocommerce_loop'] = array();
     }
     $GLOBALS['woocommerce_loop']['total'] = $fallback_count;
-    $GLOBALS['woocommerce_loop']['total_pages'] = 1;
-    $GLOBALS['woocommerce_loop']['current_page'] = 1;
-    $GLOBALS['woocommerce_loop']['per_page'] = max(1, $fallback_count);
+    $GLOBALS['woocommerce_loop']['total_pages'] = $total_pages;
+    $GLOBALS['woocommerce_loop']['current_page'] = $paged;
+    $GLOBALS['woocommerce_loop']['per_page'] = $per_page;
 
-    // Ensure we return WP_Post objects so the main loop's have_posts()/the_post() work.
+    // Ensure we return paginated WP_Post objects so the main loop's have_posts()/the_post() work.
     $fallback_post_objects = array();
-    foreach ((array) $fallback_posts as $post_id) {
+    foreach ((array) $sliced_ids as $post_id) {
         $p = get_post(absint($post_id));
         if ($p instanceof WP_Post) {
             $fallback_post_objects[] = $p;
         }
     }
+
     // Debug: log expanded posts and loop props
     if (defined('WP_DEBUG') && WP_DEBUG) {
-        error_log('[twmp] the_posts replacement: fallback_count=' . $fallback_count);
+        error_log('[twmp] the_posts replacement: fallback_count=' . $fallback_count . ' paged=' . $paged . ' per_page=' . $per_page);
         error_log('[twmp] the_posts $query->found_posts=' . $query->found_posts);
         error_log('[twmp] the_posts $woocommerce_loop=' . print_r($GLOBALS['woocommerce_loop'], true));
     }
@@ -317,7 +325,11 @@ function twmp_force_facetwp_fallback_ids($post_ids, $renderer)
         return $post_ids;
     }
 
-    return twmp_get_fallback_product_ids();
+    $fallback = twmp_get_fallback_product_ids();
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('[twmp] facetwp_pre_filtered_post_ids: returning fallback ids count=' . count($fallback));
+    }
+    return $fallback;
 }
 
 add_filter('facetwp_pre_filtered_post_ids', 'twmp_force_facetwp_fallback_ids', 20, 2);
@@ -347,7 +359,11 @@ function twmp_force_facetwp_filtered_fallback_ids($post_ids, $renderer)
         }
     }
 
-    return twmp_get_fallback_product_ids();
+    $fallback = twmp_get_fallback_product_ids();
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('[twmp] facetwp_filtered_post_ids: returning fallback ids count=' . count($fallback));
+    }
+    return $fallback;
 }
 
 add_filter('facetwp_filtered_post_ids', 'twmp_force_facetwp_filtered_fallback_ids', 20, 2);
@@ -379,9 +395,16 @@ function twmp_adjust_facetwp_product_search_query_args($query_args, $renderer)
     unset($query_args['twmp_product_search_fallback']);
     // Nếu fallback bắt nguồn từ category thì giữ product_cat để FacetWP vẫn lọc theo danh mục
     if (empty($GLOBALS['twmp_product_search_fallback_from_category'])) {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('[twmp] facetwp_query_args: removing product_cat from query_args for fallback');
+        }
         unset($query_args['product_cat']);
         unset($query_args['taxonomy']);
         unset($query_args['term']);
+    } else {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('[twmp] facetwp_query_args: preserving product_cat because fallback_from_category=1');
+        }
     }
 
     $query_args['post_type']           = 'product';
@@ -439,32 +462,42 @@ function twmp_apply_fallback_loop_props_after_setup()
     $fallback_posts = twmp_get_fallback_product_ids();
     $fallback_count = count($fallback_posts);
 
+    global $wp_query;
+    $paged = 1;
+    $per_page = (int) get_option('posts_per_page') ?: 10;
+    if ($wp_query instanceof WP_Query) {
+        $paged = max(1, (int) $wp_query->get('paged') ?: (int) get_query_var('paged') ?: 1);
+        $per_page = (int) $wp_query->get('posts_per_page') ?: (int) get_option('posts_per_page') ?: $per_page;
+    }
+
+    $total_pages = $per_page > 0 ? (int) ceil($fallback_count / $per_page) : 1;
+    $offset = ($paged - 1) * $per_page;
+    $sliced_ids = array_slice((array) $fallback_posts, $offset, $per_page);
+
     if (function_exists('wc_set_loop_prop')) {
         wc_set_loop_prop('total', $fallback_count);
-        wc_set_loop_prop('total_pages', 1);
-        wc_set_loop_prop('current_page', 1);
-        wc_set_loop_prop('per_page', max(1, $fallback_count));
+        wc_set_loop_prop('total_pages', $total_pages);
+        wc_set_loop_prop('current_page', $paged);
+        wc_set_loop_prop('per_page', $per_page);
     }
 
     if (!isset($GLOBALS['woocommerce_loop']) || !is_array($GLOBALS['woocommerce_loop'])) {
         $GLOBALS['woocommerce_loop'] = array();
     }
     $GLOBALS['woocommerce_loop']['total'] = $fallback_count;
-    $GLOBALS['woocommerce_loop']['total_pages'] = 1;
-    $GLOBALS['woocommerce_loop']['current_page'] = 1;
-    $GLOBALS['woocommerce_loop']['per_page'] = max(1, $fallback_count);
+    $GLOBALS['woocommerce_loop']['total_pages'] = $total_pages;
+    $GLOBALS['woocommerce_loop']['current_page'] = $paged;
+    $GLOBALS['woocommerce_loop']['per_page'] = $per_page;
 
-    global $wp_query;
     if ($wp_query instanceof WP_Query) {
         $wp_query->found_posts = $fallback_count;
-        $wp_query->post_count = $fallback_count;
-        // don't overwrite posts here; the_posts filter will provide WP_Post objects
-    }
+        $wp_query->post_count = count($sliced_ids);
+        $wp_query->max_num_pages = $total_pages;
+        $wp_query->query_vars['posts_per_page'] = $per_page;
 
-    // Ensure $wp_query->posts contains WP_Post objects so have_posts() and the loop work
-    if ($wp_query instanceof WP_Query) {
+        // Populate posts with paginated slice so have_posts() works consistently
         $fallback_post_objects = array();
-        foreach ((array) $fallback_posts as $post_id) {
+        foreach ((array) $sliced_ids as $post_id) {
             $p = get_post(absint($post_id));
             if ($p instanceof WP_Post) {
                 $fallback_post_objects[] = $p;
@@ -473,10 +506,8 @@ function twmp_apply_fallback_loop_props_after_setup()
 
         if (!empty($fallback_post_objects)) {
             $wp_query->posts = $fallback_post_objects;
-            $wp_query->query_vars['posts_per_page'] = count($fallback_post_objects);
-            $wp_query->max_num_pages = 1;
             $wp_query->post_count = count($fallback_post_objects);
-            $wp_query->found_posts = count($fallback_post_objects);
+            $wp_query->found_posts = $fallback_count;
         }
     }
 
