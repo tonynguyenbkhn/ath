@@ -26,6 +26,7 @@ $_class_container .= ! empty($data['class_container']) ? ' ' . esc_attr($data['c
 $address = function_exists('get_field') ? (string) get_field('address', 'option') : '';
 $address_link = function_exists('get_field') ? (string) get_field('address_link', 'option') : '';
 $hotline = function_exists('get_field') ? (string) get_field('hotline', 'option') : '';
+$email = function_exists('get_field') ? (string) get_field('email', 'option') : '';
 
 $social_links = function_exists('get_field') ? get_field('social_links', 'option') : [];
 $sticky_links = function_exists('get_field') ? get_field('sticky_links', 'option') : [];
@@ -132,6 +133,16 @@ $background_image_url = ! empty($data['background_image_id']) ? wp_get_attachmen
                                     </a>
                                 </div>
                             <?php endif; ?>
+
+                            <?php if ('' !== trim($email)) : ?>
+                                <div class="contact-us__meta-item contact-us__meta-item--email">
+                                    <span class="contact-us__meta-icon" aria-hidden="true"><?php echo twmp_get_svg_icon('contact-section-email'); ?></span>
+                                    <a class="contact-us__meta-text contact-us__meta-link" href="<?php echo esc_url('mailto:' . sanitize_email($email)); ?>">
+                                        <?php echo esc_html($email); ?>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+
                         </div>
 
                         <?php if (! empty($social_items)) : ?>

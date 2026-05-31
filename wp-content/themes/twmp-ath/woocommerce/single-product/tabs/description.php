@@ -29,10 +29,6 @@ $heading = apply_filters('woocommerce_product_description_heading', __('Descript
 <?php endif; ?>
 <div class="tab-description-wrapper">
 	<div class="js-content-toggle has-toggle">
-		<div class="d-flex items-center gap-8">
-			<?php echo twmp_get_svg_icon('cpny-name'); ?>
-			<span class="typo-display-xs-bold"><?php echo esc_html__('Conpany Name', 'twmp-ath'); ?></span>
-		</div>
 		<div class="single__content">
 			<?php the_content(); ?>
 		</div>

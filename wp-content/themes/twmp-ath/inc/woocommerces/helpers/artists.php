@@ -81,12 +81,13 @@ function twmp_get_product_artists($product_id = 0)
  * @return array Artist data array or empty if invalid.
  * @since 1.0.0
  */
-function twmp_get_artist_from_item($artist_item) {
+function twmp_get_artist_from_item($artist_item)
+{
 	// Handle numeric ID (post ID).
 	if (is_numeric($artist_item)) {
 		$post_id = absint($artist_item);
 		$post = get_post($post_id);
-		
+
 		if (!$post || 'publish' !== $post->post_status) {
 			return array();
 		}
@@ -316,8 +317,7 @@ function twmp_render_artists_grid($artists)
 						<?php if (! empty($description)) : ?>
 							<div class="twmp-artist-description">
 								<?php
-								// Description already sanitized in twmp_sanitize_artist_data.
-								echo wp_kses_post($description);
+								echo esc_html(wp_trim_words(wp_strip_all_tags($description), 30, '...'));
 								?>
 							</div>
 						<?php endif; ?>

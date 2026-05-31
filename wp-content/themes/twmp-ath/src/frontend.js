@@ -22,7 +22,7 @@ import initClassWorkshopMotion from 'lib/class-workshop-motion'
 // initClassWorkshopMotion()
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Fancybox.bind("[data-fancybox]", {});
+    Fancybox.bind("[data-fancybox]", {});
     initCommon()
 
     init({

@@ -402,7 +402,7 @@
                             "label": "Artists",
                             "name": "artists",
                             "aria-label": "",
-                            "type": "post_object",
+                            "type": "relationship",
                             "instructions": "Select artists to display in the slider.",
                             "required": 0,
                             "conditional_logic": 0,
@@ -414,11 +414,16 @@
                             "post_type": [
                                 "artists"
                             ],
-                            "taxonomy": "",
-                            "return_format": "id",
-                            "multiple": 1,
-                            "allow_null": 1,
-                            "ui": 1
+                            "taxonomy": [],
+                            "filters": [
+                                "search"
+                            ],
+                            "elements": [
+                                "featured_image"
+                            ],
+                            "min": "",
+                            "max": "",
+                            "return_format": "id"
                         }
                     ],
                     "min": "",
@@ -531,7 +536,7 @@
                             "label": "Artists",
                             "name": "artists",
                             "aria-label": "",
-                            "type": "post_object",
+                            "type": "relationship",
                             "instructions": "Select artists to display in the slider.",
                             "required": 0,
                             "conditional_logic": 0,
@@ -543,11 +548,16 @@
                             "post_type": [
                                 "artists"
                             ],
-                            "taxonomy": "",
-                            "return_format": "id",
-                            "multiple": 1,
-                            "allow_null": 1,
-                            "ui": 1
+                            "taxonomy": [],
+                            "filters": [
+                                "search"
+                            ],
+                            "elements": [
+                                "featured_image"
+                            ],
+                            "min": "",
+                            "max": "",
+                            "return_format": "id"
                         },
                         {
                             "key": "field_team_02_sub_description",
@@ -681,7 +691,7 @@
                             "label": "Products",
                             "name": "products",
                             "aria-label": "",
-                            "type": "post_object",
+                            "type": "relationship",
                             "instructions": "Select products to display in the show_event slider.",
                             "required": 0,
                             "conditional_logic": 0,
@@ -693,11 +703,17 @@
                             "post_type": [
                                 "product"
                             ],
-                            "taxonomy": "",
-                            "return_format": "id",
-                            "multiple": 1,
-                            "allow_null": 1,
-                            "ui": 1
+                            "taxonomy": [],
+                            "filters": [
+                                "search",
+                                "taxonomy"
+                            ],
+                            "elements": [
+                                "featured_image"
+                            ],
+                            "min": "",
+                            "max": "",
+                            "return_format": "id"
                         }
                     ],
                     "min": "",
@@ -814,7 +830,7 @@
                             "label": "Products",
                             "name": "products",
                             "aria-label": "",
-                            "type": "post_object",
+                            "type": "relationship",
                             "instructions": "Select products to display in the show_event slider.",
                             "required": 0,
                             "conditional_logic": 0,
@@ -826,11 +842,17 @@
                             "post_type": [
                                 "product"
                             ],
-                            "taxonomy": "",
-                            "return_format": "id",
-                            "multiple": 1,
-                            "allow_null": 1,
-                            "ui": 1
+                            "taxonomy": [],
+                            "filters": [
+                                "search",
+                                "taxonomy"
+                            ],
+                            "elements": [
+                                "featured_image"
+                            ],
+                            "min": "",
+                            "max": "",
+                            "return_format": "id"
                         }
                     ],
                     "min": "",
@@ -947,7 +969,7 @@
                             "label": "Products",
                             "name": "products",
                             "aria-label": "",
-                            "type": "post_object",
+                            "type": "relationship",
                             "instructions": "Select products to display in the class_workshop slider.",
                             "required": 0,
                             "conditional_logic": 0,
@@ -959,11 +981,17 @@
                             "post_type": [
                                 "product"
                             ],
-                            "taxonomy": "",
-                            "return_format": "id",
-                            "multiple": 1,
-                            "allow_null": 1,
-                            "ui": 1
+                            "taxonomy": [],
+                            "filters": [
+                                "search",
+                                "taxonomy"
+                            ],
+                            "elements": [
+                                "featured_image"
+                            ],
+                            "min": "",
+                            "max": "",
+                            "return_format": "id"
                         }
                     ],
                     "min": "",
@@ -1080,7 +1108,7 @@
                             "label": "Products",
                             "name": "products",
                             "aria-label": "",
-                            "type": "post_object",
+                            "type": "relationship",
                             "instructions": "Select products to display in the class_workshop slider.",
                             "required": 0,
                             "conditional_logic": 0,
@@ -1092,11 +1120,17 @@
                             "post_type": [
                                 "product"
                             ],
-                            "taxonomy": "",
-                            "return_format": "id",
-                            "multiple": 1,
-                            "allow_null": 1,
-                            "ui": 1
+                            "taxonomy": [],
+                            "filters": [
+                                "search",
+                                "taxonomy"
+                            ],
+                            "elements": [
+                                "featured_image"
+                            ],
+                            "min": "",
+                            "max": "",
+                            "return_format": "id"
                         }
                     ],
                     "min": "",

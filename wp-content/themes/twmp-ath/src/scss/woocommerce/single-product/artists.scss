@@ -67,10 +67,11 @@
 			border-radius: 4px;
 			flex-shrink: 0;
 			background-color: #f5f5f5;
-			height: auto;
+			height: 190px;
 
 			@media (max-width: 1199px) {
 				width: 100%;
+				height: auto;
 			}
 		}
 

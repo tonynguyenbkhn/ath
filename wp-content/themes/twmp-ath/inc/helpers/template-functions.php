@@ -264,6 +264,9 @@ function twmp_get_svg_icon($name)
 		case 'contact-section-phone':
 			$svg_icon = '<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.527 2.25c.361 0 .636-.003.889.042.9.159 1.662.754 2.034 1.588.105.234.168.502.256.852l.535 2.141c.163.652.298 1.151.253 1.646a2.75 2.75 0 01-.378 1.16c-.255.427-.658.751-1.174 1.182l-1.996 1.67a13.896 13.896 0 005.523 5.522l1.67-1.995c.43-.516.755-.92 1.181-1.174.354-.212.751-.34 1.161-.378.495-.045.994.09 1.646.253l2.14.535c.35.088.619.151.853.256a2.752 2.752 0 011.588 2.034c.045.253.042.528.042.889 0 .414.004.734-.067 1.049-.242 1.083-1.245 1.994-2.347 2.13-.317.038-.587.009-.933-.025-2.64-.258-5.015-.917-7.084-1.957-3.074-1.545-5.444-3.915-6.989-6.99-1.04-2.068-1.7-4.444-1.957-7.083-.034-.346-.063-.616-.024-.933.135-1.102 1.046-2.105 2.13-2.348.314-.07.634-.066 1.048-.066z" fill="#F04C26"/></svg>';
 			break;
+		case 'contact-section-email':
+			$svg_icon = '<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.6 4c2.24 0 3.36 0 4.216.436a4.001 4.001 0 011.748 1.748C22 7.039 22 8.16 22 10.4v3.2c0 2.24 0 3.36-.436 4.216a4.002 4.002 0 01-1.748 1.748C18.961 20 17.84 20 15.6 20H8.4c-2.24 0-3.36 0-4.216-.436a4.001 4.001 0 01-1.748-1.748C2 16.961 2 15.84 2 13.6v-3.2c0-2.24 0-3.36.436-4.216a4.001 4.001 0 011.748-1.748C5.039 4 6.16 4 8.4 4h7.2zm3.024 3.584a.75.75 0 00-1.04-.208L12 11.099 6.416 7.376a.75.75 0 10-.832 1.248l6 4a.75.75 0 00.832 0l6-4a.75.75 0 00.208-1.04z" fill="#F04C26"/></svg>';
+			break;
 		case 'upload':
 			$svg_icon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.25C12.4142 2.25 12.75 2.58579 12.75 3C12.75 3.41421 12.4142 3.75 12 3.75H9.40039C8.26798 3.75 7.46335 3.75034 6.83398 3.80176C6.21336 3.85247 5.82889 3.94936 5.52441 4.10449C4.91304 4.41605 4.41605 4.91304 4.10449 5.52441C3.94936 5.82889 3.85247 6.21336 3.80176 6.83398C3.75035 7.46335 3.75 8.26798 3.75 9.40039V14.5996C3.75 15.5132 3.75222 16.2133 3.7793 16.7803L7.24121 13.585C8.03464 12.8526 8.43155 12.4865 8.87988 12.3545C9.27451 12.2384 9.69527 12.2472 10.085 12.3789C10.5278 12.5287 10.9101 12.9101 11.6738 13.6738L14 16L14.8828 15.1172C15.6285 14.3715 16.0019 13.9982 16.4355 13.8477C16.8173 13.7152 17.2304 13.7018 17.6201 13.8086C18.0628 13.93 18.4595 14.2774 19.2529 14.9717L20.2441 15.8389C20.2478 15.474 20.25 15.0644 20.25 14.5996V12C20.25 11.5858 20.5858 11.25 21 11.25C21.4142 11.25 21.75 11.5858 21.75 12V14.5996C21.75 15.7072 21.7509 16.5835 21.6934 17.2881C21.6351 18.0014 21.5132 18.6051 21.2324 19.1562C20.777 20.05 20.05 20.777 19.1562 21.2324C18.6051 21.5132 18.0014 21.6351 17.2881 21.6934C16.5835 21.7509 15.7072 21.75 14.5996 21.75H9.40039C8.29277 21.75 7.41651 21.7509 6.71191 21.6934C5.99862 21.6351 5.39486 21.5132 4.84375 21.2324C3.94998 20.777 3.22298 20.05 2.76758 19.1562C2.48682 18.6051 2.36492 18.0014 2.30664 17.2881C2.24909 16.5835 2.25 15.7072 2.25 14.5996V9.40039C2.25 8.29277 2.24909 7.41651 2.30664 6.71191C2.36492 5.99862 2.48682 5.39487 2.76758 4.84375C3.22298 3.94998 3.94998 3.22298 4.84375 2.76758C5.39487 2.48682 5.99862 2.36492 6.71191 2.30664C7.41651 2.24909 8.29277 2.25 9.40039 2.25H12ZM17.5264 2.41797C17.8209 2.17766 18.2557 2.19512 18.5303 2.46973L21.0303 4.96973C21.3232 5.26262 21.3232 5.73738 21.0303 6.03027C20.7374 6.32317 20.2626 6.32317 19.9697 6.03027L18.75 4.81055V9C18.75 9.41421 18.4142 9.75 18 9.75C17.5858 9.75 17.25 9.41421 17.25 9V4.81055L16.0303 6.03027C15.7374 6.32317 15.2626 6.32317 14.9697 6.03027C14.6768 5.73738 14.6768 5.26262 14.9697 4.96973L17.4697 2.46973L17.5264 2.41797Z" fill="#F04C26"/></svg>';
 			break;
@@ -300,6 +303,16 @@ function twmp_render_cart_button($product_id = 0, $button_text = '', $button_cla
 		return;
 	}
 
+	// Check ACF field to disable book/register button per product
+	$disable_book = false;
+	if (function_exists('get_field')) {
+		$disable_book = get_field('ath_disable_book_ticket', $product_id);
+	}
+
+	if ($disable_book) {
+		return;
+	}
+
 	if (! twmp_is_event_bookable($product_id)) {
 		return;
 	}
@@ -324,9 +337,28 @@ function twmp_render_cart_button($product_id = 0, $button_text = '', $button_cla
 		$button_html = twmp_get_svg_icon($icon_name);
 	}
 
+	// Use GET to checkout so add-to-cart happens and we land on checkout (handles buy-now flow reliably)
+
+	// If product requires variation selection, show link to product page so user can choose variations
+	if (method_exists($product, 'is_type') && $product->is_type('variable')) {
+		printf(
+			'<a class="%1$s" href="%2$s"><span class="text pe-none">%3$s</span>%4$s</a>',
+			esc_attr($button_classes),
+			esc_url(get_permalink($product_id)),
+			esc_html($button_text),
+			$button_html ? '<span class="icon pe-none" aria-hidden="true">' . $button_html . '</span>' : ''
+		);
+		return;
+	}
+
+	// If product is not purchasable or has no price, hide the button (same behavior as $disable_book)
+	if ((method_exists($product, 'is_purchasable') && ! $product->is_purchasable()) || '' === (string) $product->get_price()) {
+		return;
+	}
+
 	printf(
-		'<form class="twmp-buy-now-form swiper-no-swiping" action="%1$s" method="post"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
-		esc_url(get_permalink($product_id)),
+		'<form class="twmp-buy-now-form swiper-no-swiping" action="%1$s" method="get"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
+		esc_url(wc_get_checkout_url()),
 		absint($product_id),
 		esc_attr($button_classes),
 		esc_html($button_text),

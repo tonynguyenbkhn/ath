@@ -3,6 +3,25 @@
     "title": "ATH Event / Show Fields",
     "fields": [
         {
+            "key": "field_ath_disable_book_ticket",
+            "label": "Disable Book Ticket Button",
+            "name": "ath_disable_book_ticket",
+            "type": "true_false",
+            "instructions": "If enabled, the Book Ticket / Register Course button will be hidden for this product.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "Disable",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
             "key": "field_ath_event_badges",
             "label": "Badges / Labels",
             "name": "ath_badges",
@@ -64,7 +83,7 @@
             "name": "ath_start_datetime",
             "type": "date_time_picker",
             "instructions": "Ngày bắt đầu sự kiện",
-            "required": 1,
+            "required": 0,
             "display_format": "d/m/Y H:i",
             "return_format": "Y-m-d H:i:s",
             "first_day": 1,
@@ -80,7 +99,7 @@
             "name": "ath_end_datetime",
             "type": "date_time_picker",
             "instructions": "Ngày kết thúc sự kiện",
-            "required": 1,
+            "required": 0,
             "display_format": "d/m/Y H:i",
             "return_format": "Y-m-d H:i:s",
             "first_day": 1,
@@ -109,6 +128,97 @@
                 "class": "",
                 "id": ""
             }
+        },
+        {
+            "key": "field_ath_format",
+            "label": "Format",
+            "name": "ath_format",
+            "type": "text",
+            "instructions": "Ví dụ: ??? như trong mockup.",
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_ath_demonstration",
+            "label": "Demonstration",
+            "name": "ath_demonstration",
+            "type": "text",
+            "instructions": "Ví dụ: Presented by ATH's Drama & Improv class.",
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_ath_subtitle",
+            "label": "Subtitle",
+            "name": "ath_subtitle",
+            "type": "text",
+            "instructions": "Ví dụ: Subtitle.",
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_ath_artists",
+            "label": "Artists",
+            "name": "ath_artists",
+            "type": "relationship",
+            "instructions": "Chọn nghệ sĩ cho sự kiện",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "artists"
+            ],
+            "taxonomy": [],
+            "filters": [
+                "search"
+            ],
+            "elements": [
+                "featured_image"
+            ],
+            "min": "",
+            "max": "",
+            "return_format": "id"
+        },
+        {
+            "key": "field_ath_similar_show_event",
+            "label": "Similar Service",
+            "name": "ath_similar_service",
+            "type": "relationship",
+            "instructions": "Chọn sự kiện tương tự",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "product"
+            ],
+            "taxonomy": [],
+            "filters": [
+                "search",
+                "taxonomy"
+            ],
+            "elements": [
+                "featured_image"
+            ],
+            "min": "",
+            "max": "",
+            "return_format": "id"
         },
         {
             "key": "field_ath_performance_schedule",
@@ -199,92 +309,13 @@
             ]
         },
         {
-            "key": "field_ath_format",
-            "label": "Format",
-            "name": "ath_format",
-            "type": "text",
-            "instructions": "Ví dụ: ??? như trong mockup.",
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            }
-        },
-        {
-            "key": "field_ath_demonstration",
-            "label": "Demonstration",
-            "name": "ath_demonstration",
-            "type": "text",
-            "instructions": "Ví dụ: Presented by ATH's Drama & Improv class.",
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            }
-        },
-        {
-            "key": "field_ath_subtitle",
-            "label": "Subtitle",
-            "name": "ath_subtitle",
-            "type": "text",
-            "wrapper": {
-                "width": "100",
-                "class": "",
-                "id": ""
-            }
-        },
-        {
-            "key": "field_ath_artists",
-            "label": "Artists",
-            "name": "ath_artists",
-            "type": "post_object",
-            "instructions": "Chọn nghệ sĩ cho sự kiện",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "100",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "artists"
-            ],
-            "taxonomy": "",
-            "return_format": "id",
-            "multiple": 1,
-            "allow_null": 1,
-            "ui": 1
-        },
-        {
-            "key": "field_ath_similar_show_event",
-            "label": "Similar Service",
-            "name": "ath_similar_service",
-            "type": "post_object",
-            "instructions": "Chọn sự kiện tương tự",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "100",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "product"
-            ],
-            "taxonomy": "",
-            "return_format": "id",
-            "multiple": 1,
-            "allow_null": 1,
-            "ui": 1
-        },
-        {
             "key": "field_ath_short_info",
             "label": "Card Short Info",
             "name": "ath_short_info",
             "type": "text",
             "instructions": "Dòng nhỏ trên product card, ví dụ: For School · 16-18 · EN · ATH theatre.",
             "wrapper": {
-                "width": "100",
+                "width": "50",
                 "class": "",
                 "id": ""
             }
@@ -296,7 +327,7 @@
             "type": "url",
             "instructions": "Video preview cho gallery single product.",
             "wrapper": {
-                "width": "100",
+                "width": "50",
                 "class": "",
                 "id": ""
             }
@@ -315,30 +346,6 @@
             "insert": "append",
             "wrapper": {
                 "width": "100",
-                "class": "",
-                "id": ""
-            }
-        },
-        {
-            "key": "field_ath_button_book_text",
-            "label": "Book Button Text",
-            "name": "ath_button_book_text",
-            "type": "text",
-            "default_value": "Book Ticket",
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            }
-        },
-        {
-            "key": "field_ath_button_contact_text",
-            "label": "Contact Button Text",
-            "name": "ath_button_contact_text",
-            "type": "text",
-            "default_value": "Contact Us",
-            "wrapper": {
-                "width": "50",
                 "class": "",
                 "id": ""
             }

@@ -9,6 +9,30 @@ const ICONS = {
 const ICONS_BY_NAME = Object.fromEntries(Object.values(ICONS).map(icon => [normalizeIconValue(icon.name), icon]))
 
 const BODY_LOADING_CLASS = 'facetwp-is-loading'
+const FACETWP_FROZEN_EXCLUDED_NAMES = ['pagination']
+const FACETWP_FROZEN_EXCLUDED_TYPES = ['pager']
+
+const freezeFacetWpFilters = () => {
+	const fwp = window.FWP
+
+	if (!fwp?.facets || fwp.is_reset) {
+		return
+	}
+
+	fwp.frozen_facets = fwp.frozen_facets || {}
+
+	Object.keys(fwp.facets).forEach(facetName => {
+		if (
+			FACETWP_FROZEN_EXCLUDED_NAMES.includes(facetName) ||
+			FACETWP_FROZEN_EXCLUDED_TYPES.includes(fwp.facet_type?.[facetName])
+		) {
+			delete fwp.frozen_facets[facetName]
+			return
+		}
+
+		fwp.frozen_facets[facetName] = 'hard'
+	})
+}
 
 const getDefaultLabel = select => {
 	const firstOption = select?.options?.[0]
@@ -91,6 +115,7 @@ const initFacetWpState = () => {
 			return
 		}
 
+		freezeFacetWpFilters()
 		document.body.classList.add(BODY_LOADING_CLASS)
 	})
 }
