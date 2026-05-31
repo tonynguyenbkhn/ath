@@ -19,7 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( function_exists( 'twmp_is_empty_product_search_page' ) && twmp_is_empty_product_search_page() ) {
+if ( ( function_exists( 'twmp_is_empty_product_search_page' ) && twmp_is_empty_product_search_page() )
+	|| ( function_exists( 'is_product_category' ) && is_product_category()
+		&& function_exists( 'get_queried_object' )
+		&& ( $term = get_queried_object() ) instanceof WP_Term
+		&& isset( $term->count ) && 0 === absint( $term->count ) ) ) {
 	return;
 }
 
