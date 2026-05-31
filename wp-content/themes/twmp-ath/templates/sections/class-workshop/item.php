@@ -30,6 +30,11 @@ $badge_rows = is_array($data['badges']) ? array_values(array_filter($data['badge
 
 $_class = 'class-card';
 $_class .= ! empty($data['theme_class']) ? esc_attr(' ' . $data['theme_class']) : '';
+
+$only_show_image = get_field('ath_only_show_image', $data['product_id']);
+echo '<pre>';
+print_r($only_show_image);
+echo '</pre>';
 ?>
 
 <article class="<?php echo esc_attr($_class); ?>">
@@ -53,7 +58,7 @@ $_class .= ! empty($data['theme_class']) ? esc_attr(' ' . $data['theme_class']) 
 
 		<div class="class-card__overlay" aria-hidden="true"></div>
 	</div>
-
+	<?php if ( !$only_show_image ): ?>
 	<div class="class-card__top">
 		<?php if (! empty($badge_rows)) : ?>
 			<div class="class-card__badges">
@@ -137,4 +142,5 @@ $_class .= ! empty($data['theme_class']) ? esc_attr(' ' . $data['theme_class']) 
 			</div>
 		<?php endif; ?>
 	</div>
+	<?php endif; ?>
 </article>

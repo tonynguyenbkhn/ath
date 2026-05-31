@@ -12,14 +12,39 @@ remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_outp
 // wp-content\themes\twmp-ath\inc\woocommerces\checkout.php
 // Keep only firstname, lastname, phone, date of birth, and age on checkout.
 add_filter('woocommerce_checkout_fields', function ($fields) {
+  $firstname_desc = esc_html__('The first name of the customer', 'twmp-ath');
+  $lastname_desc = esc_html__('The last name of the customer', 'twmp-ath');
+
   $visible_billing_fields = array(
     'billing_first_name',
     'billing_last_name',
     'billing_phone',
-    'billing_date_of_birth',
-    'billing_age',
+    // 'billing_date_of_birth',
+    // 'billing_age',
     'billing_email',
   );
+
+  $is_display_desc = false;
+
+  if (
+    isset($_GET['category']) &&
+    'class-workshop' === sanitize_key(wp_unslash($_GET['category']))
+  ) {
+    $firstname_desc = esc_html__('The first name of the student', 'twmp-ath');
+    $lastname_desc = esc_html__('The last name of the student', 'twmp-ath');
+
+    $is_display_desc = true;
+
+    $visible_billing_fields = array(
+      'billing_first_name',
+      'billing_last_name',
+      'billing_phone',
+    	  'billing_date_of_birth',
+    	  'billing_language',
+      // 'billing_age',
+      'billing_email',
+    );
+  }
 
   foreach ($fields as $group_key => $group_fields) {
     foreach ($group_fields as $field_key => $field) {
@@ -49,6 +74,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_first_name']['type'] = 'text';
     $fields['billing']['billing_first_name']['label'] = esc_html__('First name', 'twmp-ath');
     $fields['billing']['billing_first_name']['placeholder'] = esc_html__('First name', 'twmp-ath');
+    $fields['billing']['billing_first_name']['description'] = $is_display_desc ? $firstname_desc : '';
     $fields['billing']['billing_first_name']['required'] = true;
     $fields['billing']['billing_first_name']['class'] = array('form-row-first', 'twmp-checkout-field');
     $fields['billing']['billing_first_name']['priority'] = 10;
@@ -58,6 +84,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_last_name']['type'] = 'text';
     $fields['billing']['billing_last_name']['label'] = esc_html__('Last name', 'twmp-ath');
     $fields['billing']['billing_last_name']['placeholder'] = esc_html__('Last name', 'twmp-ath');
+    $fields['billing']['billing_last_name']['description'] = $is_display_desc ? $lastname_desc : '';
     $fields['billing']['billing_last_name']['required'] = true;
     $fields['billing']['billing_last_name']['class'] = array('form-row-last', 'twmp-checkout-field');
     $fields['billing']['billing_last_name']['priority'] = 20;
@@ -81,28 +108,49 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_email']['priority'] = 90;
   }
 
-  $fields['billing']['billing_date_of_birth'] = array(
-    'type'        => 'date',
-    'label'       => esc_html__('Date of birth', 'twmp-ath'),
-    'placeholder' => esc_html__('Date of birth', 'twmp-ath'),
-    'required'    => false,
-    'class'       => array('form-row-first', 'twmp-checkout-field'),
-    'priority'    => 40,
-  );
+  if (
+    isset($_GET['category']) &&
+    'class-workshop' === sanitize_key(wp_unslash($_GET['category']))
+  ) {
+    $fields['billing']['billing_date_of_birth'] = array(
+      'type'        => 'date',
+      'label'       => esc_html__('Date of birth', 'twmp-ath'),
+      'placeholder' => esc_html__('Date of birth', 'twmp-ath'),
+      'required'    => false,
+      'class'       => array('form-row-first', 'twmp-checkout-field'),
+      'description' => esc_html__('Date of birth of the student', 'twmp-ath'),
+      'priority'    => 40,
+    );
 
-  $fields['billing']['billing_age'] = array(
-    'type'              => 'number',
-    'label'             => esc_html__('Age', 'twmp-ath'),
-    'placeholder'       => esc_html__('Age', 'twmp-ath'),
-    'required'          => false,
-    'class'             => array('form-row-last', 'twmp-checkout-field'),
-    'custom_attributes' => array(
-      'min'       => 1,
-      'step'      => 1,
-      'inputmode' => 'numeric',
-    ),
-    'priority'          => 100,
-  );
+    $fields['billing']['billing_language'] = array(
+      'type'        => 'select',
+      'label'       => esc_html__('Language', 'twmp-ath'),
+      'required'    => false,
+      'class'       => array('form-row-last', 'twmp-checkout-field', 'default-select-wrap'),
+      'input_class' => array('default-select'),
+      'options'     => array(
+        '' => esc_html__('Select language', 'twmp-ath'),
+        'vietnamese' => esc_html__('Vietnamese', 'twmp-ath'),
+        'english' => esc_html__('English', 'twmp-ath'),
+        'french' => esc_html__('French', 'twmp-ath'),
+      ),
+      'priority'    => 50,
+    );
+  }
+
+  // $fields['billing']['billing_age'] = array(
+  //   'type'              => 'number',
+  //   'label'             => esc_html__('Age', 'twmp-ath'),
+  //   'placeholder'       => esc_html__('Age', 'twmp-ath'),
+  //   'required'          => false,
+  //   'class'             => array('form-row-last', 'twmp-checkout-field'),
+  //   'custom_attributes' => array(
+  //     'min'       => 1,
+  //     'step'      => 1,
+  //     'inputmode' => 'numeric',
+  //   ),
+  //   'priority'          => 100,
+  // );
 
   foreach (array('shipping', 'account', 'order') as $group_key) {
     if (isset($fields[$group_key])) {
@@ -127,9 +175,11 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
 
   $billing_date_of_birth = isset($_POST['billing_date_of_birth']) ? sanitize_text_field(wp_unslash($_POST['billing_date_of_birth'])) : '';
   $billing_age = isset($_POST['billing_age']) ? absint(wp_unslash($_POST['billing_age'])) : 0;
+  $billing_language = isset($_POST['billing_language']) ? sanitize_text_field(wp_unslash($_POST['billing_language'])) : '';
 
   $order->update_meta_data('_billing_date_of_birth', $billing_date_of_birth);
   $order->update_meta_data('_billing_age', $billing_age);
+  $order->update_meta_data('_billing_language', $billing_language);
 }, 20, 2);
 
 /**
@@ -702,6 +752,7 @@ function twmp_checkout_normalize_checkout_field_state(array $fields)
     'billing_last_name',
     'billing_phone',
     'billing_date_of_birth',
+    'billing_language',
     'billing_age',
     'billing_email',
   );
@@ -1033,6 +1084,7 @@ function twmp_checkout_render_ticket_detail_section()
     'billing_last_name',
     'billing_phone',
     'billing_date_of_birth',
+    'billing_language',
     'billing_age',
     'billing_email',
     'twmp_ticket_performance',
@@ -1643,6 +1695,7 @@ add_action('woocommerce_before_calculate_totals', function ($cart) {
 add_action('woocommerce_admin_order_data_after_billing_address', function ($order) {
   $billing_date_of_birth = $order->get_meta('_billing_date_of_birth');
   $billing_age = $order->get_meta('_billing_age');
+  $billing_language = $order->get_meta('_billing_language');
   $ticket_product_id = $order->get_meta('_twmp_ticket_product_id');
   $ticket_performance = $order->get_meta('_twmp_ticket_performance_label');
   $ticket_price_label = $order->get_meta('_twmp_ticket_price_label');
@@ -1650,7 +1703,7 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
   $ticket_attendee_names = $order->get_meta('_twmp_ticket_attendee_names');
   $ticket_attendee_names_list = $order->get_meta('_twmp_ticket_attendee_names_list');
 
-  if (!$billing_date_of_birth && '' === (string) $billing_age && !$ticket_product_id && !$ticket_performance && !$ticket_price_label && empty($ticket_attendee_names)) {
+  if (!$billing_date_of_birth && '' === (string) $billing_age && !$billing_language && !$ticket_product_id && !$ticket_performance && !$ticket_price_label && empty($ticket_attendee_names)) {
     return;
   }
 
@@ -1671,6 +1724,25 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
 
   if ($billing_date_of_birth) {
     echo '<p><strong>' . esc_html__('Date of birth:', 'twmp-ath') . '</strong> ' . esc_html($billing_date_of_birth) . '</p>';
+  }
+
+  if ($billing_language) {
+    $lang_label = '';
+    switch (sanitize_key((string) $billing_language)) {
+      case 'vietnamese':
+        $lang_label = esc_html__('Vietnamese', 'twmp-ath');
+        break;
+      case 'english':
+        $lang_label = esc_html__('English', 'twmp-ath');
+        break;
+      case 'french':
+        $lang_label = esc_html__('French', 'twmp-ath');
+        break;
+      default:
+        $lang_label = esc_html__($billing_language, 'twmp-ath');
+    }
+
+    echo '<p><strong>' . esc_html__('Language:', 'twmp-ath') . '</strong> ' . esc_html($lang_label) . '</p>';
   }
 
   if ('' !== (string) $billing_age) {

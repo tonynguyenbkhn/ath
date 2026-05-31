@@ -947,7 +947,7 @@
 
 .woocommerce-checkout-custom {
 	position: relative;
-	padding: 24px 0 72px;
+	padding: 24px 0 110px;
 	padding-top: 108px;
 
 	@media (max-width: 1199px) {
@@ -1132,6 +1132,10 @@
 		@media (max-width: 1199px) {
 			grid-template-columns: repeat(1, minmax(0, 1fr));
 		}
+
+		.description {
+			color: var(--system-content-2);
+		}
 	}
 
 	.woocommerce-billing-fields__field-wrapper .form-row {
@@ -1183,11 +1187,17 @@
 		}
 	}
 
+	.default-select-custom {
+		background: transparent;
+		border: 0;
+	}
+
 	.twmp-checkout-field input.input-text,
 	.twmp-checkout-field input[type='email'],
 	.twmp-checkout-field input[type='tel'],
 	.twmp-checkout-field input[type='date'],
 	.twmp-checkout-field input[type='number'],
+	.twmp-checkout-field .default-select-current,
 	.twmp-checkout-field .select2-selection {
 		width: calc(100% - 48px);
 		height: 56px;

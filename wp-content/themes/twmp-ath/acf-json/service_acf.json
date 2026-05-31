@@ -22,6 +22,25 @@
             "ui_off_text": "No"
         },
         {
+            "key": "field_ath_only_show_image",
+            "label": "Only Show Image",
+            "name": "ath_only_show_image",
+            "type": "true_false",
+            "instructions": "If enabled, only the product image will be displayed.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "Disable",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
             "key": "field_ath_event_badges",
             "label": "Badges / Labels",
             "name": "ath_badges",
