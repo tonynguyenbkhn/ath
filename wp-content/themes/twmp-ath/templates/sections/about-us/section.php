@@ -7,6 +7,7 @@ if (! defined('ABSPATH')) {
 $data = wp_parse_args(
     $args,
     [
+        'hide_section'          => '',
         'id'                    => '',
         'class'                 => '',
         'class_container'       => '',
@@ -26,6 +27,10 @@ $data = wp_parse_args(
     ]
 );
 
+if ($data['hide_section']) {
+    return;
+}
+
 $_class = 'about-us';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
 
@@ -36,6 +41,7 @@ $has_primary_button = ! empty($data['primary_button_text']) && ! empty($data['pr
 $has_secondary_button = ! empty($data['secondary_button_text']) && ! empty($data['secondary_button_link']);
 $has_buttons = $has_primary_button || $has_secondary_button;
 $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
+
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>

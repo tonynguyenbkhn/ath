@@ -24,6 +24,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_hb_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_hb_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -146,6 +165,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_pcg_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_pcg_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -213,6 +251,25 @@
                     "label": "Page Title",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_pt_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_pt_section_id",
                             "label": "Section ID",
@@ -301,6 +358,25 @@
                     "label": "Team",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_team_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_team_section_id",
                             "label": "Section ID",
@@ -435,6 +511,25 @@
                     "label": "Team Two Row",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_team_02_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_team_02_section_id",
                             "label": "Section ID",
@@ -587,6 +682,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_show_event_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_show_event_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -725,6 +839,25 @@
                     "label": "For Schools Class",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_fs_class_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_fsc_section_id",
                             "label": "Section ID",
@@ -865,6 +998,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_class_workshop_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_class_workshop_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -1003,6 +1155,25 @@
                     "label": "Fc Class & Workshop",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_fc_class_workshop_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_fc_class_workshop_section_id",
                             "label": "Section ID",
@@ -1143,6 +1314,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_au_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_au_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -1206,8 +1396,34 @@
                         },
                         {
                             "key": "field_au_image",
-                            "label": "Image",
+                            "label": "Image Primary",
                             "name": "image",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "id",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "",
+                            "preview_size": "medium",
+                            "parent_repeater": ""
+                        },
+                        {
+                            "key": "field_au_image_2",
+                            "label": "Image Secondary",
+                            "name": "image_2",
                             "aria-label": "",
                             "type": "image",
                             "instructions": "",
@@ -1382,6 +1598,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_tui_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_tui_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -1424,8 +1659,34 @@
                         },
                         {
                             "key": "field_tui_image",
-                            "label": "Image",
+                            "label": "Image Primary",
                             "name": "image",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "id",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "",
+                            "preview_size": "medium",
+                            "parent_repeater": ""
+                        },
+                        {
+                            "key": "field_tui_image_2",
+                            "label": "Image Secondary",
+                            "name": "image_2",
                             "aria-label": "",
                             "type": "image",
                             "instructions": "",
@@ -1532,6 +1793,25 @@
                     "label": "Text Infor",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_ti_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_ti_section_id",
                             "label": "Section ID",
@@ -1683,6 +1963,25 @@
                     "label": "Text Infor Cards",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_ti2_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_ti2_section_id",
                             "label": "Section ID",
@@ -1861,6 +2160,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_fs_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_fs_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -1924,8 +2242,34 @@
                         },
                         {
                             "key": "field_fs_image",
-                            "label": "Image",
+                            "label": "Image Primary",
                             "name": "image",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "id",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "",
+                            "preview_size": "medium",
+                            "parent_repeater": ""
+                        },
+                        {
+                            "key": "field_fs_image_2",
+                            "label": "Image Secondary",
+                            "name": "image_2",
                             "aria-label": "",
                             "type": "image",
                             "instructions": "",
@@ -2033,6 +2377,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_fc_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_fc_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -2096,8 +2459,34 @@
                         },
                         {
                             "key": "field_fc_image",
-                            "label": "Image",
+                            "label": "Image Primary",
                             "name": "image",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "id",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "",
+                            "preview_size": "medium",
+                            "parent_repeater": ""
+                        },
+                        {
+                            "key": "field_fc_image_2",
+                            "label": "Image Secondary",
+                            "name": "image_2",
                             "aria-label": "",
                             "type": "image",
                             "instructions": "",
@@ -2205,6 +2594,25 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_ls_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
+                        {
                             "key": "field_ls_section_id",
                             "label": "Section ID",
                             "name": "section_id",
@@ -2298,6 +2706,25 @@
                     "label": "Testimonials",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_ts_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_ts_section_id",
                             "label": "Section ID",
@@ -2474,6 +2901,25 @@
                     "label": "Contact Us",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_cs_section_hide",
+                            "label": "Hide Section",
+                            "name": "hide_section",
+                            "type": "true_false",
+                            "instructions": "Toggle to hide this section on the frontend.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Disable",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No"
+                        },
                         {
                             "key": "field_cs_section_id",
                             "label": "Section ID",

@@ -10,6 +10,7 @@ if (have_rows('sections')) {
         'title' => 'title',
         'description' => 'description',
         'items' => 'items',
+        'hide_section' => 'hide_section',
     ];
 
     while (have_rows('sections')) : the_row();

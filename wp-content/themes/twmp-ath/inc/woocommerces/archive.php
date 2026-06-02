@@ -868,3 +868,25 @@ add_action('woocommerce_before_main_content', function () {
 add_filter( 'woocommerce_default_catalog_orderby', function() {
     return 'date';
 } );
+
+add_action('woocommerce_after_main_content', function() {
+    if (!function_exists('get_field')) {
+        return;
+    }
+
+    $feedback = get_field('feedback', 'option');
+
+    if (empty($feedback)) {
+        return;
+    }
+
+    $args = array(
+        'title' => esc_html__('What People Say About Us', 'twmp-ath'),
+        'items' => $feedback,
+        'enable_container' => true,
+        'class' => 'testimonials-section'
+    );
+
+    get_template_part('templates/sections/testimonials/section', null, $args);
+
+}, 30);

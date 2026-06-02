@@ -25,6 +25,11 @@ function _hb_get($name) {
     }
     return null;
 }
+$hide_section = _hb_get('hide_section');
+
+if ($hide_section) {
+    return;
+}
 
 $image_id = _hb_get('image');
 $section_id = _hb_get('section_id');
@@ -42,6 +47,7 @@ if ($image_id) {
     $alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
     $image_alt = $alt ? $alt : ($title ? $title : '');
 }
+
 ?>
 
 <?php if ($image_url || $title || $description || $button_text): ?>

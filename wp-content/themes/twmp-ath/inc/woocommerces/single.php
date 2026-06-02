@@ -109,20 +109,257 @@ function twmp_get_related_event_years(WC_Product $product)
 //////////////////////////////
 
 add_filter('woocommerce_product_tabs', function ($tabs) {
-	// Rename Description tab
-	if (isset($tabs['description'])) {
-		$tabs['description']['title'] = __('About', 'twmp-ath');
+
+	global $product;
+
+	if (!$product) {
+		return;
 	}
 
-	// Add custom Section tab
-	$tabs['section'] = [
-		'title'    => __('Section', 'twmp-ath'),
-		'priority' => 25,
-		'callback' => 'render_product_section_tab',
-	];
+	$product_id = $product->get_id();
+
+	$is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
+
+	if ($is_poster_event) {
+		unset($tabs['description']);
+		$tabs['section_poster_event'] = [
+			'title'    => __('Section', 'twmp-ath'),
+			'priority' => 25,
+			'callback' => 'render_product_section_poster_event_tab',
+		];
+
+		$tabs['image_poster_event'] = [
+			'title'    => __('Images', 'twmp-ath'),
+			'priority' => 30,
+			'callback' => 'render_product_image_tab',
+		];
+	} else {
+		if (isset($tabs['description'])) {
+			$tabs['description']['title'] = __('About', 'twmp-ath');
+		}
+
+		$tabs['section'] = [
+			'title'    => __('Section', 'twmp-ath'),
+			'priority' => 25,
+			'callback' => 'render_product_section_tab',
+		];
+	}
 
 	return $tabs;
 }, 98);
+
+function render_product_section_poster_event_tab()
+{
+	global $product;
+
+	if (! $product instanceof WC_Product) {
+		return;
+	}
+
+	$product_id = $product->get_id();
+
+	if (! function_exists('get_field')) {
+		return;
+	}
+
+	$rows = get_field('ath_event_for', $product_id);
+
+	if (empty($rows) || ! is_array($rows)) {
+		return;
+	}
+
+	foreach ($rows as $row_index => $row) {
+		$description = trim($row['description'] ?? '');
+		$relationship = $row['relationship'] ?? [];
+
+		// normalize to array of ids/objects
+		$relationship_items = is_array($relationship) ? $relationship : [$relationship];
+
+		$related_ids = [];
+
+		foreach ($relationship_items as $item) {
+			if ($item instanceof WP_Post) {
+				$item_id = $item->ID;
+			} elseif (is_array($item)) {
+				$item_id = $item['ID'] ?? $item['id'] ?? 0;
+			} else {
+				$item_id = absint($item);
+			}
+
+			$item_id = absint($item_id);
+
+			if (! $item_id || $item_id === $product_id || in_array($item_id, $related_ids, true)) {
+				continue;
+			}
+
+			$post = get_post($item_id);
+
+			if (! $post instanceof WP_Post || 'product' !== $post->post_type || 'publish' !== $post->post_status) {
+				continue;
+			}
+
+			if (! function_exists('wc_get_product')) {
+				continue;
+			}
+
+			$wp_product = wc_get_product($item_id);
+
+			if (! $wp_product instanceof WC_Product) {
+				continue;
+			}
+
+			$related_ids[] = $item_id;
+		}
+
+		if (empty($related_ids) || ! function_exists('twmp_render_product_card')) {
+			continue;
+		}
+
+		$slides = [];
+		$previous_product = $product;
+
+		foreach ($related_ids as $rid) {
+			$related_product = wc_get_product($rid);
+
+			if (! $related_product instanceof WC_Product) {
+				continue;
+			}
+
+			$product = $related_product;
+
+			ob_start();
+			twmp_render_product_card();
+			$slide_html = ob_get_clean();
+
+			if ('' === trim((string) $slide_html)) {
+				continue;
+			}
+
+			$slides[] = [
+				'content' => $slide_html,
+				'class'   => 'poster-event-section__slide',
+			];
+		}
+
+		$product = $previous_product;
+
+		if (empty($slides)) {
+			continue;
+		}
+
+		// Output section for this repeater row
+?>
+		<section class="poster-event-section section poster-event-section-<?php echo esc_attr($row_index); ?> relate-product-section">
+			<div class="poster-event-section__shell">
+				<?php if ($description) : ?>
+					<div class="poster-event-section__header">
+						<div class="poster-event-section__intro">
+							<?php echo wp_kses_post(wpautop($description)); ?>
+						</div>
+					</div>
+				<?php endif; ?>
+
+				<div class="poster-event-section__slider-wrap position-relative">
+					<div class="poster-event-control">
+						<div class="nav">
+							<div class="swiper-button swiper-button-prev"></div>
+							<div class="swiper-button swiper-button-next"></div>
+						</div>
+						<div class="swiper-pagination class-section-swiper-pagination"></div>
+					</div>
+					<?php
+					get_template_part(
+						'templates/components/swiper',
+						null,
+						[
+							'class'           => 'poster-event-section__swiper',
+							'data_block'      => 'relate-product',
+							'enable_container' => false,
+							'settings'         => [
+								'autoPlay'        => false,
+								'pagination'      => false,
+								'prevNextButtons' => false,
+								'slidesPerView'   => 1.15,
+								'spaceBetween'    => 32,
+								'breakpoints'     => [
+									640  => [
+										'slidesPerView' => 1.4,
+										'spaceBetween'  => 36,
+									],
+									992  => [
+										'slidesPerView' => 2.3,
+										'spaceBetween'  => 40,
+									],
+									1200 => [
+										'slidesPerView' => 4,
+										'spaceBetween'  => 48,
+									],
+								],
+							],
+							'items'           => $slides,
+						]
+					);
+					?>
+				</div>
+			</div>
+		</section>
+	<?php
+	}
+}
+
+function render_product_image_tab()
+{
+	global $product;
+
+	if (! $product instanceof WC_Product) {
+		return;
+	}
+
+	$product_id = $product->get_id();
+
+	if (! function_exists('get_field')) {
+		return;
+	}
+
+	$images = get_field('ath_gallery', $product_id);
+
+	if (empty($images) || ! is_array($images)) {
+		return;
+	}
+
+	// normalize ids
+	$images = array_values(array_filter(array_map('absint', $images)));
+
+	if (empty($images)) {
+		return;
+	}
+
+	// show up to 12 images in the gallery
+	$images = array_slice($images, 0, 12);
+
+	$fancybox_group = 'product-gallery-' . $product_id;
+
+	?>
+	<div class="twmp-product-image-gallery" aria-label="<?php echo esc_attr__('Product gallery', 'twmp-ath'); ?>">
+		<?php foreach ($images as $image_id) :
+			$thumb = wp_get_attachment_image_url($image_id, 'medium');
+			$full = wp_get_attachment_image_url($image_id, 'full');
+			if (! $full) {
+				continue;
+			}
+		?>
+			<a
+				href="<?php echo esc_url($full); ?>"
+				data-fancybox="<?php echo esc_attr($fancybox_group); ?>"
+				class="twmp-product-image-gallery__item"
+				aria-label="<?php echo esc_attr__('Open image', 'twmp-ath'); ?>">
+				<?php echo wp_get_attachment_image($image_id, 'medium', false, ['class' => 'twmp-product-image-gallery__img']); ?>
+			</a>
+		<?php endforeach; ?>
+	</div>
+<?php
+
+}
 
 function render_product_section_tab()
 {
@@ -225,7 +462,7 @@ function render_product_section_tab()
 			</div>
 		<?php endif; ?>
 	</section>
-<?php
+	<?php
 
 	wp_reset_postdata();
 }
@@ -294,6 +531,8 @@ add_action('woocommerce_single_product_summary', function () {
 
 	$product_id = $product->get_id();
 
+	$is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
+
 	echo '<div class="row align-items-center"><div class="col-12">';
 
 	/**
@@ -328,9 +567,10 @@ add_action('woocommerce_single_product_summary', function () {
 	/**
 	 * Subtitle
 	 */
+
 	$subtitle = function_exists('get_field') ? get_field('ath_subtitle', $product_id) : false;
 
-	if ($subtitle) {
+	if (!$is_poster_event && $subtitle) {
 		printf('<p class="product-subtitle">%s</p>', esc_html($subtitle));
 	}
 
@@ -341,6 +581,24 @@ add_action('woocommerce_single_product_summary', function () {
 
 	if ($description) {
 		echo '<div class="product-description">' . wp_kses_post(wpautop($description)) . '</div>';
+	}
+
+	if ($is_poster_event) {
+		$youtube_url = function_exists('get_field') ? (string) get_field('youtube', 'option') : '';
+		$facebook_url = function_exists('get_field') ? (string) get_field('facebook', 'option') : '';
+	?>
+		<div class="poster-event-social">
+			<span><?php echo esc_html__('Visit our social networks:', 'twmp-ath'); ?></span>
+			<div class="poster-event-social__icons">
+				<a href="<?php echo esc_url($facebook_url); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr__('Facebook', 'twmp-ath'); ?>">
+					<?php echo twmp_get_svg_icon('facebook-white'); ?>
+				</a>
+				<a href="<?php echo esc_url($youtube_url); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr__('YouTube', 'twmp-ath'); ?>">
+					<?php echo twmp_get_svg_icon('youtube-white'); ?>
+				</a>
+			</div>
+		</div>
+		<?php
 	}
 
 	echo '</div></div>';
@@ -358,6 +616,12 @@ add_action('woocommerce_single_product_summary', function () {
 	}
 
 	$product_id = $product->get_id();
+
+	$is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
+
+	if ($is_poster_event) {
+		return;
+	}
 
 	$fields = [
 		'ath_start_datetime' => ['time', 'Time'],
@@ -396,6 +660,19 @@ add_action('woocommerce_single_product_summary', function () {
 //////////////////////////////
 
 add_action('woocommerce_single_product_summary', function () {
+	global $product;
+
+	if (!$product) {
+		return;
+	}
+
+	$product_id = $product->get_id();
+
+	$is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
+
+	if ($is_poster_event) {
+		return;
+	}
 	echo '<div class="product-action-buttons d-flex items-center gap-16">';
 	twmp_render_cart_button();
 	twmp_render_contact_us_button();
@@ -498,71 +775,71 @@ function twmp_woocommerce_output_related_products()
 	if (empty($slides)) {
 		return;
 	}
-?>
-	<section class="relate-product-section section relate-product-section--related-products">
-		<div class="relate-product-section__shell">
-			<div class="relate-product-section__header">
-				<div class="relate-product-section__intro">
+		?>
+		<section class="relate-product-section section relate-product-section--related-products">
+			<div class="relate-product-section__shell">
+				<div class="relate-product-section__header">
+					<div class="relate-product-section__intro">
+						<?php
+						get_template_part(
+							'templates/components/heading',
+							null,
+							[
+								'title_class'       => 'relate-product-section__title',
+								'description_class' => 'relate-product-section__description',
+								'class'             => 'relate-product-section__heading',
+								'title'             => esc_html__('Similar Show/ Event', 'twmp-ath'),
+								'description'       => '',
+							]
+						);
+						?>
+					</div>
+				</div>
+
+				<div class="relate-product-section__slider-wrap position-relative">
+					<div class="relate-product-control">
+						<div class="nav">
+							<div class="swiper-button swiper-button-prev"></div>
+							<div class="swiper-button swiper-button-next"></div>
+						</div>
+					</div>
 					<?php
 					get_template_part(
-						'templates/components/heading',
+						'templates/components/swiper',
 						null,
 						[
-							'title_class'       => 'relate-product-section__title',
-							'description_class' => 'relate-product-section__description',
-							'class'             => 'relate-product-section__heading',
-							'title'             => esc_html__('Similar Show/ Event', 'twmp-ath'),
-							'description'       => '',
+							'class'           => 'relate-product-section__swiper',
+							'data_block'      => 'relate-product',
+							'enable_container' => false,
+							'settings'         => [
+								'autoPlay'        => false,
+								'pagination'      => false,
+								'prevNextButtons' => false,
+								'slidesPerView'   => 1.15,
+								'spaceBetween'    => 32,
+								'breakpoints'     => [
+									640  => [
+										'slidesPerView' => 1.4,
+										'spaceBetween'  => 36,
+									],
+									992  => [
+										'slidesPerView' => 2.3,
+										'spaceBetween'  => 40,
+									],
+									1200 => [
+										'slidesPerView' => 4,
+										'spaceBetween'  => 48,
+									],
+								],
+							],
+							'items'           => $slides,
 						]
 					);
 					?>
 				</div>
 			</div>
-
-			<div class="relate-product-section__slider-wrap position-relative">
-				<div class="relate-product-control">
-					<div class="nav">
-						<div class="swiper-button swiper-button-prev"></div>
-						<div class="swiper-button swiper-button-next"></div>
-					</div>
-				</div>
-				<?php
-				get_template_part(
-					'templates/components/swiper',
-					null,
-					[
-						'class'           => 'relate-product-section__swiper',
-						'data_block'      => 'relate-product',
-						'enable_container' => false,
-						'settings'         => [
-							'autoPlay'        => false,
-							'pagination'      => false,
-							'prevNextButtons' => false,
-							'slidesPerView'   => 1.15,
-							'spaceBetween'    => 32,
-							'breakpoints'     => [
-								640  => [
-									'slidesPerView' => 1.4,
-									'spaceBetween'  => 36,
-								],
-								992  => [
-									'slidesPerView' => 2.3,
-									'spaceBetween'  => 40,
-								],
-								1200 => [
-									'slidesPerView' => 4,
-									'spaceBetween'  => 48,
-								],
-							],
-						],
-						'items'           => $slides,
-					]
-				);
-				?>
-			</div>
-		</div>
-	</section>
-<?php
+		</section>
+	<?php
 }
 
 //////////////////////////////

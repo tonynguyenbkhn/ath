@@ -93,7 +93,8 @@ return [
     'about-us' => [
         'template' => 'templates/sections/about-us/section',
         'field_map' => [
-            'image_id' => 'image'
+            'image_id' => 'image',
+            'secondary_image_id' => 'image_2'
         ],
         'fields' => [
             'counters',
@@ -109,7 +110,8 @@ return [
     'two-up-intro' => [
         'template' => 'templates/sections/two-up-intro/section',
         'field_map' => [
-            'image_id' => 'image'
+            'image_id' => 'image',
+            'secondary_image_id' => 'image_2'
         ],
         'fields' => [
             'primary_button_text',
@@ -145,7 +147,8 @@ return [
     'for-school' => [
         'template' => 'templates/sections/for-school/section',
         'field_map' => [
-            'image_id' => 'image'
+            'image_id' => 'image',
+            'secondary_image_id' => 'image_2'
         ],
         'fields' => [
             'primary_button_text',
@@ -160,7 +163,8 @@ return [
     'for-company' => [
         'template' => 'templates/sections/for-company/section',
         'field_map' => [
-            'image_id' => 'image'
+            'image_id' => 'image',
+            'secondary_image_id' => 'image_2'
         ],
         'fields' => [
             'primary_button_text',

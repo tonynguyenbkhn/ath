@@ -7,6 +7,7 @@ if (! defined('ABSPATH')) {
 $data = wp_parse_args(
     $args,
     [
+        'hide_section' => '',
         'id' => '',
         'class' => '',
         'class_container' => '',
@@ -16,6 +17,10 @@ $data = wp_parse_args(
         'enable_container' => true,
     ]
 );
+
+if ($data['hide_section']) {
+    return;
+}
 
 $_class = 'contact-us';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
@@ -70,10 +75,6 @@ $social_items = [
         'label' => 'YouTube',
     ]
 ];
-
-echo '<pre>';
-var_dump($social_links);
-echo '</pre>';
 
 $social_items = array_values(
     array_filter(

@@ -1,0 +1,44 @@
+/* Product image gallery for poster events
+ * Layout: 1 row, 3 images, 32px gap
+ */
+.twmp-product-image-gallery {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 32px;
+	align-items: stretch;
+}
+
+.twmp-product-image-gallery__item {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 0;
+}
+
+.twmp-product-image-gallery__img {
+	display: block;
+	width: 100%;
+	height: 220px;
+	object-fit: cover;
+}
+
+@media (max-width: 768px) {
+	.twmp-product-image-gallery {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 16px;
+	}
+
+	.twmp-product-image-gallery__img {
+		height: 160px;
+	}
+}
+
+@media (max-width: 420px) {
+	.twmp-product-image-gallery {
+		grid-template-columns: 1fr;
+	}
+
+	.twmp-product-image-gallery__img {
+		height: 200px;
+	}
+}

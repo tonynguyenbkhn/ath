@@ -3,6 +3,25 @@
     "title": "ATH Event / Show Fields",
     "fields": [
         {
+            "key": "field_ath_poster_event",
+            "label": "Is Poster Event",
+            "name": "ath_poster_event",
+            "type": "true_false",
+            "instructions": "If enabled, the Book Ticket / Register Course button will be hidden for this product.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "message": "Disable",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
             "key": "field_ath_disable_book_ticket",
             "label": "Disable Book Ticket Button",
             "name": "ath_disable_book_ticket",
@@ -11,7 +30,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
@@ -30,7 +49,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
@@ -106,6 +125,15 @@
             "display_format": "d/m/Y H:i",
             "return_format": "Y-m-d H:i:s",
             "first_day": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -122,6 +150,15 @@
             "display_format": "d/m/Y H:i",
             "return_format": "Y-m-d H:i:s",
             "first_day": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -154,6 +191,15 @@
             "name": "ath_format",
             "type": "text",
             "instructions": "Ví dụ: ??? như trong mockup.",
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -166,6 +212,15 @@
             "name": "ath_demonstration",
             "type": "text",
             "instructions": "Ví dụ: Presented by ATH's Drama & Improv class.",
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -178,6 +233,15 @@
             "name": "ath_subtitle",
             "type": "text",
             "instructions": "Ví dụ: Subtitle.",
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -191,7 +255,15 @@
             "type": "relationship",
             "instructions": "Chọn nghệ sĩ cho sự kiện",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "100",
                 "class": "",
@@ -246,7 +318,15 @@
             "type": "repeater",
             "instructions": "Danh sách ngày/giờ biểu diễn hiển thị ở checkout dưới dạng radio.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "100",
                 "class": "",
@@ -284,7 +364,15 @@
             "type": "repeater",
             "instructions": "Các mức giá hiển thị ở checkout. Gợi ý: On the spot / Standard / Group / Student.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "100",
                 "class": "",
@@ -345,6 +433,15 @@
             "name": "ath_video_url",
             "type": "url",
             "instructions": "Video preview cho gallery single product.",
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -363,11 +460,118 @@
             "max": "",
             "preview_size": "thumbnail",
             "insert": "append",
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "100",
                 "class": "",
                 "id": ""
             }
+        },
+        {
+            "key": "field_ath_gallery",
+            "label": "Gallery",
+            "name": "ath_gallery",
+            "type": "gallery",
+            "instructions": "Gallery cho event.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "preview_size": "medium",
+            "insert": "append"
+        },
+        {
+            "key": "field_ath_event_for",
+            "label": "Event For",
+            "name": "ath_event_for",
+            "type": "repeater",
+            "instructions": "Danh sách đối tượng / thông tin liên quan cho event.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "layout": "row",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Item",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_ath_event_for_description",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "wysiwyg",
+                    "required": 0,
+                    "wrapper": {
+                        "width": "60",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "full",
+                    "media_upload": 0,
+                    "delay": 0
+                },
+                {
+                    "key": "field_ath_event_for_relationship",
+                    "label": "Relationship",
+                    "name": "relationship",
+                    "type": "relationship",
+                    "required": 0,
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": [
+                        "product"
+                    ],
+                    "taxonomy": [],
+                    "filters": [
+                        "search"
+                    ],
+                    "elements": [
+                        "featured_image"
+                    ],
+                    "min": "",
+                    "max": "",
+                    "return_format": "id"
+                }
+            ]
         }
     ],
     "location": [

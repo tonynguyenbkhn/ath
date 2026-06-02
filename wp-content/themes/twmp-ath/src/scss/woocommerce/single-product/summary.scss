@@ -26,9 +26,7 @@
 
         // product-description 
         .product-description {
-            @include typo-token(18, 28, 400);
-            font-family: var(--font-archivo);
-            margin-bottom: 24px;
+            @include content-style(var(--system-content-2), var(--system-white));
         }
 
         /* product price */

@@ -931,3 +931,7 @@ body.is-shop-filter-lock {
 		transform: rotate(360deg);
 	}
 }
+
+.facetwp-radio[data-value="uncategorized"] {
+    display: none !important;
+}

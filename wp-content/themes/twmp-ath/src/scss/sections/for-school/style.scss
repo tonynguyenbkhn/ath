@@ -139,15 +139,21 @@
   position: relative;
   width: 100%;
   margin-top: 0;
+  margin-bottom: 250px;
 
   > :not(.for-school__shape) {
     position: relative;
     z-index: 1;
   }
 
+  @media (min-width: 768px) {
+    margin-bottom: 200px;
+  }
+
   @media (min-width: 1200px) {
     width: 50%;
-    margin-top: 200px;
+    margin-bottom: 0;
+    // margin-top: 200px;
   }
 
   &-primary {
@@ -171,6 +177,7 @@
   height: 375px;
   left: 0;
   width: 315px;
+  bottom: -250px;
 }
 
 .for-school__shape--circle {
@@ -273,5 +280,90 @@
     background-color: #FDD300;
     left: 0;
     bottom: 70px;
+  }
+}
+
+.for-school__media-primary {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+
+  figure {
+    @include ratio(520/424);
+    width: 424px;
+    text-align: right;
+
+    @media (max-width: 1199px) {
+      width: 80%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(#ffffff, 0.7);
+      transform: scale(0.5);
+      transform-origin: 0 0;
+      width: calc(200% - 3px);
+      height: calc(200% - 2px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .for-school__image--primary {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+  }
+}
+
+.for-school__media-secondary {
+  position: absolute !important;
+  bottom: -200px;
+  left: 50px;
+  z-index: 1;
+
+  @media (max-width: 767px) {
+    bottom: -150px;
+  }
+
+  @media (max-width: 1199px) {
+    left: 0;
+  }
+
+  figure {
+    @include ratio(352/306);
+    width: 339px;
+
+    @media (max-width: 575px) {
+      @include ratio(176/153);
+      width: 153px;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(#ffffff, 0.7);
+      transform: scale(0.5);
+      transform-origin: 0 0;
+      width: calc(200% - 3px);
+      height: calc(200% - 2px);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .for-school__image--secondary {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
   }
 }

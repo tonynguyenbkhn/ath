@@ -5,12 +5,17 @@ if (!defined('ABSPATH')) {
 }
 
 $data = wp_parse_args($args, [
+	'hide_section' => '',
 	'id' => '',
 	'class' => '',
 	'items' => [],
 	'enable_container' => false,
 	'grid_css_class' => ''
 ]);
+
+if ($data['hide_section']) {
+    return;
+}
 
 $_class = 'product-cat-grid';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';

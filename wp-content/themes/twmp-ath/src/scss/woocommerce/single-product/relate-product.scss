@@ -49,22 +49,22 @@
 .relate-product-section__shell {
   position: relative;
 
-  &::before {
-    background-color: rgb(72, 189, 166);
-    top: 60px;
-    content: "";
-    height: 456px;
-    left: -200px;
-    pointer-events: none;
-    position: absolute;
-    width: 456px;
-    z-index: 0;
-    border-width: 0px;
-    border-style: none;
-    border-color: currentcolor;
-    border-image: initial;
-    border-radius: 50%;
-  }
+  // &::before {
+  //   background-color: rgb(72, 189, 166);
+  //   top: 60px;
+  //   content: "";
+  //   height: 456px;
+  //   left: -200px;
+  //   pointer-events: none;
+  //   position: absolute;
+  //   width: 456px;
+  //   z-index: 0;
+  //   border-width: 0px;
+  //   border-style: none;
+  //   border-color: currentcolor;
+  //   border-image: initial;
+  //   border-radius: 50%;
+  // }
 }
 
 .relate-product-section__title {

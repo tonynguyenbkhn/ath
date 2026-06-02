@@ -1,5 +1,6 @@
 <?php
 $data = wp_parse_args($args, [
+	'hide_section'     => '',
 	'class'             => '',
 	'id'                => '',
 	'title'             => '',
@@ -9,9 +10,15 @@ $data = wp_parse_args($args, [
 	'tag_h1'            => true,
 	'show_breadcrumbs'  => true,
 ]);
+
+if ($data['hide_section']) {
+    return;
+}
+
 $_class  = 'page__title-area';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
 $title = '' !== trim((string) $data['title']) ? (string) $data['title'] : (string) $data['text'];
+
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>

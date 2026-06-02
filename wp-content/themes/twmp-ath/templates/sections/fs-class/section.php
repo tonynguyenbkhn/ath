@@ -7,6 +7,7 @@ if (! defined('ABSPATH')) {
 $data = wp_parse_args(
     $args,
     [
+        'hide_section'     => '',
         'id'               => '',
         'class'            => '',
         'class_container'  => '',
@@ -18,6 +19,10 @@ $data = wp_parse_args(
         'enable_container' => false,
     ]
 );
+
+if ($data['hide_section']) {
+    return;
+}
 
 $_class = 'fs-class';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';

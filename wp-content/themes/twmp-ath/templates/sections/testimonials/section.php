@@ -7,6 +7,7 @@ if (! defined('ABSPATH')) {
 $data = wp_parse_args(
 	$args,
 	[
+		'hide_section'     => '',
 		'id'               => '',
 		'class'            => '',
 		'class_container'  => '',
@@ -16,6 +17,10 @@ $data = wp_parse_args(
 		'enable_container' => false,
 	]
 );
+
+if ($data['hide_section']) {
+    return;
+}
 
 $_class = 'testimonials';
 $_class .= ! empty($data['class']) ? esc_attr(' ' . $data['class']) : '';
@@ -69,9 +74,9 @@ $has_intro = ! empty($data['title']) || ! empty($data['description']);
 
 $section_id = sanitize_file_name(strtolower((string) $data['id']));
 
-if (! $has_intro && empty($slides)) {
-	return;
-}
+// if (! $has_intro && empty($slides)) {
+// 	return;
+// }
 ?>
 
 <section class="position-relative <?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
