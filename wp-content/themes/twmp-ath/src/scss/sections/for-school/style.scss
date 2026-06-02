@@ -139,7 +139,7 @@
   position: relative;
   width: 100%;
   margin-top: 0;
-  margin-bottom: 250px;
+  margin-bottom: 90px;
 
   > :not(.for-school__shape) {
     position: relative;
@@ -148,6 +148,10 @@
 
   @media (min-width: 768px) {
     margin-bottom: 200px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-bottom: 250px;
   }
 
   @media (min-width: 1200px) {
@@ -327,12 +331,16 @@
   left: 50px;
   z-index: 1;
 
-  @media (max-width: 767px) {
+  @media (max-width: 1199px) {
+    left: 0;
+  }
+
+  @media (max-width: 1023px) {
     bottom: -150px;
   }
 
-  @media (max-width: 1199px) {
-    left: 0;
+  @media (max-width: 575px) {
+    bottom: -50px;
   }
 
   figure {
