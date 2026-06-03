@@ -552,6 +552,12 @@ function twmp_render_product_card()
         return;
     }
 
+    if (!function_exists('get_field')) {
+        return;
+    }
+
+    $only_show_image = get_field('ath_only_show_image', $product_id);
+
     $title    = $product->get_name();
     $url      = get_permalink($product_id);
     $image_id = $product->get_image_id();
@@ -604,57 +610,58 @@ function twmp_render_product_card()
 
                 <div class="product-card__overlay" aria-hidden="true"></div>
             </div>
-
-            <div class="product-card__top">
-                <?php if (!empty($badges)) : ?>
-                    <div class="product-card__badges">
-                        <?php
-
-                        foreach ($badges as $badge) : ?>
+            <?php if (!$only_show_image): ?>
+                <div class="product-card__top">
+                    <?php if (!empty($badges)) : ?>
+                        <div class="product-card__badges">
                             <?php
-                            $badge_label = '';
-                            $badge_theme = 'orange';
 
-                            if (is_array($badge)) {
-                                $badge_label = $badge['text'] ?? '';
-                                $badge_theme = $badge['style'] ?? $badge_theme;
-                            } elseif (is_string($badge)) {
-                                $badge_label = $badge;
-                            }
+                            foreach ($badges as $badge) : ?>
+                                <?php
+                                $badge_label = '';
+                                $badge_theme = 'orange';
 
-                            $badge_label = trim((string) $badge_label);
-                            $badge_theme = sanitize_html_class((string) $badge_theme);
+                                if (is_array($badge)) {
+                                    $badge_label = $badge['text'] ?? '';
+                                    $badge_theme = $badge['style'] ?? $badge_theme;
+                                } elseif (is_string($badge)) {
+                                    $badge_label = $badge;
+                                }
 
-                            if ('' === $badge_label) {
-                                continue;
-                            }
+                                $badge_label = trim((string) $badge_label);
+                                $badge_theme = sanitize_html_class((string) $badge_theme);
 
-                            ?>
-                            <span class="ath-badge ath-badge--<?php echo esc_attr($badge_theme); ?>">
-                                <?php echo esc_html($badge_label); ?>
-                            </span>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
+                                if ('' === $badge_label) {
+                                    continue;
+                                }
 
-                <?php if ($date_day || $date_weekday || $date_month || $date_year) : ?>
-                    <div class="product-card__date">
-                        <?php if ($date_day) : ?>
-                            <span class="product-card__date-day"><?php echo esc_html($date_day); ?></span>
-                        <?php endif; ?>
+                                ?>
+                                <span class="ath-badge ath-badge--<?php echo esc_attr($badge_theme); ?>">
+                                    <?php echo esc_html($badge_label); ?>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
 
-                        <?php if ($date_weekday) : ?>
-                            <span class="product-card__date-weekday"><?php echo esc_html($date_weekday); ?></span>
-                        <?php endif; ?>
+                    <?php if ($date_day || $date_weekday || $date_month || $date_year) : ?>
+                        <div class="product-card__date">
+                            <?php if ($date_day) : ?>
+                                <span class="product-card__date-day"><?php echo esc_html($date_day); ?></span>
+                            <?php endif; ?>
 
-                        <?php if ($date_month || $date_year) : ?>
-                            <span class="product-card__date-month">
-                                <?php echo esc_html(trim($date_month . ', ' . $date_year, ', ')); ?>
-                            </span>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
+                            <?php if ($date_weekday) : ?>
+                                <span class="product-card__date-weekday"><?php echo esc_html($date_weekday); ?></span>
+                            <?php endif; ?>
+
+                            <?php if ($date_month || $date_year) : ?>
+                                <span class="product-card__date-month">
+                                    <?php echo esc_html(trim($date_month . ', ' . $date_year, ', ')); ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         </a>
 
         <div class="product-card__body">
@@ -865,11 +872,11 @@ add_action('woocommerce_before_main_content', function () {
     }
 }, 25);
 
-add_filter( 'woocommerce_default_catalog_orderby', function() {
+add_filter('woocommerce_default_catalog_orderby', function () {
     return 'date';
-} );
+});
 
-add_action('woocommerce_after_main_content', function() {
+add_action('woocommerce_after_main_content', function () {
     if (!function_exists('get_field')) {
         return;
     }
@@ -888,5 +895,4 @@ add_action('woocommerce_after_main_content', function() {
     );
 
     get_template_part('templates/sections/testimonials/section', null, $args);
-
 }, 30);

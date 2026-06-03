@@ -73,14 +73,14 @@ class Calendar_Theme
 				$year = (int) wp_date('Y');
 			}
 
-			if ($month > 0 && $month <= 12) {
-				$start = sprintf('%04d-%02d-01 00:00:00', $year, $month);
-				$end = wp_date('Y-m-t 23:59:59', strtotime($start));
-			} elseif ('year' === $view) {
+			if ('year' === $view) {
 				$start_month = absint($request->get_param('start_month'));
-				$start_month = $start_month >= 0 && $start_month <= 11 ? $start_month + 1 : 1;
+				$start_month = $start_month >= 1 && $start_month <= 12 ? $start_month : 1;
 				$start = sprintf('%04d-%02d-01 00:00:00', $year, $start_month);
 				$end = wp_date('Y-m-t 23:59:59', strtotime('+5 months', strtotime($start)));
+			} elseif ($month > 0 && $month <= 12) {
+				$start = sprintf('%04d-%02d-01 00:00:00', $year, $month);
+				$end = wp_date('Y-m-t 23:59:59', strtotime($start));
 			} else {
 				$start = sprintf('%04d-01-01 00:00:00', $year);
 				$end = sprintf('%04d-12-31 23:59:59', $year);

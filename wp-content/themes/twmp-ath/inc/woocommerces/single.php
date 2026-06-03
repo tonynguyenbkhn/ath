@@ -31,6 +31,41 @@ function twmp_render_contact_us_button()
 }
 
 /**
+ * Render Google Link button
+ */
+function twmp_render_google_link_button()
+{
+	global $product;
+	if (!$product) {
+		return;
+	}
+	$product_id = $product->get_id();
+
+	if (!function_exists('get_field')) {
+		return;
+	}
+
+	$disable_book = false;
+	$disable_book = get_field('ath_disable_book_ticket', $product_id);
+	$button_link = get_field('ath_google_link', $product_id);
+	if (!$button_link) {
+		return;
+	}
+	$button_text = esc_html__('Register Camp', 'twmp-ath');
+	echo '<div class="product-action-buttons d-flex items-center gap-16">';
+	twmp_render_contact_us_button();
+	if (!$disable_book) {
+		get_template_part('templates/components/button', null, [
+			'class' => 'bg-primary-500 text-system-white typo-system-button button-default contact-us-btn',
+			'button_text' => $button_text,
+			'button_url' => $button_link,
+			'button_link_target' => '_blank',
+		]);
+	}
+	echo '</div>';
+}
+
+/**
  * Convert ACF field value safely
  */
 function twmp_field_to_string($value)
@@ -598,7 +633,7 @@ add_action('woocommerce_single_product_summary', function () {
 				</a>
 			</div>
 		</div>
-		<?php
+	<?php
 	}
 
 	echo '</div></div>';
@@ -673,10 +708,26 @@ add_action('woocommerce_single_product_summary', function () {
 	if ($is_poster_event) {
 		return;
 	}
+
+	if (!function_exists('get_field')) {
+		return;
+	}
+
+	$button_link = get_field('ath_google_link', $product_id);
+
+	if ($button_link) {
+		return;
+	}
+
 	echo '<div class="product-action-buttons d-flex items-center gap-16">';
 	twmp_render_cart_button();
 	twmp_render_contact_us_button();
+
 	echo '</div>';
+}, 16);
+
+add_action('woocommerce_single_product_summary', function () {
+	twmp_render_google_link_button();
 }, 16);
 
 //////////////////////////////
@@ -775,71 +826,71 @@ function twmp_woocommerce_output_related_products()
 	if (empty($slides)) {
 		return;
 	}
-		?>
-		<section class="relate-product-section section relate-product-section--related-products">
-			<div class="relate-product-section__shell">
-				<div class="relate-product-section__header">
-					<div class="relate-product-section__intro">
-						<?php
-						get_template_part(
-							'templates/components/heading',
-							null,
-							[
-								'title_class'       => 'relate-product-section__title',
-								'description_class' => 'relate-product-section__description',
-								'class'             => 'relate-product-section__heading',
-								'title'             => esc_html__('Similar Show/ Event', 'twmp-ath'),
-								'description'       => '',
-							]
-						);
-						?>
-					</div>
-				</div>
-
-				<div class="relate-product-section__slider-wrap position-relative">
-					<div class="relate-product-control">
-						<div class="nav">
-							<div class="swiper-button swiper-button-prev"></div>
-							<div class="swiper-button swiper-button-next"></div>
-						</div>
-					</div>
+	?>
+	<section class="relate-product-section section relate-product-section--related-products">
+		<div class="relate-product-section__shell">
+			<div class="relate-product-section__header">
+				<div class="relate-product-section__intro">
 					<?php
 					get_template_part(
-						'templates/components/swiper',
+						'templates/components/heading',
 						null,
 						[
-							'class'           => 'relate-product-section__swiper',
-							'data_block'      => 'relate-product',
-							'enable_container' => false,
-							'settings'         => [
-								'autoPlay'        => false,
-								'pagination'      => false,
-								'prevNextButtons' => false,
-								'slidesPerView'   => 1.15,
-								'spaceBetween'    => 32,
-								'breakpoints'     => [
-									640  => [
-										'slidesPerView' => 1.4,
-										'spaceBetween'  => 36,
-									],
-									992  => [
-										'slidesPerView' => 2.3,
-										'spaceBetween'  => 40,
-									],
-									1200 => [
-										'slidesPerView' => 4,
-										'spaceBetween'  => 48,
-									],
-								],
-							],
-							'items'           => $slides,
+							'title_class'       => 'relate-product-section__title',
+							'description_class' => 'relate-product-section__description',
+							'class'             => 'relate-product-section__heading',
+							'title'             => esc_html__('Similar Show/ Event', 'twmp-ath'),
+							'description'       => '',
 						]
 					);
 					?>
 				</div>
 			</div>
-		</section>
-	<?php
+
+			<div class="relate-product-section__slider-wrap position-relative">
+				<div class="relate-product-control">
+					<div class="nav">
+						<div class="swiper-button swiper-button-prev"></div>
+						<div class="swiper-button swiper-button-next"></div>
+					</div>
+				</div>
+				<?php
+				get_template_part(
+					'templates/components/swiper',
+					null,
+					[
+						'class'           => 'relate-product-section__swiper',
+						'data_block'      => 'relate-product',
+						'enable_container' => false,
+						'settings'         => [
+							'autoPlay'        => false,
+							'pagination'      => false,
+							'prevNextButtons' => false,
+							'slidesPerView'   => 1.15,
+							'spaceBetween'    => 32,
+							'breakpoints'     => [
+								640  => [
+									'slidesPerView' => 1.4,
+									'spaceBetween'  => 36,
+								],
+								992  => [
+									'slidesPerView' => 2.3,
+									'spaceBetween'  => 40,
+								],
+								1200 => [
+									'slidesPerView' => 4,
+									'spaceBetween'  => 48,
+								],
+							],
+						],
+						'items'           => $slides,
+					]
+				);
+				?>
+			</div>
+		</div>
+	</section>
+<?php
 }
 
 //////////////////////////////

@@ -573,6 +573,10 @@
     font-family: var(--font-archivo);
     @include typo-token(14, 20, 400);
     white-space: break-spaces;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .calendar-page .fc .fc-daygrid-event.calendar-event-card .calendar-event-card__meta {
@@ -756,6 +760,10 @@
     color: var(--system-black);
     font-family: var(--font-archivo);
     @include typo-token(14, 20, 400);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .calendar-event-card__meta {
@@ -778,7 +786,7 @@
     font-weight: 600;
     text-align: right;
     position: absolute;
-    left: 56px;
+    left: 40px;
     top: -7px;
     display: block;
 
@@ -811,6 +819,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 18px;
+    padding-top: 20px;
 }
 
 .calendar-sidebar__eyebrow {
@@ -829,6 +838,10 @@
     margin: 0;
     @include typo-display-sm(500, 48);
     color: rgba(47, 47, 47, 1);
+
+    @media (max-width: 1199px) {
+        @include typo-token(30, 42, 600);
+    }
 }
 
 .calendar-sidebar__close {
@@ -841,6 +854,7 @@
     padding-top: 18px;
     display: grid;
     gap: 14px;
+    padding-bottom: 50px;
 }
 
 .calendar-sidebar__item {

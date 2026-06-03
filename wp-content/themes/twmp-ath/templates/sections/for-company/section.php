@@ -41,7 +41,7 @@ $has_primary_button = ! empty($data['primary_button_text']) && ! empty($data['pr
 $has_secondary_button = ! empty($data['secondary_button_text']) && ! empty($data['secondary_button_link']);
 $has_buttons = $has_primary_button || $has_secondary_button;
 $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
-
+$section_id = sanitize_file_name(strtolower((string) $data['id']));
 ?>
 
 <section class="<?php echo esc_attr($_class); ?>" <?php if (! empty($data['id'])) : ?> id="<?php echo esc_attr(sanitize_file_name(strtolower($data['id']))); ?>" <?php endif; ?>>
@@ -57,6 +57,20 @@ $counters = is_array($data['counters']) ? array_filter($data['counters']) : [];
             'height' => 965,
         ]
     );
+    if ($section_id === 'fc-for-company-1'):
+        get_template_part(
+            'templates/components/image-light',
+            null,
+            [
+                'class' => 'page-for-school__image-light',
+                'side' => 'left',
+                'src' => TWMP_IMG_URI . '/left-light-2.png',
+                'alt' => $data && !empty($data['title']) ? $data['title'] : '',
+                'width' => 1120,
+                'height' => 1069,
+            ]
+        );
+    endif;
     ?>
     <?php if ($data['enable_container']) : ?>
         <div class="<?php echo esc_attr($_class_container); ?>">

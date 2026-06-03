@@ -6,6 +6,8 @@ import multiMonthPlugin from '@fullcalendar/multimonth'
 import Modal from 'lib/modal'
 import { on, select, selectAll, trigger } from 'lib/dom'
 
+const MAX_VISIBLE_EVENTS = 2
+
 const parseSettings = el => {
 	const rawSettings = el.getAttribute('data-settings')
 
@@ -51,6 +53,28 @@ const formatMonthYear = date =>
 const formatShortMonth = date =>
 	new Intl.DateTimeFormat('en', { month: 'short' }).format(date)
 
+const formatDayMonth = date =>
+	new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short' }).format(date)
+
+const formatDateKey = date => {
+	const value = date instanceof Date ? date : new Date(date)
+	const year = value.getFullYear()
+	const month = String(value.getMonth() + 1).padStart(2, '0')
+	const day = String(value.getDate()).padStart(2, '0')
+
+	return `${year}-${month}-${day}`
+}
+
+const parseDateKey = value => {
+	const match = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})$/)
+
+	if (!match) {
+		return new Date(value)
+	}
+
+	return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
+}
+
 const formatSidebarTitle = date =>
 	new Intl.DateTimeFormat('en', {
 		weekday: 'long',
@@ -69,13 +93,41 @@ const getWeekStart = date => {
 const getWeekEnd = date => endOfDay(addDays(getWeekStart(date), 6))
 
 const getEventDay = event => {
-	const start = event.start instanceof Date ? event.start : new Date(event.start)
+	const meta = getMeta(event)
+	const start = meta.dayKey ? parseDateKey(meta.dayKey) : event.start instanceof Date ? event.start : new Date(event.start)
+
 	return startOfDay(start)
 }
 
+const isMultiDayEvent = event => {
+	if (!event?.start || !event?.end) {
+		return false
+	}
+
+	return startOfDay(new Date(event.start)).getTime() !== startOfDay(new Date(event.end)).getTime()
+}
+
+const getEventDateRange = event => {
+	if (!isMultiDayEvent(event)) {
+		return ''
+	}
+
+	const start = new Date(event.start)
+	const end = new Date(event.end)
+	const startLabel = formatDayMonth(start)
+	const endLabel = formatDayMonth(end)
+
+	if (start.getFullYear() === end.getFullYear()) {
+		return `${startLabel} - ${endLabel}`
+	}
+
+	return `${startLabel} ${start.getFullYear()} - ${endLabel} ${end.getFullYear()}`
+}
+
 const getMonthWindow = (year, startMonth) => {
-	const start = new Date(year, Math.max(0, startMonth - 1), 1)
-	const end = endOfDay(addMonths(start, 5))
+	const normalizedStartMonth = Math.min(12, Math.max(1, Number(startMonth) || 1))
+	const start = new Date(year, normalizedStartMonth - 1, 1)
+	const end = endOfDay(new Date(year, normalizedStartMonth + 5, 0))
 	return { start, end }
 }
 
@@ -120,6 +172,12 @@ const getEventStartValue = event => {
 	return event.start instanceof Date ? event.start.toISOString() : String(event.start)
 }
 
+const getEventDateKey = event => {
+	const meta = getMeta(event)
+
+	return meta.dayKey || formatDateKey(event.start)
+}
+
 const normalizeFilterValue = value =>
 	String(value || '')
 		.trim()
@@ -139,16 +197,43 @@ const getUrlFilterValue = filterKey => {
 const hasSelectOption = (selectEl, value) =>
 	!!selectEl && Array.from(selectEl.options || []).some(option => option.value === value)
 
+const enrichEventDisplayMeta = event => ({
+	...event,
+	extendedProps: {
+		...getMeta(event),
+		displayDateRange: getEventDateRange(event),
+		isMultiDay: isMultiDayEvent(event)
+	}
+})
+
+const normalizeMonthEvent = event => {
+	const meta = getMeta(event)
+	const dayKey = meta.dayKey || formatDateKey(event.start)
+
+	const { end, start, allDay, ...singleDayEvent } = event
+
+	return {
+		...singleDayEvent,
+		start: dayKey,
+		allDay: true,
+		extendedProps: {
+			...meta,
+			realStart: start,
+			realEnd: end
+		}
+	}
+}
+
 const renderEventCardBody = event => {
 	const meta = getMeta(event)
 	const title = escapeHtml(event.title || '')
-	const timeRange = escapeHtml(meta.timeRange || '')
+	const eventMeta = escapeHtml(meta.displayDateRange || meta.timeRange || '')
 	const color = getEventColor(event)
 
 	return `
 		<span class="calendar-event-card__body" style="--event-color:${escapeHtml(color)};">
 			<span class="calendar-event-card__title">${title}</span>
-			${timeRange ? `<span class="calendar-event-card__meta">${timeRange}</span>` : ''}
+			${eventMeta ? `<span class="calendar-event-card__meta">${eventMeta}</span>` : ''}
 		</span>
 	`
 }
@@ -166,7 +251,7 @@ const getEventCardClassName = event => {
 }
 
 const renderEventCardButton = event => `
-	<button type="button" class="${getEventCardClassName(event)}" data-event-id="${escapeHtml(event.id)}" data-event-date="${escapeHtml(getEventStartValue(event))}">
+	<button type="button" class="${getEventCardClassName(event)}" data-event-id="${escapeHtml(event.id)}" data-event-date="${escapeHtml(getEventDateKey(event))}">
 		${renderEventCardBody(event)}
 	</button>
 `
@@ -185,14 +270,14 @@ const renderWeekRows = events => {
 			const eventDate = getEventDay(event)
 			return eventDate >= weekStart && eventDate <= weekEnd
 		})
-		const visibleEvents = weekEvents.slice(0, 3)
+		const visibleEvents = weekEvents.slice(0, MAX_VISIBLE_EVENTS)
 		const moreCount = weekEvents.length - visibleEvents.length
 
 		weeks.push({
 			weekStart,
 			weekEnd,
 			html: `
-				<div class="calendar-week" data-week-start="${weekStart.toISOString()}" data-week-end="${weekEnd.toISOString()}">
+				<div class="calendar-week" data-week-start="${formatDateKey(weekStart)}" data-week-end="${formatDateKey(weekEnd)}">
 					<div class="calendar-week__head">
 						<div class="calendar-week__label">Week ${weekIndex}</div>
 						<div class="calendar-week__range">${new Intl.DateTimeFormat('en', { day: 'numeric' }).format(weekStart)}-${new Intl.DateTimeFormat('en', { day: 'numeric' }).format(weekEnd)}</div>
@@ -230,7 +315,7 @@ const renderSidebarContent = (sidebarTitleEl, sidebarContentEl, date, events, ac
 		const thumb = meta.thumbnailUrl || ''
 		const title = event.title || ''
 		const link = meta.permalink || event.url || '#'
-		const timeRange = meta.timeRange || ''
+		const timeRange = [meta.displayDateRange, meta.timeRange].filter(Boolean).join(' · ')
 		const details = [meta.ageDisplay, meta.language, meta.locationLabel].filter(Boolean).join(', ')
 		const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
 
@@ -284,6 +369,22 @@ export default el => {
 	}
 	let cachedEvents = []
 	let loadingRequests = 0
+
+	const cleanCalendarDots = () => {
+		if (!monthMount) {
+			return
+		}
+
+		selectAll('.calendar-week__dots', monthMount).forEach(dotsWrap => {
+			const dayFrame = dotsWrap.closest('.fc-daygrid-day-frame')
+
+			dotsWrap.remove()
+
+			if (dayFrame && !dayFrame.querySelector('.fc-event')) {
+				dayFrame.classList.remove('has-events')
+			}
+		})
+	}
 
 	const syncInitialFilters = () => {
 		const initialFilters = settings.initialFilters && typeof settings.initialFilters === 'object' ? settings.initialFilters : {}
@@ -397,7 +498,7 @@ export default el => {
 			}
 
 			const payload = await response.json()
-			cachedEvents = Array.isArray(payload.events) ? payload.events : []
+			cachedEvents = Array.isArray(payload.events) ? payload.events.map(enrichEventDisplayMeta) : []
 			return cachedEvents
 		} catch (error) {
 			console.warn(error)
@@ -409,7 +510,7 @@ export default el => {
 	}
 
 	const filterEventsByDay = date => {
-		const dayKey = date.toISOString().slice(0, 10)
+		const dayKey = formatDateKey(date)
 		return cachedEvents.filter(event => {
 			const meta = getMeta(event)
 			return meta.dayKey === dayKey
@@ -418,7 +519,8 @@ export default el => {
 
 	const getEventsInRange = (start, end) =>
 		cachedEvents.filter(event => {
-			const eventStart = new Date(event.start)
+			const eventStart = getEventDay(event)
+
 			return eventStart >= startOfDay(start) && eventStart <= endOfDay(end)
 		})
 
@@ -439,7 +541,7 @@ export default el => {
 			height: 'auto',
 			fixedWeekCount: false,
 			showNonCurrentDates: true,
-			dayMaxEvents: 4,
+			dayMaxEvents: MAX_VISIBLE_EVENTS,
 			navLinks: false,
 			editable: false,
 			selectable: false,
@@ -466,7 +568,10 @@ export default el => {
 						dayEvents.parentElement.insertBefore(dotsWrap, dayEvents)
 					}
 					
-					dotsWrap.appendChild(dots)
+					if (dotsWrap.children.length < MAX_VISIBLE_EVENTS) {
+						dotsWrap.appendChild(dots)
+					}
+
 					dayFrame.classList.add('has-events')
 				} else {
 					arg.el.before(dots)
@@ -478,21 +583,25 @@ export default el => {
 			},
 			eventWillUnmount: arg => {
 				const dayFrame = arg.el.closest('.fc-daygrid-day-frame')
-				const dots = dayFrame?.querySelector(`.calendar-week__dots[data-event-id="${CSS.escape(arg.event.id || '')}"]`)
+				const dots = dayFrame?.querySelector(`.calendar-week__dot[data-event-id="${CSS.escape(arg.event.id || '')}"]`)
 				if (dots) {
 					dots.remove()
 				}
 
-				const dotsWrap = dayFrame?.querySelector('.calendar-week__dots-wrap')
+				const dotsWrap = dayFrame?.querySelector('.calendar-week__dots')
 				if (dotsWrap && !dotsWrap.children.length) {
 					dotsWrap.remove()
+				}
+
+				if (dayFrame && !dayFrame.querySelector('.fc-event')) {
+					dayFrame.classList.remove('has-events')
 				}
 			},
 			eventSources: [
 				async (fetchInfo, successCallback, failureCallback) => {
 					try {
 						const events = await fetchEvents(fetchInfo.start, fetchInfo.end)
-						successCallback(events)
+						successCallback(events.map(normalizeMonthEvent))
 					} catch (error) {
 						failureCallback(error)
 					}
@@ -573,7 +682,7 @@ export default el => {
 			on('click', event => {
 				event.preventDefault()
 				const eventId = button.getAttribute('data-event-id')
-				const eventDate = new Date(button.getAttribute('data-event-date'))
+				const eventDate = parseDateKey(button.getAttribute('data-event-date'))
 				const selected = cachedEvents.filter(item => item.id === eventId)
 				openSidebar(eventDate, selected, eventId)
 			}, button)
@@ -585,8 +694,8 @@ export default el => {
 					return
 				}
 
-				const weekStart = new Date(weekEl.getAttribute('data-week-start'))
-				const weekEnd = new Date(weekEl.getAttribute('data-week-end'))
+				const weekStart = parseDateKey(weekEl.getAttribute('data-week-start'))
+				const weekEnd = endOfDay(parseDateKey(weekEl.getAttribute('data-week-end')))
 				openSidebar(weekStart, getEventsInRange(weekStart, weekEnd))
 			}, weekEl)
 		})
@@ -608,11 +717,11 @@ export default el => {
 				const eventDate = getEventDay(event)
 				return eventDate >= weekStart && eventDate <= weekEnd
 			})
-			const visibleEvents = weekEvents.slice(0, 3)
+			const visibleEvents = weekEvents.slice(0, MAX_VISIBLE_EVENTS)
 			const moreCount = weekEvents.length - visibleEvents.length
 
 			rows.push(`
-				<div class="calendar-week" data-week-start="${weekStart.toISOString()}" data-week-end="${weekEnd.toISOString()}">
+				<div class="calendar-week" data-week-start="${formatDateKey(weekStart)}" data-week-end="${formatDateKey(weekEnd)}">
 					<div class="calendar-week__head">
 						<div class="calendar-week__label">Week ${weekIndex}</div>
 						<div class="calendar-week__range">${new Intl.DateTimeFormat('en', { day: 'numeric' }).format(weekStart)}-${new Intl.DateTimeFormat('en', { day: 'numeric' }).format(weekEnd)}</div>
@@ -638,7 +747,7 @@ export default el => {
 				const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
 
 				return `
-								<button type="button" class="calendar-event-card ${product_cat}" data-event-id="${event.id}" data-event-date="${event.start}">
+								<button type="button" class="calendar-event-card ${product_cat}" data-event-id="${event.id}" data-event-date="${getEventDateKey(event)}">
 									<span class="calendar-event-card__body" style="--event-color:${color};">
 										<span class="calendar-event-card__title">${title}</span>
 										<span class="calendar-event-card__meta">${timeRange}</span>
@@ -753,6 +862,10 @@ export default el => {
 			on('change', async event => {
 				const target = event.target
 				const key = target.getAttribute('data-calendar-filter')
+
+				if (key === 'type') {
+					cleanCalendarDots()
+				}
 
 				activeFilters = {
 					...activeFilters,

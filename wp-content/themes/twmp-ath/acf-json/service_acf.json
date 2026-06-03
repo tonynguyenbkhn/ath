@@ -249,6 +249,18 @@
             }
         },
         {
+            "key": "field_ath_google_link",
+            "label": "Google Link",
+            "name": "ath_google_link",
+            "type": "text",
+            "instructions": "Ví dụ: https://www.google.com",
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
             "key": "field_ath_artists",
             "label": "Artists",
             "name": "ath_artists",

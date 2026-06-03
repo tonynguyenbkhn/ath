@@ -341,3 +341,22 @@
     }
   }
 }
+
+#fc-for-company-1.for-company {
+  .for-company__media {
+    float: right;
+  }
+
+  .for-company__content {
+    float: left;
+  }
+
+  .for-company__content-wrap {
+    padding-left: 0;
+    padding-right: 0;
+
+    @media (min-width: 1200px) {
+      padding-right: 70px;
+    }
+  }
+}

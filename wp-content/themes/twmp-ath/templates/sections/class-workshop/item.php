@@ -31,10 +31,12 @@ $badge_rows = is_array($data['badges']) ? array_values(array_filter($data['badge
 $_class = 'class-card';
 $_class .= ! empty($data['theme_class']) ? esc_attr(' ' . $data['theme_class']) : '';
 
+if (!function_exists('get_field')) {
+	return;
+}
+
 $only_show_image = get_field('ath_only_show_image', $data['product_id']);
-echo '<pre>';
-print_r($only_show_image);
-echo '</pre>';
+
 ?>
 
 <article class="<?php echo esc_attr($_class); ?>">
@@ -58,33 +60,33 @@ echo '</pre>';
 
 		<div class="class-card__overlay" aria-hidden="true"></div>
 	</div>
-	<?php if ( !$only_show_image ): ?>
-	<div class="class-card__top">
-		<?php if (! empty($badge_rows)) : ?>
-			<div class="class-card__badges">
-				<?php foreach ($badge_rows as $badge) : ?>
-					<?php
-					$badge_text = isset($badge['text']) ? trim((string) $badge['text']) : '';
-					$badge_style = isset($badge['style']) ? trim((string) $badge['style']) : 'orange';
+	<?php if (!$only_show_image): ?>
+		<div class="class-card__top">
+			<?php if (! empty($badge_rows)) : ?>
+				<div class="class-card__badges">
+					<?php foreach ($badge_rows as $badge) : ?>
+						<?php
+						$badge_text = isset($badge['text']) ? trim((string) $badge['text']) : '';
+						$badge_style = isset($badge['style']) ? trim((string) $badge['style']) : 'orange';
 
-					if ('' === $badge_text) {
-						continue;
-					}
-					?>
-					<span class="ath-badge ath-badge--<?php echo esc_attr($badge_style); ?>"><?php echo esc_html($badge_text); ?></span>
-				<?php endforeach; ?>
-			</div>
-		<?php endif; ?>
+						if ('' === $badge_text) {
+							continue;
+						}
+						?>
+						<span class="ath-badge ath-badge--<?php echo esc_attr($badge_style); ?>"><?php echo esc_html($badge_text); ?></span>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 
-		<?php if (! empty($data['date_day']) || ! empty($data['date_weekday']) || ! empty($data['date_month']) || ! empty($data['date_year'])) : ?>
-			<div class="class-card__date">
-				<?php if (! empty($data['date_day'])) : ?><span class="class-card__date-day"><?php echo esc_html($data['date_day']); ?></span><?php endif; ?>
-				<?php if (! empty($data['date_weekday'])) : ?><span class="class-card__date-weekday"><?php echo esc_html($data['date_weekday']); ?></span><?php endif; ?>
-				<?php if (! empty($data['date_month']) || ! empty($data['date_year'])) : ?><span class="class-card__date-month"><?php echo esc_html(trim($data['date_month'] . ', ' . $data['date_year'], ', ')); ?></span><?php endif; ?>
-			</div>
-		<?php endif; ?>
-	</div>
-
+			<?php if (! empty($data['date_day']) || ! empty($data['date_weekday']) || ! empty($data['date_month']) || ! empty($data['date_year'])) : ?>
+				<div class="class-card__date">
+					<?php if (! empty($data['date_day'])) : ?><span class="class-card__date-day"><?php echo esc_html($data['date_day']); ?></span><?php endif; ?>
+					<?php if (! empty($data['date_weekday'])) : ?><span class="class-card__date-weekday"><?php echo esc_html($data['date_weekday']); ?></span><?php endif; ?>
+					<?php if (! empty($data['date_month']) || ! empty($data['date_year'])) : ?><span class="class-card__date-month"><?php echo esc_html(trim($data['date_month'] . ', ' . $data['date_year'], ', ')); ?></span><?php endif; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
 	<div class="class-card__body">
 		<?php if (! empty($data['title']) && 1 === 0) : ?>
 			<h3 class="class-card__title"><?php echo esc_html($data['title']); ?></h3>
@@ -142,5 +144,5 @@ echo '</pre>';
 			</div>
 		<?php endif; ?>
 	</div>
-	<?php endif; ?>
+
 </article>

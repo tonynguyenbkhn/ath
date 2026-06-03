@@ -225,6 +225,19 @@
 
   .for-school__media {
     margin-top: 0;
+    margin-bottom: 80px;
+
+    @media (min-width: 768px) {
+      margin-bottom: 150px;
+    }
+
+    @media (min-width: 1024px) {
+      margin-bottom: 200px;
+    }
+
+    @media (min-width: 1200px) {
+      margin-bottom: 0;
+    }
   }
 
   .for-school__title {
@@ -250,7 +263,7 @@
   .for-school__shape--square {
     background-color: #aacf37;
     right: 45px;
-    bottom: 35px;
+    bottom: -90px;
     left: auto;
   }
 
@@ -265,6 +278,95 @@
       padding-left: 0px;
     }
   }
+
+  .for-school__media-primary {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+
+    figure {
+      @include ratio(628/513);
+      width: 513px;
+      text-align: right;
+
+      @media (max-width: 1199px) {
+        width: 80%;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 1px solid rgba(#ffffff, 0.7);
+        transform: scale(0.5);
+        transform-origin: 0 0;
+        width: calc(200% - 3px);
+        height: calc(200% - 2px);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .for-school__image--primary {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+      }
+    }
+  }
+
+  .for-school__media-secondary {
+    position: absolute;
+    bottom: -50px;
+    z-index: 2;
+
+    @media (min-width: 768px) {
+      bottom: -80px;
+    }
+
+    @media (min-width: 1024px) {
+      bottom: -100px;
+    }
+
+    @media (min-width: 1200px) {
+      bottom: -120px;
+    }
+
+    figure {
+      @include ratio(250/339);
+      width: 339px;
+
+      @media (max-width: 575px) {
+        @include ratio(125/170);
+        width: 170px;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 1px solid rgba(#ffffff, 0.7);
+        transform: scale(0.5);
+        transform-origin: 0 0;
+        width: calc(200% - 3px);
+        height: calc(200% - 2px);
+        pointer-events: none;
+        z-index: 3;
+      }
+
+      .for-school__image--secondary {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 2;
+      }
+    }
+  }
+
 }
 
 #fc-for-company-1.for-school {

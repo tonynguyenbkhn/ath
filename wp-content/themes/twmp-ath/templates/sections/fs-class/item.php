@@ -26,6 +26,12 @@ $data = wp_parse_args(
 	]
 );
 
+if (!function_exists('get_field')) {
+	return;
+}
+
+$only_show_image = get_field('ath_only_show_image', $data['product_id']);
+
 $badge_rows = is_array($data['badges']) ? array_values(array_filter($data['badges'])) : [];
 
 $_class = 'event-card';
@@ -53,33 +59,33 @@ $_class .= ! empty($data['theme_class']) ? esc_attr(' ' . $data['theme_class']) 
 
 		<div class="event-card__overlay" aria-hidden="true"></div>
 	</div>
+	<?php if (!$only_show_image): ?>
+		<div class="event-card__top">
+			<?php if (! empty($badge_rows)) : ?>
+				<div class="event-card__badges">
+					<?php foreach ($badge_rows as $badge) : ?>
+						<?php
+						$badge_text = isset($badge['text']) ? trim((string) $badge['text']) : '';
+						$badge_style = isset($badge['style']) ? trim((string) $badge['style']) : 'orange';
 
-	<div class="event-card__top">
-		<?php if (! empty($badge_rows)) : ?>
-			<div class="event-card__badges">
-				<?php foreach ($badge_rows as $badge) : ?>
-					<?php
-					$badge_text = isset($badge['text']) ? trim((string) $badge['text']) : '';
-					$badge_style = isset($badge['style']) ? trim((string) $badge['style']) : 'orange';
+						if ('' === $badge_text) {
+							continue;
+						}
+						?>
+						<span class="ath-badge ath-badge--<?php echo esc_attr($badge_style); ?>"><?php echo esc_html($badge_text); ?></span>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 
-					if ('' === $badge_text) {
-						continue;
-					}
-					?>
-					<span class="ath-badge ath-badge--<?php echo esc_attr($badge_style); ?>"><?php echo esc_html($badge_text); ?></span>
-				<?php endforeach; ?>
-			</div>
-		<?php endif; ?>
-
-		<?php if (! empty($data['date_day']) || ! empty($data['date_weekday']) || ! empty($data['date_month']) || ! empty($data['date_year'])) : ?>
-			<div class="event-card__date">
-				<?php if (! empty($data['date_day'])) : ?><span class="event-card__date-day"><?php echo esc_html($data['date_day']); ?></span><?php endif; ?>
-				<?php if (! empty($data['date_weekday'])) : ?><span class="event-card__date-weekday"><?php echo esc_html($data['date_weekday']); ?></span><?php endif; ?>
-				<?php if (! empty($data['date_month']) || ! empty($data['date_year'])) : ?><span class="event-card__date-month"><?php echo esc_html(trim($data['date_month'] . ', ' . $data['date_year'], ', ')); ?></span><?php endif; ?>
-			</div>
-		<?php endif; ?>
-	</div>
-
+			<?php if (! empty($data['date_day']) || ! empty($data['date_weekday']) || ! empty($data['date_month']) || ! empty($data['date_year'])) : ?>
+				<div class="event-card__date">
+					<?php if (! empty($data['date_day'])) : ?><span class="event-card__date-day"><?php echo esc_html($data['date_day']); ?></span><?php endif; ?>
+					<?php if (! empty($data['date_weekday'])) : ?><span class="event-card__date-weekday"><?php echo esc_html($data['date_weekday']); ?></span><?php endif; ?>
+					<?php if (! empty($data['date_month']) || ! empty($data['date_year'])) : ?><span class="event-card__date-month"><?php echo esc_html(trim($data['date_month'] . ', ' . $data['date_year'], ', ')); ?></span><?php endif; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
 	<div class="event-card__body">
 		<?php if (! empty($data['title']) && 1 === 0) : ?>
 			<h3 class="event-card__title"><?php echo esc_html($data['title']); ?></h3>
