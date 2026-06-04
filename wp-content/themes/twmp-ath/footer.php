@@ -36,6 +36,7 @@ get_template_part('templates/sections/back-to-top/section', null, []);
 get_template_part('templates/sections/sticky-contact/section', null, $dataStickyContact);
 get_template_part('template-parts/footers/modal-search-form', null, []);
 get_template_part('template-parts/footers/modal-popup-welcome', null, []);
+get_template_part('template-parts/footers/modal-popup-newsletter', null, []);
 get_template_part('template-parts/footers/th-mobile-menu', null, []);
 // get_template_part('templates/blocks/menu-mobile-footer', null, []);
 ?>

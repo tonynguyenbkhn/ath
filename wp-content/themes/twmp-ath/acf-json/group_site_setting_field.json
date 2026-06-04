@@ -687,6 +687,77 @@
             },
             "default_value": "Upload bill",
             "placeholder": ""
+        },
+        {
+            "key": "field_newsletter_tab",
+            "label": "Newsletter",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_ath_newsletter_title",
+            "label": "Newsletter Title",
+            "name": "ath_newsletter_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Tiêu đề popup newsletter",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_ath_newsletter_post",
+            "label": "Newsletter posts",
+            "name": "ath_newsletter_post",
+            "aria-label": "",
+            "type": "relationship",
+            "instructions": "Chọn sản phẩm để hiển thị trong popup newsletter (hiển thị dạng slider)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "product"
+            ],
+            "taxonomy": "",
+            "allow_null": 0,
+            "multiple": 1,
+            "return_format": "id",
+            "ui": 1,
+            "filters": [
+                "search",
+                "post_type",
+                "taxonomy"
+            ],
+            "elements": [
+                "featured_image"
+            ],
+            "min": "",
+            "max": ""
         }
     ],
     "location": [

@@ -2,7 +2,8 @@ import Modal from 'lib/modal'
 import { trigger } from 'lib/dom'
 
 const STORAGE_KEY = 'twmp-ath-popup-welcome-last-visit'
-const SHOW_AGAIN_AFTER = 7 * 24 * 60 * 60 * 1000
+const SHOW_AGAIN_AFTER = 1 * 24 * 60 * 60 * 1000
+const NEWSLETTER_WAIT_MS = 150
 
 const getLastVisit = () => {
 	try {
@@ -213,6 +214,16 @@ const validateSearchForm = form => {
 	return false
 }
 
+const shouldShowWelcome = () => {
+	const lastVisit = getLastVisit()
+	const now = Date.now()
+
+	return !lastVisit || now - lastVisit >= SHOW_AGAIN_AFTER
+}
+
+const isNewsletterBlockingWelcome = () =>
+	Boolean(window.twmpAthNewsletterActive || window.twmpAthNewsletterShownThisSession)
+
 const buildSearchUrl = form => {
 	const url = new URL(getShopUrl(), window.location.origin)
 	const prefix = getFacetPrefix()
@@ -279,23 +290,31 @@ const bindSearchSubmit = form => {
 
 export default el => {
 
-	const lastVisit = getLastVisit()
-	const now = Date.now()
-	const shouldShow = !lastVisit || now - lastVisit >= SHOW_AGAIN_AFTER
-
 	Modal(el, {
 		id: 'modal-popup-welcome'
 	})
 
-	// const form = el.querySelector('.wpcf7-form')
+	const form = el.querySelector('.wpcf7-form')
 
-	// bindSearchSubmit(form)
+	bindSearchSubmit(form)
 	
-	// el.addEventListener('activate', () => {
-	// 	setLastVisit(Date.now())
-	// })
+	el.addEventListener('activate', () => {
+		setLastVisit(Date.now())
+	})
 
-	// if (2 > 1) { // shouldShow
-	// 	trigger('activate', el)
-	// }
+	if (shouldShowWelcome()) {
+		// Delay slightly because this block is mounted before the newsletter block in footer.php.
+		setTimeout(() => {
+			if (!isNewsletterBlockingWelcome()) {
+				trigger('activate', el)
+			}
+		}, NEWSLETTER_WAIT_MS)
+	}
+
+	// listen for explicit request to show welcome modal (e.g., after newsletter closes)
+	document.addEventListener('twmp:show-welcome', () => {
+		if (shouldShowWelcome()) {
+			trigger('activate', el)
+		}
+	})
 }
