@@ -1,8 +1,9 @@
 import Modal from 'lib/modal'
 import { trigger } from 'lib/dom'
+import gsap from 'gsap'
 
 const STORAGE_KEY = 'twmp-ath-popup-welcome-last-visit'
-const SHOW_AGAIN_AFTER = 1 * 24 * 60 * 60 * 1000
+const SHOW_AGAIN_AFTER = 0 * 24 * 60 * 60 * 1000
 const NEWSLETTER_WAIT_MS = 150
 
 const getLastVisit = () => {
@@ -300,6 +301,19 @@ export default el => {
 	
 	el.addEventListener('activate', () => {
 		setLastVisit(Date.now())
+
+		// entry animation
+		const wrapper = el.querySelector('.modal__wrapper')
+		if (wrapper) {
+			el.style.perspective = '1200px'
+			gsap.killTweensOf(wrapper)
+			gsap.set(wrapper, { transformStyle: 'preserve-3d', backfaceVisibility: 'hidden', willChange: 'transform,opacity' })
+			gsap.fromTo(
+				wrapper,
+				{ rotationX: -60, rotationY: 10, z: -200, scale: 0.96, opacity: 0, boxShadow: '0px 8px 20px rgba(0,0,0,0.12)', transformOrigin: 'top center' },
+				{ rotationX: 0, rotationY: 0, z: 0, scale: 1, opacity: 1, duration: 0.72, ease: 'power4.out', boxShadow: '0px 26px 80px rgba(0,0,0,0.28)' }
+			)
+		}
 	})
 
 	if (shouldShowWelcome()) {
@@ -316,5 +330,53 @@ export default el => {
 		if (shouldShowWelcome()) {
 			trigger('activate', el)
 		}
+	})
+
+	// animate close: intercept overlay and close buttons to flip out then deactivate
+	let isClosing = false
+
+	const animatedClose = () => {
+		if (isClosing) return
+		isClosing = true
+		const wrapper = el.querySelector('.modal__wrapper')
+		if (!wrapper) {
+			trigger('deactivate', el)
+			return
+		}
+
+		gsap.killTweensOf(wrapper)
+		gsap.to(wrapper, {
+			rotationX: 70,
+			rotationY: -12,
+			z: -220,
+			scale: 0.94,
+			opacity: 0,
+			duration: 0.5,
+			ease: 'power3.in',
+			onComplete: () => {
+				el.style.perspective = ''
+				trigger('deactivate', el)
+				isClosing = false
+			}
+		})
+	}
+
+	// intercept overlay clicks (capture)
+	el.addEventListener('click', e => {
+		if (e.target === el) {
+			e.stopPropagation()
+			e.preventDefault()
+			animatedClose()
+		}
+	}, true)
+
+	// intercept internal close buttons
+	const closeButtons = el.querySelectorAll('[data-close-modal], .js-close-button')
+	closeButtons.forEach(btn => {
+		btn.addEventListener('click', e => {
+			e.preventDefault()
+			e.stopPropagation()
+			animatedClose()
+		})
 	})
 }

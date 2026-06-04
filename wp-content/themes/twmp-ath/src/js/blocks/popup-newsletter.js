@@ -2,9 +2,29 @@ import Modal from 'lib/modal'
 import { trigger } from 'lib/dom'
 import Swiper from 'swiper'
 import { Navigation } from 'swiper/modules'
+import gsap from 'gsap'
 
 const WELCOME_DELAY = 5000
 const WELCOME_EVENT = 'twmp:show-welcome'
+const SHOW_AGAIN_AFTER = 1 * 24 * 60 * 60 * 1000
+
+const getLastVisit = () => {
+	try {
+		const value = window.localStorage.getItem(STORAGE_KEY)
+		const timestamp = Number(value)
+
+		return Number.isFinite(timestamp) && timestamp > 0 ? timestamp : 0
+	} catch (error) {
+		return 0
+	}
+}
+
+const setLastVisit = timestamp => {
+	try {
+		window.localStorage.setItem(STORAGE_KEY, String(timestamp))
+	} catch (error) {
+	}
+}
 
 export default el => {
 	if (!el) return null
@@ -16,19 +36,28 @@ export default el => {
 
 	const STORAGE_KEY = 'twmp-ath-popup-newsletter-shown'
 
-	const hasShown = () => {
+	const getLastShown = () => {
 		try {
-			return window.localStorage.getItem(STORAGE_KEY) === '1'
+			const value = window.localStorage.getItem(STORAGE_KEY)
+			const ts = Number(value)
+
+			return Number.isFinite(ts) && ts > 0 ? ts : 0
 		} catch (err) {
-			return false
+			return 0
 		}
 	}
 
-	const setShown = () => {
+	const setShown = (timestamp = Date.now()) => {
 		try {
-			window.localStorage.setItem(STORAGE_KEY, '1')
-		} catch (err) {
-		}
+			window.localStorage.setItem(STORAGE_KEY, String(timestamp))
+		} catch (err) {}
+	}
+
+	const shouldShowNewsletter = () => {
+		const last = getLastShown()
+		const now = Date.now()
+
+		return !last || now - last >= SHOW_AGAIN_AFTER
 	}
 
 	let swiperInstance = null
@@ -65,19 +94,78 @@ export default el => {
 		window.twmpAthNewsletterActive = true
 		window.twmpAthNewsletterShownThisSession = true
 
+		// entry animation
+		const wrapper = el.querySelector('.modal__wrapper')
+		if (!wrapper) return
+		// stronger 3D look: set perspective on overlay and animate rotation/translateZ
+		el.style.perspective = '1200px'
+		gsap.killTweensOf(wrapper)
+		gsap.set(wrapper, { transformStyle: 'preserve-3d', backfaceVisibility: 'hidden', willChange: 'transform,opacity' })
+		gsap.fromTo(
+			wrapper,
+			{ rotationX: -60, rotationY: 12, z: -220, scale: 0.96, opacity: 0, boxShadow: '0px 8px 20px rgba(0,0,0,0.12)', transformOrigin: 'top center' },
+			{ rotationX: 0, rotationY: 0, z: 0, scale: 1, opacity: 1, duration: 0.72, ease: 'power4.out', boxShadow: '0px 26px 80px rgba(0,0,0,0.28)' }
+		)
+
 		if (welcomeTimer) {
 			clearTimeout(welcomeTimer)
 			welcomeTimer = null
 		}
 
 		// set modal wrapper width if present
-		const wrapper = el.querySelector('.modal__wrapper')
 		if (wrapper) wrapper.style.maxWidth = '1042px'
 
 		initSlider()
 
-		// mark as shown so it only appears on first load
+		// mark as shown (timestamp) so it respects daily frequency
 		setShown()
+	})
+
+	let isClosing = false
+
+	const animatedClose = () => {
+		if (isClosing) return
+		isClosing = true
+		const wrapper = el.querySelector('.modal__wrapper')
+		if (!wrapper) {
+			trigger('deactivate', el)
+			return
+		}
+
+		gsap.killTweensOf(wrapper)
+		gsap.to(wrapper, {
+			rotationX: 70,
+			rotationY: -12,
+			z: -220,
+			scale: 0.94,
+			opacity: 0,
+			duration: 0.5,
+			ease: 'power3.in',
+			onComplete: () => {
+				el.style.perspective = ''
+				trigger('deactivate', el)
+				isClosing = false
+			}
+		})
+	}
+
+	// intercept overlay clicks (capture) to animate before modal.js deactivates
+	el.addEventListener('click', e => {
+		if (e.target === el) {
+			e.stopPropagation()
+			e.preventDefault()
+			animatedClose()
+		}
+	}, true)
+
+	// intercept internal close buttons
+	const closeButtons = el.querySelectorAll('[data-close-modal], .js-close-button')
+	closeButtons.forEach(btn => {
+		btn.addEventListener('click', e => {
+			e.preventDefault()
+			e.stopPropagation()
+			animatedClose()
+		})
 	})
 
 	el.addEventListener('deactivate', () => {
@@ -108,8 +196,8 @@ export default el => {
 		}
 	})
 
-	// show on first visit only
-	if (!hasShown()) {
+	// show if not shown in the last day
+	if (shouldShowNewsletter()) {
 		trigger('activate', el)
 	}
 
