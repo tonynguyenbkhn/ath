@@ -1,0 +1,47 @@
+{
+    "key": "group_ath_venue_link",
+    "title": "Venue: Google Map Link",
+    "fields": [
+        {
+            "key": "field_ath_venue_google_map",
+            "label": "Link Google Map",
+            "name": "ath_venue_google_map",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Paste the Google Maps URL for this venue.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https://maps.google.com/...",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "ath_venue"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Adds a Google Maps link field to the Venue taxonomy.",
+    "show_in_rest": 1,
+    "modified": 1780000000
+}

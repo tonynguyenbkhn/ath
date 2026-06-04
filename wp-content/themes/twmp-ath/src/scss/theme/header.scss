@@ -309,9 +309,8 @@ $header--main-height-mobile: 56px;
 }
 
 .header__language-switcher-menu {
-	display: none !important;
 	position: absolute;
-	top: calc(100% + 10px);
+	top: 100%;
 	right: 0;
 	z-index: 20;
 	min-width: 56px;

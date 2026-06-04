@@ -1,7 +1,7 @@
 import Modal from 'lib/modal'
 import { trigger } from 'lib/dom'
 import Swiper from 'swiper'
-import { Navigation } from 'swiper/modules'
+import { Navigation, Pagination } from 'swiper/modules'
 import gsap from 'gsap'
 
 const WELCOME_DELAY = 5000
@@ -71,18 +71,23 @@ export default el => {
 		if (swiperInstance) return swiperInstance
 
 		swiperInstance = new Swiper(swiperEl, {
-			modules: [Navigation],
+			modules: [Navigation, Pagination],
 			loop: false,
-			slidesPerView: 3,
+			slidesPerView: 1.3,
 			spaceBetween: 24,
+            centeredSlides: true,
 			navigation: {
 				nextEl: el.querySelector('.swiper-button-next'),
 				prevEl: el.querySelector('.swiper-button-prev'),
 			},
+			pagination: {
+				el: el.querySelector('.swiper-pagination'),
+				clickable: true
+			},
 			breakpoints: {
-				640: { slidesPerView: 1 },
-				768: { slidesPerView: 2 },
-				1200: { slidesPerView: 3 }
+				640: { slidesPerView: 1.3, centeredSlides: true },
+				768: { slidesPerView: 2.3, centeredSlides: true },
+				1200: { slidesPerView: 3, centeredSlides: false }
 			}
 		})
 
@@ -113,7 +118,7 @@ export default el => {
 		}
 
 		// set modal wrapper width if present
-		if (wrapper) wrapper.style.maxWidth = '1042px'
+		// if (wrapper) wrapper.style.maxWidth = '1042px'
 
 		initSlider()
 

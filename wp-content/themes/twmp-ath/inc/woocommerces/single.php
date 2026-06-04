@@ -658,6 +658,10 @@ add_action('woocommerce_single_product_summary', function () {
 		return;
 	}
 
+	if (!function_exists('get_field')) {
+		return;
+	}
+
 	$fields = [
 		'ath_start_datetime' => ['time', 'Time'],
 		'ath_venue' => ['pin', 'Location'],
@@ -671,19 +675,54 @@ add_action('woocommerce_single_product_summary', function () {
 
 	foreach ($fields as $field_key => $icon) {
 		$value = get_field($field_key, $product_id) ?? '';
+		$value_is_html = false;
 
 		if ('ath_start_datetime' === $field_key) {
 			$end_value = function_exists('get_field') ? get_field('ath_end_datetime', $product_id) : '';
-			$value = twmp_format_event_datetime_range($value, $end_value);
+			if (function_exists('twmp_format_event_date_range')) {
+				$value = twmp_format_event_date_range($value, $end_value);
+			} else {
+				$value = twmp_format_event_datetime_range($value, $end_value);
+			}
 		} elseif ('ath_venue' === $field_key) {
-			$value = twmp_get_taxonomy_term_names($product_id, 'ath_venue');
+			$terms = wp_get_post_terms($product_id, 'ath_venue');
+			if (is_wp_error($terms) || empty($terms)) {
+				$value = '';
+			} else {
+				$parts = [];
+				foreach ($terms as $term) {
+					$term_name = isset($term->name) ? $term->name : '';
+					$term_id = isset($term->term_id) ? absint($term->term_id) : 0;
+					$link = '';
+					if (function_exists('get_field') && $term_id) {
+						$link = get_field('ath_venue_google_map', 'ath_venue_' . $term_id);
+					}
+					if (!$link && $term_id) {
+						$link = get_term_meta($term_id, 'ath_venue_google_map', true);
+					}
+					if ($link) {
+						$parts[] = '<a href="' . esc_url($link) . '" target="_blank" rel="noopener">' . esc_html($term_name) . '</a>';
+					} else {
+						$parts[] = esc_html($term_name);
+					}
+				}
+				$value = implode(', ', $parts);
+				$value_is_html = true;
+			}
 		} elseif ('ath_age_group' === $field_key) {
 			$value = twmp_get_taxonomy_term_names($product_id, 'ath_age_group');
 		}
 
 		echo '<div class="product-details-meta__item">';
 		echo twmp_get_svg_icon($icon[0]);
-		echo '<div><span class="product-details-meta__item-label">' . esc_html($icon[1]) . '</span>: <span class="product-details-meta__item-text">' . esc_html(twmp_field_to_string($value)) . '</span></div>';
+		echo '<div><span class="product-details-meta__item-label">' . esc_html($icon[1]) . '</span>: <span class="product-details-meta__item-text">';
+		$raw = twmp_field_to_string($value);
+		if (!empty($value_is_html)) {
+			echo wp_kses($raw, [ 'a' => [ 'href' => [], 'target' => [], 'rel' => [] ] ]);
+		} else {
+			echo esc_html($raw);
+		}
+		echo '</span></div>';
 		echo '</div>';
 	}
 

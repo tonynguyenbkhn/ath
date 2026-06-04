@@ -1,0 +1,65 @@
+.modal--popup-newsletter {
+    @media (max-width: 1199px) {
+        padding: 0 10px;
+        width: calc(100% - 20px);
+    }
+
+
+    .modal__wrapper {
+        background-color: #F6F4ED;
+        border-radius: 8px;
+        padding: 10px;
+        max-width: unset;
+        width: calc(100% - 20px);
+
+        @media (min-width: 1200px) {
+            padding: 40px 60px;
+            max-width: 1042px;
+        }
+    }
+
+    .modal__header {
+        text-align: center;
+
+        .modal__title {
+            color: var(--primary-500);
+            @include typo-token(22, 34, 500);
+
+            @media (min-width: 1200px) {
+                @include typo-display-sm(500, 48);
+            }
+        }
+    }
+}
+
+.section.modal--popup-newsletter {
+    .swiper-pagination-bullets.swiper-pagination-horizontal {
+        bottom: -40px;
+    }
+}
+
+.section.modal--popup-newsletter .swiper-button-next {
+    right: -60px;
+    border-color: white;
+    color: white;
+
+    @media (max-width: 1199px) {
+        right: 10px;
+
+        // border-color: black;
+        // color: black;
+    }
+}
+
+.section.modal--popup-newsletter .swiper-button-prev {
+    left: -60px;
+    border-color: white;
+    color: white;
+
+    @media (max-width: 1199px) {
+        left: 10px;
+
+        // border-color: black;
+        // color: black;
+    }
+}

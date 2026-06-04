@@ -3,7 +3,7 @@ import { trigger } from 'lib/dom'
 import gsap from 'gsap'
 
 const STORAGE_KEY = 'twmp-ath-popup-welcome-last-visit'
-const SHOW_AGAIN_AFTER = 0 * 24 * 60 * 60 * 1000
+const SHOW_AGAIN_AFTER = 1 * 24 * 60 * 60 * 1000
 const NEWSLETTER_WAIT_MS = 150
 
 const getLastVisit = () => {

@@ -4,11 +4,12 @@
   position: relative;
   padding-top: 80px;
   padding-bottom: 80px;
-  overflow: unset;
+  overflow: hidden;
 
   @media (min-width: 1200px) {
     padding-top: 180px;
     padding-bottom: 75px;
+    overflow: unset;
   }
 
   .image__light.mobile {

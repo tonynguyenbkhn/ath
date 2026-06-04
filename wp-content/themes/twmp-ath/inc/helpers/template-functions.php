@@ -426,14 +426,42 @@ function twmp_format_event_datetime_range($start_value = '', $end_value = '')
 		return '';
 	}
 
-	$start_text = wp_date('l j M Y - G:i', $start_timestamp);
+	$start_text = wp_date('l j M Y', $start_timestamp);
 	$end_timestamp = twmp_parse_site_datetime($end_value);
 
 	if (! $end_timestamp) {
 		return $start_text;
 	}
 
-	return $start_text . ' - ' . wp_date('l j M Y - G:i', $end_timestamp);
+	// If both dates are the same day, return a single date
+	if (wp_date('Y-m-d', $start_timestamp) === wp_date('Y-m-d', $end_timestamp)) {
+		return $start_text;
+	}
+
+	return $start_text . ' - ' . wp_date('l j M Y', $end_timestamp);
+}
+
+function twmp_format_event_date_range($start_value = '', $end_value = '')
+{
+	$start_timestamp = twmp_parse_site_datetime($start_value);
+
+	if (! $start_timestamp) {
+		return '';
+	}
+
+	$start_text = wp_date('l j M Y', $start_timestamp);
+	$end_timestamp = twmp_parse_site_datetime($end_value);
+
+	if (! $end_timestamp) {
+		return $start_text;
+	}
+
+	// If both dates are the same day, return a single date
+	if (wp_date('Y-m-d', $start_timestamp) === wp_date('Y-m-d', $end_timestamp)) {
+		return $start_text;
+	}
+
+	return $start_text . ' - ' . wp_date('l j M Y', $end_timestamp);
 }
 
 function twmp_get_taxonomy_term_names($post_id = 0, $taxonomy = '', $separator = ', ')

@@ -4,13 +4,40 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-$language_items = function_exists('pll_the_languages')
-	? pll_the_languages([
+// Request language links for the current queried object so Polylang
+// returns the translated post URL when available.
+$language_items = [];
+if (function_exists('pll_the_languages')) {
+	$language_items = pll_the_languages([
 		'raw'           => 1,
 		'hide_current'  => 0,
 		'hide_if_empty' => 0,
-	])
-	: [];
+		'post_id'       => get_queried_object_id(),
+	]);
+
+	// Ensure each language item has a usable URL: try translated post, then language home.
+	if (is_array($language_items)) {
+		$queried_id = get_queried_object_id();
+		foreach ($language_items as $k => $language_item) {
+			$language_slug = !empty($language_item['slug']) ? sanitize_key($language_item['slug']) : '';
+			// If Polylang didn't provide a URL (or it points to home), attempt to resolve the translated post.
+			$url = $language_item['url'] ?? '';
+			if (empty($url) && $queried_id && function_exists('pll_get_post')) {
+				$translated = pll_get_post($queried_id, $language_slug);
+				if ($translated) {
+					$url = get_permalink($translated);
+				}
+			}
+			if (empty($url) && function_exists('pll_home_url')) {
+				$url = pll_home_url($language_slug);
+			}
+			if (empty($url)) {
+				$url = home_url('/');
+			}
+			$language_items[$k]['url'] = $url;
+		}
+	}
+}
 
 $language_icon_map = [
 	'en' => 'english',
