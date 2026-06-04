@@ -4,8 +4,8 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const ABOUT_SELECTOR = '.about-us'
-const INTRO_OFFSET = 48
-const DETAIL_OFFSET = 40
+const INTRO_OFFSET = 200
+const DETAIL_OFFSET = 200
 
 const toArray = value => Array.from(value || [])
 
@@ -57,7 +57,7 @@ const initSectionMotion = section => {
 	const introTimeline = gsap.timeline({
 		paused: true,
 		defaults: {
-			duration: 0.9,
+			duration: 1.5,
 			ease: 'power3.out',
 			overwrite: 'auto',
 		},
@@ -66,7 +66,7 @@ const initSectionMotion = section => {
 	introTimeline.to(introTargets, {
 		autoAlpha: 1,
 		y: 0,
-		stagger: 0.14,
+		stagger: 0.2,
 	})
 
 	ScrollTrigger.create({
@@ -85,7 +85,7 @@ const initSectionMotion = section => {
 	const detailTimeline = gsap.timeline({
 		paused: true,
 		defaults: {
-			duration: 0.8,
+			duration: 1.5,
 			ease: 'power3.out',
 			overwrite: 'auto',
 		},
@@ -94,7 +94,7 @@ const initSectionMotion = section => {
 	detailTimeline.to(detailTargets, {
 		autoAlpha: 1,
 		y: 0,
-		stagger: 0.16,
+		stagger: 0.2,
 	})
 
 	ScrollTrigger.create({

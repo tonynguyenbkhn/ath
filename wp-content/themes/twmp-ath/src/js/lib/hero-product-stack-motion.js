@@ -36,22 +36,24 @@ const initHeroProductStackMotion = () => {
 		y: 40,
 	})
 
-	ScrollTrigger.create({
-		trigger: hero,
-		start: 'top top',
-		endTrigger: product,
-		end: 'top top',
-		pin: true,
-		pinSpacing: false,
-		anticipatePin: 1,
-		invalidateOnRefresh: true,
-	})
+	// ScrollTrigger.create({
+	// 	trigger: hero,
+	// 	start: 'top top',
+	// 	endTrigger: product,
+	// 	end: 'top top',
+	// 	pin: true,
+	// 	pinSpacing: false,
+	// 	anticipatePin: 1,
+	// 	invalidateOnRefresh: true,
+	// })
 
 	const items = toArray(product.querySelectorAll('.product-cat-grid__item'))
 	const firstItems = items.slice(0, 2)
 	const laterItems = items.slice(2)
 	const header = product.querySelector('.product-cat-grid__header, .heading')
 	const light = product.querySelector('.product-cat-grid__light, .product-cat-grid__logo, .glow')
+	const triangle = product.querySelector('.section-shape--triangle')
+	const square = product.querySelector('.section-shape--square')
 
 	if (header) {
 		gsap.set(header, {
@@ -64,6 +66,20 @@ const initHeroProductStackMotion = () => {
 		gsap.set(light, {
 			autoAlpha: 0,
 			y: 20,
+		})
+	}
+
+	if (triangle) {
+		gsap.set(triangle, {
+			autoAlpha: 0,
+			y: 40,
+		})
+	}
+
+	if (square) {
+		gsap.set(square, {
+			autoAlpha: 0,
+			y: -40,
 		})
 	}
 
@@ -101,6 +117,22 @@ const initHeroProductStackMotion = () => {
 			y: 0,
 			duration: 0.5,
 		}, 0.35)
+	}
+
+	if (triangle) {
+		tl.to(triangle, {
+			autoAlpha: 1,
+			y: 0,
+			duration: 0.5,
+		}, 0.4)
+	}
+
+	if (square) {
+		tl.to(square, {
+			autoAlpha: 1,
+			y: 0,
+			duration: 0.5,
+		}, 0.6)
 	}
 
 	if (light) {

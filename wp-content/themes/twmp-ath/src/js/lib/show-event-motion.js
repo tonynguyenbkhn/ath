@@ -12,24 +12,6 @@ const toArray = value => Array.from(value || [])
 const hasReducedMotion = () =>
 	window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false
 
-const createProgressLogger = label => {
-	let previousProgress = -1
-
-	return self => {
-		const progress = Math.round(self.progress * 100)
-
-		if (progress !== previousProgress && progress % 10 === 0) {
-			previousProgress = progress
-			console.log(`[${label}] progress`, {
-				progress,
-				start: self.start,
-				end: self.end,
-				scroll: self.scroll(),
-			})
-		}
-	}
-}
-
 const getPreviousSection = section => {
 	const previous = section.previousElementSibling
 
@@ -44,6 +26,7 @@ const getTargets = section => {
 	const viewport = section.querySelector('.show-event__viewport')
 	const track = section.querySelector('.show-event__track')
 	const intro = section.querySelector('.event-section__intro')
+	const actions = section.querySelector('.event-section__actions')
 	const heading = section.querySelector('.event-section__heading')
 	const triangle = section.querySelector('.section-shape--triangle')
 	const circle = section.querySelector('.section-shape--circle')
@@ -53,6 +36,7 @@ const getTargets = section => {
 		viewport,
 		track,
 		intro,
+		actions,
 		heading,
 		triangle,
 		circle,
@@ -62,27 +46,27 @@ const getTargets = section => {
 
 const initSectionMotion = section => {
 	const previousSection = getPreviousSection(section)
-	const { viewport, track, intro, heading, triangle, circle, slides } = getTargets(section)
+	const { viewport, track, intro, actions, heading, triangle, circle, slides } = getTargets(section)
 
-	if (!viewport || !track || (!intro && !heading && !triangle && !circle && !slides.length)) {
+	if (!viewport || !track || (!intro && !actions && !heading && !triangle && !circle && !slides.length)) {
 		return
 	}
 
-	gsap.set(section, {
-		position: 'relative',
-		zIndex: 4,
-		autoAlpha: 1,
-	})
+	// gsap.set(section, {
+	// 	position: 'relative',
+	// 	zIndex: 4,
+	// 	autoAlpha: 1,
+	// })
 
-	gsap.set(viewport, {
-		position: 'relative',
-		overflow: 'hidden',
-	})
+	// gsap.set(viewport, {
+	// 	position: 'relative',
+	// 	overflow: 'hidden',
+	// })
 
-	gsap.set(track, {
-		xPercent: 100,
-		x: 0,
-	})
+	// gsap.set(track, {
+	// 	xPercent: 100,
+	// 	x: 0,
+	// })
 
 	if (triangle) {
 		gsap.set(triangle, {
@@ -96,7 +80,7 @@ const initSectionMotion = section => {
 	if (circle) {
 		gsap.set(circle, {
 			autoAlpha: 0,
-			scale: 0.5,
+			scale: 0,
 			transformOrigin: '50% 50%',
 		})
 	}
@@ -105,6 +89,13 @@ const initSectionMotion = section => {
 		gsap.set(intro, {
 			autoAlpha: 0,
 			x: 96,
+		})
+	}
+
+	if (actions) {
+		gsap.set(actions, {
+			autoAlpha: 0,
+			x: -96,
 		})
 	}
 
@@ -122,143 +113,74 @@ const initSectionMotion = section => {
 		})
 	}
 
-	if (previousSection) {
-		gsap.set(previousSection, {
-			position: 'relative',
-			zIndex: 3,
-		})
+	// if (previousSection) {
+	// 	gsap.set(previousSection, {
+	// 		position: 'relative',
+	// 		zIndex: 3,
+	// 	})
 
-		ScrollTrigger.create({
-			trigger: previousSection,
-			start: 'top 80px',
-			end: "+=2200",
-			pin: true,
-			pinSpacing: false,
-			anticipatePin: 1,
-			invalidateOnRefresh: true,
-			onEnter: self => {
-				console.log('[about-us pin] enter', {
-					start: self.start,
-					end: self.end,
-					scroll: self.scroll(),
-				})
-			},
-			onLeave: self => {
-				console.log('[about-us pin] leave', {
-					start: self.start,
-					end: self.end,
-					scroll: self.scroll(),
-				})
-			},
-			onEnterBack: self => {
-				console.log('[about-us pin] enter back', {
-					start: self.start,
-					end: self.end,
-					scroll: self.scroll(),
-				})
-			},
-			onLeaveBack: self => {
-				console.log('[about-us pin] leave back', {
-					start: self.start,
-					end: self.end,
-					scroll: self.scroll(),
-				})
-			},
-			onUpdate: createProgressLogger('about-us pin'),
-		})
-	}
+	// 	ScrollTrigger.create({
+	// 		trigger: previousSection,
+	// 		start: 'top 80px',
+	// 		end: "+=2200",
+	// 		pin: true,
+	// 		pinSpacing: false,
+	// 		anticipatePin: 1,
+	// 		invalidateOnRefresh: true
+	// 	})
+	// }
 
 	const masterTimeline = gsap.timeline({
 		defaults: {
-			ease: 'none',
+			ease: 'power2.out',
 			overwrite: 'auto',
 		},
 		scrollTrigger: {
-			trigger: viewport,
-			start: 'top -100px',
-			end: "+=2000",
-			scrub: 1.4,
-			pin: true,
-			pinSpacing: true,
-			anticipatePin: 1,
+			trigger: section,
+			// start when more of the section is visible (closer to center)
+			start: 'top 50%',
+			toggleActions: 'play none none none',
 			invalidateOnRefresh: true,
-			onEnter: self => {
-				console.log('[show-event viewport] enter', {
-					start: self.start,
-					end: self.end,
-					scroll: self.scroll(),
-				})
-			},
-			onLeave: self => {
-				console.log('[show-event viewport] leave', {
-					start: self.start,
-					end: self.end,
-					scroll: self.scroll(),
-				})
-			},
-			onEnterBack: self => {
-				console.log('[show-event viewport] enter back', {
-					start: self.start,
-					end: self.end,
-					scroll: self.scroll(),
-				})
-			},
-			onLeaveBack: self => {
-				console.log('[show-event viewport] leave back', {
-					start: self.start,
-					end: self.end,
-					scroll: self.scroll(),
-				})
-			},
-			onUpdate: createProgressLogger('show-event viewport'),
 		},
 	})
 
-	masterTimeline.to(track, {
-		xPercent: 0,
-		duration: 1,
-	}, 0)
+	// masterTimeline.to(track, {
+	// 	xPercent: 0,
+	// 	duration: 1,
+	// }, 0)
 
+	// animate elements from right -> left when section enters viewport
 	if (triangle) {
 		masterTimeline.to(triangle, {
 			autoAlpha: 1,
 			scale: 1,
 			rotation: 180,
-			duration: 0.5,
-		}, 0.2)
+			duration: 1,
+		}, 0.1)
 	}
 
 	if (circle) {
 		masterTimeline.to(circle, {
 			autoAlpha: 1,
 			scale: 1,
-			duration: 0.5,
-		}, 0.2)
+			duration: 2,
+		}, 1)
 	}
 
 	if (intro) {
-		masterTimeline.to(intro, {
-			autoAlpha: 1,
-			x: 0,
-			duration: 0.5,
-		}, 0.4)
+		masterTimeline.fromTo(intro, { x: 96, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 1 }, 0.2)
+	}
+
+	if (actions) {
+		masterTimeline.fromTo(actions, { x: -96, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 1 }, 0.4)
 	}
 
 	if (heading) {
-		masterTimeline.to(heading, {
-			autoAlpha: 1,
-			x: 0,
-			duration: 0.5,
-		}, 0.6)
+		masterTimeline.fromTo(heading, { x: 72, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 1 }, 0.6)
 	}
 
 	if (slides.length) {
-		masterTimeline.to(slides, {
-			autoAlpha: 1,
-			x: 0,
-			duration: 0.5,
-			stagger: 0.1,
-		}, 0.8)
+		masterTimeline.fromTo(slides, { x: 104, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 1, stagger: 0 }, 0.8)
 	}
 }
 

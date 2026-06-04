@@ -14,12 +14,21 @@ import initHeroBannerMotion from 'lib/hero-banner-motion'
 import initHeroProductStackMotion from 'lib/hero-product-stack-motion'
 import initShowEventMotion from 'lib/show-event-motion'
 import initClassWorkshopMotion from 'lib/class-workshop-motion'
+import initHomeAnimation from 'lib/home-animation'
+import initForSchoolMotion from 'lib/for-school-motion'
+import initForCompanyMotion from 'lib/for-company-motion'
+import initContactUsMotion from 'lib/contact-us-motion'
+import initFooterMotion from 'lib/footer-motion'
 
-// initHeroBannerMotion()
-// initAboutUsMotion()
-// initHeroProductStackMotion()
-// initShowEventMotion()
-// initClassWorkshopMotion()
+initHeroBannerMotion()
+initAboutUsMotion()
+initHeroProductStackMotion()
+initShowEventMotion()
+initClassWorkshopMotion()
+initForSchoolMotion()
+initForCompanyMotion()
+initContactUsMotion()
+initFooterMotion()
 
 document.addEventListener('DOMContentLoaded', () => {
     Fancybox.bind("[data-fancybox]", {});

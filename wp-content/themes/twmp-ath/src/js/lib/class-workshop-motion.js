@@ -43,89 +43,8 @@ const getTargets = section => {
 	}
 }
 
-const removeSnapshot = snapshot => {
-	if (snapshot?.parentNode) {
-		snapshot.parentNode.removeChild(snapshot)
-	}
-}
-
-const createPreviousSectionSnapshot = previousSection => {
-	const rect = previousSection.getBoundingClientRect()
-	const snapshot = previousSection.cloneNode(true)
-
-	snapshot.removeAttribute('id')
-	snapshot.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'))
-	snapshot.setAttribute('aria-hidden', 'true')
-	snapshot.classList.add('class-workshop-previous-snapshot')
-
-	gsap.set(snapshot, {
-		position: 'fixed',
-		top: rect.top,
-		left: rect.left,
-		width: rect.width,
-		height: rect.height,
-		margin: 0,
-		zIndex: 2,
-		pointerEvents: 'none',
-		overflow: 'hidden',
-	})
-
-	previousSection.parentNode.insertBefore(snapshot, previousSection.nextSibling)
-
-	return snapshot
-}
-
-const initPreviousSnapshot = (section, previousSection) => {
-	if (!previousSection) {
-		return
-	}
-
-	let snapshot = null
-	let previousVisibility = ''
-	let previousIsHidden = false
-
-	const hidePreviousSection = () => {
-		if (previousIsHidden) {
-			return
-		}
-
-		previousVisibility = previousSection.style.visibility
-		previousSection.style.visibility = 'hidden'
-		previousIsHidden = true
-	}
-
-	const showPreviousSection = () => {
-		if (!previousIsHidden) {
-			return
-		}
-
-		previousSection.style.visibility = previousVisibility
-		previousIsHidden = false
-	}
-
-	const showSnapshot = () => {
-		removeSnapshot(snapshot)
-		snapshot = createPreviousSectionSnapshot(previousSection)
-		hidePreviousSection()
-	}
-	const hideSnapshot = () => {
-		showPreviousSection()
-		removeSnapshot(snapshot)
-		snapshot = null
-	}
-
-	ScrollTrigger.create({
-		trigger: section,
-		start: 'top bottom',
-		end: 'top top',
-		onEnter: showSnapshot,
-		onEnterBack: showSnapshot,
-		onLeave: hideSnapshot,
-		onLeaveBack: hideSnapshot,
-		onRefreshInit: hideSnapshot,
-		invalidateOnRefresh: true,
-	})
-}
+// Former snapshot logic removed. Use ScrollTrigger pin on the previous section instead
+// to avoid flicker and DOM cloning.
 
 const initSectionMotion = section => {
 	const previousSection = getPreviousSection(section)
@@ -138,57 +57,72 @@ const initSectionMotion = section => {
 
 	gsap.set(section, {
 		position: 'relative',
-		zIndex: 3,
+		zIndex: 0,
 		autoAlpha: 0,
-		y: 120,
+		y: 200,
 	})
 
 	if (title) {
 		gsap.set(title, {
 			autoAlpha: 0,
-			y: 72,
+			y: 100,
 		})
 	}
 
 	if (description) {
 		gsap.set(description, {
 			autoAlpha: 0,
-			y: 72,
+			y: 100,
 		})
 	}
 
 	if (shape) {
 		gsap.set(shape, {
 			autoAlpha: 0,
-			y: -96,
+			y: -200,
 		})
 	}
 
 	if (actions) {
 		gsap.set(actions, {
 			autoAlpha: 0,
-			y: 72,
+			y: 100,
 		})
 	}
 
 	if (slides.length) {
 		gsap.set(slides, {
 			autoAlpha: 0,
-			y: 72,
+			y: 200,
 		})
 	}
 
-	initPreviousSnapshot(section, previousSection)
+	// Pin previous section while this section scrolls into view to avoid layout jumps
+	// if (previousSection) {
+	// 	ScrollTrigger.create({
+	// 		trigger: previousSection,
+	// 		start: 'top -150px',
+	// 		endTrigger: section,
+	// 		end: 'bottom top',
+	// 		pin: true,
+	// 		pinSpacing: false,
+	// 		anticipatePin: 1,
+	// 		invalidateOnRefresh: true,
+	// 	})
+	// 	if (typeof console !== 'undefined' && console.debug) {
+	// 		console.debug('Pinned previous section for', section, '->', previousSection)
+	// 	}
+	// }
 
 	const timeline = gsap.timeline({
 		defaults: {
-			duration: 0.75,
+			duration: 1,
 			ease: 'power3.out',
 			overwrite: 'auto',
 		},
 		scrollTrigger: {
 			trigger: section,
-			start: 'top 82%',
+			start: 'top 50%',
 			once: true,
 			invalidateOnRefresh: true,
 		},
@@ -243,14 +177,14 @@ const initClassWorkshopMotion = () => {
 		return null
 	}
 
-	if (hasReducedMotion()) {
-		gsap.set(sections, {
-			autoAlpha: 1,
-			y: 0,
-		})
+	// if (hasReducedMotion()) {
+	// 	gsap.set(sections, {
+	// 		autoAlpha: 1,
+	// 		y: 0,
+	// 	})
 
-		return null
-	}
+	// 	return null
+	// }
 
 	sections.forEach(initSectionMotion)
 
