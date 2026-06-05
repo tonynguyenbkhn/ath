@@ -77,6 +77,10 @@ if (! empty($post_ids) && function_exists('twmp_render_product_card')) {
     $post = $previous_post;
 }
 
+if ( count( $slides ) == 0 ) {
+    return;
+}
+
 ?>
 
 <div class="section <?php echo esc_attr($_class); ?>" id="<?php echo esc_attr($_id); ?>" role="dialog" <?php echo esc_attr($_custom_attributes); ?> data-block="popup-newsletter">

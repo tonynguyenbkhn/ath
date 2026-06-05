@@ -679,11 +679,7 @@ add_action('woocommerce_single_product_summary', function () {
 
 		if ('ath_start_datetime' === $field_key) {
 			$end_value = function_exists('get_field') ? get_field('ath_end_datetime', $product_id) : '';
-			if (function_exists('twmp_format_event_date_range')) {
-				$value = twmp_format_event_date_range($value, $end_value);
-			} else {
-				$value = twmp_format_event_datetime_range($value, $end_value);
-			}
+			$value = twmp_format_event_datetime_range($value, $end_value);
 		} elseif ('ath_venue' === $field_key) {
 			$terms = wp_get_post_terms($product_id, 'ath_venue');
 			if (is_wp_error($terms) || empty($terms)) {
