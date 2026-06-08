@@ -29,7 +29,7 @@ if (!empty($checkout_page_id)) {
 // Add thank you page
 $steps[] = array(
   'is_active' => is_checkout() && is_order_received_page(),
-  'title' => __('Complete order', 'twmp-phonghoa')
+  'title' => __('Complete order', 'twmp-ath')
 );
 
 ?>

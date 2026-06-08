@@ -1,3 +1,17 @@
+.single-tin-tuc__row {
+	@include clearfix();
+
+	.single-tin-tuc__left {
+		float: left;
+		width: 70%;
+	}
+
+	.single-tin-tuc__right {
+		float: right;
+		width: 30%;
+	}
+}
+
 /*----------------------------------------*/
 /*  01. Single Main
 /*----------------------------------------*/
@@ -13,6 +27,7 @@
 		border-top: 1px solid #dddddd;
 		border-bottom: 1px solid #dddddd;
 		padding: 10px 0;
+		display: flex;
 	}
 }
 /*----------------------------------------*/
@@ -33,7 +48,7 @@
 .single__page-title {
 	.page__title {
 		font-size: 30px;
-		color: var(--title);
+		color: var(--system-content-2);
 		text-align: center;
 		margin-bottom: 10px;
 		margin-top: 10px;

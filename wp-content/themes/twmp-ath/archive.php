@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-get_template_part('templates/blocks/page-title', null, ['show_title' => false]);
+get_template_part('templates/sections/page-title/section', null, ['show_title' => false]);
 global $wp_query;
 $paged = get_query_var('paged') ? (int)get_query_var('paged') : 1;
 $total = $wp_query->max_num_pages;
@@ -22,14 +22,14 @@ $total = $wp_query->max_num_pages;
 						while (have_posts()) :
 							the_post();
 
-							get_template_part('templates/blocks/post-card', null, [
+							get_template_part('templates/sections/post-card/post-card', null, [
 								'class' => 'col-lg-6 col-md-6 col-sm-6 col-12 post-card--col',
 								'post_data' => get_post(get_the_ID()),
 								'post_id' => get_the_ID(),
 								'view_more_button' => esc_html__('Read More...', 'twmp-ath'),
 							]);
 
-						// get_template_part('templates/blocks/post-row', null, [
+						// get_template_part('templates/sections/post-row/post-row', null, [
 						// 	'class' => '',
 						// 	'post_data' => get_post(get_the_ID()),
 						// 	'view_more_button' => esc_html__('Read More...', 'twmp-ath'),

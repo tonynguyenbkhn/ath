@@ -41,7 +41,7 @@ add_filter('woocommerce_add_to_cart_fragments', 'wcs_cart_woocommerce_header_add
 
 // function wcs_cart_render_shop_steps()
 // {
-//     get_template_part('templates/blocks/shop-steps', null, []);
+//     get_template_part('templates/woocommerces/shop-steps', null, []);
 // }
 
 function wcs_cart_container_open()

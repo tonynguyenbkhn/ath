@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-get_template_part('templates/blocks/page-title', null, []);
+get_template_part('templates/sections/page-title/section', null, []);
 ?>
 
 <div class="page page-standard">

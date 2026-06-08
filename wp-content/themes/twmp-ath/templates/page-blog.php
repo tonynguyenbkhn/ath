@@ -9,16 +9,16 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-get_template_part('templates/blocks/page-title', null, ['class' => 'single__page-title', 'show_breadcrumbs' => false]);
+get_template_part('templates/sections/page-title/section', null, ['class' => 'single__page-title', 'show_breadcrumbs' => false]);
 if ('page' === get_post_type()) :
-    get_template_part('templates/blocks/post-meta', null, [
+    get_template_part('templates/components/post-meta', null, [
         'date' => true,
         'author' => true,
         'categories' => false,
         'class' => 'single__post-meta mt-0'
     ]);
 endif;
-get_template_part('templates/blocks/share-icon', null, ['class' => 'mt-1']);
+get_template_part('templates/components/share-icon', null, ['class' => 'mt-1']);
 ?>
 
 <div class="page-single-tin-tuc single-tin-tuc__post">
@@ -38,7 +38,7 @@ get_template_part('templates/blocks/share-icon', null, ['class' => 'mt-1']);
                         // 	'previous_post' => get_previous_post()
                         // ]);
 
-                        get_template_part('templates/blocks/share-icon', null, []);
+                        get_template_part('templates/components/share-icon', null, []);
 
                     ?>
 
@@ -72,7 +72,7 @@ get_template_part('templates/blocks/share-icon', null, ['class' => 'mt-1']);
                         ?>
                             <div class="related-posts">
                                 <?php
-                                get_template_part('templates/core-blocks/heading', null, [
+                                get_template_part('templates/components/heading', null, [
                                     'title_class' => 'related-posts__title mb-0',
                                     'description_class' => '',
                                     'class' => 'related-posts__header',
@@ -83,7 +83,7 @@ get_template_part('templates/blocks/share-icon', null, ['class' => 'mt-1']);
                                 echo '<div class="row">';
                                 while ($related_posts->have_posts()) :
                                     $related_posts->the_post();
-                                    get_template_part('templates/blocks/post-row', null, [
+                                    get_template_part('templates/components/post-row', null, [
                                         'class' => '',
                                         'post_data' => get_post(get_the_ID()),
                                         'view_more_button' => esc_html__('', 'twmp-ath'),

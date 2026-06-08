@@ -140,7 +140,7 @@ add_action('woocommerce_thankyou', function () {
 ?>
     <div class="d-flex flex-column justify-content-center align-items-center">
         <?php
-        get_template_part('templates/core-blocks/button', null, [
+        get_template_part('templates/components/button', null, [
             'class'       => 'back-home',
             'button_text' => esc_html__('Back to home page', 'twmp-ath'),
             'button_url' => home_url(),

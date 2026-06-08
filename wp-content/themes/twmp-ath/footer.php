@@ -38,7 +38,7 @@ get_template_part('template-parts/footers/modal-search-form', null, []);
 get_template_part('template-parts/footers/modal-popup-welcome', null, []);
 get_template_part('template-parts/footers/modal-popup-newsletter', null, []);
 get_template_part('template-parts/footers/th-mobile-menu', null, []);
-// get_template_part('templates/blocks/menu-mobile-footer', null, []);
+// get_template_part('templates/components/menu-mobile-footer', null, []);
 ?>
 
 <?php wp_footer(); ?>

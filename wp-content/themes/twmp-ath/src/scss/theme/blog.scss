@@ -1,7 +1,33 @@
 .page-blog {
 
+	.page-blog__row {
+		@include clearfix();
+
+		.page-blog__left {
+			width: 70%;
+			float: left;
+
+			.row {
+				@include clearfix();
+
+				.post-card--col {
+					@include float-grid(3, 32px)
+				}
+			}
+		}
+
+		.page-blog__right {
+			width: 30%;
+			float: right;
+		}
+	}
+
 	& article {
 		margin-bottom: 20px;
+
+		.post-card__image {
+			@include ratio(1/1)
+		}
 
 		& .post-card__content {
 			padding: 20px 20px;

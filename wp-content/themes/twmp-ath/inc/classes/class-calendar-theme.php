@@ -45,11 +45,107 @@ class Calendar_Theme
 			'twmp/v1',
 			'/calendar-events',
 			[
-				'methods' => 'GET',
+				'methods' => \WP_REST_Server::READABLE,
 				'callback' => [$this, 'rest_get_calendar_events'],
-				'permission_callback' => '__return_true',
+				'permission_callback' => [$this, 'can_read_calendar_events'],
+				'args' => $this->get_calendar_events_args(),
 			]
 		);
+	}
+
+	public function can_read_calendar_events(\WP_REST_Request $request)
+	{
+		return true;
+	}
+
+	protected function get_calendar_events_args()
+	{
+		return [
+			'lang' => [
+				'type' => 'string',
+				'required' => false,
+				'sanitize_callback' => 'sanitize_key',
+			],
+			'type' => [
+				'type' => 'string',
+				'required' => false,
+				'default' => 'all',
+				'sanitize_callback' => 'sanitize_key',
+			],
+			'location' => [
+				'type' => 'string',
+				'required' => false,
+				'default' => 'all',
+				'sanitize_callback' => 'sanitize_key',
+			],
+			'status' => [
+				'type' => 'string',
+				'required' => false,
+				'default' => 'all',
+				'sanitize_callback' => 'sanitize_key',
+			],
+			'start' => [
+				'type' => 'string',
+				'required' => false,
+				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => [$this, 'validate_optional_datetime'],
+			],
+			'end' => [
+				'type' => 'string',
+				'required' => false,
+				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => [$this, 'validate_optional_datetime'],
+			],
+			'year' => [
+				'type' => 'integer',
+				'required' => false,
+				'default' => (int) wp_date('Y'),
+				'sanitize_callback' => 'absint',
+				'validate_callback' => [$this, 'validate_calendar_year'],
+			],
+			'month' => [
+				'type' => 'integer',
+				'required' => false,
+				'default' => 0,
+				'sanitize_callback' => 'absint',
+				'validate_callback' => [$this, 'validate_calendar_month'],
+			],
+			'start_month' => [
+				'type' => 'integer',
+				'required' => false,
+				'default' => 1,
+				'sanitize_callback' => 'absint',
+				'validate_callback' => [$this, 'validate_calendar_month'],
+			],
+			'view' => [
+				'type' => 'string',
+				'required' => false,
+				'default' => 'month',
+				'enum' => ['month', 'year', 'list'],
+				'sanitize_callback' => 'sanitize_key',
+			],
+		];
+	}
+
+	public function validate_optional_datetime($value)
+	{
+		$value = trim((string) $value);
+
+		return $value === '' || strtotime($value) !== false;
+	}
+
+	public function validate_calendar_year($value)
+	{
+		$year = absint($value);
+
+		return $year >= 1970 && $year <= 2100;
+	}
+
+	public function validate_calendar_month($value)
+	{
+		$month = absint($value);
+
+		return $month >= 0 && $month <= 12;
 	}
 
 	public function rest_get_calendar_events(\WP_REST_Request $request)

@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-get_template_part('templates/blocks/page-title', null, ['class' => 'reverse-title','text'=> esc_attr__('Blog', 'twmp-ath')]);
+get_template_part('templates/sections/page-title/section', null, ['class' => 'reverse-title','text'=> esc_attr__('Blog', 'twmp-ath')]);
 
 $paged = (get_query_var('paged')) ? (int)get_query_var('paged') : 1;
 $post_args = [
@@ -30,14 +30,14 @@ $total = $query->max_num_pages;
 						while ($query->have_posts()) :
 							$query->the_post();
 
-							// get_template_part('templates/blocks/post-card', null, [
+							// get_template_part('templates/sections/post-card/post-card', null, [
 							// 	'class' => 'col-lg-6 post-card--col',
 							// 	'post_data' => get_post(get_the_ID()),
 							// 	'post_id' => get_the_ID(),
 							// 	'view_more_button' => esc_html__('Read More...', 'twmp-ath'),
 							// ]);
 
-							get_template_part('templates/blocks/post-row', null, [
+							get_template_part('templates/sections/post-row/post-row', null, [
 								'class' => '',
 								'post_data' => get_post(get_the_ID()),
 								'view_more_button' => esc_html__('Read More...', 'twmp-ath'),

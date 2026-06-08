@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 	<header class="entry-header d-none">
 		<?php
 		if ( 'post' === get_post_type() ) :
-			get_template_part('templates/blocks/post-meta', null, [
+			get_template_part('templates/components/post-meta', null, [
 				'date' => true,
 				'author' => true,
 				'categories' => true,
@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
 
 	<?php
 		if (has_post_thumbnail(get_the_ID()) && get_the_post_thumbnail_url(get_the_ID())) {
-			get_template_part('templates/core-blocks/image', null, [
+			get_template_part('templates/components/image', null, [
 				'image_id' => get_post_thumbnail_id(get_the_ID()),
 				'image_size' => 'full',
 				'lazyload' => false,

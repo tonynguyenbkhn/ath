@@ -14,10 +14,12 @@ class TWMP_THEME
 		Sidebars_Theme::get_instance();
 		Menus_Theme::get_instance();
 		Assets_Theme::get_instance();
-		Views_Theme::get_instance();
 		Admin_Theme::get_instance();
 		Woo_Theme::get_instance();
 		Calendar_Theme::get_instance();
+		Cors_Theme::get_instance();
+		Blocks_Theme::get_instance();
+		Media_Theme::get_instance();
 		$this->setup_hooks();
 	}
 
@@ -25,11 +27,10 @@ class TWMP_THEME
 	{
 		add_action('after_setup_theme', [$this, 'setup_theme']);
 		//        add_action('twmp_after_header', function () {
-		//			get_template_part('templates/blocks/bg-shape', null, []);
+		//			get_template_part('templates/components/bg-shape', null, []);
 		//		});        add_action('twmp_after_header', function () {
-		//			get_template_part('templates/blocks/bg-shape', null, []);
+		//			get_template_part('templates/components/bg-shape', null, []);
 		//		});
-		add_filter('intermediate_image_sizes_advanced', [$this, 'remove_default_image_sizes']);
 		// add_filter('wp_get_attachment_image_attributes', [$this, 'custom_update_sizes_for_post'], 10, 3);
 		// add_action( 'init', [$this, 'twmp_register_patterns'] );
 		add_filter('body_class', [$this, 'add_custom_body_class']);
@@ -111,13 +112,6 @@ class TWMP_THEME
 		}
 
 		return $attr;
-	}
-
-	function remove_default_image_sizes($sizes)
-	{
-		unset($sizes['1536x1536']);
-		unset($sizes['2048x2048']);
-		return $sizes;
 	}
 
 	// function twmp_register_patterns() {

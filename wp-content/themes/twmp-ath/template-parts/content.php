@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 	<header class="entry-header">
 		<?php
 		if ( 'post' === get_post_type() ) :
-			get_template_part('templates/blocks/post-meta', null, [
+			get_template_part('templates/components/post-meta', null, [
 				'date' => true,
 				'author' => true,
 				'categories' => true,
