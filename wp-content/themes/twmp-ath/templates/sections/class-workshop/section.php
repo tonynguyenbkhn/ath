@@ -59,6 +59,8 @@ foreach ($product_ids as $index => $product_id) {
     }
 
     $timestamp = get_post_timestamp($product_post);
+    $next_range = function_exists('twmp_get_next_event_datetime_range') ? twmp_get_next_event_datetime_range($product_id) : [];
+    $timestamp = ! empty($next_range['start_timestamp']) ? absint($next_range['start_timestamp']) : $timestamp;
     $date_day = $timestamp ? wp_date('j', $timestamp) : '';
     $date_weekday = $timestamp ? strtoupper(wp_date('D', $timestamp)) : '';
     $date_month = $timestamp ? strtoupper(wp_date('M', $timestamp)) : '';

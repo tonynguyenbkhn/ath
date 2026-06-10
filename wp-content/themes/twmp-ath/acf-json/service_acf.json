@@ -166,6 +166,67 @@
             }
         },
         {
+            "key": "field_ath_show_datetime_ranges",
+            "label": "Show Date Time Ranges",
+            "name": "ath_show_datetime_ranges",
+            "type": "repeater",
+            "instructions": "Danh sách các khoảng thời gian biểu diễn dùng cho calendar và hiển thị product. Không dùng cho checkout.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "",
+                "id": ""
+            },
+            "layout": "row",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_ath_show_range_start_datetime",
+            "button_label": "Add Show Date Range",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_ath_show_range_start_datetime",
+                    "label": "Start Date Time",
+                    "name": "start_datetime",
+                    "type": "date_time_picker",
+                    "required": 1,
+                    "display_format": "d/m/Y H:i",
+                    "return_format": "Y-m-d H:i:s",
+                    "first_day": 1,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    }
+                },
+                {
+                    "key": "field_ath_show_range_end_datetime",
+                    "label": "End Date Time",
+                    "name": "end_datetime",
+                    "type": "date_time_picker",
+                    "required": 0,
+                    "display_format": "d/m/Y H:i",
+                    "return_format": "Y-m-d H:i:s",
+                    "first_day": 1,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    }
+                }
+            ]
+        },
+        {
             "key": "field_ath_language",
             "label": "Language",
             "name": "ath_language",
