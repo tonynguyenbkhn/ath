@@ -51,7 +51,7 @@ add_filter('woocommerce_loop_add_to_cart_link', function ($html, $product) {
     return sprintf(
         '<a href="%s" class="button">%s</a>',
         esc_url($product->get_permalink()),
-        esc_html__('View product', 'woocommerce')
+        esc_html__('View product', 'twmp-ath')
     );
 }, 10, 2);
 

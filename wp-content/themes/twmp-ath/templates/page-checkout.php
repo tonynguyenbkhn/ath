@@ -42,7 +42,7 @@ get_template_part('templates/sections/page-title/section-checkout', null, ['clas
 ?>
 
 <div data-block="checkout-custom">
-    <div class="woocommerce-checkout-custom <?php echo $is_step_2 ? 'twmp_checkout_step_2' : 'twmp_checkout_step_1' ?>">
+    <div class="woocommerce-checkout-custom <?php echo $is_step_2 ? esc_attr('twmp_checkout_step_2') : esc_attr('twmp_checkout_step_1'); ?>">
         <div class="container">
             <div class="woocommerce_checkout-columns">
                 <?php if ($is_step_2) : ?>

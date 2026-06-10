@@ -39,8 +39,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
       'billing_first_name',
       'billing_last_name',
       'billing_phone',
-    	  'billing_date_of_birth',
-    	  'billing_language',
+      'billing_date_of_birth',
+      'billing_language',
       // 'billing_age',
       'billing_email',
     );
@@ -1027,7 +1027,9 @@ function twmp_checkout_render_ticket_detail_section()
       <div
         class="twmp-checkout-ticket-detail__group twmp-checkout-ticket-detail__group--attendees"
         data-ticket-attendees-wrapper
-        <?php echo $extra_attendee_count > 0 ? '' : 'style="display:none;"'; ?>>
+        <?php if ($extra_attendee_count <= 0) : ?>
+        style="display:none;"
+        <?php endif; ?>>
         <p class="twmp-checkout-ticket-detail__label"><?php echo esc_html__('Please write down all of their name. *', 'twmp-ath'); ?></p>
         <input type="hidden" name="twmp_ticket_attendees_state" value="<?php echo esc_attr(wp_json_encode($attendee_state)); ?>" data-ticket-attendees-state>
         <input type="hidden" name="twmp_ticket_attendees_list" value="<?php echo esc_attr(twmp_checkout_format_ticket_attendee_list($attendee_names)); ?>" data-ticket-attendees-list>
@@ -1896,7 +1898,7 @@ function twmp_checkout_render_payment_step_section()
       <div class="twmp-checkout-card__content">
         <div class="twmp-checkout-payment-stage" data-payment-stage data-order-id="<?php echo esc_attr($state['order_id']); ?>" data-order-key="<?php echo esc_attr($state['order_key']); ?>" data-payment-status="<?php echo esc_attr($state['proof_status']); ?>" data-payment-nonce="<?php echo esc_attr($state['nonce']); ?>">
           <div class="twmp-checkout-payment-stage__header">
-            <p class="twmp-checkout-payment-stage__description" data-payment-status-text>Scan the QR code below to pay <?php echo $order_total; ?>, and upload the confirmation receipt. After payment, we will send the tickets code via SMS to the email <?php echo esc_html($email); ?>.</p>
+            <p class="twmp-checkout-payment-stage__description" data-payment-status-text>Scan the QR code below to pay <?php echo esc_html($order_total); ?>, and upload the confirmation receipt. After payment, we will send the tickets code via SMS to the email <?php echo esc_html($email); ?>.</p>
           </div>
 
           <div class="twmp-checkout-payment-stage__grid">

@@ -454,12 +454,12 @@ function render_product_section_tab()
 			$all_url = remove_query_arg(['paged']);
 			$all_url = add_query_arg('event_year', 0, $all_url);
 			?>
-			<a class="single-related-event__filter<?php echo 0 === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($all_url); ?>">
+			<a class="single-related-event__filter<?php echo esc_attr( 0 === $selected_year ? ' is-active' : '' ); ?>" href="<?php echo esc_url($all_url); ?>">
 				<?php echo esc_html__('All', 'twmp-ath'); ?>
 			</a>
 			<?php foreach ($years as $year) : ?>
 				<?php $year_url = add_query_arg('event_year', $year, $base_url); ?>
-				<a class="single-related-event__filter<?php echo $year === $selected_year ? ' is-active' : ''; ?>" href="<?php echo esc_url($year_url); ?>">
+				<a class="single-related-event__filter<?php echo esc_attr( $year === $selected_year ? ' is-active' : '' ); ?>" href="<?php echo esc_url($year_url); ?>">
 					<?php echo esc_html($year); ?>
 				</a>
 			<?php endforeach; ?>

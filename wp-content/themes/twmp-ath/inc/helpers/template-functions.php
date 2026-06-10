@@ -529,7 +529,7 @@ function twmp_render_product_video_gallery_item($product_id = 0, $context = 'mai
 		class="<?php echo esc_attr($wrapper_class); ?>"
 		data-product-id="<?php echo esc_attr($product_id); ?>"
 		data-thumb="<?php echo esc_url($thumb_src ? $thumb_src : $large_src); ?>"
-		data-thumb-alt="<?php echo $thumb_alt; ?>"
+		data-thumb-alt="<?php echo esc_attr($thumb_alt); ?>"
 		data-large_image="<?php echo esc_url($large_src); ?>"
 		data-large_image_width="<?php echo esc_attr((string) $large_width); ?>"
 		data-large_image_height="<?php echo esc_attr((string) $large_height); ?>">
