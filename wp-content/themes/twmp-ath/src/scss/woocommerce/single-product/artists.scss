@@ -23,7 +23,7 @@
 		/* Grid Layout */
 		.twmp-artists-grid {
 			display: grid;
-			grid-template-columns: 1fr;
+			grid-template-columns: repeat(2, 1fr);
 			gap: 2rem;
 			margin-top: 15px;
 		}
@@ -31,7 +31,7 @@
 		/* Tablet Layout */
 		@media (min-width: 768px) {
 			.twmp-artists-grid {
-				grid-template-columns: repeat(2, 1fr);
+				grid-template-columns: repeat(3, 1fr);
 				gap: 2.5rem;
 			}
 		}

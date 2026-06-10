@@ -1,6 +1,8 @@
 .woocommerce-breadcrumb {
 	width: 100%;
 	background-color: transparent;
+	position: relative;
+	z-index: 1;
 
 	.woocommerce-breadcrumb__container {
 		padding-top: 10px;

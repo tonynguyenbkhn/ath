@@ -120,6 +120,38 @@ const initFacetWpState = () => {
 	})
 }
 
+const hasDateTimeRange = settings => {
+	const range = settings?.date_time?.range
+
+	if (!range) {
+		return false
+	}
+
+	if (range.minDate || range.maxDate) {
+		return true
+	}
+
+	if (range.min?.minDate || range.min?.maxDate) {
+		return true
+	}
+
+	if (range.max?.minDate || range.max?.maxDate) {
+		return true
+	}
+
+	return false
+}
+
+const toggleDateTimeFacet = () => {
+	const wrapper = document.querySelector('[data-facet-wrapper="date_time"]')
+
+	if (!wrapper || typeof window.FWP === 'undefined') {
+		return
+	}
+
+	wrapper.classList.toggle('d-none', !hasDateTimeRange(window.FWP.settings))
+}
+
 // Custom select for language
 const initLanguageSelect = () => {
 	document.querySelectorAll('.lang-select').forEach(select => {
@@ -310,6 +342,7 @@ const initShowPicker = () => {
 
 const initCommon = () => {
 	initFacetWpState()
+	toggleDateTimeFacet()
 	initLanguageSelect()
 	initDefaultSelect()
 	initShowPicker()
@@ -317,6 +350,7 @@ const initCommon = () => {
 	bindDropdownCloseHandler()
 
 	document.addEventListener('facetwp-loaded', () => {
+		toggleDateTimeFacet()
 		initDefaultSelect()
 		initFacetWpSelect()
 	})

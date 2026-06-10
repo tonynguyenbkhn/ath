@@ -188,24 +188,24 @@ $footer-bg-color: #F7F7F7;
 .footer__primary-wrapper {
 	.gap-32 {
 
-		@media (max-width: 1199px) {
+		@media (max-width: 991px) {
 			gap: 10px;
 		}
 	}
 
 	.wp-block-gallery {
-		@media (max-width: 1199px) {
+		@media (max-width: 991px) {
 			margin: auto;
 		}
 	}
 
 	&>div {
-		@media (max-width: 1199px) {
+		@media (max-width: 991px) {
 			text-align: center;
 		}
 
 		div {
-			@media (max-width: 1199px) {
+			@media (max-width: 991px) {
 				align-items: center;
 				justify-content: center;
 			}

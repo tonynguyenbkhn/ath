@@ -45,23 +45,21 @@ function twmp_render_google_link_button()
 		return;
 	}
 
-	$disable_book = false;
-	$disable_book = get_field('ath_disable_book_ticket', $product_id);
 	$button_link = get_field('ath_google_link', $product_id);
+
 	if (!$button_link) {
 		return;
 	}
+
 	$button_text = esc_html__('Register Camp', 'twmp-ath');
 	echo '<div class="product-action-buttons d-flex items-center gap-16">';
 	twmp_render_contact_us_button();
-	if (!$disable_book) {
-		get_template_part('templates/components/button', null, [
-			'class' => 'bg-primary-500 text-system-white typo-system-button button-default contact-us-btn',
-			'button_text' => $button_text,
-			'button_url' => $button_link,
-			'button_link_target' => '_blank',
-		]);
-	}
+	get_template_part('templates/components/button', null, [
+		'class' => 'bg-primary-500 text-system-white typo-system-button button-default contact-us-btn',
+		'button_text' => $button_text,
+		'button_url' => $button_link,
+		'button_link_target' => '_blank',
+	]);
 	echo '</div>';
 }
 
@@ -738,17 +736,7 @@ add_action('woocommerce_single_product_summary', function () {
 
 	$product_id = $product->get_id();
 
-	$is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
-
-	if ($is_poster_event) {
-		return;
-	}
-
-	if (!function_exists('get_field')) {
-		return;
-	}
-
-	$button_link = get_field('ath_google_link', $product_id);
+	$button_link = function_exists('get_field') ? get_field('ath_google_link', $product_id) : '';
 
 	if ($button_link) {
 		return;

@@ -6,6 +6,12 @@
   padding-bottom: 80px;
   overflow: hidden;
 
+  @media (min-width: 1024px) {
+    padding-top: 180px;
+    padding-bottom: 75px;
+    overflow: unset;
+  }
+
   @media (min-width: 1200px) {
     padding-top: 180px;
     padding-bottom: 75px;
@@ -23,13 +29,12 @@
 }
 
 .for-school__grid {
-  display: block;
+  display: flex;
+  flex-direction: column-reverse;
 
-  @include clearfix();
-
-  @media (max-width: 1199px) {
-    display: flex;
-    flex-direction: column-reverse;
+  @media (min-width: 1024px) {
+    display: block;
+    @include clearfix();
   }
 }
 
@@ -37,6 +42,10 @@
   flex-direction: column;
   text-align: left;
   padding-right: 0;
+
+  @media (min-width: 1024px) {
+    padding-right: 50px;
+  }
 
   @media (min-width: 1200px) {
     padding-right: 100px;
@@ -49,6 +58,10 @@
   &.desktop {
     display: none;
 
+    @media (min-width: 1024px) {
+      display: block;
+    }
+
     @media (min-width: 1200px) {
       display: block;
     }
@@ -58,6 +71,10 @@
     display: block;
     text-align: center;
     margin-bottom: 24px;
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
 
     @media (min-width: 1200px) {
       display: none;
@@ -104,8 +121,14 @@
   gap: 1rem;
   margin-top: 0;
 
+  @media (min-width: 1024px) {
+    margin-top: 40px;
+    padding-right: 50px;
+  }
+
   @media (min-width: 1200px) {
     margin-top: 40px;
+    padding-right: 100px;
   }
 
   a {
@@ -130,6 +153,10 @@
   width: 100%;
   position: relative;
 
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
+
   @media (min-width: 1200px) {
     width: 50%;
   }
@@ -153,6 +180,12 @@
 
   @media (min-width: 1024px) {
     margin-bottom: 250px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 50%;
+    margin-bottom: 0;
+    // margin-top: 200px;
   }
 
   @media (min-width: 1200px) {
@@ -220,7 +253,7 @@
     display: none;
   }
 
-  @media (max-width: 1199px) {
+  @media (max-width: 991px) {
     padding-top: 0;
   }
 
@@ -377,6 +410,7 @@
   @media (min-width: 1200px) {
     padding-top: 105px;
     padding-bottom: 180px;
+
   }
 
   .for-school__shape--circle {
