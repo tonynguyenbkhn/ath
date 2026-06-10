@@ -354,6 +354,7 @@ class Calendar_Theme
 							'permalink' => $permalink,
 							'product_cat' => $product_cat,
 							'badges' => is_array($badges) ? $badges : [],
+							'has_end_datetime' => $end_datetime !== '',
 						]
 					);
 				}
@@ -407,6 +408,7 @@ class Calendar_Theme
 				'dayKey' => $day_key,
 				'weekKey' => $week_key,
 				'timeRange' => $time_range,
+				'hasEndDatetime' => ! empty($meta['has_end_datetime']),
 			],
 		];
 	}

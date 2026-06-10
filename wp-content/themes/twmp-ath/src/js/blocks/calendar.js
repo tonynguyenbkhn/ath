@@ -99,12 +99,31 @@ const getEventDay = event => {
 	return startOfDay(start)
 }
 
+const getEventRangeStart = event => {
+	const meta = getMeta(event)
+	const start = meta.realStart || event.start
+
+	return startOfDay(start instanceof Date ? start : new Date(start))
+}
+
+const getEventRangeEnd = event => {
+	const meta = getMeta(event)
+
+	if (meta.hasEndDatetime === false) {
+		return endOfDay(meta.realStart || event.start)
+	}
+
+	const end = meta.realEnd || event.end || meta.realStart || event.start
+
+	return endOfDay(end instanceof Date ? end : new Date(end))
+}
+
 const isMultiDayEvent = event => {
 	if (!event?.start || !event?.end) {
 		return false
 	}
 
-	return startOfDay(new Date(event.start)).getTime() !== startOfDay(new Date(event.end)).getTime()
+	return getEventRangeStart(event).getTime() !== startOfDay(getEventRangeEnd(event)).getTime()
 }
 
 const getEventDateRange = event => {
@@ -112,8 +131,8 @@ const getEventDateRange = event => {
 		return ''
 	}
 
-	const start = new Date(event.start)
-	const end = new Date(event.end)
+	const start = getEventRangeStart(event)
+	const end = getEventRangeEnd(event)
 	const startLabel = formatDayMonth(start)
 	const endLabel = formatDayMonth(end)
 
@@ -123,6 +142,16 @@ const getEventDateRange = event => {
 
 	return `${startLabel} ${start.getFullYear()} - ${endLabel} ${end.getFullYear()}`
 }
+
+const eventOverlapsRange = (event, start, end) => {
+	const eventStart = getEventRangeStart(event)
+	const eventEnd = getEventRangeEnd(event)
+
+	return eventEnd >= startOfDay(start) && eventStart <= endOfDay(end)
+}
+
+const eventOccursOnDate = (event, date) =>
+	eventOverlapsRange(event, startOfDay(date), endOfDay(date))
 
 const getMonthWindow = (year, startMonth) => {
 	const normalizedStartMonth = Math.min(12, Math.max(1, Number(startMonth) || 1))
@@ -206,22 +235,47 @@ const enrichEventDisplayMeta = event => ({
 	}
 })
 
-const normalizeMonthEvent = event => {
+const normalizeMonthEvent = (event, occurrenceDate) => {
 	const meta = getMeta(event)
-	const dayKey = meta.dayKey || formatDateKey(event.start)
+	const dayKey = formatDateKey(occurrenceDate || event.start)
 
 	const { end, start, allDay, ...singleDayEvent } = event
 
 	return {
 		...singleDayEvent,
+		id: `${event.id}-${dayKey}`,
 		start: dayKey,
 		allDay: true,
 		extendedProps: {
 			...meta,
+			originalId: event.id,
+			occurrenceDateKey: dayKey,
+			dayKey,
 			realStart: start,
 			realEnd: end
 		}
 	}
+}
+
+const expandEventsForMonth = (events, rangeStart, rangeEnd) => {
+	const windowStart = startOfDay(rangeStart)
+	const windowEnd = endOfDay(addDays(startOfDay(rangeEnd), -1))
+
+	return events.flatMap(event => {
+		const eventStart = getEventRangeStart(event)
+		const eventEnd = getEventRangeEnd(event)
+		const start = eventStart > windowStart ? eventStart : windowStart
+		const end = eventEnd < windowEnd ? eventEnd : windowEnd
+		const occurrences = []
+		let cursor = startOfDay(start)
+
+		while (cursor <= end) {
+			occurrences.push(normalizeMonthEvent(event, cursor))
+			cursor = addDays(cursor, 1)
+		}
+
+		return occurrences
+	})
 }
 
 const renderEventCardBody = event => {
@@ -510,19 +564,11 @@ export default el => {
 	}
 
 	const filterEventsByDay = date => {
-		const dayKey = formatDateKey(date)
-		return cachedEvents.filter(event => {
-			const meta = getMeta(event)
-			return meta.dayKey === dayKey
-		})
+		return cachedEvents.filter(event => eventOccursOnDate(event, date))
 	}
 
 	const getEventsInRange = (start, end) =>
-		cachedEvents.filter(event => {
-			const eventStart = getEventDay(event)
-
-			return eventStart >= startOfDay(start) && eventStart <= endOfDay(end)
-		})
+		cachedEvents.filter(event => eventOverlapsRange(event, start, end))
 
 	const renderMonthView = () => {
 		if (!monthMount) {
@@ -601,7 +647,7 @@ export default el => {
 				async (fetchInfo, successCallback, failureCallback) => {
 					try {
 						const events = await fetchEvents(fetchInfo.start, fetchInfo.end)
-						successCallback(events.map(normalizeMonthEvent))
+						successCallback(expandEventsForMonth(events, fetchInfo.start, fetchInfo.end))
 					} catch (error) {
 						failureCallback(error)
 					}
@@ -613,7 +659,8 @@ export default el => {
 			eventClick: info => {
 				info.jsEvent.preventDefault()
 				const date = info.event.start || new Date()
-				openSidebar(date, filterEventsByDay(date), info.event.id)
+				const meta = getMeta(info.event)
+				openSidebar(date, filterEventsByDay(date), meta.originalId || info.event.id)
 			},
 			datesSet: info => {
 				currentDate = new Date(info.view.calendar.getDate())
@@ -658,10 +705,7 @@ export default el => {
 			const monthDate = new Date(start.getFullYear(), start.getMonth() + i, 1)
 			const monthStart = startOfDay(monthDate)
 			const monthEnd = endOfDay(new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0))
-			const monthEvents = events.filter(event => {
-				const eventDate = getEventDay(event)
-				return eventDate >= monthStart && eventDate <= monthEnd
-			})
+			const monthEvents = events.filter(event => eventOverlapsRange(event, monthStart, monthEnd))
 
 			months.push(`
 				<section class="calendar-month-card">
@@ -713,10 +757,7 @@ export default el => {
 		while (cursor <= lastWeekEnd) {
 			const weekStart = new Date(cursor)
 			const weekEnd = getWeekEnd(cursor)
-			const weekEvents = events.filter(event => {
-				const eventDate = getEventDay(event)
-				return eventDate >= weekStart && eventDate <= weekEnd
-			})
+			const weekEvents = events.filter(event => eventOverlapsRange(event, weekStart, weekEnd))
 			const visibleEvents = weekEvents.slice(0, MAX_VISIBLE_EVENTS)
 			const moreCount = weekEvents.length - visibleEvents.length
 
@@ -747,10 +788,10 @@ export default el => {
 				const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
 
 				return `
-								<button type="button" class="calendar-event-card ${product_cat}" data-event-id="${event.id}" data-event-date="${getEventDateKey(event)}">
+								<button type="button" class="calendar-event-card ${product_cat}" data-event-id="${event.id}" data-event-date="${formatDateKey(weekStart)}">
 									<span class="calendar-event-card__body" style="--event-color:${color};">
 										<span class="calendar-event-card__title">${title}</span>
-										<span class="calendar-event-card__meta">${timeRange}</span>
+										<span class="calendar-event-card__meta">${meta.displayDateRange || timeRange}</span>
 									</span>
 								</button>
 							`
