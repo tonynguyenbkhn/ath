@@ -191,9 +191,11 @@ $current_language_icon_uri = $current_language_icon ? get_theme_file_uri('/asset
 											$is_current_language = !empty($language_item['current_lang']);
 										?>
 											<a
-												class="header__language-switcher-item<?php echo $is_current_language ? ' is-current' : ''; ?>"
+												class="header__language-switcher-item<?php echo esc_attr($is_current_language ? ' is-current' : ''); ?>"
 												href="<?php echo esc_url($language_item['url']); ?>"
-												<?php echo $is_current_language ? 'aria-current="true"' : ''; ?>>
+												<?php if ($is_current_language) : ?>
+												aria-current="true"
+												<?php endif; ?>>
 												<img
 													src="<?php echo esc_url($language_icon_uri); ?>"
 													alt="<?php echo esc_attr($language_item['name']); ?>"

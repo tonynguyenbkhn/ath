@@ -19,6 +19,7 @@ import initForSchoolMotion from 'lib/for-school-motion'
 import initForCompanyMotion from 'lib/for-company-motion'
 import initContactUsMotion from 'lib/contact-us-motion'
 import initFooterMotion from 'lib/footer-motion'
+import initSingleProductGallerySticky from 'lib/single-product-gallery-sticky'
 
 initHeroBannerMotion()
 initAboutUsMotion()
@@ -33,6 +34,7 @@ initFooterMotion()
 document.addEventListener('DOMContentLoaded', () => {
     Fancybox.bind("[data-fancybox]", {});
     initCommon()
+    initSingleProductGallerySticky()
 
     init({
         block: 'blocks'

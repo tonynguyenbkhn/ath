@@ -4,10 +4,10 @@
     "fields": [
         {
             "key": "field_ath_poster_event",
-            "label": "Is Poster Event",
+            "label": "Use Poster Event Layout",
             "name": "ath_poster_event",
             "type": "true_false",
-            "instructions": "If enabled, the Book Ticket / Register Course button will be hidden for this product.",
+            "instructions": "Enable alternate poster layout with Event For and Gallery tabs.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -15,7 +15,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "Disable",
+            "message": "Use poster layout",
             "default_value": 0,
             "ui": 1,
             "ui_on_text": "Yes",
@@ -26,7 +26,7 @@
             "label": "Disable Book Ticket Button",
             "name": "ath_disable_book_ticket",
             "type": "true_false",
-            "instructions": "If enabled, the Book Ticket / Register Course button will be hidden for this product.",
+            "instructions": "If enabled, the Book Ticket / Register Course / Register Camp button will be hidden for this product.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
