@@ -745,9 +745,60 @@ function twmp_render_shop_sidebar_start()
 }
 
 add_action('woocommerce_after_main_content', 'twmp_render_shop_sidebar_main', 5);
+function twmp_get_current_shop_product_ids()
+{
+    global $wp_query;
+
+    $product_ids = [];
+
+    if ($wp_query instanceof WP_Query && !empty($wp_query->posts)) {
+        foreach ($wp_query->posts as $post) {
+            $post_id = $post instanceof WP_Post ? $post->ID : absint($post);
+
+            if ($post_id > 0 && 'product' === get_post_type($post_id)) {
+                $product_ids[] = $post_id;
+            }
+        }
+    }
+
+    if (empty($product_ids) && function_exists('twmp_is_product_search_fallback') && twmp_is_product_search_fallback()) {
+        $product_ids = twmp_get_fallback_product_ids();
+    }
+
+    return array_values(array_unique(array_map('absint', $product_ids)));
+}
+
+function twmp_shop_facet_has_indexed_values($facet_name, array $product_ids = [])
+{
+    global $wpdb;
+
+    if (empty($product_ids)) {
+        return false;
+    }
+
+    $product_ids = array_values(array_filter(array_map('absint', $product_ids)));
+
+    if (empty($product_ids)) {
+        return false;
+    }
+
+    $index_table = $wpdb->prefix . 'facetwp_index';
+    $placeholders = implode(',', array_fill(0, count($product_ids), '%d'));
+    $query_args = array_merge([$facet_name], $product_ids);
+
+    $sql = $wpdb->prepare(
+        "SELECT post_id FROM {$index_table} WHERE facet_name = %s AND post_id IN ({$placeholders}) AND (facet_value != '' OR facet_display_value != '') LIMIT 1",
+        $query_args
+    );
+
+    return !empty($wpdb->get_var($sql));
+}
+
 function twmp_render_shop_sidebar_main()
 {
     if (class_exists('WooCommerce') && twmp_is_shop_catalog_page()) {
+        $shop_product_ids = twmp_get_current_shop_product_ids();
+        $has_date_time = twmp_shop_facet_has_indexed_values('date_time', $shop_product_ids);
     ?>
         <div class="filter-shop">
             <div class="filter-item__head">
@@ -755,7 +806,7 @@ function twmp_render_shop_sidebar_main()
                 <button class="filter-item__reset button-text d-flex items-center gap-8" onclick="FWP.reset()"><?php echo esc_html__('Clear all', 'twmp-ath'); ?> <?php echo twmp_get_svg_icon('clear-all'); ?></button>
             </div>
             <div class="filter-item__body">
-                <div class="filter-item">
+                <div class="filter-item filter-item--date-time<?php echo $has_date_time ? '' : ' d-none'; ?>" data-facet-wrapper="date_time">
                     <span class="filter-item__label"><?php echo esc_html__('Date Time', 'twmp-ath'); ?></span>
                     <?php
                     echo do_shortcode('[facetwp facet="date_time"]');
@@ -805,7 +856,6 @@ function twmp_render_shop_sidebar_end()
 {
     echo '</div></div></div>';
 }
-
 
 // Custom Banner Shop Page
 

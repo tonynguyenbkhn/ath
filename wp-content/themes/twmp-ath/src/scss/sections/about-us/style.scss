@@ -7,6 +7,11 @@
   padding-top: 80px;
   z-index: 3;
 
+  @media (min-width: 1024px) {
+    padding-bottom: 80px;
+    padding-top: 80px;
+  }
+
   @media (min-width: 1200px) {
     padding-bottom: 120px;
     padding-top: 290px;
@@ -33,7 +38,7 @@
 
   @include clearfix();
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     display: block;
   }
 }
@@ -43,7 +48,7 @@
   text-align: left;
   margin-top: 0;
 
-  // @media (min-width: 1200px) {
+  // @media (min-width: 1024px) {
   //   margin-top: -50px;
   // }
 }
@@ -58,7 +63,7 @@
   &.desktop {
     display: none;
 
-    @media (min-width: 1200px) {
+    @media (min-width: 1024px) {
       display: block;
       margin-bottom: 64px;
     }
@@ -67,7 +72,7 @@
   &.mobile {
     display: block;
 
-    @media (min-width: 1200px) {
+    @media (min-width: 1024px) {
       display: none;
     }
   }
@@ -96,7 +101,7 @@
   right: -50%;
   display: none;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     display: none;
   }
 }
@@ -114,7 +119,7 @@
 //   &.desktop {
 //     display: none;
 
-//     @media (min-width: 1200px) {
+//     @media (min-width: 1024px) {
 //       display: block;
 //     }
 //   }
@@ -122,7 +127,7 @@
 //   &.mobile {
 //     display: block;
 
-//     @media (min-width: 1200px) {
+//     @media (min-width: 1024px) {
 //       display: none;
 //     }
 //   }
@@ -144,7 +149,7 @@
   margin-bottom: 40px;
   text-align: center;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     width: 25%;
     margin-bottom: 0;
     text-align: left;
@@ -153,8 +158,12 @@
 
 .about-us__stat-value {
   font-family: 'Beautique Display';
-  @include typo-token(48, 48, 500);
+  @include typo-token(30, 30, 500);
   margin-bottom: 10px;
+
+  @media (min-width: 1200px) {
+    @include typo-token(48, 48, 500);
+  }
 }
 
 .about-us__stat-label {
@@ -168,7 +177,7 @@
   gap: 1rem;
   margin-top: 0;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     margin-top: 60px;
   }
 }
@@ -191,7 +200,7 @@
   float: left;
   width: 100%;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     width: 50%;
   }
 }
@@ -203,12 +212,12 @@
   position: relative;
   margin-bottom: 80px;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     margin-top: 20px;
     margin-bottom: 0;
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     width: 50%;
   }
 }
@@ -232,7 +241,7 @@
 .about-us__content-wrapper {
   padding-right: 0;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     padding-right: 80px;
   }
 }
