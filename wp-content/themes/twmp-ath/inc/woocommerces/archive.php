@@ -684,7 +684,7 @@ function twmp_render_product_card()
                             if (function_exists('twmp_render_cart_button')) {
                                 twmp_render_cart_button(
                                     $product_id,
-                                    __('Book Ticket', 'twmp'),
+                                    __('Book Ticket', 'twmp-ath'),
                                     'bg-primary-500 text-system-white typo-system-button button-default cart-redirect-btn'
                                 );
                             }
@@ -693,10 +693,10 @@ function twmp_render_product_card()
 
                         <div class="product-card__action product-card__action--view">
                             <a
-                                title="<?php echo esc_attr(sprintf(__('View Detail %s', 'twmp'), $title)); ?>"
+                                title="<?php echo esc_attr(sprintf(__('View Detail %s', 'twmp-ath'), $title)); ?>"
                                 class="product-card__view-button button-normal typo-system-button button-default has-icon has-after-icon"
                                 href="<?php echo esc_url($url); ?>">
-                                <span class="text pe-none"><?php echo esc_html__('View Detail', 'twmp'); ?></span>
+                                <span class="text pe-none"><?php echo esc_html__('View Detail', 'twmp-ath'); ?></span>
                                 <span class="icon pe-none" aria-hidden="true"></span>
                             </a>
                         </div>

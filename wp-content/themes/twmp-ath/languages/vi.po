@@ -1,0 +1,1377 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Twmp ATH\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-10 08:09+0000\n"
+"PO-Revision-Date: 2026-06-10 08:24+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.4; wp-7.0; php-8.4.21\n"
+"X-Domain: twmp-ath"
+
+#: inc/helpers/utility.php:62
+#, php-format
+msgid "%1$s"
+msgstr ""
+
+#: inc/helpers/comments.php:73
+#, php-format
+msgid "%1$s at %2$s"
+msgstr ""
+
+#. %1$s Action name, %2$s Order number.
+#: woocommerce/order/order-details.php:105
+#, php-format
+msgid "%1$s order number %2$s"
+msgstr ""
+
+#. 1: reviews count 2: product name
+#: woocommerce/single-product-reviews.php:185
+#, php-format
+msgid "%1$s Đánh giá"
+msgid_plural "%1$s Đánh giá"
+msgstr[0] ""
+
+#: inc/woocommerces/cart.php:118 template-parts/headers/icon-cart.php:30
+msgid "%d"
+msgid_plural "%d"
+msgstr[0] ""
+
+#. %s is the number of results found.
+#: relevanssi-live-ajax-search/search-results.php:34
+#: relevanssi-live-ajax-search/search-results.php:56
+msgid "%d result found."
+msgid_plural "%d results found."
+msgstr[0] ""
+
+#. %s: Quantity.
+#: woocommerce/global/quantity-input.php:25
+#, php-format
+msgid "%s quantity"
+msgstr ""
+
+#: woocommerce/single-product/rating.php:38
+#, php-format
+msgid "%s Đánh giá"
+msgid_plural "%s Đánh giá"
+msgstr[0] ""
+
+#. %s location.
+#: woocommerce/cart/cart-totals.php:110
+#, php-format
+msgid "(estimated for %s)"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:62
+msgid "- Order value does not include shipping costs."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:999
+msgid "/ Ticket"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:179
+msgid "404 Not Found"
+msgstr ""
+
+#: inc/helpers/utility.php:58
+#, php-format
+msgid "<cite class=\"fn\">%s</cite> <span class=\"says\">says:</span>"
+msgstr ""
+
+#: inc/woocommerces/single.php:173
+msgid "About"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1927
+msgid "Account name"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1930
+msgid "Account number"
+msgstr ""
+
+#: woocommerce/order/order-details.php:97
+msgid "Actions"
+msgstr ""
+
+#: inc/woocommerces/single.php:773
+msgid "Add to cart"
+msgstr ""
+
+#: inc/woocommerces/archive.php:771
+msgid "Age group"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1751
+msgid "Age:"
+msgstr ""
+
+#: inc/woocommerces/single.php:458
+msgid "All"
+msgstr ""
+
+#: inc/classes/class-calendar-theme.php:34
+msgid "All Categories"
+msgstr ""
+
+#: inc/woocommerces/global.php:49
+msgid "All Classes & Workshops"
+msgstr ""
+
+#: inc/woocommerces/global.php:41
+msgid "All Events & Shows"
+msgstr ""
+
+#: inc/classes/class-calendar-theme.php:35
+msgid "All Location"
+msgstr ""
+
+#: inc/classes/class-calendar-theme.php:36
+msgid "All Status"
+msgstr ""
+
+#: woocommerce/cart/cart.php:318
+msgid "Apply coupon"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:180
+msgid "Archives"
+msgstr ""
+
+#: inc/woocommerces/helpers/artists.php:254
+msgid "Artists"
+msgstr ""
+
+#: woocommerce/cart/cart.php:240
+msgid "Available on backorder"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:162
+msgid "Average"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:331
+msgid "Awaiting bill upload"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1795
+msgid "Awaiting payment proof upload."
+msgstr ""
+
+#: woocommerce/single-product/product-image.php:57
+msgid "Awaiting product image"
+msgstr ""
+
+#: 404.php:37
+msgid "Back Home"
+msgstr ""
+
+#: inc/woocommerces/thank-you.php:145
+msgid "Back to home page"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1919
+msgid "Bank"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1923
+msgid "Bank account name"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2408
+msgid "Bill file is too large. Maximum size is 10MB."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:496
+msgid "Bill rejected"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2463
+msgid "Bill uploaded successfully. Waiting for confirmation."
+msgstr ""
+
+#: search.php:8
+msgid "Blog"
+msgstr ""
+
+#: inc/woocommerces/archive.php:687
+msgid "Book Ticket"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:294
+msgid "Booking information"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1933
+msgid "Branch"
+msgstr ""
+
+#: templates/page-calendar.php:65
+msgid "Breadcrumb"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:177
+msgctxt "breadcrumbs aria label"
+msgid "Breadcrumbs"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:176
+msgid "Browse:"
+msgstr ""
+
+#. Name of the template
+#: templates/page-calendar.php:3 templates/page-calendar.php:77
+#: templates/page-calendar.php:81 templates/page-calendar.php:165
+msgid "Calendar"
+msgstr ""
+
+#: templates/page-calendar.php:93
+msgid "Calendar views"
+msgstr ""
+
+#: template-parts/footers/modal-popup-welcome.php:31
+#: template-parts/footers/modal-search-form.php:31
+msgid "Cancel"
+msgstr ""
+
+#: template-parts/headers/icon-cart.php:23
+#: template-parts/headers/icon-cart.php:34
+msgid "Cart"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:56
+msgid "Cart total"
+msgstr ""
+
+#. Name of the template
+#: templates/page-checkout.php:3 woocommerce/checkout/form-checkout.php:44
+msgid "Checkout"
+msgstr ""
+
+#: templates/page-calendar.php:138
+msgid "Class/Workshop"
+msgstr ""
+
+#: inc/woocommerces/archive.php:755
+msgid "Clear all"
+msgstr ""
+
+#: inc/woocommerces/archive.php:796 inc/woocommerces/checkout.php:1977
+#: template-parts/footers/slideout-menu.php:8
+msgid "Close"
+msgstr ""
+
+#: template-parts/footers/mini-cart.php:25
+msgid "Close a mini cart"
+msgstr ""
+
+#: template-parts/footers/modal-popup-newsletter.php:135
+#: template-parts/footers/modal-popup-welcome.php:37
+msgid "Close a modal"
+msgstr ""
+
+#: template-parts/footers/modal-popup-welcome.php:30
+#: template-parts/footers/modal-search-form.php:30
+msgid "Close a search form modal"
+msgstr ""
+
+#: templates/page-calendar.php:167
+msgid "Close sidebar"
+msgstr ""
+
+#. %s is the page number.
+#: inc/classes/class-breadcrumbs.php:186
+#, php-format
+msgid "Comment Page %s"
+msgstr ""
+
+#: comments.php:84
+msgid "Comments are closed."
+msgstr ""
+
+#. 1: number of comments, 2: post title
+#: comments.php:45
+#, php-format
+msgctxt "comments title"
+msgid "%s Comments"
+msgstr ""
+
+#. %s: post title
+#: comments.php:41
+msgctxt "comments title"
+msgid "1 Comment"
+msgstr ""
+
+#: template-parts/woocommerces/shop-steps.php:32
+msgid "Complete order"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:332
+msgid "Complete transfer and upload the bill to continue."
+msgstr ""
+
+#: header.php:216 404.php:31 inc/woocommerces/single.php:23
+msgid "Contact Us"
+msgstr "Liên hệ"
+
+#: comments.php:87
+msgid "Content"
+msgstr ""
+
+#: templates/components/content-load-more.php:13
+msgctxt "content load more button"
+msgid "Collapse"
+msgstr ""
+
+#: templates/components/content-load-more.php:12
+msgctxt "content load more button"
+msgid "View more"
+msgstr ""
+
+#. %s: Name of current post. Only visible to screen readers
+#: template-parts/content-theme.php:47 template-parts/content.php:39
+#, php-format
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2447
+msgid "Could not save the uploaded file."
+msgstr ""
+
+#: woocommerce/cart/cart.php:318
+msgid "Coupon code"
+msgstr ""
+
+#: woocommerce/cart/cart.php:318
+msgid "Coupon:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2459
+#, php-format
+msgid "Customer uploaded payment proof (attachment #%s)."
+msgstr ""
+
+#: inc/woocommerces/thank-you.php:117
+#, php-format
+msgid "Cảm ơn bạn %1$s đã đặt hàng tại Nam Linh Digital."
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:711 inc/classes/class-breadcrumbs.php:1149
+msgctxt "daily archives date format"
+msgid "j"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:117 inc/woocommerces/checkout.php:118
+msgid "Date of birth"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:121
+msgid "Date of birth of the student"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1728
+msgid "Date of birth:"
+msgstr ""
+
+#: inc/woocommerces/archive.php:765
+msgid "Date of week"
+msgstr ""
+
+#: inc/woocommerces/archive.php:759
+msgid "Date Time"
+msgstr ""
+
+#: woocommerce/checkout/thankyou.php:54
+msgid "Date:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1010
+msgid "Decrease quantity"
+msgstr ""
+
+#: woocommerce/cart/cart.php:265
+msgid "Delete"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1937
+#: woocommerce/single-product/tabs/description.php:23
+msgid "Description"
+msgstr ""
+
+#: relevanssi-live-ajax-search/search-results.php:134
+msgid "Did you mean"
+msgstr ""
+
+#: woocommerce/archive-product.php:51 woocommerce/archive-product.php:72
+msgid "Don't have Result"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:215
+msgid "Download Error"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:240
+msgid "Download hash does not match."
+msgstr ""
+
+#: inc/classes/class-download-theme.php:230
+msgid "Download ID is undefined."
+msgstr ""
+
+#: inc/classes/class-download-theme.php:245
+msgid "Download is not available."
+msgstr ""
+
+#: inc/helpers/comments.php:86
+msgid "Edit"
+msgstr ""
+
+#. %s: Name of current post. Only visible to screen readers
+#: template-parts/content-page.php:38
+#, php-format
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:128 inc/woocommerces/checkout.php:104
+#: inc/woocommerces/checkout.php:105
+msgid "Email"
+msgstr ""
+
+#: woocommerce/checkout/thankyou.php:61
+msgid "Email:"
+msgstr ""
+
+#: inc/classes/class-admin-theme.php:50 inc/classes/class-admin-theme.php:59
+msgid "End Date Time"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:134 inc/woocommerces/checkout.php:1738
+msgid "English"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1045
+msgid "Enter the %dnd person's name"
+msgstr ""
+
+#: inc/woocommerces/archive.php:777
+msgid "Event status"
+msgstr ""
+
+#: inc/woocommerces/archive.php:783
+msgid "Event type"
+msgstr ""
+
+#: inc/woocommerces/single.php:628
+msgid "Facebook"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:523
+msgid "Failed"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:156
+msgid "File does not exist. Error code: "
+msgstr ""
+
+#: inc/classes/class-download-theme.php:252
+msgid "File URL is not defined."
+msgstr ""
+
+#: inc/woocommerces/archive.php:754
+msgid "Filter"
+msgstr ""
+
+#: inc/woocommerces/single.php:452
+msgid "Filter events by year"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:75 inc/woocommerces/checkout.php:76
+msgid "First name"
+msgstr ""
+
+#. Name of the template
+#: templates/page-flexible.php:3
+msgid "Flexible"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:63
+msgid "Footer Absolute"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:51
+msgid "Footer Primary"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:39
+msgid "Footer Top"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:135 inc/woocommerces/checkout.php:1741
+msgid "French"
+msgstr ""
+
+#. Name of the template
+#: templates/page-fullwidth.php:3
+msgid "Full Width"
+msgstr ""
+
+#. Name of the template
+#: templates/page-fullwidth-without-title.php:3
+msgid "Full Width Without Title"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:284
+msgid "Go to homepage &raquo;"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:161
+msgid "Good"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:113
+msgid "Gửi đánh giá"
+msgstr ""
+
+#: inc/classes/class-menus-theme.php:27
+msgid "Header Menu"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:75
+msgid "Header Top"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:87
+msgid "Header Top Home"
+msgstr ""
+
+#: inc/classes/class-blocks-theme.php:54
+msgid "Hero Simple"
+msgstr ""
+
+#: inc/classes/class-blocks-theme.php:44
+msgid "Highlight"
+msgstr ""
+
+#: templates/page-calendar.php:68 inc/classes/class-breadcrumbs.php:178
+msgid "Home"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:692
+msgctxt "hour archives time format"
+msgid "g a"
+msgstr ""
+
+#. URI of the theme
+#. Author URI of the theme
+msgid "https://ath.edu.vn/"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:121
+msgid "Họ và tên"
+msgstr ""
+
+#: inc/classes/class-views-theme.php:182
+msgid "Image"
+msgstr ""
+
+#: inc/woocommerces/single.php:167
+msgid "Images"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1020
+msgid "Increase quantity"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2352
+msgid "Invalid order verification token."
+msgstr ""
+
+#: template-parts/content-none.php:41
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: searchform.php:11 searchform.php:12
+msgctxt "label"
+msgid "Search for:"
+msgstr ""
+
+#: header.php:174 header.php:179 inc/woocommerces/checkout.php:127
+msgid "Language"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1747
+msgid "Language:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:85 inc/woocommerces/checkout.php:86
+msgid "Last name"
+msgstr ""
+
+#. %s is product title
+#: woocommerce/single-product-reviews.php:109
+#, php-format
+msgid "Leave a Reply to %s"
+msgstr ""
+
+#: templates/page-calendar.php:104 inc/woocommerces/archive.php:789
+msgid "Location"
+msgstr ""
+
+#: template-parts/headers/icon-login.php:16
+msgid "Log In"
+msgstr ""
+
+#: template-parts/footers/th-mobile-menu.php:56
+msgid "Login Now"
+msgstr ""
+
+#: template-parts/footers/th-mobile-menu.php:44
+#: template-parts/footers/slideout-menu.php:7
+msgid "Menu"
+msgstr ""
+
+#. Minute archive title. %s is the minute time format.
+#: inc/classes/class-breadcrumbs.php:188
+#, php-format
+msgid "Minute %s"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:656
+msgctxt "minute and hour archives time format"
+msgid "g:i a"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:674
+msgctxt "minute archives time format"
+msgid "i"
+msgstr ""
+
+#: templates/page-calendar.php:95
+msgid "Month"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:710 inc/classes/class-breadcrumbs.php:768
+#: inc/classes/class-breadcrumbs.php:1145
+msgctxt "monthly archives date format"
+msgid "F"
+msgstr ""
+
+#: woocommerce/checkout/thankyou.php:39
+msgid "My account"
+msgstr ""
+
+#: template-parts/footers/modal-popup-newsletter.php:92
+msgid "Newsletter"
+msgstr ""
+
+#: comments.php:73 template-parts/singles/prev-next-post.php:39
+msgid "Next"
+msgstr ""
+
+#: templates/page-calendar.php:88
+msgid "Next period"
+msgstr ""
+
+#: template-parts/singles/prev-next-post.php:40
+msgid "Next post:"
+msgstr ""
+
+#. Author of the theme
+msgid "nguyenvanviet"
+msgstr ""
+
+#: inc/woocommerces/helpers/artists.php:344
+msgid "No artists available for this product."
+msgstr ""
+
+#: inc/woocommerces/helpers/helper.php:10
+msgid "No attribute was defined for query."
+msgstr ""
+
+#: template-parts/footers/modal-popup-newsletter.php:130
+msgid "No items configured"
+msgstr ""
+
+#: inc/classes/class-assets-theme.php:99
+msgid "No order found."
+msgstr ""
+
+#: template-parts/footers/wcs-mini-cart.php:80
+msgid "No products in the cart."
+msgstr ""
+
+#: inc/woocommerces/single.php:496
+msgid "No related events found."
+msgstr ""
+
+#: relevanssi-live-ajax-search/search-results.php:127
+msgid "No results found."
+msgstr ""
+
+#: woocommerce/archive-product.php:54 woocommerce/archive-product.php:75
+msgid "No results were found for you. Here are some products you may like."
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:163
+msgid "Not that bad"
+msgstr ""
+
+#: woocommerce/order/order-details.php:130
+msgid "Note:"
+msgstr ""
+
+#: template-parts/content-none.php:11
+msgid "Nothing Found"
+msgstr ""
+
+#: inc/woocommerces/helpers/helper.php:116
+msgid "On Sale"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:255
+msgid "One or more events in your cart are no longer available for booking."
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:176
+msgid ""
+"Only logged in customers who have purchased this product may leave a review."
+msgstr ""
+
+#: template-parts/headers/icon-search.php:21
+msgid "Open a search form"
+msgstr ""
+
+#: inc/woocommerces/single.php:390
+msgid "Open image"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:31
+#, php-format
+msgid "Order #%s"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:145
+msgid "Order Confirmation"
+msgstr ""
+
+#: woocommerce/order/order-details.php:57
+msgid "Order details"
+msgstr ""
+
+#: woocommerce/checkout/thankyou.php:50
+msgid "Order number:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2347
+msgid "Order session is missing."
+msgstr ""
+
+#: woocommerce/cart/cart.php:33 woocommerce/cart/cart.php:76
+msgid "Order summary"
+msgstr ""
+
+#: templates/sections/product-cat-grid/section.php:60
+msgid "Our service"
+msgstr ""
+
+#. %s is the page number.
+#: inc/classes/class-breadcrumbs.php:184
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+#. Name of the template
+#: templates/page-blog.php:2
+msgid "Page Blog"
+msgstr ""
+
+#: 404.php:24
+msgid "Page not found"
+msgstr ""
+
+#: template-parts/content-theme.php:60 template-parts/content-page.php:24
+#: template-parts/content.php:52
+msgid "Pages:"
+msgstr ""
+
+#: woocommerce/checkout/thankyou.php:37
+msgid "Pay"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:296 inc/woocommerces/checkout.php:1895
+msgid "Payment"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:495
+msgid "Payment confirmed"
+msgstr ""
+
+#: woocommerce/checkout/form-checkout.php:68
+msgid "Payment method"
+msgstr ""
+
+#: woocommerce/checkout/thankyou.php:73
+msgid "Payment method:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1907
+msgid "Payment QR code"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2316
+msgid "Payment status loaded."
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:160
+msgid "Perfect"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1716
+msgid "Performance:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:95 inc/woocommerces/checkout.php:96
+msgid "Phone"
+msgstr ""
+
+#: inc/helpers/utility.php:40
+msgid "Pingback:"
+msgstr ""
+
+#: searchform.php:12
+msgctxt "placeholder"
+msgid "Search &hellip;"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2402
+msgid "Please choose a bill file first."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1589
+msgid "Please enter the name for ticket holder %d."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1556
+msgid "Please select a performance date."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1562
+msgid "Please select a ticket type."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1033
+msgid "Please write down all of their name. *"
+msgstr ""
+
+#: relevanssi-live-ajax-search/search-results.php:36
+msgid "Press enter to see all the results."
+msgstr ""
+
+#: comments.php:72 template-parts/singles/prev-next-post.php:24
+msgid "Previous"
+msgstr ""
+
+#: templates/page-calendar.php:84
+msgid "Previous period"
+msgstr ""
+
+#: template-parts/singles/prev-next-post.php:25
+msgid "Previous post:"
+msgstr ""
+
+#: woocommerce/cart/cart.php:168
+msgid "Price"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:45
+msgid "Proceed to payment"
+msgstr ""
+
+#: woocommerce/cart/cart.php:167 woocommerce/cart/cart.php:220
+#: woocommerce/order/order-details.php:63
+msgid "Product"
+msgstr ""
+
+#: inc/woocommerces/single.php:378
+msgid "Product gallery"
+msgstr ""
+
+#: woocommerce/global/quantity-input.php:49
+msgid "Product quantity"
+msgstr ""
+
+#: template-parts/singles/author-bio.php:22
+msgid "Published %d posts"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1910
+msgid "QR code"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1008 woocommerce/global/quantity-input.php:25
+#: woocommerce/global/quantity-input.php:37 woocommerce/cart/cart.php:169
+msgid "Quantity"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:159
+msgid "Rate&hellip;"
+msgstr ""
+
+#: templates/components/button.php:10
+msgid "Read More"
+msgstr ""
+
+#: home.php:29 archive.php:29 search.php:43
+#: templates/sections/post-card/post-card.php:11
+#: templates/sections/post-row/post-row.php:11
+msgid "Read More..."
+msgstr ""
+
+#. 1: link to WP admin new post page.
+#: template-parts/content-none.php:21
+#, php-format
+msgid ""
+"Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: templates/page-checkout.php:37
+msgid "Register"
+msgstr ""
+
+#: template-parts/footers/th-mobile-menu.php:68
+msgid "Register Account"
+msgstr ""
+
+#: inc/woocommerces/single.php:54
+msgid "Register Camp"
+msgstr ""
+
+#: single.php:74 templates/page-blog.php:79
+msgid "Related Articles"
+msgstr ""
+
+#: woocommerce/single-product/related.php:27
+msgid "Related products"
+msgstr ""
+
+#. %s is the product name
+#: woocommerce/cart/cart.php:268
+#, php-format
+msgid "Remove %s from cart"
+msgstr ""
+
+#: woocommerce/cart/cart.php:165
+msgid "Remove item"
+msgstr ""
+
+#: template-parts/footers/wcs-mini-cart.php:33
+msgid "Remove this item"
+msgstr ""
+
+#: inc/classes/class-download-theme.php:294
+msgid "Return to previous page &#10550;"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:187
+msgid "Reviews"
+msgstr ""
+
+#: woocommerce/product-searchform.php:26
+msgid "Search"
+msgstr ""
+
+#: woocommerce/product-searchform.php:25
+msgid "Search for:"
+msgstr ""
+
+#. %s is the search query.
+#: inc/classes/class-breadcrumbs.php:182
+#, php-format
+msgid "Search Results for: %s"
+msgstr ""
+
+#: inc/woocommerces/single.php:161 inc/woocommerces/single.php:177
+msgid "Section"
+msgstr ""
+
+#: header.php:169 inc/woocommerces/checkout.php:132
+msgid "Select language"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:958
+msgid "Select Performance date *"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:986
+msgid "Select type of ticket"
+msgstr ""
+
+#: templates/page-calendar.php:164
+msgid "Selected date"
+msgstr ""
+
+#: templates/sections/share-icon/share-icon.php:21
+msgid "Share on Facebook"
+msgstr ""
+
+#: templates/sections/share-icon/share-icon.php:27
+msgid "Share on LinkedIn"
+msgstr ""
+
+#: templates/sections/share-icon/share-icon.php:24
+msgid "Share on X"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:90 woocommerce/cart/cart-totals.php:91
+msgid "Shipping"
+msgstr ""
+
+#: template-parts/footers/mini-cart.php:23
+msgid "Shopping cart"
+msgstr ""
+
+#: templates/page-calendar.php:137
+msgid "Show/Event/Festival"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:110
+msgid "Sidebar Archive Woocommerce"
+msgstr ""
+
+#: inc/classes/class-sidebars-theme.php:99
+msgid "Sidebar Category"
+msgstr ""
+
+#: html/similar-product.php:99 inc/woocommerces/single.php:877
+msgid "Similar Show/ Event"
+msgstr ""
+
+#: template-parts/content-none.php:34
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: inc/classes/class-rest-api-theme.php:164
+#: inc/classes/class-views-theme.php:243
+msgid "Sorry, something went wrong. Please refresh this page and try again!"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:70
+msgid "Star"
+msgstr ""
+
+#: inc/classes/class-admin-theme.php:49 inc/classes/class-admin-theme.php:55
+msgid "Start Date Time"
+msgstr ""
+
+#: templates/page-calendar.php:124
+msgid "Status"
+msgstr ""
+
+#: searchform.php:17 woocommerce/product-searchform.php:30
+msgctxt "submit button"
+msgid "Search"
+msgstr ""
+
+#: woocommerce/cart/cart.php:170 woocommerce/cart/cart.php:244
+#: woocommerce/cart/cart-totals.php:68 woocommerce/cart/cart-totals.php:69
+msgid "Subtotal"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:519
+msgid "Success"
+msgstr ""
+
+#: inc/classes/class-assets-theme.php:100
+msgid "System error, please try again."
+msgstr ""
+
+#: woocommerce/checkout/order-received.php:35
+msgid "Thank you. Your order has been received."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:15
+msgid "The first name of the customer"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:33
+msgid "The first name of the student"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:16
+msgid "The last name of the customer"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:34
+msgid "The last name of the student"
+msgstr ""
+
+#: 404.php:26
+msgid ""
+"The page you are looking for may have been removed, renamed, or never "
+"existed."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1558
+msgid "The selected performance date is invalid."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1564
+msgid "The selected ticket type is invalid."
+msgstr ""
+
+#: woocommerce/cart/cart.php:161
+msgid "There are %d products in your cart"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:214
+msgid "There are no reviews yet."
+msgstr ""
+
+#: inc/classes/class-rest-api-theme.php:146
+#: inc/classes/class-rest-api-theme.php:147
+msgid "There is no theme to display."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:194
+msgid "This event is no longer available for booking."
+msgstr ""
+
+#. Description of the theme
+msgid ""
+"This is a modern and customizable theme for blogs and personal websites."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2398
+msgid "This order was already approved."
+msgstr ""
+
+#: woocommerce/cart/cart.php:166
+msgid "Thumbnail image"
+msgstr ""
+
+#: woocommerce/checkout/form-checkout.php:52
+msgid "Ticket booking information"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:952 inc/woocommerces/checkout.php:1713
+msgid "Ticket detail"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1764
+#, php-format
+msgid "Ticket holder %d: %s"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1755 inc/woocommerces/checkout.php:1768
+msgid "Ticket holders:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1720
+msgid "Ticket type:"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:24 woocommerce/cart/cart-totals.php:40
+#: woocommerce/cart/cart-totals.php:136 woocommerce/cart/cart-totals.php:137
+#: woocommerce/order/order-details.php:64
+msgid "Total"
+msgstr ""
+
+#: woocommerce/checkout/thankyou.php:67
+msgid "Total:"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:506 inc/woocommerces/checkout.php:512
+msgid "Transfer to the account below and upload the bill."
+msgstr ""
+
+#. Name of the theme
+msgid "Twmp ATH"
+msgstr ""
+
+#: templates/page-calendar.php:114
+msgid "Type"
+msgstr ""
+
+#: template-parts/footers/modal-search-form.php:26
+msgid "Type to search"
+msgstr ""
+
+#: woocommerce/checkout/thankyou.php:34
+msgid ""
+"Unfortunately your order cannot be processed as the originating "
+"bank/merchant has declined your transaction. Please attempt your purchase "
+"again."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:2422
+msgid "Unsupported file type. Please upload image or PDF."
+msgstr ""
+
+#: woocommerce/cart/cart.php:323
+msgid "Update cart"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:461
+msgid "Upload bill"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1963
+msgid "Upload confirmation receipt."
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:30
+msgid "Upload your bill and wait for admin review."
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:164
+msgid "Very poor"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:133 inc/woocommerces/checkout.php:1735
+msgid "Vietnamese"
+msgstr ""
+
+#: inc/woocommerces/archive.php:699 templates/sections/fs-class/item.php:133
+#: templates/sections/class-workshop/item.php:134
+#: templates/sections/show-event/item.php:133
+#: templates/sections/fc-class-workshop/item.php:133
+msgid "View Detail"
+msgstr ""
+
+#: inc/woocommerces/archive.php:696
+#, php-format
+msgid "View Detail %s"
+msgstr ""
+
+#: inc/woocommerces/disable.php:54
+msgid "View product"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:1984
+msgid "View status"
+msgstr ""
+
+#: inc/classes/class-views-theme.php:176
+msgid "View W"
+msgstr ""
+
+#: inc/classes/class-views-theme.php:170
+msgid "View Y"
+msgstr ""
+
+#: inc/woocommerces/single.php:626
+msgid "Visit our social networks:"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:167
+msgid "Viết đánh giá"
+msgstr ""
+
+#: inc/woocommerces/thank-you.php:124
+#, php-format
+msgid ""
+"Vui lòng thanh toán số tiền %s cho nhân viên giao hàng khi nhận được hàng."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:526
+msgid "Waiting"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:493 inc/woocommerces/checkout.php:499
+msgid "Waiting for bill upload"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:494 woocommerce/cart/cart-totals.php:29
+msgid "Waiting for confirmation"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:507
+msgid "We have received your bill. Please wait for admin review."
+msgstr ""
+
+#. Weekly archive title. %s is the week date format.
+#: inc/classes/class-breadcrumbs.php:190
+#, php-format
+msgid "Week %s"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:740
+msgctxt "weekly archives date format"
+msgid "W"
+msgstr ""
+
+#: template-parts/footers/modal-popup-welcome.php:26
+msgid "Welcome to ATH"
+msgstr ""
+
+#: inc/woocommerces/archive.php:891
+msgid "What People Say About Us"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:45
+msgid "Xếp hạng trung bình"
+msgstr ""
+
+#: templates/page-calendar.php:98
+msgid "Year"
+msgstr ""
+
+#: inc/classes/class-breadcrumbs.php:709 inc/classes/class-breadcrumbs.php:739
+#: inc/classes/class-breadcrumbs.php:767 inc/classes/class-breadcrumbs.php:795
+#: inc/classes/class-breadcrumbs.php:1141
+msgctxt "yearly archives date format"
+msgid "Y"
+msgstr ""
+
+#: template-parts/footers/modal-popup-welcome.php:27
+msgid "You are?"
+msgstr ""
+
+#. %s opening and closing link tags respectively
+#: woocommerce/single-product-reviews.php:154
+#, php-format
+msgid "You must be %slogged in%s to post a review."
+msgstr ""
+
+#: woocommerce/checkout/form-checkout.php:27
+msgid "You must be logged in to checkout."
+msgstr ""
+
+#: template-parts/footers/th-mobile-menu.php:49
+msgid "You not login"
+msgstr ""
+
+#: inc/woocommerces/checkout.php:509
+msgid "Your bill was rejected. Please upload a clearer file."
+msgstr ""
+
+#: woocommerce/cart/cart.php:147
+msgid "Your cart is empty."
+msgstr ""
+
+#: inc/helpers/utility.php:78 inc/helpers/comments.php:77
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: woocommerce/cart/cart.php:57
+msgid "Your order is ready for payment proof review."
+msgstr ""
+
+#: inc/woocommerces/checkout.php:508
+msgid "Your payment was approved."
+msgstr ""
+
+#: inc/woocommerces/single.php:631
+msgid "YouTube"
+msgstr ""

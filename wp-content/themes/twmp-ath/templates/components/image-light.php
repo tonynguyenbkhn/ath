@@ -33,7 +33,7 @@ if (!empty($data['class'])) {
 
 <div class="<?php echo esc_attr(implode(' ', array_filter($classes))); ?>">
 	<img
-		src="<?php echo $src; ?>"
+		src="<?php echo esc_url($src); ?>"
 		alt="<?php echo esc_attr($data['alt']); ?>"
 		<?php if (!empty($data['width'])) : ?>width="<?php echo esc_attr(absint($data['width'])); ?>"<?php endif; ?>
 		<?php if (!empty($data['height'])) : ?>height="<?php echo esc_attr(absint($data['height'])); ?>"<?php endif; ?>

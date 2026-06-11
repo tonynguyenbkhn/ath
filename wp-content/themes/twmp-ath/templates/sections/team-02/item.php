@@ -44,9 +44,9 @@ $name_html = esc_html($data['name']);
 		<?php if (! empty($data['name'])) : ?>
 			<h3 class="team-card__name">
 				<?php if (! empty($data['url'])) : ?>
-					<a href="<?php echo esc_url($data['url']); ?>"><?php echo $name_html; ?></a>
+					<a href="<?php echo esc_url($data['url']); ?>"><?php echo esc_html($name_html); ?></a>
 				<?php else : ?>
-					<?php echo $name_html; ?>
+					<?php echo esc_html($name_html); ?>
 				<?php endif; ?>
 			</h3>
 		<?php endif; ?>
