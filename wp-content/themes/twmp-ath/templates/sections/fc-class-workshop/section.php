@@ -179,7 +179,7 @@ if (! $has_intro && empty($slides)) {
                                     'centeredSlides'    => true,
                                     'breakpoints'     => [
                                         640  => [
-                                            'slidesPerView' => 1.4,
+                                            'slidesPerView' => 2,
                                             'spaceBetween'  => 32,
                                             'centeredSlides'    => true,
                                         ],

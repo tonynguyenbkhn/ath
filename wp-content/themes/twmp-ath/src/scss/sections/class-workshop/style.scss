@@ -397,6 +397,10 @@
   padding: 20px;
   bottom: 0;
   width: calc(100% - 40px);
+
+  @media (max-width: 1199px) {
+    text-align: left;
+  }
 }
 
 .class-card__short-info {

@@ -9,6 +9,14 @@
         @include typo-token(30, 42, 400);
         font-family: var(--font-beautique-display);
 
+        @media (min-width: 768px) {
+            @include typo-token(55, 95, 400);
+        }
+
+        @media (min-width: 1024px) {
+            @include typo-token(65, 100, 400);
+        }
+
         @media (min-width: 1200px) {
             @include typo-token(75, 115, 400);
         }

@@ -106,6 +106,12 @@
 
 .hero-banner__title {
     @media (max-width: 1199px) {
+        @include typo-token(76, 80, 400);
+    }
+    @media (max-width: 1023px) {
+        @include typo-token(56, 70, 400);
+    }
+    @media (max-width: 575px) {
         @include typo-token(40, 48, 400);
     }
 }

@@ -25,13 +25,12 @@
 }
 
 .show-event__viewport {
-  min-height: 100vh;
+  //min-height: 100vh;
   overflow: hidden;
   position: relative;
 }
 
 .show-event__track {
-  min-height: 100vh;
   padding: 80px 0;
   position: relative;
   z-index: 1;
