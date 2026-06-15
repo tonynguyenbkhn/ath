@@ -676,8 +676,33 @@ add_action('woocommerce_single_product_summary', function () {
 		$value_is_html = false;
 
 		if ('ath_start_datetime' === $field_key) {
-			$end_value = function_exists('get_field') ? get_field('ath_end_datetime', $product_id) : '';
-			$value = twmp_format_event_datetime_range($value, $end_value);
+			$upcoming_ranges = function_exists('twmp_get_upcoming_event_datetime_ranges') ? twmp_get_upcoming_event_datetime_ranges($product_id) : [];
+
+			if (! empty($upcoming_ranges)) {
+				$range_items = array_map(
+					static function ($range) {
+						return twmp_format_event_datetime_range($range['start'] ?? '', $range['end'] ?? '');
+					},
+					$upcoming_ranges
+				);
+				$range_items = array_values(array_filter($range_items));
+				$value = $range_items[0] ?? '';
+
+				if (count($range_items) > 1) {
+					$value_is_html = true;
+					$value = '<span class="product-details-meta__next-time">' . esc_html($value) . '</span>';
+					$value .= '<details class="product-details-meta__times"><summary>' . esc_html__('View all times', 'twmp-ath') . '</summary><ul>';
+
+					foreach (array_slice($range_items, 1) as $range_item) {
+						$value .= '<li>' . esc_html($range_item) . '</li>';
+					}
+
+					$value .= '</ul></details>';
+				}
+			} else {
+				$end_value = function_exists('get_field') ? get_field('ath_end_datetime', $product_id) : '';
+				$value = twmp_format_event_datetime_range($value, $end_value);
+			}
 		} elseif ('ath_venue' === $field_key) {
 			$terms = wp_get_post_terms($product_id, 'ath_venue');
 			if (is_wp_error($terms) || empty($terms)) {
@@ -712,7 +737,17 @@ add_action('woocommerce_single_product_summary', function () {
 		echo '<div><span class="product-details-meta__item-label">' . esc_html($icon[1]) . '</span>: <span class="product-details-meta__item-text">';
 		$raw = twmp_field_to_string($value);
 		if (!empty($value_is_html)) {
-			echo wp_kses($raw, [ 'a' => [ 'href' => [], 'target' => [], 'rel' => [] ] ]);
+			echo wp_kses(
+				$raw,
+				[
+					'a' => [ 'href' => [], 'target' => [], 'rel' => [] ],
+					'details' => [ 'class' => [] ],
+					'li' => [],
+					'span' => [ 'class' => [] ],
+					'summary' => [],
+					'ul' => [],
+				]
+			);
 		} else {
 			echo esc_html($raw);
 		}

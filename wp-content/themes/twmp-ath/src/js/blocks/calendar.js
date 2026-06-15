@@ -281,7 +281,7 @@ const expandEventsForMonth = (events, rangeStart, rangeEnd) => {
 const renderEventCardBody = event => {
 	const meta = getMeta(event)
 	const title = escapeHtml(event.title || '')
-	const eventMeta = escapeHtml(meta.displayDateRange || meta.timeRange || '')
+	const eventMeta = escapeHtml(meta.locationLabel || '')
 	const color = getEventColor(event)
 
 	return `
@@ -367,10 +367,9 @@ const renderSidebarContent = (sidebarTitleEl, sidebarContentEl, date, events, ac
 		const meta = getMeta(event)
 		const isActive = activeEventId && activeEventId === event.id
 		const thumb = meta.thumbnailUrl || ''
-		const title = event.title || ''
+		const title = escapeHtml(event.title || '')
 		const link = meta.permalink || event.url || '#'
-		const timeRange = [meta.displayDateRange, meta.timeRange].filter(Boolean).join(' · ')
-		const details = [meta.ageDisplay, meta.language, meta.locationLabel].filter(Boolean).join(', ')
+		const venue = escapeHtml(meta.locationLabel || '')
 		const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
 
 		return `
@@ -380,9 +379,7 @@ const renderSidebarContent = (sidebarTitleEl, sidebarContentEl, date, events, ac
 					<div class="calendar-sidebar__item-body">
 						<span class="calendar-sidebar__item-title">${title}</span>
 						<div class="calendar-sidebar__item-time-meta">
-						${timeRange ? `<span class="calendar-sidebar__item-time">${timeRange}</span>` : ''}
-						${details ? `<span class="calendar-sidebar__item-meta">${details}</span>` : ''}
-						${meta.shortInfo ? `<span class="calendar-sidebar__item-copy">${meta.shortInfo}</span>` : ''}
+						${venue ? `<span class="calendar-sidebar__item-meta">${venue}</span>` : ''}
 						</div>
 					</div>
 					<span class="calendar-sidebar__item-arrow" aria-hidden="true">&rsaquo;</span>
@@ -782,16 +779,16 @@ export default el => {
 	</div>
 						${visibleEvents.map(event => {
 				const meta = getMeta(event)
-				const title = event.title || ''
-				const timeRange = meta.timeRange || ''
+				const title = escapeHtml(event.title || '')
+				const eventMeta = escapeHtml(meta.locationLabel || '')
 				const color = event.backgroundColor || '#F8B2A5'
 				const product_cat = Array.isArray(meta?.product_cat) ? meta.product_cat[0]?.slug || '' : '';
 
 				return `
-								<button type="button" class="calendar-event-card ${product_cat}" data-event-id="${event.id}" data-event-date="${formatDateKey(weekStart)}">
-									<span class="calendar-event-card__body" style="--event-color:${color};">
+								<button type="button" class="calendar-event-card ${escapeHtml(product_cat)}" data-event-id="${escapeHtml(event.id)}" data-event-date="${formatDateKey(weekStart)}">
+									<span class="calendar-event-card__body" style="--event-color:${escapeHtml(color)};">
 										<span class="calendar-event-card__title">${title}</span>
-										<span class="calendar-event-card__meta">${meta.displayDateRange || timeRange}</span>
+										${eventMeta ? `<span class="calendar-event-card__meta">${eventMeta}</span>` : ''}
 									</span>
 								</button>
 							`

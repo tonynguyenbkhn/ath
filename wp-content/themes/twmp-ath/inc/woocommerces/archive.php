@@ -581,8 +581,8 @@ function twmp_render_product_card()
     }
 
     $timestamp    = get_post_timestamp($product_post);
-    $start_datetime = function_exists('get_field') ? (string) get_field('ath_start_datetime', $product_id) : '';
-    $timestamp    = $start_datetime ? strtotime($start_datetime) : $timestamp;
+    $next_range   = function_exists('twmp_get_next_event_datetime_range') ? twmp_get_next_event_datetime_range($product_id) : [];
+    $timestamp    = !empty($next_range['start_timestamp']) ? absint($next_range['start_timestamp']) : $timestamp;
     $date_day     = $timestamp ? wp_date('j', $timestamp) : '';
     $date_weekday = $timestamp ? strtoupper(wp_date('D', $timestamp)) : '';
     $date_month   = $timestamp ? strtoupper(wp_date('M', $timestamp)) : '';

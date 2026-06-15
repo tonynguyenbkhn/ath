@@ -72,7 +72,8 @@ if (!defined('ABSPATH')) {
         $badges = function_exists('get_field') ? get_field('ath_badges', $product_id) : [];
         $location_detail = function_exists('twmp_get_taxonomy_term_names') ? twmp_get_taxonomy_term_names($product_id, 'ath_venue') : '';
         $location = function_exists('get_field') ? (string) get_field('ath_location', $product_id) : '';
-        $start_datetime = function_exists('get_field') ? (string) get_field('ath_start_datetime', $product_id) : '';
+        $next_range = function_exists('twmp_get_next_event_datetime_range') ? twmp_get_next_event_datetime_range($product_id) : [];
+        $start_datetime = ! empty($next_range) ? twmp_format_event_datetime_range($next_range['start'] ?? '', $next_range['end'] ?? '') : '';
         ?>
 
         <div class="relevanssi-live-search-result" role="option" aria-selected="false">

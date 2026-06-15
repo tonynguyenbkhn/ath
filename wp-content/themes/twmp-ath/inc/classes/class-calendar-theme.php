@@ -314,8 +314,6 @@ class Calendar_Theme
 		$subtitle = trim((string) get_field('ath_subtitle', $product_id));
 		$demonstration = trim((string) get_field('ath_demonstration', $product_id));
 		$badges = get_field('ath_badges', $product_id);
-		$start_datetime = (string) get_field('ath_start_datetime', $product_id);
-		$end_datetime = (string) get_field('ath_end_datetime', $product_id);
 		$thumbnail_id = get_post_thumbnail_id($product_id);
 		$thumbnail_url = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'large') : '';
 		$thumbnail_alt = $thumbnail_id ? get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true) : '';
@@ -325,39 +323,44 @@ class Calendar_Theme
 		$default_duration = 2 * HOUR_IN_SECONDS;
 		$instances = [];
 
-		// Calendar shows one event per product, based on the main start/end datetime only.
-		if ($start_datetime !== '') {
-			$instance_start = $this->parse_datetime($start_datetime, $timezone);
+		$datetime_ranges = function_exists('twmp_get_event_datetime_ranges') ? twmp_get_event_datetime_ranges($product_id) : [];
 
-			if ($instance_start) {
-				$instance_end = $this->resolve_end_timestamp($instance_start, $end_datetime, $default_duration);
+		foreach ($datetime_ranges as $datetime_range) {
+			$instance_start = absint($datetime_range['start_timestamp'] ?? 0);
 
-				if ($this->is_in_range($instance_start, $instance_end, $range_start, $range_end) && $this->passes_filters($type, $location_key, $status, $filters)) {
-					$instances[] = $this->format_event_item(
-						$product_id,
-						$product->post_title,
-						$instance_start,
-						$instance_end,
-						[
-							'type' => $type,
-							'status' => $status,
-							'location' => $location_key,
-							'location_label' => $location_label,
-							'short_info' => $short_info,
-							'age_display' => $age_display,
-							'language' => $language,
-							'format' => $format,
-							'subtitle' => $subtitle,
-							'demonstration' => $demonstration,
-							'thumbnail_url' => $thumbnail_url,
-							'thumbnail_alt' => $thumbnail_alt,
-							'permalink' => $permalink,
-							'product_cat' => $product_cat,
-							'badges' => is_array($badges) ? $badges : [],
-							'has_end_datetime' => $end_datetime !== '',
-						]
-					);
-				}
+			if (! $instance_start) {
+				continue;
+			}
+
+			$end_datetime = ! empty($datetime_range['has_end']) ? (string) ($datetime_range['end'] ?? '') : '';
+			$instance_end = $this->resolve_end_timestamp($instance_start, $end_datetime, $default_duration);
+
+			if ($this->is_in_range($instance_start, $instance_end, $range_start, $range_end) && $this->passes_filters($type, $location_key, $status, $filters)) {
+				$instances[] = $this->format_event_item(
+					$product_id,
+					$product->post_title,
+					$instance_start,
+					$instance_end,
+					[
+						'type' => $type,
+						'status' => $status,
+						'location' => $location_key,
+						'location_label' => $location_label,
+						'short_info' => $short_info,
+						'age_display' => $age_display,
+						'language' => $language,
+						'format' => $format,
+						'subtitle' => $subtitle,
+						'demonstration' => $demonstration,
+						'thumbnail_url' => $thumbnail_url,
+						'thumbnail_alt' => $thumbnail_alt,
+						'permalink' => $permalink,
+						'product_cat' => $product_cat,
+						'badges' => is_array($badges) ? $badges : [],
+						'has_end_datetime' => ! empty($datetime_range['has_end']),
+						'occurrence_key' => $datetime_range['key'] ?? '',
+					]
+				);
 			}
 		}
 
@@ -370,9 +373,10 @@ class Calendar_Theme
 		$day_key = wp_date('Y-m-d', $start_timestamp);
 		$week_key = wp_date('o-\WW', $start_timestamp);
 		$time_range = $this->format_time_range($start_timestamp, $end_timestamp);
+		$occurrence_key = (string) ($meta['occurrence_key'] ?? '');
 
 		return [
-			'id' => sprintf('%d-%s', $product_id, md5($day_key . '|' . $time_range)),
+			'id' => sprintf('%d-%s', $product_id, md5($day_key . '|' . $time_range . '|' . $occurrence_key)),
 			'product_id' => $product_id,
 			'title' => html_entity_decode((string) $title, ENT_QUOTES, get_bloginfo('charset')),
 			'start' => wp_date('c', $start_timestamp),
@@ -409,6 +413,7 @@ class Calendar_Theme
 				'weekKey' => $week_key,
 				'timeRange' => $time_range,
 				'hasEndDatetime' => ! empty($meta['has_end_datetime']),
+				'occurrenceKey' => $occurrence_key,
 			],
 		];
 	}

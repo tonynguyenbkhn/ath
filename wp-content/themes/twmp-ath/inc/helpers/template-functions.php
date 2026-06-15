@@ -399,26 +399,142 @@ function twmp_parse_site_datetime($value)
 	return $timestamp ? absint($timestamp) : 0;
 }
 
-function twmp_get_event_start_timestamp($product_id = 0)
+function twmp_get_event_datetime_ranges($product_id = 0, $include_legacy = true)
 {
 	$product_id = absint($product_id);
 
 	if (! $product_id || ! function_exists('get_field')) {
+		return [];
+	}
+
+	$ranges = [];
+	$rows = get_field('ath_show_datetime_ranges', $product_id);
+
+	if (is_array($rows)) {
+		foreach ($rows as $index => $row) {
+			if (! is_array($row)) {
+				continue;
+			}
+
+			$start_raw = isset($row['start_datetime']) ? trim((string) $row['start_datetime']) : '';
+			$end_raw = isset($row['end_datetime']) ? trim((string) $row['end_datetime']) : '';
+			$start_timestamp = twmp_parse_site_datetime($start_raw);
+
+			if (! $start_timestamp) {
+				continue;
+			}
+
+			$end_timestamp = twmp_parse_site_datetime($end_raw);
+			$has_end = $end_raw !== '' && $end_timestamp && $end_timestamp > $start_timestamp;
+
+			$ranges[] = [
+				'key' => sprintf('range-%d-%s', $index, md5($start_raw . '|' . $end_raw)),
+				'start' => $start_raw,
+				'end' => $has_end ? $end_raw : '',
+				'start_timestamp' => $start_timestamp,
+				'end_timestamp' => $has_end ? $end_timestamp : $start_timestamp,
+				'has_end' => (bool) $has_end,
+			];
+		}
+	}
+
+	if (empty($ranges) && $include_legacy) {
+		$start_raw = trim((string) get_field('ath_start_datetime', $product_id));
+		$end_raw = trim((string) get_field('ath_end_datetime', $product_id));
+		$start_timestamp = twmp_parse_site_datetime($start_raw);
+
+		if ($start_timestamp) {
+			$end_timestamp = twmp_parse_site_datetime($end_raw);
+			$has_end = $end_raw !== '' && $end_timestamp && $end_timestamp > $start_timestamp;
+
+			$ranges[] = [
+				'key' => 'legacy-' . md5($start_raw . '|' . $end_raw),
+				'start' => $start_raw,
+				'end' => $has_end ? $end_raw : '',
+				'start_timestamp' => $start_timestamp,
+				'end_timestamp' => $has_end ? $end_timestamp : $start_timestamp,
+				'has_end' => (bool) $has_end,
+			];
+		}
+	}
+
+	usort(
+		$ranges,
+		static function ($left, $right) {
+			return ($left['start_timestamp'] ?? 0) <=> ($right['start_timestamp'] ?? 0);
+		}
+	);
+
+	return $ranges;
+}
+
+function twmp_get_next_event_datetime_range($product_id = 0)
+{
+	$ranges = twmp_get_event_datetime_ranges($product_id);
+
+	if (empty($ranges)) {
+		return [];
+	}
+
+	$now = function_exists('current_datetime') ? current_datetime()->getTimestamp() : time();
+
+	foreach ($ranges as $range) {
+		$range_end = ! empty($range['has_end']) ? absint($range['end_timestamp']) : absint($range['start_timestamp']);
+
+		if ($range_end >= $now) {
+			return $range;
+		}
+	}
+
+	return [];
+}
+
+function twmp_get_upcoming_event_datetime_ranges($product_id = 0)
+{
+	$ranges = twmp_get_event_datetime_ranges($product_id);
+
+	if (empty($ranges)) {
+		return [];
+	}
+
+	$now = function_exists('current_datetime') ? current_datetime()->getTimestamp() : time();
+
+	return array_values(
+		array_filter(
+			$ranges,
+			static function ($range) use ($now) {
+				$range_end = ! empty($range['has_end']) ? absint($range['end_timestamp']) : absint($range['start_timestamp']);
+
+				return $range_end >= $now;
+			}
+		)
+	);
+}
+
+function twmp_get_event_start_timestamp($product_id = 0)
+{
+	$product_id = absint($product_id);
+
+	if (! $product_id) {
 		return 0;
 	}
 
-	return twmp_parse_site_datetime(get_field('ath_start_datetime', $product_id));
+	$range = twmp_get_next_event_datetime_range($product_id);
+
+	return ! empty($range['start_timestamp']) ? absint($range['start_timestamp']) : 0;
 }
 
 function twmp_is_event_bookable($product_id = 0)
 {
-	$start_timestamp = twmp_get_event_start_timestamp($product_id);
+	$range = twmp_get_next_event_datetime_range($product_id);
 
-	if (! $start_timestamp || ! function_exists('current_datetime')) {
+	if (empty($range) || ! function_exists('current_datetime')) {
 		return false;
 	}
 
-	return $start_timestamp >= current_datetime()->getTimestamp();
+	$range_end = ! empty($range['has_end']) ? absint($range['end_timestamp']) : absint($range['start_timestamp']);
+
+	return $range_end >= current_datetime()->getTimestamp();
 }
 
 function twmp_format_event_datetime_range($start_value = '', $end_value = '')
