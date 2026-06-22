@@ -59,9 +59,7 @@ foreach ($product_ids as $index => $product_id) {
         $description = wp_trim_words(wp_strip_all_tags($product_post->post_excerpt), 18, '...');
     }
 
-    $timestamp = get_post_timestamp($product_post);
-    $next_range = function_exists('twmp_get_next_event_datetime_range') ? twmp_get_next_event_datetime_range($product_id) : [];
-    $timestamp = ! empty($next_range['start_timestamp']) ? absint($next_range['start_timestamp']) : $timestamp;
+    $timestamp = function_exists('twmp_get_event_start_timestamp') ? twmp_get_event_start_timestamp($product_id, get_post_timestamp($product_post)) : get_post_timestamp($product_post);
     $date_day = $timestamp ? wp_date('j', $timestamp) : '';
     $date_weekday = $timestamp ? strtoupper(wp_date('D', $timestamp)) : '';
     $date_month = $timestamp ? strtoupper(wp_date('M', $timestamp)) : '';

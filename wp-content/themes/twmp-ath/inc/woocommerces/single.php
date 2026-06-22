@@ -679,25 +679,17 @@ add_action('woocommerce_single_product_summary', function () {
 			$upcoming_ranges = function_exists('twmp_get_upcoming_event_datetime_ranges') ? twmp_get_upcoming_event_datetime_ranges($product_id) : [];
 
 			if (! empty($upcoming_ranges)) {
-				$range_items = array_map(
-					static function ($range) {
-						return twmp_format_event_datetime_range($range['start'] ?? '', $range['end'] ?? '');
-					},
-					$upcoming_ranges
-				);
-				$range_items = array_values(array_filter($range_items));
-				$value = $range_items[0] ?? '';
+				$button_link = function_exists('get_field') ? get_field('ath_google_link', $product_id) : '';
+				$disable_book = function_exists('get_field') ? get_field('ath_disable_book_ticket', $product_id) : false;
+				$can_select_show_time = empty($button_link) && empty($disable_book) && function_exists('twmp_is_event_bookable') && twmp_is_event_bookable($product_id);
 
-				if (count($range_items) > 1) {
+				if ($can_select_show_time && count($upcoming_ranges) > 1 && function_exists('twmp_get_event_datetime_select_html')) {
 					$value_is_html = true;
-					$value = '<span class="product-details-meta__next-time">' . esc_html($value) . '</span>';
-					$value .= '<details class="product-details-meta__times"><summary>' . esc_html__('View all times', 'twmp-ath') . '</summary><ul>';
-
-					foreach (array_slice($range_items, 1) as $range_item) {
-						$value .= '<li>' . esc_html($range_item) . '</li>';
-					}
-
-					$value .= '</ul></details>';
+					$form_id = function_exists('twmp_get_show_datetime_form_id') ? twmp_get_show_datetime_form_id($product_id) : '';
+					$value = twmp_get_event_datetime_select_html($product_id, $form_id);
+				} else {
+					$range = $upcoming_ranges[0] ?? [];
+					$value = twmp_format_event_datetime_range($range['start'] ?? '', $range['end'] ?? '');
 				}
 			} else {
 				$end_value = function_exists('get_field') ? get_field('ath_end_datetime', $product_id) : '';
@@ -743,6 +735,8 @@ add_action('woocommerce_single_product_summary', function () {
 					'a' => [ 'href' => [], 'target' => [], 'rel' => [] ],
 					'details' => [ 'class' => [] ],
 					'li' => [],
+					'option' => [ 'value' => [], 'selected' => [] ],
+					'select' => [ 'aria-label' => [], 'class' => [], 'form' => [], 'name' => [], 'required' => [] ],
 					'span' => [ 'class' => [] ],
 					'summary' => [],
 					'ul' => [],

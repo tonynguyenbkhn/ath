@@ -298,6 +298,11 @@ function twmp_redirect_to_cart()
 	exit;
 }
 
+function twmp_get_show_datetime_form_id($product_id = 0)
+{
+	return 'twmp-buy-now-form-' . absint($product_id);
+}
+
 function twmp_render_cart_button($product_id = 0, $button_text = '', $button_classes = '', $icon_name = 'book-ticket')
 {
 	global $product;
@@ -366,12 +371,13 @@ function twmp_render_cart_button($product_id = 0, $button_text = '', $button_cla
 	}
 
 	printf(
-		'<form class="twmp-buy-now-form swiper-no-swiping" action="%1$s" method="get"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
+		'<form id="%6$s" class="twmp-buy-now-form swiper-no-swiping" action="%1$s" method="get"><input type="hidden" name="add-to-cart" value="%2$d"><input type="hidden" name="twmp_buy_now" value="1"><button type="submit" class="%3$s"><span class="text pe-none">%4$s</span>%5$s</button></form>',
 		esc_url(wc_get_checkout_url()),
 		absint($product_id),
 		esc_attr($button_classes),
 		esc_html($button_text),
-		$button_html ? '<span class="icon pe-none" aria-hidden="true">' . $button_html . '</span>' : ''
+		$button_html ? '<span class="icon pe-none" aria-hidden="true">' . $button_html . '</span>' : '',
+		esc_attr(twmp_get_show_datetime_form_id($product_id))
 	);
 }
 
@@ -468,9 +474,9 @@ function twmp_get_event_datetime_ranges($product_id = 0, $include_legacy = true)
 	return $ranges;
 }
 
-function twmp_get_next_event_datetime_range($product_id = 0)
+function twmp_get_next_event_datetime_range($product_id = 0, $include_legacy = true)
 {
-	$ranges = twmp_get_event_datetime_ranges($product_id);
+	$ranges = twmp_get_event_datetime_ranges($product_id, $include_legacy);
 
 	if (empty($ranges)) {
 		return [];
@@ -511,17 +517,116 @@ function twmp_get_upcoming_event_datetime_ranges($product_id = 0)
 	);
 }
 
-function twmp_get_event_start_timestamp($product_id = 0)
+function twmp_get_event_datetime_range_by_key($product_id = 0, $range_key = '', $upcoming_only = true)
+{
+	$range_key = sanitize_text_field((string) $range_key);
+
+	if ('' === $range_key) {
+		return [];
+	}
+
+	$ranges = $upcoming_only
+		? twmp_get_upcoming_event_datetime_ranges($product_id)
+		: twmp_get_event_datetime_ranges($product_id);
+
+	foreach ($ranges as $range) {
+		if (! empty($range['key']) && hash_equals((string) $range['key'], $range_key)) {
+			return $range;
+		}
+	}
+
+	return [];
+}
+
+function twmp_get_event_datetime_cart_data($product_id = 0, $range_key = '')
+{
+	$range = twmp_get_event_datetime_range_by_key($product_id, $range_key);
+
+	if (empty($range)) {
+		return [];
+	}
+
+	$label = twmp_format_event_datetime_range($range['start'] ?? '', $range['end'] ?? '');
+
+	if ('' === $label) {
+		return [];
+	}
+
+	return [
+		'key' => (string) ($range['key'] ?? ''),
+		'start' => (string) ($range['start'] ?? ''),
+		'end' => (string) ($range['end'] ?? ''),
+		'label' => $label,
+	];
+}
+
+function twmp_get_event_datetime_select_html($product_id = 0, $form_id = '')
+{
+	$product_id = absint($product_id);
+	$upcoming_ranges = twmp_get_upcoming_event_datetime_ranges($product_id);
+
+	if (empty($upcoming_ranges)) {
+		return '';
+	}
+
+	$select_attrs = [
+		'class' => 'twmp-show-datetime-select',
+		'name' => 'twmp_show_datetime_key',
+		'required' => 'required',
+		'aria-label' => __('Choose show time', 'twmp-ath'),
+	];
+
+	if ('' !== $form_id) {
+		$select_attrs['form'] = $form_id;
+	}
+
+	$attrs = '';
+
+	foreach ($select_attrs as $attr_name => $attr_value) {
+		$attrs .= sprintf(' %1$s="%2$s"', esc_attr($attr_name), esc_attr($attr_value));
+	}
+
+	$html = '<select' . $attrs . '>';
+
+	foreach ($upcoming_ranges as $range) {
+		$range_key = (string) ($range['key'] ?? '');
+		$range_label = twmp_format_event_datetime_range($range['start'] ?? '', $range['end'] ?? '');
+
+		if ('' === $range_key || '' === $range_label) {
+			continue;
+		}
+
+		$html .= sprintf(
+			'<option value="%1$s">%2$s</option>',
+			esc_attr($range_key),
+			esc_html($range_label)
+		);
+	}
+
+	$html .= '</select>';
+
+	return $html;
+}
+
+function twmp_get_event_start_timestamp($product_id = 0, $fallback_timestamp = 0)
 {
 	$product_id = absint($product_id);
 
 	if (! $product_id) {
-		return 0;
+		return absint($fallback_timestamp);
 	}
 
-	$range = twmp_get_next_event_datetime_range($product_id);
+	$range = twmp_get_next_event_datetime_range($product_id, false);
 
-	return ! empty($range['start_timestamp']) ? absint($range['start_timestamp']) : 0;
+	if (! empty($range['start_timestamp'])) {
+		return absint($range['start_timestamp']);
+	}
+
+	$legacy_timestamp = function_exists('get_field')
+		? twmp_parse_site_datetime(get_field('ath_start_datetime', $product_id))
+		: 0;
+
+	return $legacy_timestamp ? absint($legacy_timestamp) : absint($fallback_timestamp);
 }
 
 function twmp_is_event_bookable($product_id = 0)

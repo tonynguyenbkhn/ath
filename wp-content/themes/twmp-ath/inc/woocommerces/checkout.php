@@ -182,6 +182,39 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
   $order->update_meta_data('_billing_language', $billing_language);
 }, 20, 2);
 
+function twmp_get_requested_show_datetime_key()
+{
+  if (isset($_REQUEST['twmp_show_datetime_key']) && !is_array($_REQUEST['twmp_show_datetime_key'])) {
+    return sanitize_text_field(wp_unslash($_REQUEST['twmp_show_datetime_key']));
+  }
+
+  return '';
+}
+
+function twmp_get_default_event_datetime_cart_data($product_id, $requested_key = '')
+{
+  $product_id = absint($product_id);
+  $requested_key = sanitize_text_field((string) $requested_key);
+
+  if (!$product_id || !function_exists('twmp_get_event_datetime_cart_data')) {
+    return array();
+  }
+
+  if ('' !== $requested_key) {
+    return twmp_get_event_datetime_cart_data($product_id, $requested_key);
+  }
+
+  if (!function_exists('twmp_get_upcoming_event_datetime_ranges')) {
+    return array();
+  }
+
+  $upcoming_ranges = twmp_get_upcoming_event_datetime_ranges($product_id);
+  $first_range = !empty($upcoming_ranges[0]) && is_array($upcoming_ranges[0]) ? $upcoming_ranges[0] : array();
+  $first_key = !empty($first_range['key']) ? (string) $first_range['key'] : '';
+
+  return '' !== $first_key ? twmp_get_event_datetime_cart_data($product_id, $first_key) : array();
+}
+
 /**
  * Kiểm tra sự kiện còn có thể đặt chỗ trước khi thêm vào giỏ hàng.
  *
@@ -201,6 +234,14 @@ add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id,
     return false;
   }
 
+  $requested_datetime_key = twmp_get_requested_show_datetime_key();
+
+  if ('' !== $requested_datetime_key && empty(twmp_get_default_event_datetime_cart_data($product_id, $requested_datetime_key))) {
+    wc_add_notice(__('Please choose an available show time.', 'twmp-ath'), 'error');
+
+    return false;
+  }
+
   if (!empty($_REQUEST['twmp_buy_now'])) {
     if (function_exists('WC') && WC()->cart) {
       WC()->cart->empty_cart();
@@ -208,6 +249,58 @@ add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id,
   }
   return $passed;
 }, 1, 3);
+
+add_filter('woocommerce_add_cart_item_data', function ($cart_item_data, $product_id) {
+  $datetime_data = twmp_get_default_event_datetime_cart_data($product_id, twmp_get_requested_show_datetime_key());
+
+  if (empty($datetime_data)) {
+    return $cart_item_data;
+  }
+
+  $cart_item_data['twmp_show_datetime'] = $datetime_data;
+  $cart_item_data['twmp_show_datetime_unique_key'] = md5(wp_json_encode(array(
+    'product_id' => absint($product_id),
+    'range_key'  => $datetime_data['key'],
+    'start'      => $datetime_data['start'],
+    'end'        => $datetime_data['end'],
+  )));
+
+  return $cart_item_data;
+}, 10, 2);
+
+add_filter('woocommerce_get_item_data', function ($item_data, $cart_item) {
+  if (empty($cart_item['twmp_show_datetime']['label'])) {
+    return $item_data;
+  }
+
+  $label = wc_clean($cart_item['twmp_show_datetime']['label']);
+
+  $item_data[] = array(
+    'key'     => __('Show time', 'twmp-ath'),
+    'value'   => $label,
+    'display' => $label,
+  );
+
+  return $item_data;
+}, 10, 2);
+
+add_action('woocommerce_checkout_create_order_line_item', function ($item, $cart_item_key, $values, $order) {
+  if (empty($values['twmp_show_datetime']) || !is_array($values['twmp_show_datetime'])) {
+    return;
+  }
+
+  $datetime_data = $values['twmp_show_datetime'];
+  $label = !empty($datetime_data['label']) ? wc_clean($datetime_data['label']) : '';
+
+  if ('' === $label) {
+    return;
+  }
+
+  $item->add_meta_data(__('Show time', 'twmp-ath'), $label, true);
+//  $item->add_meta_data('_twmp_show_datetime_key', wc_clean($datetime_data['key'] ?? ''), true);
+//  $item->add_meta_data('_twmp_show_datetime_start', wc_clean($datetime_data['start'] ?? ''), true);
+//  $item->add_meta_data('_twmp_show_datetime_end', wc_clean($datetime_data['end'] ?? ''), true);
+}, 10, 4);
 
 add_filter('woocommerce_add_to_cart_redirect', function ($redirect_url) {
 
@@ -254,6 +347,15 @@ add_action('woocommerce_checkout_process', function () {
     if ($product_id && !twmp_is_event_bookable($product_id)) {
       wc_add_notice(__('One or more events in your cart are no longer available for booking.', 'twmp-ath'), 'error');
       break;
+    }
+
+    if (!empty($cart_item['twmp_show_datetime']['key']) && function_exists('twmp_get_event_datetime_cart_data')) {
+      $datetime_key = wc_clean($cart_item['twmp_show_datetime']['key']);
+
+      if (empty(twmp_get_event_datetime_cart_data($product_id, $datetime_key))) {
+        wc_add_notice(__('One or more selected show times are no longer available. Please update your cart.', 'twmp-ath'), 'error');
+        break;
+      }
     }
   }
 });
@@ -332,7 +434,7 @@ function twmp_checkout_get_payment_order_context()
     'status_text'   => esc_html__('Complete transfer and upload the bill to continue.', 'twmp-ath'),
     'can_upload'    => true,
     'nonce'         => wp_create_nonce('twmp_checkout_payment_guest'),
-    'config'        => twmp_checkout_get_payment_config(),
+    'config'        => array(),
   );
 
   $request_order_id = 0;
@@ -376,6 +478,7 @@ function twmp_checkout_get_payment_order_context()
       $context['status_text'] = twmp_checkout_get_payment_status_text($proof_status);
       $context['can_upload'] = in_array($proof_status, array('waiting_upload', 'rejected'), true);
       $context['nonce'] = wp_create_nonce('twmp_checkout_payment_' . $request_order_id);
+      $context['config'] = twmp_checkout_get_payment_config();
     }
   }
 
@@ -588,6 +691,12 @@ function twmp_checkout_get_ticket_product_data($product_id = 0)
     $product_id = absint(get_the_ID());
   }
 
+  static $cache = array();
+
+  if ($product_id && array_key_exists($product_id, $cache)) {
+    return $cache[$product_id];
+  }
+
   $data = array(
     'product_id'   => $product_id,
     'performances'  => array(),
@@ -595,6 +704,10 @@ function twmp_checkout_get_ticket_product_data($product_id = 0)
   );
 
   if (!$product_id || !function_exists('get_field')) {
+    if ($product_id) {
+      $cache[$product_id] = $data;
+    }
+
     return $data;
   }
 
@@ -644,6 +757,8 @@ function twmp_checkout_get_ticket_product_data($product_id = 0)
       'price' => $price,
     );
   }
+
+  $cache[$product_id] = $data;
 
   return $data;
 }
@@ -738,7 +853,9 @@ function twmp_checkout_get_ticket_selection_state($product_id = 0)
       $state['price_key'] = $defaults['price_key'];
     }
 
-    WC()->session->set('twmp_ticket_selection', $state);
+    if ($stored !== $state) {
+      WC()->session->set('twmp_ticket_selection', $state);
+    }
   }
 
   return $state;
@@ -797,7 +914,10 @@ function twmp_checkout_sync_checkout_field_state_to_session(array $fields)
 
   $current = twmp_checkout_get_checkout_field_state_from_session();
   $state = array_merge($current, twmp_checkout_normalize_checkout_field_state($fields));
-  WC()->session->set('twmp_checkout_fields', $state);
+
+  if ($current !== $state) {
+    WC()->session->set('twmp_checkout_fields', $state);
+  }
 }
 
 add_filter('woocommerce_checkout_get_value', function ($value, $input) {
@@ -896,32 +1016,16 @@ function twmp_checkout_get_ticket_quantity_state($product_id = 0)
     }
   }
 
-  if (function_exists('WC') && WC()->cart) {
-    $cart_item_key = twmp_checkout_get_cart_item_key_by_product_id($product_id);
-
-    if ($cart_item_key) {
-      foreach (WC()->cart->get_cart() as $current_cart_item_key => $cart_item) {
-        if ($current_cart_item_key !== $cart_item_key) {
-          continue;
-        }
-
-        $cart_quantity = !empty($cart_item['quantity']) ? max(1, absint($cart_item['quantity'])) : 1;
-        if ($cart_quantity > 0 && $session_quantity <= 0) {
-          $quantity = $cart_quantity;
-        }
-        break;
-      }
-    }
-  }
-
   if (function_exists('WC') && WC()->session && $product_id) {
     $stored = WC()->session->get('twmp_ticket_quantity', array());
     if (!is_array($stored)) {
       $stored = array();
     }
 
-    $stored[$product_id] = $quantity;
-    WC()->session->set('twmp_ticket_quantity', $stored);
+    if (empty($stored[$product_id]) || absint($stored[$product_id]) !== $quantity) {
+      $stored[$product_id] = $quantity;
+      WC()->session->set('twmp_ticket_quantity', $stored);
+    }
   }
 
   return $quantity;
