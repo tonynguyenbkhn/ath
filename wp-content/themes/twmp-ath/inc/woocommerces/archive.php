@@ -368,6 +368,44 @@ function twmp_force_facetwp_filtered_fallback_ids($post_ids, $renderer)
 
 add_filter('facetwp_filtered_post_ids', 'twmp_force_facetwp_filtered_fallback_ids', 20, 2);
 
+function twmp_remove_current_product_category_when_category_facet_selected($query_args, $renderer)
+{
+    if (!function_exists('is_product_category') || !is_product_category() || !($renderer instanceof FacetWP_Renderer)) {
+        return $query_args;
+    }
+
+    $selected_categories = $renderer->facets['categories']['selected_values'] ?? [];
+    $selected_categories = array_filter((array) $selected_categories);
+
+    if (empty($selected_categories)) {
+        return $query_args;
+    }
+
+    unset($query_args['product_cat']);
+    unset($query_args['taxonomy']);
+    unset($query_args['term']);
+
+    if (!empty($query_args['tax_query']) && is_array($query_args['tax_query'])) {
+        foreach ($query_args['tax_query'] as $key => $tax_query) {
+            if (is_array($tax_query) && 'product_cat' === ($tax_query['taxonomy'] ?? '')) {
+                unset($query_args['tax_query'][$key]);
+            }
+        }
+
+        $query_args['tax_query'] = array_values($query_args['tax_query']);
+
+        if (empty($query_args['tax_query'])) {
+            unset($query_args['tax_query']);
+        }
+    }
+
+    $query_args['post_type'] = 'product';
+
+    return $query_args;
+}
+
+add_filter('facetwp_query_args', 'twmp_remove_current_product_category_when_category_facet_selected', 15, 2);
+
 function twmp_adjust_facetwp_product_search_query_args($query_args, $renderer)
 {
     $post_type = $query_args['post_type'] ?? '';

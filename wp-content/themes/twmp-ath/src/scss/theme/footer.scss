@@ -148,7 +148,7 @@ $footer-bg-color: #F7F7F7;
 
 .footer-absolute-right {
 	div {
-		@media (max-width: 1199px) {
+		@media (max-width: 575px) {
 			justify-content: center
 		}
 
@@ -159,6 +159,18 @@ $footer-bg-color: #F7F7F7;
 	p {
 		@media (max-width: 1199px) {
 			text-align: center;
+			font-size: 14px;
+		}
+	}
+
+	&--text {
+		@media (max-width: 575px) {
+			display: flex;
+			justify-content: center;
+		}
+
+		p:last-child {
+			border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 		}
 	}
 }

@@ -588,6 +588,31 @@ function twmp_get_event_datetime_select_html($product_id = 0, $form_id = '')
 
 	$html = '<select' . $attrs . '>';
 
+	if (count($upcoming_ranges) > 1) {
+		$first_range = reset($upcoming_ranges);
+		$last_range = end($upcoming_ranges);
+		$all_range_key = (string) ($first_range['key'] ?? '');
+		$all_range_start = (string) ($first_range['start'] ?? '');
+		$all_range_end = ! empty($last_range['end']) ? (string) $last_range['end'] : (string) ($last_range['start'] ?? '');
+		$all_range_start_timestamp = twmp_parse_site_datetime($all_range_start);
+		$all_range_end_timestamp = twmp_parse_site_datetime($all_range_end);
+		$all_range_label = $all_range_start_timestamp
+			? wp_date('l j M Y', $all_range_start_timestamp)
+			: '';
+
+		if ($all_range_label && $all_range_end_timestamp) {
+			$all_range_label .= ' → ' . wp_date('l j M Y', $all_range_end_timestamp);
+		}
+
+		if ('' !== $all_range_key && '' !== $all_range_label) {
+			$html .= sprintf(
+				'<option value="%1$s">%2$s</option>',
+				esc_attr($all_range_key),
+				esc_html($all_range_label)
+			);
+		}
+	}
+
 	foreach ($upcoming_ranges as $range) {
 		$range_key = (string) ($range['key'] ?? '');
 		$range_label = twmp_format_event_datetime_range($range['start'] ?? '', $range['end'] ?? '');
