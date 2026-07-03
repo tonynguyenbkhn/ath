@@ -23,11 +23,19 @@ while (have_posts()) :
 	?>
 
 	<main id="primary" class="site-main single-artist">
-		<div class="single-artist__container container">
-			<div class="single-artist__breadcrumbs breadcrumbs">
+		<?php
+		if (function_exists('woocommerce_breadcrumb')) {
+			woocommerce_breadcrumb();
+		} else {
+			?>
+			<div class="single-artist__breadcrumbs breadcrumbs container">
 				<?php twmp_breadcrumbs(); ?>
 			</div>
+			<?php
+		}
+		?>
 
+		<div class="single-artist__container container">
 			<section class="single-artist__summary">
 				<div class="single-artist__media">
 					<?php
@@ -76,29 +84,48 @@ while (have_posts()) :
 					<?php endif; ?>
 				</div>
 			</section>
+        </div>
+        <div class="single-artist__wrap position-relative">
+            <?php
 
-			<?php
-			get_template_part(
-				'templates/sections/artist-single-slider/section',
-				null,
-				[
-					'title'   => $other_members_title,
-					'artists' => $other_members,
-					'class'   => 'single-artist__slider-section single-artist__slider-section--members',
-				]
-			);
+            get_template_part(
+                'templates/components/image-light',
+                null,
+                [
+                    'class'  => 'artist-single-slider__light',
+                    'side'   => 'right',
+                    'src'    => TWMP_IMG_URI . '/page-bio-light.png',
+                    'alt'    => get_the_title(),
+                    'width'  => 932,
+                    'height' => 960,
+                ]
+            );
 
-			get_template_part(
-				'templates/sections/artist-single-slider/section',
-				null,
-				[
-					'title'   => $partners_title,
-					'artists' => $partners,
-					'class'   => 'single-artist__slider-section single-artist__slider-section--partners',
-				]
-			);
-			?>
-		</div>
+            ?>
+            <div class="single-artist__container container">
+                <?php
+                get_template_part(
+                    'templates/sections/artist-single-slider/section',
+                    null,
+                    [
+                        'title'   => $other_members_title,
+                        'artists' => $other_members,
+                        'class'   => 'single-artist__slider-section single-artist__slider-section--members',
+                    ]
+                );
+
+                get_template_part(
+                    'templates/sections/artist-single-slider/section',
+                    null,
+                    [
+                        'title'   => $partners_title,
+                        'artists' => $partners,
+                        'class'   => 'single-artist__slider-section single-artist__slider-section--partners',
+                    ]
+                );
+                ?>
+            </div>
+        </div>
 	</main>
 
 	<?php
