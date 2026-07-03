@@ -1,0 +1,258 @@
+.single-artist {
+  overflow: hidden;
+  padding: 48px 0 0;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 220px;
+    width: 48px;
+    height: 360px;
+    background: #aacf37;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -88px;
+    top: 690px;
+    width: 0;
+    height: 0;
+    border-left: 88px solid transparent;
+    border-right: 88px solid transparent;
+    border-bottom: 176px solid #de1f26;
+    pointer-events: none;
+  }
+
+  @media (max-width: 991px) {
+    padding-top: 32px;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.single-artist__container {
+  position: relative;
+  z-index: 1;
+}
+
+.single-artist__breadcrumbs {
+  margin-bottom: 28px;
+}
+
+.single-artist__summary {
+  margin-bottom: 78px;
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  @media (min-width: 992px) {
+    margin-bottom: 92px;
+  }
+}
+
+.single-artist__media {
+  margin-bottom: 32px;
+
+  @media (min-width: 992px) {
+    float: left;
+    width: 470px;
+    margin-right: 28px;
+    margin-bottom: 0;
+  }
+}
+
+.single-artist__image-wrap {
+  @include ratio(1/1);
+
+  &.image--default .image__img {
+    position: absolute;
+  }
+}
+
+.single-artist__content {
+  @media (min-width: 992px) {
+    float: left;
+    width: calc(100% - 498px);
+    padding-top: 18px;
+  }
+}
+
+.single-artist__title {
+  color: var(--system-white);
+  margin: 0 0 28px;
+  @include typo-display-lg(400);
+
+  @media (max-width: 767px) {
+    @include typo-display-sm(400, 42);
+  }
+}
+
+.single-artist__highlights {
+  color: var(--system-white);
+  margin: 0 0 22px;
+  padding-left: 26px;
+  @include typo-display-xs(400);
+  list-style-type: disc;
+
+  li + li {
+    margin-top: 12px;
+  }
+}
+
+.single-artist__description {
+  color: var(--system-content-2);
+  @include typo-text-lg(400);
+
+  p {
+    margin: 0 0 14px;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.artist-single-slider {
+  margin-bottom: 54px;
+  position: relative;
+
+  &:last-child {
+    margin-bottom: 92px;
+  }
+}
+
+.artist-single-slider__header {
+  margin-bottom: 34px;
+}
+
+.artist-single-slider__heading {
+  text-align: left;
+}
+
+.artist-single-slider__title {
+  color: var(--system-white);
+  margin: 0 0 46px;
+  @include typo-display-sm(400, 48);
+
+  @media (max-width: 767px) {
+    @include typo-display-xs(400);
+  }
+}
+
+.artist-single-slider__controls {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.artist-single-slider__pagination {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.artist-single-slider {
+  .swiper-horizontal > .swiper-pagination-progressbar,
+  .swiper-pagination-progressbar.swiper-pagination-horizontal {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    height: 3px;
+    background: rgba(#ffffff, 0.28);
+  }
+
+  .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+    background: var(--system-white);
+  }
+}
+
+.artist-single-slider__nav {
+  display: flex;
+  gap: 14px;
+}
+
+.artist-single-slider__button.swiper-button-next, .artist-single-slider__button.swiper-button-prev {
+  position: static;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  color: var(--system-white);
+  border: 1px solid rgba(#ffffff, 0.62);
+  border-radius: 50%;
+  background: transparent;
+
+  &::after {
+    display: none;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+
+    fill: white;
+
+    path {
+      fill: white;
+    }
+  }
+}
+
+.artist-single-card__link {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+}
+
+.artist-single-card__media {
+  margin-bottom: 20px;
+}
+
+.artist-single-card__image-wrap {
+  @include ratio(1/1);
+
+  &.image--default .image__img {
+    position: absolute;
+  }
+}
+
+.artist-single-card__name {
+  color: var(--system-white);
+  margin: 0;
+  @include typo-display-xs(400);
+}
+
+.artist-single-card__position {
+  color: var(--system-content-2);
+  margin: 8px 0 12px;
+  @include typo-text-lg(400);
+}
+
+.artist-single-card__description {
+  color: var(--system-content-2);
+  margin: 0;
+  @include typo-text-md(400);
+}
+
+.single-artist__slider-section--partners {
+  &::before {
+    content: '';
+    position: absolute;
+    left: -150px;
+    bottom: -80px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: #48bda6;
+    pointer-events: none;
+  }
+}
