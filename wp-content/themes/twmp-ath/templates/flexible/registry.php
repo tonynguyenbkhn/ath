@@ -11,6 +11,15 @@ return [
             'enable_container' => false,
         ],
     ],
+    'hero-video' => [
+        'template' => 'templates/sections/hero-video/section',
+        'fields' => [
+            'video',
+        ],
+        'extra_fields' => [
+            'enable_container' => false,
+        ],
+    ],
     'product-cat-grid' => [
         'template' => 'templates/sections/product-cat-grid/section',
         'extra_fields' => [
