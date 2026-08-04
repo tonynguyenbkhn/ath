@@ -337,6 +337,8 @@ function twmp_render_cart_button($product_id = 0, $button_text = '', $button_cla
 		? __('Register Course', 'twmp-ath')
 		: __('Book Ticket', 'twmp-ath');
 
+    $button_text_from_setting = get_field('ath_atc', $product_id) ? get_field('ath_atc', $product_id) : $button_text;
+
 	if ($is_class_workshop) {
 		$icon_name = '';
 	}
@@ -359,7 +361,7 @@ function twmp_render_cart_button($product_id = 0, $button_text = '', $button_cla
 			'<a class="%1$s" href="%2$s"><span class="text pe-none">%3$s</span>%4$s</a>',
 			esc_attr($button_classes),
 			esc_url(get_permalink($product_id)),
-			esc_html($button_text),
+			esc_html($button_text_from_setting),
 			$button_html ? '<span class="icon pe-none" aria-hidden="true">' . $button_html . '</span>' : ''
 		);
 		return;
@@ -375,7 +377,7 @@ function twmp_render_cart_button($product_id = 0, $button_text = '', $button_cla
 		esc_url(wc_get_checkout_url()),
 		absint($product_id),
 		esc_attr($button_classes),
-		esc_html($button_text),
+		esc_html($button_text_from_setting),
 		$button_html ? '<span class="icon pe-none" aria-hidden="true">' . $button_html . '</span>' : '',
 		esc_attr(twmp_get_show_datetime_form_id($product_id))
 	);

@@ -69,7 +69,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
@@ -135,7 +135,7 @@
                 ]
             ],
             "wrapper": {
-                "width": "50",
+                "width": "33",
                 "class": "",
                 "id": ""
             }
@@ -160,7 +160,7 @@
                 ]
             ],
             "wrapper": {
-                "width": "50",
+                "width": "33",
                 "class": "",
                 "id": ""
             }
@@ -310,13 +310,37 @@
             }
         },
         {
+            "key": "field_ath_google_name",
+            "label": "Button Name ( For Google Link )",
+            "name": "ath_google_name",
+            "type": "text",
+            "instructions": "Register Camp",
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
             "key": "field_ath_google_link",
             "label": "Google Link",
             "name": "ath_google_link",
             "type": "text",
             "instructions": "Ví dụ: https://www.google.com",
             "wrapper": {
-                "width": "100",
+                "width": "33",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_ath_btn_atc",
+            "label": "Add to cart",
+            "name": "ath_atc",
+            "type": "text",
+            "instructions": "Book Ticket/ Register Course/ Register Camp",
+            "wrapper": {
+                "width": "33",
                 "class": "",
                 "id": ""
             }

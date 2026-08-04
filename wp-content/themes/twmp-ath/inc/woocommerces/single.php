@@ -46,12 +46,13 @@ function twmp_render_google_link_button()
 	}
 
 	$button_link = get_field('ath_google_link', $product_id);
+	$button_name = get_field('ath_google_name', $product_id);
 
 	if (!$button_link) {
 		return;
 	}
 
-	$button_text = esc_html__('Register Camp', 'twmp-ath');
+	$button_text = $button_name ? $button_name : esc_html__('Register Camp', 'twmp-ath');
 	echo '<div class="product-action-buttons d-flex items-center gap-16">';
 	twmp_render_contact_us_button();
 	get_template_part('templates/components/button', null, [
@@ -680,6 +681,7 @@ add_action('woocommerce_single_product_summary', function () {
 
 			if (! empty($upcoming_ranges)) {
 				$button_link = function_exists('get_field') ? get_field('ath_google_link', $product_id) : '';
+				$button_name = function_exists('get_field') ? get_field('ath_google_name', $product_id) : '';
 				$disable_book = function_exists('get_field') ? get_field('ath_disable_book_ticket', $product_id) : false;
 				$can_select_show_time = empty($button_link) && empty($disable_book) && function_exists('twmp_is_event_bookable') && twmp_is_event_bookable($product_id);
 
