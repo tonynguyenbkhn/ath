@@ -8,6 +8,309 @@ remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_fo
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10);
 remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_output_all_notices', 10);
 
+function twmp_checkout_product_has_category($product_id, $category_slug)
+{
+  $product_id = absint($product_id);
+  $category_slug = sanitize_key($category_slug);
+
+  if (!$product_id || '' === $category_slug) {
+    return false;
+  }
+
+  $term = get_term_by('slug', $category_slug, 'product_cat');
+  $term_ids = $term instanceof WP_Term ? array(absint($term->term_id)) : array($category_slug);
+
+  if ($term instanceof WP_Term) {
+    $child_ids = get_term_children($term->term_id, 'product_cat');
+
+    if (!is_wp_error($child_ids) && !empty($child_ids)) {
+      $term_ids = array_merge($term_ids, array_map('absint', $child_ids));
+    }
+  }
+
+  if (has_term($term_ids, 'product_cat', $product_id)) {
+    return true;
+  }
+
+  $parent_id = wp_get_post_parent_id($product_id);
+
+  return $parent_id ? has_term($category_slug, 'product_cat', $parent_id) : false;
+}
+
+function twmp_checkout_cart_has_product_category($category_slug)
+{
+  $category_slug = sanitize_key($category_slug);
+
+  if ('' === $category_slug || !function_exists('WC') || !WC()->cart) {
+    return false;
+  }
+
+  foreach (WC()->cart->get_cart() as $cart_item) {
+    $product_id = !empty($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+    $variation_id = !empty($cart_item['variation_id']) ? absint($cart_item['variation_id']) : 0;
+
+    if (
+      ($product_id && twmp_checkout_product_has_category($product_id, $category_slug)) ||
+      ($variation_id && twmp_checkout_product_has_category($variation_id, $category_slug))
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function twmp_checkout_order_has_product_category($order, $category_slug)
+{
+  $category_slug = sanitize_key($category_slug);
+
+  if (!$order instanceof WC_Order || '' === $category_slug) {
+    return false;
+  }
+
+  foreach ($order->get_items('line_item') as $item) {
+    if (!$item instanceof WC_Order_Item_Product) {
+      continue;
+    }
+
+    $product_id = absint($item->get_product_id());
+    $variation_id = absint($item->get_variation_id());
+
+    if (
+      ($product_id && twmp_checkout_product_has_category($product_id, $category_slug)) ||
+      ($variation_id && twmp_checkout_product_has_category($variation_id, $category_slug))
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function twmp_checkout_is_class_workshop_context()
+{
+  if (twmp_checkout_cart_has_product_category('class-workshop')) {
+    return true;
+  }
+
+  return isset($_GET['category']) && 'class-workshop' === sanitize_key(wp_unslash($_GET['category']));
+}
+
+function twmp_checkout_get_class_workshop_product_id()
+{
+  if (!function_exists('WC') || !WC()->cart) {
+    return 0;
+  }
+
+  foreach (WC()->cart->get_cart() as $cart_item) {
+    $product_id = !empty($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+    $variation_id = !empty($cart_item['variation_id']) ? absint($cart_item['variation_id']) : 0;
+
+    if ($variation_id && twmp_checkout_product_has_category($variation_id, 'class-workshop')) {
+      return $variation_id;
+    }
+
+    if ($product_id && twmp_checkout_product_has_category($product_id, 'class-workshop')) {
+      return $product_id;
+    }
+  }
+
+  return 0;
+}
+
+function twmp_checkout_get_class_workshop_payment_method_from_request()
+{
+  if (isset($_POST['payment_method']) && !is_array($_POST['payment_method'])) {
+    return sanitize_key(wp_unslash($_POST['payment_method']));
+  }
+
+  return '';
+}
+
+function twmp_checkout_get_class_workshop_payment_method()
+{
+  $posted_method = twmp_checkout_get_class_workshop_payment_method_from_request();
+  if ($posted_method) {
+    return $posted_method;
+  }
+
+  if (function_exists('WC') && WC()->session) {
+    $stored_method = sanitize_key((string) WC()->session->get('twmp_class_workshop_payment_method', ''));
+    if ($stored_method) {
+      return $stored_method;
+    }
+  }
+
+  return 'bacs';
+}
+
+function twmp_checkout_get_class_workshop_payment_type($payment_method = '')
+{
+  $payment_method = $payment_method ? sanitize_key($payment_method) : twmp_checkout_get_class_workshop_payment_method();
+
+  return 'cod' === $payment_method ? 'pay_at_counter' : 'first_lesson';
+}
+
+function twmp_checkout_get_class_workshop_first_lesson_price($product_id = 0)
+{
+  $product_id = absint($product_id);
+
+  if (!$product_id) {
+    $product_id = twmp_checkout_get_class_workshop_product_id();
+  }
+
+  if (!$product_id || !function_exists('get_field')) {
+    return null;
+  }
+
+  $price = get_field('first_lesson_price', $product_id);
+
+  if ('' === $price || null === $price) {
+    $parent_id = wp_get_post_parent_id($product_id);
+    $price = $parent_id ? get_field('first_lesson_price', $parent_id) : $price;
+  }
+
+  if ('' === $price || null === $price || !is_numeric($price)) {
+    return null;
+  }
+
+  return max(0, (float) $price);
+}
+
+function twmp_checkout_get_class_workshop_commitment_pdf_url($product_id = 0)
+{
+  $product_id = absint($product_id);
+
+  if (!$product_id) {
+    $product_id = twmp_checkout_get_class_workshop_product_id();
+  }
+
+  $value = '';
+
+  if (function_exists('get_field')) {
+    if ($product_id) {
+      $value = get_field('class_workshop_commitment_pdf', $product_id);
+
+      if (empty($value)) {
+        $parent_id = wp_get_post_parent_id($product_id);
+        $value = $parent_id ? get_field('class_workshop_commitment_pdf', $parent_id) : $value;
+      }
+    }
+
+    if (empty($value)) {
+      $value = get_field('class_workshop_commitment_pdf', 'option');
+    }
+  }
+
+  if (is_array($value) && !empty($value['url'])) {
+    return esc_url_raw($value['url']);
+  }
+
+  if (is_numeric($value)) {
+    return esc_url_raw(wp_get_attachment_url(absint($value)));
+  }
+
+  return is_string($value) ? esc_url_raw($value) : '';
+}
+
+function twmp_checkout_is_class_workshop_counter_order($order)
+{
+  return $order instanceof WC_Order && twmp_checkout_order_has_product_category($order, 'class-workshop') && 'cod' === $order->get_payment_method();
+}
+
+function twmp_checkout_is_order_received_page()
+{
+  if (function_exists('is_order_received_page')) {
+    return is_order_received_page();
+  }
+
+  return function_exists('is_checkout') &&
+    function_exists('is_wc_endpoint_url') &&
+    is_checkout() &&
+    is_wc_endpoint_url('order-received');
+}
+
+function twmp_checkout_get_order_received_order()
+{
+  if (!twmp_checkout_is_order_received_page() || !function_exists('wc_get_order')) {
+    return false;
+  }
+
+  global $wp;
+
+  $order_id = !empty($wp->query_vars['order-received']) ? absint($wp->query_vars['order-received']) : 0;
+
+  if (!$order_id) {
+    return false;
+  }
+
+  $order = wc_get_order($order_id);
+
+  if (!$order instanceof WC_Order) {
+    return false;
+  }
+
+  $order_key = isset($_GET['key']) ? wc_clean(wp_unslash($_GET['key'])) : '';
+
+  if ($order_key && !hash_equals($order->get_order_key(), $order_key)) {
+    return false;
+  }
+
+  return $order;
+}
+
+add_filter('body_class', function ($classes) {
+  if (twmp_checkout_is_order_received_page()) {
+    $classes[] = 'twmp-checkout-order-received-page';
+  }
+
+  return $classes;
+});
+
+add_filter('woocommerce_available_payment_gateways', function ($gateways) {
+  if (is_admin() && !wp_doing_ajax()) {
+    return $gateways;
+  }
+
+  if (!twmp_checkout_is_class_workshop_context()) {
+    return $gateways;
+  }
+
+  if (function_exists('WC') && WC()->session) {
+    WC()->session->set('twmp_class_workshop_payment_method', twmp_checkout_get_class_workshop_payment_method());
+  }
+
+  if (function_exists('WC') && WC()->payment_gateways()) {
+    $payment_gateways = WC()->payment_gateways()->payment_gateways();
+
+    if (!isset($gateways['bacs']) && !empty($payment_gateways['bacs'])) {
+      $gateways['bacs'] = $payment_gateways['bacs'];
+    }
+
+    if (!isset($gateways['cod']) && !empty($payment_gateways['cod'])) {
+      $gateways['cod'] = $payment_gateways['cod'];
+    }
+  }
+
+  $class_workshop_gateways = array();
+
+  if (isset($gateways['bacs'])) {
+    $gateways['bacs']->title = esc_html__('Pay first lesson', 'twmp-ath');
+    $gateways['bacs']->method_title = esc_html__('Pay first lesson', 'twmp-ath');
+    $gateways['bacs']->description = esc_html__('Pay the first lesson now.', 'twmp-ath');
+    $class_workshop_gateways['bacs'] = $gateways['bacs'];
+  }
+
+  if (isset($gateways['cod'])) {
+    $gateways['cod']->title = esc_html__('Pay at counter', 'twmp-ath');
+    $gateways['cod']->method_title = esc_html__('Pay at counter', 'twmp-ath');
+    $gateways['cod']->description = esc_html__('Complete your registration now and pay directly at the counter.', 'twmp-ath');
+    $class_workshop_gateways['cod'] = $gateways['cod'];
+  }
+
+  return !empty($class_workshop_gateways) ? $class_workshop_gateways : $gateways;
+}, 20);
+
 // Xử lý tính năng "Buy Now" - bỏ qua giỏ hàng và chuyển thẳng đến trang thanh toán
 // wp-content\themes\twmp-ath\inc\woocommerces\checkout.php
 // Keep only firstname, lastname, phone, date of birth, and age on checkout.
@@ -26,10 +329,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 
   $is_display_desc = false;
 
-  if (
-    isset($_GET['category']) &&
-    'class-workshop' === sanitize_key(wp_unslash($_GET['category']))
-  ) {
+  if (twmp_checkout_is_class_workshop_context()) {
     $firstname_desc = esc_html__('The first name of the student', 'twmp-ath');
     $lastname_desc = esc_html__('The last name of the student', 'twmp-ath');
 
@@ -108,10 +408,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_email']['priority'] = 90;
   }
 
-  if (
-    isset($_GET['category']) &&
-    'class-workshop' === sanitize_key(wp_unslash($_GET['category']))
-  ) {
+  if (twmp_checkout_is_class_workshop_context()) {
     $fields['billing']['billing_date_of_birth'] = array(
       'type'        => 'date',
       'label'       => esc_html__('Date of birth', 'twmp-ath'),
@@ -161,6 +458,34 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
   return $fields;
 }, 20);
 
+add_action('woocommerce_after_checkout_billing_form', function () {
+  if (!twmp_checkout_is_class_workshop_context()) {
+    return;
+  }
+
+  $product_id = twmp_checkout_get_class_workshop_product_id();
+  $pdf_url = twmp_checkout_get_class_workshop_commitment_pdf_url($product_id);
+  ?>
+  <p class="form-row form-row-wide twmp-checkout-field twmp-checkout-field--commitment" id="twmp_class_workshop_commitment_field">
+    <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
+      <input
+        type="checkbox"
+        class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
+        name="twmp_class_workshop_commitment"
+        id="twmp_class_workshop_commitment"
+        value="1"
+        required>
+      <span>
+        <?php echo esc_html__('I agree to the course commitment', 'twmp-ath'); ?>
+        <?php if ($pdf_url) : ?>
+          <a href="<?php echo esc_url($pdf_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('View PDF', 'twmp-ath'); ?></a>
+        <?php endif; ?>
+      </span>
+    </label>
+  </p>
+  <?php
+}, 20);
+
 /**
  * Persist custom checkout fields:
  * - billing_date_of_birth
@@ -176,10 +501,24 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
   $billing_date_of_birth = isset($_POST['billing_date_of_birth']) ? sanitize_text_field(wp_unslash($_POST['billing_date_of_birth'])) : '';
   $billing_age = isset($_POST['billing_age']) ? absint(wp_unslash($_POST['billing_age'])) : 0;
   $billing_language = isset($_POST['billing_language']) ? sanitize_text_field(wp_unslash($_POST['billing_language'])) : '';
+  $class_workshop_payment_method = twmp_checkout_is_class_workshop_context() ? twmp_checkout_get_class_workshop_payment_method() : '';
+  $class_workshop_payment_type = $class_workshop_payment_method ? twmp_checkout_get_class_workshop_payment_type($class_workshop_payment_method) : '';
+  $class_workshop_product_id = twmp_checkout_is_class_workshop_context() ? twmp_checkout_get_class_workshop_product_id() : 0;
+  $first_lesson_price = 'first_lesson' === $class_workshop_payment_type ? twmp_checkout_get_class_workshop_first_lesson_price($class_workshop_product_id) : null;
 
   $order->update_meta_data('_billing_date_of_birth', $billing_date_of_birth);
   $order->update_meta_data('_billing_age', $billing_age);
   $order->update_meta_data('_billing_language', $billing_language);
+
+  if ($class_workshop_payment_type) {
+    $order->update_meta_data('_twmp_class_workshop_payment_method', $class_workshop_payment_method);
+    $order->update_meta_data('_twmp_class_workshop_payment_type', $class_workshop_payment_type);
+    $order->update_meta_data('_twmp_class_workshop_commitment_accepted', !empty($_POST['twmp_class_workshop_commitment']) ? 'yes' : 'no');
+
+    if (null !== $first_lesson_price) {
+      $order->update_meta_data('_twmp_first_lesson_price', $first_lesson_price);
+    }
+  }
 }, 20, 2);
 
 function twmp_get_requested_show_datetime_key()
@@ -359,6 +698,36 @@ add_action('woocommerce_checkout_process', function () {
     }
   }
 });
+
+add_action('woocommerce_checkout_process', function () {
+  if (!twmp_checkout_is_class_workshop_context()) {
+    return;
+  }
+
+  if (empty($_POST['twmp_class_workshop_commitment'])) {
+    wc_add_notice(__('Please agree to the course commitment before continuing.', 'twmp-ath'), 'error');
+  }
+
+  $payment_method = twmp_checkout_get_class_workshop_payment_method_from_request();
+
+  if (!$payment_method) {
+    wc_add_notice(__('Please select a payment option.', 'twmp-ath'), 'error');
+    return;
+  }
+
+  if (!in_array($payment_method, array('bacs', 'cod'), true)) {
+    wc_add_notice(__('The selected payment option is invalid.', 'twmp-ath'), 'error');
+    return;
+  }
+
+  if ('bacs' === $payment_method) {
+    $first_lesson_price = twmp_checkout_get_class_workshop_first_lesson_price();
+
+    if (null === $first_lesson_price) {
+      wc_add_notice(__('The first lesson price has not been configured for this course.', 'twmp-ath'), 'error');
+    }
+  }
+}, 20);
 
 // Reset checkout flow nếu có item mới được thêm vào cart
 add_action('woocommerce_before_checkout_form', function () {
@@ -1583,6 +1952,14 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
 
   twmp_checkout_sync_checkout_field_state_to_session($data);
 
+  if (twmp_checkout_is_class_workshop_context() && !empty($data['payment_method'])) {
+    $payment_method = sanitize_key($data['payment_method']);
+
+    if (in_array($payment_method, array('bacs', 'cod'), true)) {
+      WC()->session->set('twmp_class_workshop_payment_method', $payment_method);
+    }
+  }
+
   $product_id = !empty($data['twmp_ticket_product_id']) ? absint($data['twmp_ticket_product_id']) : twmp_checkout_get_ticket_product_id();
   if (!$product_id || !twmp_checkout_is_event_show_product($product_id)) {
     return;
@@ -1798,6 +2175,46 @@ add_action('woocommerce_before_calculate_totals', function ($cart) {
 
 
 // Hiển thị chi tiết vé đã chọn (performance + ticket type) trong trang admin order detail, giúp admin dễ dàng kiểm tra thông tin vé mà khách hàng đã đặt mà không cần phải mở từng meta để xem
+add_action('woocommerce_before_calculate_totals', function ($cart) {
+  if (is_admin() && !defined('DOING_AJAX')) {
+    return;
+  }
+
+  if (!function_exists('WC') || !WC()->session || !$cart || !twmp_checkout_is_class_workshop_context()) {
+    return;
+  }
+
+  if ('first_lesson' !== twmp_checkout_get_class_workshop_payment_type()) {
+    return;
+  }
+
+  foreach ($cart->get_cart() as $cart_item) {
+    if (empty($cart_item['data'])) {
+      continue;
+    }
+
+    $product_id = !empty($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
+    $variation_id = !empty($cart_item['variation_id']) ? absint($cart_item['variation_id']) : 0;
+    $target_product_id = $variation_id ?: $product_id;
+
+    if (
+      !$target_product_id ||
+      !(
+        twmp_checkout_product_has_category($target_product_id, 'class-workshop') ||
+        ($product_id && twmp_checkout_product_has_category($product_id, 'class-workshop'))
+      )
+    ) {
+      continue;
+    }
+
+    $first_lesson_price = twmp_checkout_get_class_workshop_first_lesson_price($target_product_id);
+
+    if (null !== $first_lesson_price) {
+      $cart_item['data']->set_price($first_lesson_price);
+    }
+  }
+}, 30);
+
 add_action('woocommerce_admin_order_data_after_billing_address', function ($order) {
   $billing_date_of_birth = $order->get_meta('_billing_date_of_birth');
   $billing_age = $order->get_meta('_billing_age');
@@ -1808,8 +2225,11 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
   $ticket_price_amount = $order->get_meta('_twmp_ticket_price_amount');
   $ticket_attendee_names = $order->get_meta('_twmp_ticket_attendee_names');
   $ticket_attendee_names_list = $order->get_meta('_twmp_ticket_attendee_names_list');
+  $class_workshop_payment_type = $order->get_meta('_twmp_class_workshop_payment_type');
+  $class_workshop_commitment_accepted = $order->get_meta('_twmp_class_workshop_commitment_accepted');
+  $first_lesson_price = $order->get_meta('_twmp_first_lesson_price');
 
-  if (!$billing_date_of_birth && '' === (string) $billing_age && !$billing_language && !$ticket_product_id && !$ticket_performance && !$ticket_price_label && empty($ticket_attendee_names)) {
+  if (!$billing_date_of_birth && '' === (string) $billing_age && !$billing_language && !$ticket_product_id && !$ticket_performance && !$ticket_price_label && empty($ticket_attendee_names) && !$class_workshop_payment_type && !$class_workshop_commitment_accepted) {
     return;
   }
 
@@ -1826,6 +2246,22 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
       echo ' - ' . wp_kses_post(wc_price((float) $ticket_price_amount));
     }
     echo '</p>';
+  }
+
+  if ($class_workshop_payment_type) {
+    $payment_type_label = 'pay_at_counter' === sanitize_key((string) $class_workshop_payment_type)
+      ? esc_html__('Pay at counter', 'twmp-ath')
+      : esc_html__('Pay first lesson', 'twmp-ath');
+
+    echo '<p><strong>' . esc_html__('Class payment option:', 'twmp-ath') . '</strong> ' . esc_html($payment_type_label) . '</p>';
+  }
+
+  if ($first_lesson_price !== '') {
+    echo '<p><strong>' . esc_html__('First lesson price:', 'twmp-ath') . '</strong> ' . wp_kses_post(wc_price((float) $first_lesson_price)) . '</p>';
+  }
+
+  if ($class_workshop_commitment_accepted) {
+    echo '<p><strong>' . esc_html__('Course commitment:', 'twmp-ath') . '</strong> ' . esc_html('yes' === $class_workshop_commitment_accepted ? __('Accepted', 'twmp-ath') : __('Not accepted', 'twmp-ath')) . '</p>';
   }
 
   if ($billing_date_of_birth) {
@@ -1882,6 +2318,15 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
     return;
   }
 
+  if (twmp_checkout_is_class_workshop_counter_order($order)) {
+    if (function_exists('WC') && WC()->session) {
+      WC()->session->__unset('twmp_checkout_payment_order_id');
+      WC()->session->__unset('twmp_checkout_payment_order_key');
+    }
+
+    return;
+  }
+
   $order->update_meta_data('_twmp_checkout_payment_step', 'payment');
   $order->update_meta_data('_twmp_checkout_payment_proof_status', 'waiting_upload');
   $order->update_meta_data('_twmp_checkout_payment_proof_attachment_id', 0);
@@ -1906,6 +2351,10 @@ add_action('woocommerce_payment_complete', function ($order_id) {
     return;
   }
 
+  if (twmp_checkout_is_class_workshop_counter_order($order)) {
+    return;
+  }
+
   $order->update_meta_data('_twmp_checkout_payment_proof_status', 'waiting_upload');
   $order->save();
 
@@ -1917,6 +2366,15 @@ add_action('woocommerce_payment_complete', function ($order_id) {
 // Sau khi tạo order và chuyển đến trang "order received", thay vì hiển thị trang mặc định, chúng ta sẽ redirect về lại trang checkout với query param đặc biệt để hiển thị phần upload bill, đồng thời lưu order_id + order_key vào session để đảm bảo user có thể truy cập trực tiếp vào URL đó mà không cần phải qua bước "order received" nếu họ muốn upload bill sau khi đặt hàng
 add_filter('woocommerce_get_checkout_order_received_url', function ($order_received_url, $order) {
   if (!$order instanceof WC_Order) {
+    return $order_received_url;
+  }
+
+  if (twmp_checkout_is_class_workshop_counter_order($order)) {
+    if (function_exists('WC') && WC()->session) {
+      WC()->session->__unset('twmp_checkout_payment_order_id');
+      WC()->session->__unset('twmp_checkout_payment_order_key');
+    }
+
     return $order_received_url;
   }
 

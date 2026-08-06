@@ -255,6 +255,22 @@ export default el => {
 		checkoutBlock
 	)
 
+	on(
+		'change',
+		e => {
+			const target = e.target
+
+			if (!target || target.name !== 'payment_method') {
+				return
+			}
+
+			if (window.jQuery) {
+				window.jQuery(document.body).trigger('update_checkout')
+			}
+		},
+		checkoutBlock
+	)
+
 	// Delegated change handler for ticket option/quantity inputs
 	on(
 		'change',

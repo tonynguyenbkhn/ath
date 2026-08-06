@@ -11,9 +11,12 @@ $data = $_GET;
 
 $is_step_2 = false;
 
-if ($data && $data['twmp_checkout_step'] === '2') {
+if (!empty($data['twmp_checkout_step']) && $data['twmp_checkout_step'] === '2') {
     $is_step_2 = true;
 }
+
+$is_class_workshop = function_exists('twmp_checkout_is_class_workshop_context') && twmp_checkout_is_class_workshop_context();
+$is_order_received = function_exists('twmp_checkout_is_order_received_page') && twmp_checkout_is_order_received_page();
 
 get_template_part(
     'templates/components/image-light',
@@ -30,10 +33,7 @@ get_template_part(
 
 $title = '';
 
-if (
-  isset($_GET['category']) &&
-  'class-workshop' === sanitize_key(wp_unslash($_GET['category']))
-) {
+if ($is_class_workshop) {
   $title = __('Register', 'twmp-ath');
 }
 
@@ -42,7 +42,7 @@ get_template_part('templates/sections/page-title/section-checkout', null, ['clas
 ?>
 
 <div data-block="checkout-custom">
-    <div class="woocommerce-checkout-custom <?php echo $is_step_2 ? esc_attr('twmp_checkout_step_2') : esc_attr('twmp_checkout_step_1'); ?>">
+    <div class="woocommerce-checkout-custom <?php echo $is_step_2 ? esc_attr('twmp_checkout_step_2') : esc_attr('twmp_checkout_step_1'); ?><?php echo $is_order_received ? esc_attr(' twmp_checkout_order_received') : ''; ?>">
         <div class="container">
             <div class="woocommerce_checkout-columns">
                 <?php if ($is_step_2) : ?>
@@ -50,12 +50,14 @@ get_template_part('templates/sections/page-title/section-checkout', null, ['clas
                         <?php echo do_shortcode('[woocommerce_checkout]'); ?>
                     </div>
                 <?php else : ?>
-                    <div class="woocommerce_checkout--left">
+                    <div class="<?php echo ($is_class_workshop || $is_order_received) ? esc_attr('woocommerce_checkout--full') : esc_attr('woocommerce_checkout--left'); ?>">
                         <?php echo do_shortcode('[woocommerce_checkout]'); ?>
                     </div>
-                    <div class="woocommerce_checkout--right">
-                        <?php echo do_shortcode('[woocommerce_cart]'); ?>
-                    </div>
+                    <?php if (!$is_class_workshop) : ?>
+                        <div class="woocommerce_checkout--right">
+                            <?php echo do_shortcode('[woocommerce_cart]'); ?>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>

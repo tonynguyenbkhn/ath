@@ -503,7 +503,7 @@
                     "required": 1,
                     "min": 0,
                     "step": 1000,
-                    "prepend": "VND",
+                    "prepend": "",
                     "wrapper": {
                         "width": "40",
                         "class": "",
@@ -523,6 +523,27 @@
                 "class": "",
                 "id": ""
             }
+        },
+        {
+            "key": "field_ath_first_lesson_price",
+            "label": "First Lesson Price",
+            "name": "first_lesson_price",
+            "type": "number",
+            "instructions": "Price charged for the first class-workshop lesson before the 9-session term billing starts.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": 0,
+            "max": "",
+            "step": 1000
         },
         {
             "key": "field_ath_video_url",
@@ -567,7 +588,7 @@
                 ]
             ],
             "wrapper": {
-                "width": "100",
+                "width": "50",
                 "class": "",
                 "id": ""
             }

@@ -513,6 +513,26 @@
             "insert": "append"
         },
         {
+            "key": "field_class_workshop_commitment_pdf",
+            "label": "Class Workshop Commitment PDF",
+            "name": "class_workshop_commitment_pdf",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "PDF linked from the required class-workshop commitment checkbox during checkout.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "pdf"
+        },
+        {
             "key": "field_checkout_company_name",
             "label": "Company name",
             "name": "checkout_company_name",

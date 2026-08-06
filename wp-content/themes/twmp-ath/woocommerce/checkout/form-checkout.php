@@ -39,9 +39,11 @@ if ($is_payment_step) {
 	return;
 }
 
+$is_class_workshop = function_exists('twmp_checkout_is_class_workshop_context') && twmp_checkout_is_class_workshop_context();
+
 ?>
 
-<form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__('Checkout', 'twmp-ath'); ?>">
+<form name="checkout" method="post" class="checkout woocommerce-checkout <?php echo $is_class_workshop ? 'class-workshop' : '' ?>" action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__('Checkout', 'twmp-ath'); ?>">
 
 	<?php if ($checkout->get_checkout_fields()) : ?>
 
@@ -64,7 +66,7 @@ if ($is_payment_step) {
 
 	<?php do_action('woocommerce_checkout_before_order_review_heading'); ?>
 
-	<div class="order_review_wrapper twmp-checkout-payment">
+	<div class="order_review_wrapper twmp-checkout-payment<?php echo function_exists('twmp_checkout_is_class_workshop_context') && twmp_checkout_is_class_workshop_context() ? ' twmp-checkout-payment--visible' : ''; ?>">
 		<h3 id="order_review_heading"><?php esc_html_e('Payment method', 'twmp-ath'); ?></h3>
 
 		<?php do_action('woocommerce_checkout_before_order_review'); ?>

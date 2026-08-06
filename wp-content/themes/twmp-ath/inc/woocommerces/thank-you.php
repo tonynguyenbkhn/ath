@@ -100,6 +100,22 @@ add_filter('woocommerce_thankyou_order_received_text', function ($text, $order) 
         return $text;
     }
 
+    if (function_exists('twmp_checkout_order_has_product_category') && twmp_checkout_order_has_product_category($order, 'class-workshop')) {
+        $payment_type = sanitize_key((string) $order->get_meta('_twmp_class_workshop_payment_type', true));
+
+        if ('pay_at_counter' === $payment_type || 'cod' === $order->get_payment_method()) {
+            $message = esc_html__('Thank you. Your registration has been received.', 'twmp-ath');
+            $message .= '<br>' . esc_html__('Please complete the payment directly at the counter.', 'twmp-ath');
+        } else {
+            $message = esc_html__('Thank you. Your first lesson payment confirmation has been received.', 'twmp-ath');
+            $message .= '<br>' . esc_html__('We will review your payment proof and confirm your registration.', 'twmp-ath');
+        }
+
+        return wp_kses($message, [
+            'br' => [],
+        ]);
+    }
+
     $full_name = esc_html($order->get_billing_last_name());
     $gender    = strtolower((string) $order->get_meta('_billing_sexy'));
 
