@@ -459,9 +459,9 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 }, 20);
 
 add_action('woocommerce_after_checkout_billing_form', function () {
-  if (!twmp_checkout_is_class_workshop_context()) {
-    return;
-  }
+//  if (!twmp_checkout_is_class_workshop_context()) {
+//    return;
+//  }
 
   $product_id = twmp_checkout_get_class_workshop_product_id();
   $pdf_url = twmp_checkout_get_class_workshop_commitment_pdf_url($product_id);

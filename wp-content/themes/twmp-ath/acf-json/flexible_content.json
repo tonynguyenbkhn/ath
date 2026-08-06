@@ -205,11 +205,11 @@
                         },
                         {
                             "key": "field_hv_video",
-                            "label": "Video",
+                            "label": "YouTube Video URL",
                             "name": "video",
                             "aria-label": "",
-                            "type": "file",
-                            "instructions": "Main hero background video.",
+                            "type": "url",
+                            "instructions": "Paste the YouTube link for the hero background video.",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
@@ -217,11 +217,8 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "return_format": "id",
-                            "library": "all",
-                            "min_size": "",
-                            "max_size": "",
-                            "mime_types": "mp4,webm,ogg"
+                            "default_value": "",
+                            "placeholder": "https://www.youtube.com/watch?v=..."
                         },
                         {
                             "key": "field_hv_image",

@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Hero Video section template.
  * Expects ACF fields:
- * - video (file ID/array/url)
+ * - video (YouTube URL)
  * - image (image ID, used as poster/fallback)
  * - title (text)
  * - description (textarea)
@@ -27,6 +27,66 @@ if (!function_exists('_hv_get')) {
     }
 }
 
+if (!function_exists('_hv_get_youtube_embed_url')) {
+    function _hv_get_youtube_embed_url($url) {
+        $url = trim((string) $url);
+
+        if ($url === '') {
+            return '';
+        }
+
+        $parts = wp_parse_url($url);
+
+        if (empty($parts['host'])) {
+            return '';
+        }
+
+        $host = strtolower($parts['host']);
+        $path = isset($parts['path']) ? trim($parts['path'], '/') : '';
+        $video_id = '';
+
+        if (strpos($host, 'youtu.be') !== false) {
+            $segments = explode('/', $path);
+            $video_id = !empty($segments[0]) ? $segments[0] : '';
+        } elseif (strpos($host, 'youtube.com') !== false || strpos($host, 'youtube-nocookie.com') !== false) {
+            if (!empty($parts['query'])) {
+                parse_str($parts['query'], $query);
+                $video_id = !empty($query['v']) ? $query['v'] : '';
+            }
+
+            if (!$video_id && $path) {
+                $segments = explode('/', $path);
+
+                if (in_array($segments[0], ['embed', 'shorts', 'live'], true) && !empty($segments[1])) {
+                    $video_id = $segments[1];
+                }
+            }
+        }
+
+        $video_id = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $video_id);
+
+        if (!$video_id) {
+            return '';
+        }
+
+        return add_query_arg(
+            [
+                'autoplay' => '1',
+                'mute' => '1',
+                'controls' => '0',
+                'enablejsapi' => '1',
+                'loop' => '1',
+                'playlist' => $video_id,
+                'playsinline' => '1',
+                'rel' => '0',
+                'modestbranding' => '1',
+                'origin' => home_url(),
+            ],
+            'https://www.youtube-nocookie.com/embed/' . $video_id
+        );
+    }
+}
+
 $hide_section = _hv_get('hide_section');
 
 if ($hide_section) {
@@ -41,15 +101,8 @@ $description = _hv_get('description');
 $button_text = _hv_get('button_text');
 $button_link = _hv_get('button_link');
 
-$video_url = '';
-
-if (is_array($video)) {
-    $video_url = !empty($video['url']) ? $video['url'] : '';
-} elseif (is_numeric($video)) {
-    $video_url = wp_get_attachment_url((int) $video);
-} elseif (is_string($video)) {
-    $video_url = $video;
-}
+$video_url = is_string($video) ? $video : '';
+$video_embed_url = _hv_get_youtube_embed_url($video_url);
 
 $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'full') : '';
 $image_sizes = $image_id ? wp_get_attachment_image_sizes($image_id, 'full') : '';
@@ -62,21 +115,28 @@ if ($image_id) {
 
 ?>
 
-<?php if ($video_url || $image_url || $title || $description || $button_text): ?>
-<section class="hero-video" role="banner"<?php echo $section_id ? ' id="' . esc_attr($section_id) . '"' : ''; ?>>
+<?php if ($video_embed_url || $image_url || $title || $description || $button_text): ?>
+<section class="hero-video" role="banner"<?php echo $section_id ? ' id="' . esc_attr($section_id) . '"' : ''; ?><?php echo $video_embed_url ? ' data-block="hero-video"' : ''; ?>>
   <div class="hero-video__media position-relative">
-    <?php if ($video_url): ?>
-      <video
-        class="hero-video__video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        <?php echo $image_url ? ' poster="' . esc_url($image_url) . '"' : ''; ?>
-      >
-        <source src="<?php echo esc_url($video_url); ?>">
-      </video>
+    <?php if ($video_embed_url): ?>
+      <iframe
+        class="hero-video__iframe"
+        src="<?php echo esc_url($video_embed_url); ?>"
+        title="<?php echo esc_attr($title ? $title : __('Hero video', 'twmp-ath')); ?>"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        loading="eager"
+        referrerpolicy="strict-origin-when-cross-origin"
+        aria-hidden="true"
+        tabindex="-1"
+      ></iframe>
+      <div class="hero-video__controls" aria-label="<?php echo esc_attr__('Video controls', 'twmp-ath'); ?>">
+        <button class="hero-video__control" type="button" data-hero-video-toggle-play aria-label="<?php echo esc_attr__('Pause video', 'twmp-ath'); ?>" data-label-play="<?php echo esc_attr__('Play', 'twmp-ath'); ?>" data-label-pause="<?php echo esc_attr__('Pause', 'twmp-ath'); ?>">
+          <span data-hero-video-play-label><?php echo esc_html__('Pause', 'twmp-ath'); ?></span>
+        </button>
+        <button class="hero-video__control" type="button" data-hero-video-toggle-mute aria-label="<?php echo esc_attr__('Unmute video', 'twmp-ath'); ?>" data-label-mute="<?php echo esc_attr__('Mute', 'twmp-ath'); ?>" data-label-unmute="<?php echo esc_attr__('Sound', 'twmp-ath'); ?>">
+          <span data-hero-video-mute-label><?php echo esc_html__('Sound', 'twmp-ath'); ?></span>
+        </button>
+      </div>
     <?php elseif ($image_id): ?>
       <?php get_template_part('templates/components/images', null, [
         'id' => $image_id,

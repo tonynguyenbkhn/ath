@@ -51,6 +51,34 @@ function twmp_custom_event_show_breadcrumb($crumbs, $breadcrumb)
 		];
 	}
 
+	if (is_singular('artists')) {
+		$home_crumb = !empty($crumbs[0]) ? $crumbs[0] : [__('Home', 'twmp-ath'), home_url('/')];
+
+		return [
+			$home_crumb,
+			[
+				__('Teams', 'twmp-ath'),
+				home_url('/teams/'),
+			],
+			[
+				get_the_title(),
+				'',
+			],
+		];
+	}
+
+	if (is_post_type_archive('artists')) {
+		$home_crumb = !empty($crumbs[0]) ? $crumbs[0] : [__('Home', 'twmp-ath'), home_url('/')];
+
+		return [
+			$home_crumb,
+			[
+				__('Teams', 'twmp-ath'),
+				'',
+			],
+		];
+	}
+
 	return $crumbs;
 }
 

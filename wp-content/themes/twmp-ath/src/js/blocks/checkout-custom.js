@@ -19,25 +19,74 @@ export default el => {
 	let refreshTimer = null
 	let loadingOverlay = null
 
+	const getCommitmentInput = () => select('#twmp_class_workshop_commitment', checkoutBlock) || select('#twmp_class_workshop_commitment')
+	const getCommitmentField = () => select('#twmp_class_workshop_commitment_field', checkoutBlock) || select('#twmp_class_workshop_commitment_field')
+
+	const clearCommitmentError = () => {
+		const input = getCommitmentInput()
+		const field = getCommitmentField()
+
+		if (input) {
+			input.removeAttribute('aria-invalid')
+		}
+
+		if (field) {
+			field.classList.remove('woocommerce-invalid')
+			field.querySelector('.checkout-inline-error-message')?.remove()
+		}
+	}
+
+	const validateCommitmentField = () => {
+		const input = getCommitmentInput()
+
+		if (!input || input.checked) {
+			clearCommitmentError()
+			return true
+		}
+
+		const field = getCommitmentField()
+
+		input.setAttribute('aria-invalid', 'true')
+
+		if (field) {
+			field.classList.add('woocommerce-invalid')
+
+			if (!field.querySelector('.checkout-inline-error-message')) {
+				const message = document.createElement('span')
+				message.className = 'checkout-inline-error-message'
+				message.textContent = 'Vui lòng đồng ý với bản cam kết trước khi thanh toán.'
+				field.appendChild(message)
+			}
+
+			field.scrollIntoView({ behavior: 'smooth', block: 'center' })
+		}
+
+		if (typeof input.focus === 'function') {
+			input.focus({ preventScroll: true })
+		}
+
+		return false
+	}
+
 	const handleProceedToPayment = event => {
 		const target = event.target
 		const button = target && target.closest ? target.closest('.submit-thanh-toan') : null
 		if (!button || !checkoutBlock.contains(button)) return
 
 		event.preventDefault()
-		console.log('submit-thanh-toan clicked')
+
+		if (!validateCommitmentField()) {
+			return
+		}
 
 		const placeOrderButton = checkoutForm ? checkoutForm.querySelector('#place_order') : null
-		console.log('placeOrderButton:', placeOrderButton)
 
 		if (placeOrderButton && typeof placeOrderButton.click === 'function') {
-			console.log('clicking #place_order')
 			placeOrderButton.click()
 			return
 		}
 
 		if (checkoutForm && typeof checkoutForm.requestSubmit === 'function') {
-			console.log('calling checkoutForm.requestSubmit()')
 			checkoutForm.requestSubmit()
 		}
 	}
@@ -220,6 +269,11 @@ export default el => {
 
 	// Delegate click events inside `checkoutBlock` to handle proceed-to-payment
 	on('click', handleProceedToPayment, checkoutBlock)
+
+	const commitmentInput = getCommitmentInput()
+	if (commitmentInput) {
+		commitmentInput.addEventListener('change', clearCommitmentError)
+	}
 
 	/**
 	 * updateQuantityByStep

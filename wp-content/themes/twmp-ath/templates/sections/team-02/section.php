@@ -47,7 +47,7 @@ foreach ($artist_ids as $artist_id) {
 		'image_id'    => get_post_thumbnail_id($artist_id),
 		'image_size'  => 'large',
 		'lazyload'    => false,
-		'url'         => get_post_meta($artist_id, '_artist_url', true),
+		'url'         => get_permalink($artist_id),
 	];
 
 	ob_start();
