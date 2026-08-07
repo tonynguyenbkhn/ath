@@ -8,8 +8,13 @@ remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_login_fo
 remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10);
 remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_output_all_notices', 10);
 
+add_filter('woocommerce_defer_transactional_emails', '__return_true');
+
 function twmp_checkout_product_has_category($product_id, $category_slug)
 {
+  static $result_cache = array();
+  static $term_cache = array();
+
   $product_id = absint($product_id);
   $category_slug = sanitize_key($category_slug);
 
@@ -17,32 +22,55 @@ function twmp_checkout_product_has_category($product_id, $category_slug)
     return false;
   }
 
-  $term = get_term_by('slug', $category_slug, 'product_cat');
-  $term_ids = $term instanceof WP_Term ? array(absint($term->term_id)) : array($category_slug);
-
-  if ($term instanceof WP_Term) {
-    $child_ids = get_term_children($term->term_id, 'product_cat');
-
-    if (!is_wp_error($child_ids) && !empty($child_ids)) {
-      $term_ids = array_merge($term_ids, array_map('absint', $child_ids));
-    }
+  $cache_key = $product_id . '|' . $category_slug;
+  if (array_key_exists($cache_key, $result_cache)) {
+    return $result_cache[$cache_key];
   }
 
+  if (!array_key_exists($category_slug, $term_cache)) {
+    $term = get_term_by('slug', $category_slug, 'product_cat');
+    $term_ids = $term instanceof WP_Term ? array(absint($term->term_id)) : array($category_slug);
+
+    if ($term instanceof WP_Term) {
+      $child_ids = get_term_children($term->term_id, 'product_cat');
+
+      if (!is_wp_error($child_ids) && !empty($child_ids)) {
+        $term_ids = array_merge($term_ids, array_map('absint', $child_ids));
+      }
+    }
+
+    $term_cache[$category_slug] = $term_ids;
+  }
+
+  $term_ids = $term_cache[$category_slug];
+
   if (has_term($term_ids, 'product_cat', $product_id)) {
+    $result_cache[$cache_key] = true;
     return true;
   }
 
   $parent_id = wp_get_post_parent_id($product_id);
+  $result = $parent_id ? has_term($term_ids, 'product_cat', $parent_id) : false;
 
-  return $parent_id ? has_term($category_slug, 'product_cat', $parent_id) : false;
+  $result_cache[$cache_key] = $result;
+
+  return $result;
 }
 
 function twmp_checkout_cart_has_product_category($category_slug)
 {
+  static $cache = array();
+
   $category_slug = sanitize_key($category_slug);
 
   if ('' === $category_slug || !function_exists('WC') || !WC()->cart) {
     return false;
+  }
+
+  $cart_hash = method_exists(WC()->cart, 'get_cart_hash') ? WC()->cart->get_cart_hash() : '';
+  $cache_key = $category_slug . '|' . $cart_hash . '|' . count(WC()->cart->get_cart());
+  if (array_key_exists($cache_key, $cache)) {
+    return $cache[$cache_key];
   }
 
   foreach (WC()->cart->get_cart() as $cart_item) {
@@ -53,9 +81,12 @@ function twmp_checkout_cart_has_product_category($category_slug)
       ($product_id && twmp_checkout_product_has_category($product_id, $category_slug)) ||
       ($variation_id && twmp_checkout_product_has_category($variation_id, $category_slug))
     ) {
+      $cache[$cache_key] = true;
       return true;
     }
   }
+
+  $cache[$cache_key] = false;
 
   return false;
 }
@@ -98,8 +129,16 @@ function twmp_checkout_is_class_workshop_context()
 
 function twmp_checkout_get_class_workshop_product_id()
 {
+  static $cache = array();
+
   if (!function_exists('WC') || !WC()->cart) {
     return 0;
+  }
+
+  $cart_hash = method_exists(WC()->cart, 'get_cart_hash') ? WC()->cart->get_cart_hash() : '';
+  $cache_key = $cart_hash . '|' . count(WC()->cart->get_cart());
+  if (array_key_exists($cache_key, $cache)) {
+    return $cache[$cache_key];
   }
 
   foreach (WC()->cart->get_cart() as $cart_item) {
@@ -107,13 +146,17 @@ function twmp_checkout_get_class_workshop_product_id()
     $variation_id = !empty($cart_item['variation_id']) ? absint($cart_item['variation_id']) : 0;
 
     if ($variation_id && twmp_checkout_product_has_category($variation_id, 'class-workshop')) {
+      $cache[$cache_key] = $variation_id;
       return $variation_id;
     }
 
     if ($product_id && twmp_checkout_product_has_category($product_id, 'class-workshop')) {
+      $cache[$cache_key] = $product_id;
       return $product_id;
     }
   }
+
+  $cache[$cache_key] = 0;
 
   return 0;
 }
@@ -153,6 +196,8 @@ function twmp_checkout_get_class_workshop_payment_type($payment_method = '')
 
 function twmp_checkout_get_class_workshop_first_lesson_price($product_id = 0)
 {
+  static $cache = array();
+
   $product_id = absint($product_id);
 
   if (!$product_id) {
@@ -163,6 +208,10 @@ function twmp_checkout_get_class_workshop_first_lesson_price($product_id = 0)
     return null;
   }
 
+  if (array_key_exists($product_id, $cache)) {
+    return $cache[$product_id];
+  }
+
   $price = get_field('first_lesson_price', $product_id);
 
   if ('' === $price || null === $price) {
@@ -171,18 +220,27 @@ function twmp_checkout_get_class_workshop_first_lesson_price($product_id = 0)
   }
 
   if ('' === $price || null === $price || !is_numeric($price)) {
+    $cache[$product_id] = null;
     return null;
   }
 
-  return max(0, (float) $price);
+  $cache[$product_id] = max(0, (float) $price);
+
+  return $cache[$product_id];
 }
 
 function twmp_checkout_get_class_workshop_commitment_pdf_url($product_id = 0)
 {
+  static $cache = array();
+
   $product_id = absint($product_id);
 
   if (!$product_id) {
     $product_id = twmp_checkout_get_class_workshop_product_id();
+  }
+
+  if (array_key_exists($product_id, $cache)) {
+    return $cache[$product_id];
   }
 
   $value = '';
@@ -203,14 +261,18 @@ function twmp_checkout_get_class_workshop_commitment_pdf_url($product_id = 0)
   }
 
   if (is_array($value) && !empty($value['url'])) {
-    return esc_url_raw($value['url']);
+    $cache[$product_id] = esc_url_raw($value['url']);
+    return $cache[$product_id];
   }
 
   if (is_numeric($value)) {
-    return esc_url_raw(wp_get_attachment_url(absint($value)));
+    $cache[$product_id] = esc_url_raw(wp_get_attachment_url(absint($value)));
+    return $cache[$product_id];
   }
 
-  return is_string($value) ? esc_url_raw($value) : '';
+  $cache[$product_id] = is_string($value) ? esc_url_raw($value) : '';
+
+  return $cache[$product_id];
 }
 
 function twmp_checkout_is_class_workshop_counter_order($order)
@@ -277,7 +339,12 @@ add_filter('woocommerce_available_payment_gateways', function ($gateways) {
   }
 
   if (function_exists('WC') && WC()->session) {
-    WC()->session->set('twmp_class_workshop_payment_method', twmp_checkout_get_class_workshop_payment_method());
+    $payment_method = twmp_checkout_get_class_workshop_payment_method();
+    $stored_method = sanitize_key((string) WC()->session->get('twmp_class_workshop_payment_method', ''));
+
+    if ($stored_method !== $payment_method) {
+      WC()->session->set('twmp_class_workshop_payment_method', $payment_method);
+    }
   }
 
   if (function_exists('WC') && WC()->payment_gateways()) {
@@ -1134,8 +1201,16 @@ function twmp_checkout_get_ticket_product_data($product_id = 0)
 
 function twmp_checkout_get_ticket_product_id()
 {
+  static $cache = array();
+
   if (!function_exists('WC') || !WC()->cart) {
     return 0;
+  }
+
+  $cart_hash = method_exists(WC()->cart, 'get_cart_hash') ? WC()->cart->get_cart_hash() : '';
+  $cache_key = $cart_hash . '|' . count(WC()->cart->get_cart());
+  if (array_key_exists($cache_key, $cache)) {
+    return $cache[$cache_key];
   }
 
   foreach (WC()->cart->get_cart() as $cart_item) {
@@ -1150,9 +1225,12 @@ function twmp_checkout_get_ticket_product_id()
 
     $ticket_data = twmp_checkout_get_ticket_product_data($product_id);
     if (!empty($ticket_data['performances']) || !empty($ticket_data['ticket_prices'])) {
+      $cache[$cache_key] = $product_id;
       return $product_id;
     }
   }
+
+  $cache[$cache_key] = 0;
 
   return 0;
 }
@@ -1956,7 +2034,11 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
     $payment_method = sanitize_key($data['payment_method']);
 
     if (in_array($payment_method, array('bacs', 'cod'), true)) {
-      WC()->session->set('twmp_class_workshop_payment_method', $payment_method);
+      $stored_method = sanitize_key((string) WC()->session->get('twmp_class_workshop_payment_method', ''));
+
+      if ($stored_method !== $payment_method) {
+        WC()->session->set('twmp_class_workshop_payment_method', $payment_method);
+      }
     }
   }
 
@@ -1970,7 +2052,10 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
     'price_key'       => isset($data['twmp_ticket_price_option']) ? sanitize_key($data['twmp_ticket_price_option']) : '',
   ));
 
-  WC()->session->set('twmp_ticket_selection', $selection);
+  $stored_selection = WC()->session->get('twmp_ticket_selection', array());
+  if ($stored_selection !== $selection) {
+    WC()->session->set('twmp_ticket_selection', $selection);
+  }
 
   $attendees = twmp_checkout_get_ticket_attendee_state_from_session($product_id);
   if (!empty($data['twmp_ticket_attendees_state'])) {
@@ -1989,8 +2074,14 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
   }
 
   $attendees = twmp_checkout_normalize_ticket_attendee_state($attendees);
-  WC()->session->set('twmp_ticket_attendees', $attendees);
-  WC()->session->set('twmp_ticket_attendees_state', $attendees);
+
+  if (twmp_checkout_parse_ticket_attendee_state(WC()->session->get('twmp_ticket_attendees', array())) !== $attendees) {
+    WC()->session->set('twmp_ticket_attendees', $attendees);
+  }
+
+  if (twmp_checkout_parse_ticket_attendee_state(WC()->session->get('twmp_ticket_attendees_state', array())) !== $attendees) {
+    WC()->session->set('twmp_ticket_attendees_state', $attendees);
+  }
 
   $quantity = !empty($data['twmp_ticket_quantity']) ? max(1, absint($data['twmp_ticket_quantity'])) : 0;
   if ($quantity > 0 && function_exists('WC') && WC()->cart) {
@@ -1998,8 +2089,12 @@ add_action('woocommerce_checkout_update_order_review', function ($posted_data) {
     if (!is_array($stored_quantity)) {
       $stored_quantity = array();
     }
-    $stored_quantity[$product_id] = $quantity;
-    WC()->session->set('twmp_ticket_quantity', $stored_quantity);
+    $stored_product_quantity = !empty($stored_quantity[$product_id]) ? absint($stored_quantity[$product_id]) : 0;
+
+    if ($stored_product_quantity !== $quantity) {
+      $stored_quantity[$product_id] = $quantity;
+      WC()->session->set('twmp_ticket_quantity', $stored_quantity);
+    }
 
     $cart_item_key = twmp_checkout_get_cart_item_key_by_product_id($product_id);
     if ($cart_item_key) {
@@ -2333,16 +2428,13 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
   $order->update_meta_data('_twmp_checkout_payment_reviewed_at', '');
   $order->update_meta_data('_twmp_checkout_payment_reviewed_by', 0);
   $order->update_meta_data('_twmp_checkout_payment_review_note', '');
-  $order->save();
 
   if (function_exists('WC') && WC()->session) {
     WC()->session->set('twmp_checkout_payment_order_id', $order->get_id());
     WC()->session->set('twmp_checkout_payment_order_key', $order->get_order_key());
   }
 
-  if ($order->needs_payment() && !$order->has_status('on-hold')) {
-    $order->update_status('on-hold', esc_html__('Awaiting payment proof upload.', 'twmp-ath'));
-  }
+  $order->save();
 }, 20, 3);
 
 add_action('woocommerce_payment_complete', function ($order_id) {
@@ -2376,11 +2468,6 @@ add_filter('woocommerce_get_checkout_order_received_url', function ($order_recei
     }
 
     return $order_received_url;
-  }
-
-  if (function_exists('WC') && WC()->session) {
-    WC()->session->set('twmp_checkout_payment_order_id', $order->get_id());
-    WC()->session->set('twmp_checkout_payment_order_key', $order->get_order_key());
   }
 
   $query_args = array(
@@ -2421,7 +2508,9 @@ add_action('woocommerce_order_status_changed', function ($order_id, $from, $to, 
 
   if ('on-hold' === $to || 'pending' === $to) {
     $current = twmp_checkout_get_payment_proof_status($order);
-    if (in_array($current, array('waiting_upload', 'pending_review'), true)) {
+    $stored = sanitize_key((string) $order->get_meta('_twmp_checkout_payment_proof_status', true));
+
+    if (in_array($current, array('waiting_upload', 'pending_review'), true) && $stored !== $current) {
       $order->update_meta_data('_twmp_checkout_payment_proof_status', $current);
       $order->save();
     }

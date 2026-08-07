@@ -96,12 +96,16 @@ export default el => {
 		}
 	}
 
-	// DOM helper getters scoped to this block
-	const getCartForm = () => select('.woocommerce-cart-form')
 	const getQuantityInput = () => select('.twmp-ticket-quantity__input', checkoutBlock)
 	const getTicketDetailCard = () => select('.twmp-checkout-card--ticket-detail', checkoutBlock)
 	const getTicketOptionItems = () =>
 		Array.from(checkoutBlock.querySelectorAll('.twmp-ticket-option, .twmp-ticket-price-option'))
+	const getTicketControlWrappers = () => {
+		const ticketDetailCard = getTicketDetailCard()
+		return ticketDetailCard
+			? Array.from(ticketDetailCard.querySelectorAll('.twmp-checkout-ticket-detail__options, [data-ticket-quantity-control]'))
+			: []
+	}
 
 	/**
 	 * syncActiveRadioState
@@ -182,70 +186,24 @@ export default el => {
 		loadingOverlay = null
 	}
 
-	// Serialize a form to `application/x-www-form-urlencoded` string
-	const serializeForm = form => {
-		const formData = new FormData(form)
-		return new URLSearchParams(formData).toString()
-	}
-
-	/**
-	 * updateCheckoutSession
-	 * - Called when ticket options/quantity change.
-	 * - Purpose: call WooCommerce's `update_order_review` to refresh
-	 *   server-side order/session data based on current checkout form.
-	 */
-	const updateCheckoutSession = () => {
-		if (
-			typeof window.wc_checkout_params === 'undefined' ||
-			!window.wc_checkout_params ||
-			!window.wc_checkout_params.wc_ajax_url ||
-			!checkoutForm
-		) {
-			return Promise.resolve()
-		}
-
-		const body = new URLSearchParams()
-		body.append('security', window.wc_checkout_params.update_order_review_nonce || '')
-		body.append('post_data', serializeForm(checkoutForm))
-
-		const url = window.wc_checkout_params.wc_ajax_url.replace('%%endpoint%%', 'update_order_review')
-
-		return fetch(url, {
-			method: 'POST',
-			credentials: 'same-origin',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-			},
-			body: body.toString(),
-		}).then(() => undefined)
-	}
-
-	/**
-	 * submitCartUpdate
-	 * - Submit the cart form to update cart totals on the server.
-	 * - If cart form is not present, fall back to a full page reload.
-	 */
-	const submitCartUpdate = () => {
-		const cartForm = getCartForm()
-
-		if (!cartForm) {
-			window.location.reload()
-			return Promise.resolve()
-		}
-
-		const body = new URLSearchParams(serializeForm(cartForm))
-		body.set('update_cart', '1')
-
-		return fetch(cartForm.action, {
-			method: 'POST',
-			credentials: 'same-origin',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-			},
-			body: body.toString(),
-		}).then(() => {
-			window.location.reload()
+	const setTicketControlsDisabled = isDisabled => {
+		getTicketControlWrappers().forEach(wrapper => {
+			wrapper.classList.toggle('is-disabled', isDisabled)
 		})
+	}
+
+	const finishCheckoutRefresh = () => {
+		setLoadingState(false)
+		setTicketControlsDisabled(false)
+	}
+
+	const refreshCheckoutReview = () => {
+		if (!window.jQuery) {
+			finishCheckoutRefresh()
+			return
+		}
+
+		window.jQuery(document.body).trigger('update_checkout')
 	}
 
 	// Ensure quantity is an integer >= 1
@@ -288,6 +246,8 @@ export default el => {
 
 			return true
 		})
+
+		window.jQuery(document.body).on('updated_checkout checkout_error', finishCheckoutRefresh)
 	}
 
 	/**
@@ -324,22 +284,6 @@ export default el => {
 		checkoutBlock
 	)
 
-	on(
-		'change',
-		e => {
-			const target = e.target
-
-			if (!target || target.name !== 'payment_method') {
-				return
-			}
-
-			if (window.jQuery) {
-				window.jQuery(document.body).trigger('update_checkout')
-			}
-		},
-		checkoutBlock
-	)
-
 	// Delegated change handler for ticket option/quantity inputs
 	on(
 		'change',
@@ -369,40 +313,13 @@ export default el => {
 				syncActiveRadioState(target)
 			}
 
-			if (target.name === 'twmp_ticket_quantity') {
-				target.value = String(clampQuantity(target.value))
-			}
+			setTicketControlsDisabled(true)
 
-			const ticketDetailCard = getTicketDetailCard()
-			if (ticketDetailCard) {
-				const controlWrappers = ticketDetailCard.querySelectorAll(
-					'.twmp-checkout-ticket-detail__options, [data-ticket-quantity-control]'
-				)
-				controlWrappers.forEach(wrapper => {
-					wrapper.classList.toggle('is-disabled', true)
-				})
-			}
-
-			// Debounce update: show loading state, call server to update
 			window.clearTimeout(refreshTimer)
 			setLoadingState(true)
 
 			refreshTimer = window.setTimeout(() => {
-				updateCheckoutSession()
-					.then(() => submitCartUpdate())
-					.catch(() => submitCartUpdate())
-					.finally(() => {
-						setLoadingState(false)
-						const ticketDetailCard = getTicketDetailCard()
-						if (ticketDetailCard) {
-							const controlWrappers = ticketDetailCard.querySelectorAll(
-								'.twmp-checkout-ticket-detail__options, [data-ticket-quantity-control]'
-							)
-							controlWrappers.forEach(wrapper => {
-								wrapper.classList.toggle('is-disabled', false)
-							})
-						}
-					})
+				refreshCheckoutReview()
 			}, 100)
 		},
 		checkoutBlock
