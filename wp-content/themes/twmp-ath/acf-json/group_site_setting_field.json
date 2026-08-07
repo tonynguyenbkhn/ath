@@ -514,7 +514,7 @@
         },
         {
             "key": "field_class_workshop_commitment_pdf",
-            "label": "Class Workshop Commitment PDF",
+            "label": "Commitment PDF",
             "name": "class_workshop_commitment_pdf",
             "aria-label": "",
             "type": "file",

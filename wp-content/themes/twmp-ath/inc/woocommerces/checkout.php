@@ -476,7 +476,7 @@ add_action('woocommerce_after_checkout_billing_form', function () {
         value="1"
         required>
       <span>
-        <?php echo esc_html__('I agree to the course commitment', 'twmp-ath'); ?>
+        <?php echo esc_html__('I have read and agree to the school\'s terms and conditions.', 'twmp-ath'); ?>
         <?php if ($pdf_url) : ?>
           <a href="<?php echo esc_url($pdf_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('View PDF', 'twmp-ath'); ?></a>
         <?php endif; ?>

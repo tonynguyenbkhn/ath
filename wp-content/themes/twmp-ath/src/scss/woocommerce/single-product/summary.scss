@@ -27,6 +27,7 @@
         // product-description 
         .product-description {
             @include content-style(var(--system-content-2), var(--system-white));
+            margin-top: 20px;
         }
 
         /* product price */
@@ -107,6 +108,10 @@
                 color: var(--system-content-2);
                 font-family: var(--font-archivo);
                 @include typo-token(18, 28, 400);
+
+                &.ath_start_datetime {
+                    display: none;
+                }
 
                 > div {
                     min-width: 0;
