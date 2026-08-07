@@ -19,6 +19,7 @@ export default el => {
 	let refreshTimer = null
 	let loadingOverlay = null
 
+	const getPlaceOrderButton = () => (checkoutForm ? checkoutForm.querySelector('#place_order') : null)
 	const getCommitmentInput = () => select('#twmp_class_workshop_commitment', checkoutBlock) || select('#twmp_class_workshop_commitment')
 	const getCommitmentField = () => select('#twmp_class_workshop_commitment_field', checkoutBlock) || select('#twmp_class_workshop_commitment_field')
 
@@ -79,7 +80,11 @@ export default el => {
 			return
 		}
 
-		const placeOrderButton = checkoutForm ? checkoutForm.querySelector('#place_order') : null
+		if (checkoutForm && typeof checkoutForm.reportValidity === 'function' && !checkoutForm.reportValidity()) {
+			return
+		}
+
+		const placeOrderButton = getPlaceOrderButton()
 
 		if (placeOrderButton && typeof placeOrderButton.click === 'function') {
 			placeOrderButton.click()
@@ -273,6 +278,16 @@ export default el => {
 	const commitmentInput = getCommitmentInput()
 	if (commitmentInput) {
 		commitmentInput.addEventListener('change', clearCommitmentError)
+	}
+
+	if (window.jQuery) {
+		window.jQuery(document.body).on('checkout_place_order', () => {
+			if (!validateCommitmentField()) {
+				return false
+			}
+
+			return true
+		})
 	}
 
 	/**

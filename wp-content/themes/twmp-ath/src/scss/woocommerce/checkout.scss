@@ -146,6 +146,40 @@
 	.woocommerce_checkout--right>* {
 		height: 100%;
 	}
+
+	form.checkout.processing {
+		cursor: wait;
+		position: relative;
+	}
+
+	form.checkout.processing .twmp-checkout-payment::after {
+		align-items: center;
+		background: rgba($color: #ffffff, $alpha: 0.56);
+		color: var(--system-white);
+		display: flex;
+		font-family: var(--font-archivo);
+		inset: 0;
+		content: '';
+		justify-content: center;
+		min-height: 180px;
+		pointer-events: all;
+		position: absolute;
+		text-align: center;
+		z-index: 100;
+		@include typo-text-lg(500);
+	}
+
+	form.checkout.processing #place_order,
+	form.checkout.processing .submit-thanh-toan {
+		cursor: wait;
+		opacity: 0.72;
+		pointer-events: none;
+	}
+
+	//form.checkout.processing #place_order {
+	//	color: transparent;
+	//	position: relative;
+	//}
 }
 
 // ver 2
@@ -1615,6 +1649,7 @@
 		#place_order:hover {
 			background: var(--primary-600);
 		}
+
 	}
 
 	.twmp-checkout-summary {
@@ -2411,6 +2446,7 @@ html.twmp-payment-popup-open body {
 .woocommerce-checkout-custom .class-workshop .order_review_wrapper {
 	width: calc( 50% - 100px );
 	float: right;
+	position: relative;
 
 	@media (max-width: 767px) {
 		width: 100%;
