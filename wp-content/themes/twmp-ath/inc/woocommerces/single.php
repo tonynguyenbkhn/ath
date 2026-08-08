@@ -77,6 +77,39 @@ function twmp_field_to_string($value)
 }
 
 /**
+ * Convert ACF choice values to their configured labels.
+ */
+function twmp_get_acf_choice_labels($field_name, $post_id, $value)
+{
+	$values = is_array($value) ? $value : [$value];
+	$labels = [];
+	$choices = [];
+
+	if (function_exists('get_field_object')) {
+		$field = get_field_object($field_name, $post_id);
+		if (is_array($field) && !empty($field['choices']) && is_array($field['choices'])) {
+			$choices = $field['choices'];
+		}
+	}
+
+	foreach ($values as $item) {
+		if (is_array($item) && isset($item['label'])) {
+			$labels[] = sanitize_text_field($item['label']);
+			continue;
+		}
+
+		$key = is_scalar($item) ? (string) $item : '';
+		if ('' === $key) {
+			continue;
+		}
+
+		$labels[] = sanitize_text_field($choices[$key] ?? $key);
+	}
+
+	return implode(', ', $labels);
+}
+
+/**
  * Render pagination if available.
  */
 function twmp_render_related_event_pagination($total, $current, $fragment = '')
@@ -644,19 +677,38 @@ add_action('woocommerce_single_product_summary', function () {
 
 add_action('woocommerce_single_product_summary', 'product_details_meta', 15);
 
-function twmp_single_product_has_category($product_id, $category_slug)
+function twmp_single_product_has_category($product_id, $categories)
 {
     $product_id = absint($product_id);
-    $category_slug = sanitize_key($category_slug);
 
-    if (!$product_id || '' === $category_slug) {
+    if (!$product_id) {
         return false;
     }
 
-    $term = get_term_by('slug', $category_slug, 'product_cat');
-    $term_ids = $term instanceof WP_Term ? [absint($term->term_id)] : [$category_slug];
+    $categories = is_array($categories) ? $categories : [$categories];
+    $term_ids = [];
+    $term_slugs = [];
 
-    if ($term instanceof WP_Term) {
+    foreach ($categories as $category) {
+        if (is_numeric($category)) {
+            $term_ids[] = absint($category);
+            continue;
+        }
+
+        $category_slug = sanitize_key((string) $category);
+
+        if ('' === $category_slug) {
+            continue;
+        }
+
+        $term = get_term_by('slug', $category_slug, 'product_cat');
+
+        if (!$term instanceof WP_Term) {
+            $term_slugs[] = $category_slug;
+            continue;
+        }
+
+        $term_ids[] = absint($term->term_id);
         $child_ids = get_term_children($term->term_id, 'product_cat');
 
         if (!is_wp_error($child_ids) && !empty($child_ids)) {
@@ -664,7 +716,9 @@ function twmp_single_product_has_category($product_id, $category_slug)
         }
     }
 
-    return has_term($term_ids, 'product_cat', $product_id);
+    $terms = array_unique(array_filter(array_merge($term_ids, $term_slugs)));
+
+    return !empty($terms) && has_term($terms, 'product_cat', $product_id);
 }
 
 function twmp_get_class_workshop_schedule_days($product_id)
@@ -740,7 +794,15 @@ function product_details_meta() {
     }
 
     $product_id = $product->get_id();
-    $is_class_workshop = twmp_single_product_has_category($product_id, 'class-workshop');
+
+    //$is_class_workshop = twmp_single_product_has_category($product_id, 'class-workshop');
+
+    $is_class_workshop = twmp_single_product_has_category($product_id, [
+        'class-workshop',
+        'class-workshop-vi',
+        'cours-et-atelier',
+    ]);
+
 
     $is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
 
@@ -824,6 +886,8 @@ function product_details_meta() {
                 $value = implode(', ', $parts);
                 $value_is_html = true;
             }
+        } elseif ('ath_language' === $field_key) {
+            $value = twmp_get_acf_choice_labels($field_key, $product_id, $value);
         } elseif ('ath_age_group' === $field_key) {
             $value = twmp_get_taxonomy_term_names($product_id, 'ath_age_group');
         }

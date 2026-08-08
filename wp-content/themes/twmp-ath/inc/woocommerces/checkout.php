@@ -2279,9 +2279,7 @@ add_action('woocommerce_before_calculate_totals', function ($cart) {
     return;
   }
 
-  if ('first_lesson' !== twmp_checkout_get_class_workshop_payment_type()) {
-    return;
-  }
+  $is_first_lesson_payment = 'first_lesson' === twmp_checkout_get_class_workshop_payment_type();
 
   foreach ($cart->get_cart() as $cart_item) {
     if (empty($cart_item['data'])) {
@@ -2302,8 +2300,17 @@ add_action('woocommerce_before_calculate_totals', function ($cart) {
       continue;
     }
 
-    $first_lesson_price = twmp_checkout_get_class_workshop_first_lesson_price($target_product_id);
+    if (!$is_first_lesson_payment) {
+      $regular_price = get_post_meta($target_product_id, '_price', true);
 
+      if ('' !== $regular_price && is_numeric($regular_price)) {
+        $cart_item['data']->set_price((float) $regular_price);
+      }
+
+      continue;
+    }
+
+    $first_lesson_price = twmp_checkout_get_class_workshop_first_lesson_price($target_product_id);
     if (null !== $first_lesson_price) {
       $cart_item['data']->set_price($first_lesson_price);
     }

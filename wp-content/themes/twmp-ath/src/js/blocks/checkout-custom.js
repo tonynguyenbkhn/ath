@@ -304,6 +304,7 @@ export default el => {
 					'twmp_ticket_price_option',
 					'twmp_ticket_performance',
 					'twmp_ticket_quantity',
+					'payment_method',
 				].includes(target.name)
 			) {
 				return

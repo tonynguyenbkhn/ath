@@ -51,7 +51,7 @@ $is_class_workshop = function_exists('twmp_checkout_is_class_workshop_context') 
 			<section class="twmp-checkout-card twmp-checkout-card--booking">
 				<header class="twmp-checkout-card__header">
 					<span class="twmp-checkout-card__step">1</span>
-					<h3 class="twmp-checkout-card__title"><?php esc_html_e('Ticket booking information', 'twmp-ath'); ?></h3>
+					<h3 class="twmp-checkout-card__title"><?php esc_html_e('Booking information', 'twmp-ath'); ?></h3>
 				</header>
 
 				<div class="twmp-checkout-card__content">
