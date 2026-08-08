@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Twmp ATH\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-07 23:37+0000\n"
-"PO-Revision-Date: 2026-08-07 23:38+0000\n"
+"PO-Revision-Date: 2026-08-08 15:19+0000\n"
 "Last-Translator: \n"
 "Language-Team: Vietnamese\n"
 "Language: vi\n"
@@ -81,41 +81,45 @@ msgstr ""
 msgid "<cite class=\"fn\">%s</cite> <span class=\"says\">says:</span>"
 msgstr ""
 
-#: inc/woocommerces/single.php:172
+#: inc/woocommerces/single.php:205
 msgid "About"
-msgstr ""
+msgstr "Về chúng tôi"
 
 #: woocommerce/order/order-details.php:97
 msgid "Actions"
 msgstr ""
 
-#: inc/woocommerces/single.php:911
+#: inc/woocommerces/single.php:982
 msgid "Add to cart"
-msgstr ""
+msgstr "Thêm vào giỏ hàng"
+
+#: inc/woocommerces/single.php:821
+msgid "Age"
+msgstr "Độ tuổi"
 
 #: inc/woocommerces/archive.php:858
 msgid "Age group"
-msgstr ""
+msgstr "Nhóm tuổi"
 
-#: inc/woocommerces/single.php:457
+#: inc/woocommerces/single.php:490
 msgid "All"
-msgstr ""
+msgstr "Tất cả"
 
 #: inc/classes/class-calendar-theme.php:34
 msgid "All Categories"
-msgstr ""
+msgstr "Tất cả các mục"
 
 #: inc/woocommerces/global.php:49
 msgid "All Classes & Workshops"
-msgstr ""
+msgstr "Tất cả các lớp học"
 
 #: inc/woocommerces/global.php:41
 msgid "All Events & Shows"
-msgstr ""
+msgstr "Tất cả sự kiện"
 
 #: inc/classes/class-calendar-theme.php:35
 msgid "All Location"
-msgstr ""
+msgstr "Tất cả địa điểm"
 
 #: inc/classes/class-calendar-theme.php:36
 msgid "All Status"
@@ -131,7 +135,7 @@ msgstr ""
 
 #: inc/woocommerces/helpers/artists.php:254
 msgid "Artists"
-msgstr ""
+msgstr "Nghệ sĩ"
 
 #: woocommerce/cart/cart.php:240
 msgid "Available on backorder"
@@ -147,11 +151,11 @@ msgstr ""
 
 #: 404.php:37
 msgid "Back Home"
-msgstr ""
+msgstr "Quay lại"
 
 #: inc/woocommerces/thank-you.php:161
 msgid "Back to home page"
-msgstr ""
+msgstr "Quay lại Trang chủ"
 
 #: search.php:8
 msgid "Blog"
@@ -159,7 +163,11 @@ msgstr ""
 
 #: inc/woocommerces/archive.php:723
 msgid "Book Ticket"
-msgstr ""
+msgstr "Đăng ký học"
+
+#: woocommerce/checkout/form-checkout.php:54
+msgid "Booking information"
+msgstr "Thông tin đặt chỗ"
 
 #: templates/page-calendar.php:65
 msgid "Breadcrumb"
@@ -178,25 +186,25 @@ msgstr ""
 #: templates/page-calendar.php:3 templates/page-calendar.php:77
 #: templates/page-calendar.php:81 templates/page-calendar.php:165
 msgid "Calendar"
-msgstr ""
+msgstr "Lịch "
 
 #: templates/page-calendar.php:93
 msgid "Calendar views"
-msgstr ""
+msgstr "Xem lịch"
 
 #: template-parts/footers/modal-popup-welcome.php:31
 #: template-parts/footers/modal-search-form.php:31
 msgid "Cancel"
-msgstr ""
+msgstr "Huỷ"
 
 #: template-parts/headers/icon-cart.php:23
 #: template-parts/headers/icon-cart.php:34
 msgid "Cart"
-msgstr ""
+msgstr "Giỏ hàng"
 
 #: woocommerce/cart/cart-totals.php:56
 msgid "Cart total"
-msgstr ""
+msgstr "Tất cả sản phẩm"
 
 #. Name of the template
 #: templates/page-checkout.php:3 woocommerce/checkout/form-checkout.php:46
@@ -205,19 +213,19 @@ msgstr ""
 
 #: templates/page-calendar.php:138
 msgid "Class/Workshop"
-msgstr ""
+msgstr "Lớp học/ Workshop"
 
 #: inc/woocommerces/archive.php:842
 msgid "Clear all"
-msgstr ""
+msgstr "Xoá tất cả"
 
 #: inc/woocommerces/archive.php:883 template-parts/footers/slideout-menu.php:8
 msgid "Close"
-msgstr ""
+msgstr "Đóng"
 
 #: template-parts/footers/mini-cart.php:25
 msgid "Close a mini cart"
-msgstr ""
+msgstr "Đóng giỏ hàng"
 
 #: template-parts/footers/modal-popup-newsletter.php:135
 #: template-parts/footers/modal-popup-welcome.php:37
@@ -258,15 +266,15 @@ msgstr ""
 
 #: template-parts/woocommerces/shop-steps.php:32
 msgid "Complete order"
-msgstr ""
+msgstr "Đơn hàng hoàn thành"
 
 #: header.php:216 404.php:31 inc/woocommerces/single.php:23
 msgid "Contact Us"
-msgstr "Lien he"
+msgstr "Liên hệ"
 
 #: comments.php:87
 msgid "Content"
-msgstr ""
+msgstr "Nội dung"
 
 #: templates/components/content-load-more.php:13
 msgctxt "content load more button"
@@ -304,23 +312,27 @@ msgstr ""
 
 #: inc/woocommerces/archive.php:852
 msgid "Date of week"
-msgstr ""
+msgstr "Ngày trong tuần"
 
 #: inc/woocommerces/archive.php:846
 msgid "Date Time"
-msgstr ""
+msgstr "Ngày & Giờ"
 
 #: woocommerce/checkout/thankyou.php:54
 msgid "Date:"
-msgstr ""
+msgstr "Ngày"
 
 #: woocommerce/cart/cart.php:265
 msgid "Delete"
+msgstr "Xoá"
+
+#: inc/woocommerces/single.php:822
+msgid "Demonstration"
 msgstr ""
 
 #: woocommerce/single-product/tabs/description.php:23
 msgid "Description"
-msgstr ""
+msgstr "Mô tả"
 
 #: relevanssi-live-ajax-search/search-results.php:135
 msgid "Did you mean"
@@ -328,15 +340,15 @@ msgstr ""
 
 #: inc/woocommerces/archive.php:864
 msgid "Disciplines"
-msgstr ""
+msgstr "Bộ môn"
 
 #: woocommerce/archive-product.php:51 woocommerce/archive-product.php:72
 msgid "Don't have Result"
-msgstr ""
+msgstr "Không có kết quả"
 
 #: inc/classes/class-download-theme.php:215
 msgid "Download Error"
-msgstr ""
+msgstr "Lỗi tải về"
 
 #: inc/classes/class-download-theme.php:240
 msgid "Download hash does not match."
@@ -352,7 +364,7 @@ msgstr ""
 
 #: inc/helpers/comments.php:86
 msgid "Edit"
-msgstr ""
+msgstr "Chỉnh sửa"
 
 #. %s: Name of current post. Only visible to screen readers
 #: template-parts/content-page.php:38
@@ -370,9 +382,9 @@ msgstr ""
 
 #: inc/classes/class-admin-theme.php:50 inc/classes/class-admin-theme.php:59
 msgid "End Date Time"
-msgstr ""
+msgstr "Ngày & Giờ kết thúc"
 
-#: inc/woocommerces/single.php:627
+#: inc/woocommerces/single.php:660
 msgid "Facebook"
 msgstr ""
 
@@ -386,16 +398,16 @@ msgstr ""
 
 #: inc/woocommerces/archive.php:841
 msgid "Filter"
-msgstr ""
+msgstr "Bộ lọc"
 
-#: inc/woocommerces/single.php:451
+#: inc/woocommerces/single.php:484
 msgid "Filter events by year"
-msgstr ""
+msgstr "Lọc sự kiện theo năm"
 
 #. Name of the template
 #: templates/page-flexible.php:3
 msgid "Flexible"
-msgstr ""
+msgstr "Linh hoạt"
 
 #: inc/classes/class-sidebars-theme.php:63
 msgid "Footer Absolute"
@@ -409,6 +421,10 @@ msgstr ""
 msgid "Footer Top"
 msgstr ""
 
+#: inc/woocommerces/single.php:820
+msgid "Format"
+msgstr "Bộ môn"
+
 #. Name of the template
 #: templates/page-fullwidth.php:3
 msgid "Full Width"
@@ -421,7 +437,7 @@ msgstr ""
 
 #: inc/classes/class-download-theme.php:284
 msgid "Go to homepage &raquo;"
-msgstr ""
+msgstr "Đi tới trang chủ &raquo;"
 
 #: woocommerce/single-product-reviews.php:161
 msgid "Good"
@@ -458,7 +474,7 @@ msgstr ""
 #: templates/page-calendar.php:68 inc/woocommerces/global.php:55
 #: inc/woocommerces/global.php:71 inc/classes/class-breadcrumbs.php:178
 msgid "Home"
-msgstr ""
+msgstr "Trang chủ"
 
 #: inc/classes/class-breadcrumbs.php:692
 msgctxt "hour archives time format"
@@ -476,9 +492,9 @@ msgstr ""
 
 #: inc/classes/class-views-theme.php:182
 msgid "Image"
-msgstr ""
+msgstr "Hình ảnh"
 
-#: inc/woocommerces/single.php:166
+#: inc/woocommerces/single.php:199
 msgid "Images"
 msgstr ""
 
@@ -486,16 +502,16 @@ msgstr ""
 msgid ""
 "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
 "searching can help."
-msgstr ""
+msgstr "Có vẻ trang bạn đang tìm không còn ở đây."
 
 #: searchform.php:11 searchform.php:12
 msgctxt "label"
 msgid "Search for:"
-msgstr ""
+msgstr "Tìm:"
 
-#: header.php:174 header.php:179
+#: header.php:174 header.php:179 inc/woocommerces/single.php:819
 msgid "Language"
-msgstr ""
+msgstr "Ngôn ngữ"
 
 #. %s is product title
 #: woocommerce/single-product-reviews.php:109
@@ -504,16 +520,17 @@ msgid "Leave a Reply to %s"
 msgstr ""
 
 #: templates/page-calendar.php:104 inc/woocommerces/archive.php:876
+#: inc/woocommerces/single.php:818
 msgid "Location"
-msgstr "Dia diem"
+msgstr "Địa điểm"
 
 #: template-parts/headers/icon-login.php:16
 msgid "Log In"
-msgstr ""
+msgstr "Đăng nhập"
 
 #: template-parts/footers/th-mobile-menu.php:56
 msgid "Login Now"
-msgstr ""
+msgstr "Đăng nhập ngay"
 
 #: template-parts/footers/th-mobile-menu.php:44
 #: template-parts/footers/slideout-menu.php:7
@@ -538,7 +555,7 @@ msgstr ""
 
 #: templates/page-calendar.php:95
 msgid "Month"
-msgstr ""
+msgstr "Tháng"
 
 #: inc/classes/class-breadcrumbs.php:710 inc/classes/class-breadcrumbs.php:768
 #: inc/classes/class-breadcrumbs.php:1145
@@ -580,7 +597,7 @@ msgstr ""
 
 #: inc/woocommerces/helpers/artists.php:344
 msgid "No artists available for this product."
-msgstr ""
+msgstr "Chưa có thông tin nghệ sĩ cho chương trình này."
 
 #: inc/woocommerces/helpers/helper.php:10
 msgid "No attribute was defined for query."
@@ -592,19 +609,19 @@ msgstr ""
 
 #: inc/classes/class-assets-theme.php:99
 msgid "No order found."
-msgstr ""
+msgstr "Không tìm thấy đơn hàng"
 
 #: template-parts/footers/wcs-mini-cart.php:80
 msgid "No products in the cart."
 msgstr ""
 
-#: inc/woocommerces/single.php:495
+#: inc/woocommerces/single.php:528
 msgid "No related events found."
 msgstr ""
 
 #: relevanssi-live-ajax-search/search-results.php:128
 msgid "No results found."
-msgstr ""
+msgstr "Không tìm thấy kết quả"
 
 #: woocommerce/archive-product.php:54 woocommerce/archive-product.php:75
 msgid "No results were found for you. Here are some products you may like."
@@ -635,30 +652,30 @@ msgstr ""
 msgid "Open a search form"
 msgstr ""
 
-#: inc/woocommerces/single.php:389
+#: inc/woocommerces/single.php:422
 msgid "Open image"
 msgstr ""
 
 #: woocommerce/cart/cart-totals.php:31
 #, php-format
 msgid "Order #%s"
-msgstr ""
+msgstr "Đơn hàng #%s"
 
 #: woocommerce/cart/cart-totals.php:145
 msgid "Order Confirmation"
-msgstr ""
+msgstr "Xác nhận đơn hàng"
 
 #: woocommerce/order/order-details.php:57
 msgid "Order details"
-msgstr ""
+msgstr "Chi tiết đơn hàng"
 
 #: woocommerce/checkout/thankyou.php:50
 msgid "Order number:"
-msgstr ""
+msgstr "Đơn hàng số:"
 
 #: woocommerce/cart/cart.php:33 woocommerce/cart/cart.php:76
 msgid "Order summary"
-msgstr ""
+msgstr "Tóm tắt đơn hàng"
 
 #: single-artists.php:21
 msgid "Other Member"
@@ -670,7 +687,7 @@ msgstr ""
 
 #: templates/sections/product-cat-grid/section.php:60
 msgid "Our service"
-msgstr ""
+msgstr "Dịch vụ của chúng tôi"
 
 #. %s is the page number.
 #: inc/classes/class-breadcrumbs.php:184
@@ -685,7 +702,7 @@ msgstr ""
 
 #: 404.php:24
 msgid "Page not found"
-msgstr ""
+msgstr "Không thấy trang"
 
 #: template-parts/content-theme.php:60 template-parts/content-page.php:24
 #: template-parts/content.php:52
@@ -707,11 +724,11 @@ msgstr ""
 
 #: woocommerce/checkout/form-checkout.php:70
 msgid "Payment method"
-msgstr ""
+msgstr "Phương thức thanh toán"
 
 #: woocommerce/checkout/thankyou.php:73
 msgid "Payment method:"
-msgstr ""
+msgstr "Phương thức thanh toán:"
 
 #: woocommerce/single-product-reviews.php:160
 msgid "Perfect"
@@ -724,7 +741,7 @@ msgstr ""
 #: searchform.php:12
 msgctxt "placeholder"
 msgid "Search &hellip;"
-msgstr ""
+msgstr "Tìm &hellip;"
 
 #: templates/sections/hero-video/section.php:133
 msgid "Play"
@@ -732,11 +749,11 @@ msgstr ""
 
 #: inc/woocommerces/thank-you.php:108
 msgid "Please complete the payment directly at the counter."
-msgstr ""
+msgstr "Vui lòng thanh toán trực tiếp tại quầy."
 
 #: relevanssi-live-ajax-search/search-results.php:36
 msgid "Press enter to see all the results."
-msgstr ""
+msgstr "Nhấn Enter để xem toàn bộ kết quả."
 
 #: comments.php:72 template-parts/singles/prev-next-post.php:24
 msgid "Previous"
@@ -756,24 +773,24 @@ msgstr ""
 
 #: woocommerce/cart/cart.php:168
 msgid "Price"
-msgstr ""
+msgstr "Giá tiền"
 
 #: woocommerce/cart/cart-totals.php:45
 msgid "Proceed to payment"
-msgstr ""
+msgstr "Đi đến thanh toán"
 
 #: woocommerce/cart/cart.php:167 woocommerce/cart/cart.php:220
 #: woocommerce/order/order-details.php:63
 msgid "Product"
-msgstr ""
+msgstr "Sản phẩm"
 
-#: inc/woocommerces/single.php:377
+#: inc/woocommerces/single.php:410
 msgid "Product gallery"
-msgstr ""
+msgstr "Danh mục sản phẩm"
 
 #: woocommerce/global/quantity-input.php:49
 msgid "Product quantity"
-msgstr ""
+msgstr "Số lượng sản phẩm"
 
 #: template-parts/singles/author-bio.php:22
 msgid "Published %d posts"
@@ -782,7 +799,7 @@ msgstr ""
 #: woocommerce/global/quantity-input.php:25
 #: woocommerce/global/quantity-input.php:37 woocommerce/cart/cart.php:169
 msgid "Quantity"
-msgstr ""
+msgstr "Số lượng"
 
 #: woocommerce/single-product-reviews.php:159
 msgid "Rate&hellip;"
@@ -790,13 +807,13 @@ msgstr ""
 
 #: templates/components/button.php:10
 msgid "Read More"
-msgstr ""
+msgstr "Đọc thêm"
 
 #: home.php:29 archive.php:29 search.php:43
 #: templates/sections/post-card/post-card.php:11
 #: templates/sections/post-row/post-row.php:11
 msgid "Read More..."
-msgstr ""
+msgstr "Đọc thêm..."
 
 #. 1: link to WP admin new post page.
 #: template-parts/content-none.php:21
@@ -807,15 +824,15 @@ msgstr ""
 
 #: templates/page-checkout.php:37
 msgid "Register"
-msgstr ""
+msgstr "Đăng ký"
 
 #: template-parts/footers/th-mobile-menu.php:68
 msgid "Register Account"
-msgstr ""
+msgstr "Đăng ký tài khoản"
 
 #: inc/woocommerces/single.php:55
 msgid "Register Camp"
-msgstr ""
+msgstr "Đăng ký Camp"
 
 #: single.php:74 templates/page-blog.php:79
 msgid "Related Articles"
@@ -829,15 +846,15 @@ msgstr ""
 #: woocommerce/cart/cart.php:268
 #, php-format
 msgid "Remove %s from cart"
-msgstr ""
+msgstr "Xoá %s khỏi giỏ hàng"
 
 #: woocommerce/cart/cart.php:165
 msgid "Remove item"
-msgstr ""
+msgstr "Xoá sản phẩm"
 
 #: template-parts/footers/wcs-mini-cart.php:33
 msgid "Remove this item"
-msgstr ""
+msgstr "Xoá sản phẩm này"
 
 #: inc/classes/class-download-theme.php:294
 msgid "Return to previous page &#10550;"
@@ -849,29 +866,29 @@ msgstr ""
 
 #: woocommerce/product-searchform.php:26
 msgid "Search"
-msgstr ""
+msgstr "Tìm kiếm"
 
 #: woocommerce/product-searchform.php:25
 msgid "Search for:"
-msgstr ""
+msgstr "Tìm kiếm:"
 
 #. %s is the search query.
 #: inc/classes/class-breadcrumbs.php:182
 #, php-format
 msgid "Search Results for: %s"
-msgstr ""
+msgstr "Tìm kết quả cho: %s"
 
-#: inc/woocommerces/single.php:160 inc/woocommerces/single.php:176
+#: inc/woocommerces/single.php:193 inc/woocommerces/single.php:209
 msgid "Section"
 msgstr ""
 
 #: header.php:169
 msgid "Select language"
-msgstr ""
+msgstr "Lựa chọn ngôn ngữ"
 
 #: templates/page-calendar.php:164
 msgid "Selected date"
-msgstr ""
+msgstr "Ngày đã chọn"
 
 #: templates/sections/share-icon/share-icon.php:21
 msgid "Share on Facebook"
@@ -887,15 +904,15 @@ msgstr ""
 
 #: woocommerce/cart/cart-totals.php:90 woocommerce/cart/cart-totals.php:91
 msgid "Shipping"
-msgstr ""
+msgstr "Giao hàng"
 
 #: template-parts/footers/mini-cart.php:23
 msgid "Shopping cart"
-msgstr ""
+msgstr "Giỏ hàng"
 
 #: templates/page-calendar.php:137
 msgid "Show/Event/Festival"
-msgstr ""
+msgstr "Biểu diễn/Sự kiện/Lễ hội"
 
 #: inc/classes/class-sidebars-theme.php:110
 msgid "Sidebar Archive Woocommerce"
@@ -905,9 +922,9 @@ msgstr ""
 msgid "Sidebar Category"
 msgstr ""
 
-#: html/similar-product.php:99 inc/woocommerces/single.php:1015
+#: html/similar-product.php:99 inc/woocommerces/single.php:1086
 msgid "Similar Show/ Event"
-msgstr ""
+msgstr "Sự kiện tương tự"
 
 #: woocommerce/checkout/review-order.php:36
 msgid "SL: %d"
@@ -935,16 +952,16 @@ msgstr ""
 
 #: inc/classes/class-admin-theme.php:49 inc/classes/class-admin-theme.php:55
 msgid "Start Date Time"
-msgstr ""
+msgstr "Ngày bắt đầu"
 
 #: templates/page-calendar.php:124 inc/woocommerces/archive.php:870
 msgid "Status"
-msgstr ""
+msgstr "Trạng thái"
 
 #: searchform.php:17 woocommerce/product-searchform.php:30
 msgctxt "submit button"
 msgid "Search"
-msgstr ""
+msgstr "Tìm kiếm"
 
 #: woocommerce/cart/cart.php:170 woocommerce/cart/cart.php:244
 #: woocommerce/cart/cart-totals.php:68 woocommerce/cart/cart-totals.php:69
@@ -957,29 +974,30 @@ msgstr ""
 
 #: inc/woocommerces/global.php:60 inc/woocommerces/global.php:76
 msgid "Teams"
-msgstr ""
+msgstr "Đội ngũ"
 
 #: inc/woocommerces/thank-you.php:110
 msgid "Thank you. Your first lesson payment confirmation has been received."
 msgstr ""
+"Cảm ơn bạn. Chúng tôi đã nhận được xác nhận thanh toán cho buổi học đầu tiên."
 
 #: woocommerce/checkout/order-received.php:35
 msgid "Thank you. Your order has been received."
-msgstr ""
+msgstr "Cảm ơn bạn. Chúng tôi đã nhận được đơn hàng của bạn."
 
 #: inc/woocommerces/thank-you.php:107
 msgid "Thank you. Your registration has been received."
-msgstr ""
+msgstr "Cảm ơn bạn. Chúng tôi đã nhận được đăng ký của bạn."
 
 #: 404.php:26
 msgid ""
 "The page you are looking for may have been removed, renamed, or never "
 "existed."
-msgstr ""
+msgstr "Trang bạn đang tìm có thể đã bị xóa, đổi tên hoặc không tồn tại."
 
 #: woocommerce/cart/cart.php:161
 msgid "There are %d products in your cart"
-msgstr ""
+msgstr "Có %d sản phẩm trong giỏ hàng của bạn."
 
 #: woocommerce/single-product-reviews.php:214
 msgid "There are no reviews yet."
@@ -999,19 +1017,19 @@ msgstr ""
 msgid "Thumbnail image"
 msgstr ""
 
-#: woocommerce/checkout/form-checkout.php:54
-msgid "Ticket booking information"
-msgstr ""
+#: inc/woocommerces/single.php:817
+msgid "Time"
+msgstr "Thời gian"
 
 #: woocommerce/cart/cart-totals.php:24 woocommerce/cart/cart-totals.php:40
 #: woocommerce/cart/cart-totals.php:136 woocommerce/cart/cart-totals.php:137
 #: woocommerce/order/order-details.php:64
 msgid "Total"
-msgstr ""
+msgstr "Tổng"
 
 #: woocommerce/checkout/thankyou.php:67
 msgid "Total:"
-msgstr ""
+msgstr "Tổng:"
 
 #. Name of the theme
 msgid "Twmp ATH"
@@ -1019,11 +1037,11 @@ msgstr ""
 
 #: templates/page-calendar.php:114
 msgid "Type"
-msgstr ""
+msgstr "Nhập"
 
 #: template-parts/footers/modal-search-form.php:26
 msgid "Type to search"
-msgstr ""
+msgstr "Nhập để tìm kiếm"
 
 #: woocommerce/checkout/thankyou.php:34
 msgid ""
@@ -1038,7 +1056,7 @@ msgstr ""
 
 #: woocommerce/cart/cart.php:323
 msgid "Update cart"
-msgstr ""
+msgstr "Cập nhật giỏ hàng"
 
 #: woocommerce/cart/cart-totals.php:30
 msgid "Upload your bill and wait for admin review."
@@ -1066,7 +1084,7 @@ msgstr ""
 
 #: inc/woocommerces/disable.php:54
 msgid "View product"
-msgstr ""
+msgstr "Xem sản phẩm"
 
 #: inc/classes/class-views-theme.php:176
 msgid "View W"
@@ -1076,7 +1094,7 @@ msgstr ""
 msgid "View Y"
 msgstr ""
 
-#: inc/woocommerces/single.php:625
+#: inc/woocommerces/single.php:658
 msgid "Visit our social networks:"
 msgstr ""
 
@@ -1092,11 +1110,11 @@ msgstr ""
 
 #: woocommerce/cart/cart-totals.php:29
 msgid "Waiting for confirmation"
-msgstr ""
+msgstr "Chờ xác nhận"
 
 #: inc/woocommerces/thank-you.php:111
 msgid "We will review your payment proof and confirm your registration."
-msgstr ""
+msgstr "Chúng tôi sẽ kiểm tra xác nhận thanh toán và xác nhận đăng ký của bạn."
 
 #. Weekly archive title. %s is the week date format.
 #: inc/classes/class-breadcrumbs.php:190
@@ -1111,11 +1129,11 @@ msgstr ""
 
 #: template-parts/footers/modal-popup-welcome.php:26
 msgid "Welcome to ATH"
-msgstr ""
+msgstr "Chào mừng tới ATH"
 
 #: inc/woocommerces/archive.php:977
 msgid "What People Say About Us"
-msgstr ""
+msgstr "Mọi người nói gì về ATH"
 
 #: woocommerce/single-product-reviews.php:45
 msgid "Xếp hạng trung bình"
@@ -1160,8 +1178,8 @@ msgstr ""
 
 #: woocommerce/cart/cart.php:57
 msgid "Your order is ready for payment proof review."
-msgstr ""
+msgstr "Đang chờ kiểm tra xác nhận thanh toán."
 
-#: inc/woocommerces/single.php:630
+#: inc/woocommerces/single.php:663
 msgid "YouTube"
 msgstr ""

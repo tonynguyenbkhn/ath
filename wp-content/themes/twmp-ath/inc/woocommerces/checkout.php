@@ -118,13 +118,55 @@ function twmp_checkout_order_has_product_category($order, $category_slug)
   return false;
 }
 
+function twmp_checkout_get_class_workshop_category_slugs()
+{
+  return array('class-workshop', 'class-workshop-vi', 'class-workshop-fr');
+}
+
+function twmp_checkout_product_has_class_workshop_category($product_id)
+{
+  foreach (twmp_checkout_get_class_workshop_category_slugs() as $category_slug) {
+    if (twmp_checkout_product_has_category($product_id, $category_slug)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function twmp_checkout_cart_has_class_workshop_category()
+{
+  foreach (twmp_checkout_get_class_workshop_category_slugs() as $category_slug) {
+    if (twmp_checkout_cart_has_product_category($category_slug)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function twmp_checkout_order_has_class_workshop_category($order)
+{
+  foreach (twmp_checkout_get_class_workshop_category_slugs() as $category_slug) {
+    if (twmp_checkout_order_has_product_category($order, $category_slug)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function twmp_checkout_is_class_workshop_context()
 {
-  if (twmp_checkout_cart_has_product_category('class-workshop')) {
+  if (twmp_checkout_cart_has_class_workshop_category()) {
     return true;
   }
 
-  return isset($_GET['category']) && 'class-workshop' === sanitize_key(wp_unslash($_GET['category']));
+  return isset($_GET['category']) && in_array(
+    sanitize_key(wp_unslash($_GET['category'])),
+    twmp_checkout_get_class_workshop_category_slugs(),
+    true
+  );
 }
 
 function twmp_checkout_get_class_workshop_product_id()
@@ -145,12 +187,12 @@ function twmp_checkout_get_class_workshop_product_id()
     $product_id = !empty($cart_item['product_id']) ? absint($cart_item['product_id']) : 0;
     $variation_id = !empty($cart_item['variation_id']) ? absint($cart_item['variation_id']) : 0;
 
-    if ($variation_id && twmp_checkout_product_has_category($variation_id, 'class-workshop')) {
+    if ($variation_id && twmp_checkout_product_has_class_workshop_category($variation_id)) {
       $cache[$cache_key] = $variation_id;
       return $variation_id;
     }
 
-    if ($product_id && twmp_checkout_product_has_category($product_id, 'class-workshop')) {
+    if ($product_id && twmp_checkout_product_has_class_workshop_category($product_id)) {
       $cache[$cache_key] = $product_id;
       return $product_id;
     }
@@ -277,7 +319,7 @@ function twmp_checkout_get_class_workshop_commitment_pdf_url($product_id = 0)
 
 function twmp_checkout_is_class_workshop_counter_order($order)
 {
-  return $order instanceof WC_Order && twmp_checkout_order_has_product_category($order, 'class-workshop') && 'cod' === $order->get_payment_method();
+  return $order instanceof WC_Order && twmp_checkout_order_has_class_workshop_category($order) && 'cod' === $order->get_payment_method();
 }
 
 function twmp_checkout_is_order_received_page()
@@ -2293,8 +2335,8 @@ add_action('woocommerce_before_calculate_totals', function ($cart) {
     if (
       !$target_product_id ||
       !(
-        twmp_checkout_product_has_category($target_product_id, 'class-workshop') ||
-        ($product_id && twmp_checkout_product_has_category($product_id, 'class-workshop'))
+        twmp_checkout_product_has_class_workshop_category($target_product_id) ||
+        ($product_id && twmp_checkout_product_has_class_workshop_category($product_id))
       )
     ) {
       continue;
@@ -2556,7 +2598,16 @@ function twmp_checkout_render_payment_step_section()
       <div class="twmp-checkout-card__content">
         <div class="twmp-checkout-payment-stage" data-payment-stage data-order-id="<?php echo esc_attr($state['order_id']); ?>" data-order-key="<?php echo esc_attr($state['order_key']); ?>" data-payment-status="<?php echo esc_attr($state['proof_status']); ?>" data-payment-nonce="<?php echo esc_attr($state['nonce']); ?>">
           <div class="twmp-checkout-payment-stage__header">
-            <p class="twmp-checkout-payment-stage__description" data-payment-status-text>Scan the QR code below to pay <?php echo esc_html($order_total); ?>, and upload the confirmation receipt. After payment, we will send the tickets code via SMS to the email <?php echo esc_html($email); ?>.</p>
+            <p class="twmp-checkout-payment-stage__description" data-payment-status-text>
+              <?php
+              printf(
+                /* translators: 1: order total, 2: customer email address. */
+                esc_html__('Scan the QR code below to pay %1$s, and upload the confirmation receipt. After payment, we will send the tickets code via SMS to the email %2$s.', 'twmp-ath'),
+                  $order_total,
+                  $email
+              );
+              ?>
+            </p>
           </div>
 
           <div class="twmp-checkout-payment-stage__grid">
@@ -2592,7 +2643,7 @@ function twmp_checkout_render_payment_step_section()
                     <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html($config['branch']); ?></span>
                   <?php endif; ?>
                   <?php if (!empty($config['transfer_note'])) : ?>
-                    <span class="twmp-checkout-payment-stage__list-label"><?php echo esc_html__('Description', 'twmp-ath'); ?>:</span> <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html($config['transfer_note']); ?></span>
+                    <span class="twmp-checkout-payment-stage__list-label"><?php echo esc_html__('Description', 'twmp-ath'); ?>:</span> <span class="twmp-checkout-payment-stage__list-text"><?php echo esc_html__('Your registration name as above', 'twmp-ath'); ?></span>
                   <?php endif; ?>
                 </div>
 
@@ -2622,7 +2673,7 @@ function twmp_checkout_render_payment_step_section()
                   </label>
 
                   <button type="submit" class="twmp-checkout-proof-form__button" data-payment-submit disabled aria-disabled="true">
-                    <span><?php echo esc_html($config['bill_title']); ?></span>
+                    <span><?php echo esc_html__('Proceed to payment', 'twmp-ath'); ?></span>
                   </button>
                 </form>
               </div>
