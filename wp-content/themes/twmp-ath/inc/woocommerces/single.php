@@ -644,6 +644,94 @@ add_action('woocommerce_single_product_summary', function () {
 
 add_action('woocommerce_single_product_summary', 'product_details_meta', 15);
 
+function twmp_single_product_has_category($product_id, $category_slug)
+{
+    $product_id = absint($product_id);
+    $category_slug = sanitize_key($category_slug);
+
+    if (!$product_id || '' === $category_slug) {
+        return false;
+    }
+
+    $term = get_term_by('slug', $category_slug, 'product_cat');
+    $term_ids = $term instanceof WP_Term ? [absint($term->term_id)] : [$category_slug];
+
+    if ($term instanceof WP_Term) {
+        $child_ids = get_term_children($term->term_id, 'product_cat');
+
+        if (!is_wp_error($child_ids) && !empty($child_ids)) {
+            $term_ids = array_merge($term_ids, array_map('absint', $child_ids));
+        }
+    }
+
+    return has_term($term_ids, 'product_cat', $product_id);
+}
+
+function twmp_get_class_workshop_schedule_days($product_id)
+{
+    $terms = wp_get_post_terms(absint($product_id), 'ath_schedule_day');
+
+    if (is_wp_error($terms) || empty($terms)) {
+        return '';
+    }
+
+    $day_order = [
+        'monday' => 10,
+        'tuesday' => 20,
+        'wednesday' => 30,
+        'thursday' => 40,
+        'friday' => 50,
+        'saturday' => 60,
+        'sunday' => 70,
+    ];
+
+    usort($terms, function ($left, $right) use ($day_order) {
+        $left_slug = sanitize_key($left->slug ?? '');
+        $right_slug = sanitize_key($right->slug ?? '');
+        $left_order = $day_order[$left_slug] ?? 999;
+        $right_order = $day_order[$right_slug] ?? 999;
+
+        if ($left_order === $right_order) {
+            return strcasecmp($left->name ?? '', $right->name ?? '');
+        }
+
+        return $left_order <=> $right_order;
+    });
+
+    $schedule_time = function_exists('get_field') ? trim((string) get_field('ath_schedule_time', absint($product_id))) : '';
+
+    return implode(', ', array_map(function ($term) use ($schedule_time) {
+        $day_name = sanitize_text_field($term->name ?? '');
+
+        if ('' === $day_name || '' === $schedule_time) {
+            return $day_name;
+        }
+
+        return $day_name . ' | ' . sanitize_text_field($schedule_time);
+    }, $terms));
+}
+
+add_filter('woocommerce_get_price_html', function ($price_html, $product) {
+    if (!is_product() || !$product instanceof WC_Product || !function_exists('get_field')) {
+        return $price_html;
+    }
+
+    $product_id = $product->get_id();
+    $queried_product_id = get_queried_object_id();
+
+    if ($queried_product_id && absint($queried_product_id) !== absint($product_id)) {
+        return $price_html;
+    }
+
+    $price_suffix = trim((string) get_field('ath_price_suffix', $product_id));
+
+    if ('' === $price_suffix) {
+        return $price_html;
+    }
+
+    return $price_html . ' <span class="twmp-product-price-suffix">' . esc_html($price_suffix) . '</span>';
+}, 20, 2);
+
 function product_details_meta() {
     global $product;
 
@@ -652,6 +740,7 @@ function product_details_meta() {
     }
 
     $product_id = $product->get_id();
+    $is_class_workshop = twmp_single_product_has_category($product_id, 'class-workshop');
 
     $is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
 
@@ -663,13 +752,20 @@ function product_details_meta() {
         return;
     }
 
+    $time_label = esc_html__('Time', 'twmp-ath');
+    $location_label = esc_html__('Location', 'twmp-ath');
+    $language_label = esc_html__('Language', 'twmp-ath');
+    $format_label = esc_html__('Format', 'twmp-ath');
+    $age_label = esc_html__('Age', 'twmp-ath');
+    $demonstration_label = esc_html__('Demonstration', 'twmp-ath');
+
     $fields = [
-        'ath_start_datetime' => ['time', 'Time'],
-        'ath_venue' => ['pin', 'Location'],
-        'ath_language' => ['globe', 'Language'],
-        'ath_format' => ['selection', 'Format'],
-        'ath_age_group' => ['stack', 'Age'],
-        'ath_demonstration' => ['users', 'Demonstration'],
+        'ath_start_datetime' => ['time', $time_label],
+        'ath_venue' => ['pin', $location_label],
+        'ath_language' => ['globe', $language_label],
+        'ath_format' => ['selection', $format_label],
+        'ath_age_group' => ['stack', $age_label],
+        'ath_demonstration' => ['users', $demonstration_label],
     ];
 
     echo '<div class="product-details-meta">';
@@ -679,25 +775,29 @@ function product_details_meta() {
         $value_is_html = false;
 
         if ('ath_start_datetime' === $field_key) {
-            $upcoming_ranges = function_exists('twmp_get_upcoming_event_datetime_ranges') ? twmp_get_upcoming_event_datetime_ranges($product_id) : [];
-
-            if (! empty($upcoming_ranges)) {
-                $button_link = function_exists('get_field') ? get_field('ath_google_link', $product_id) : '';
-                $button_name = function_exists('get_field') ? get_field('ath_google_name', $product_id) : '';
-                $disable_book = function_exists('get_field') ? get_field('ath_disable_book_ticket', $product_id) : false;
-                $can_select_show_time = empty($button_link) && empty($disable_book) && function_exists('twmp_is_event_bookable') && twmp_is_event_bookable($product_id);
-
-                if ($can_select_show_time && count($upcoming_ranges) > 1 && function_exists('twmp_get_event_datetime_select_html')) {
-                    $value_is_html = true;
-                    $form_id = function_exists('twmp_get_show_datetime_form_id') ? twmp_get_show_datetime_form_id($product_id) : '';
-                    $value = twmp_get_event_datetime_select_html($product_id, $form_id);
-                } else {
-                    $range = $upcoming_ranges[0] ?? [];
-                    $value = twmp_format_event_datetime_range($range['start'] ?? '', $range['end'] ?? '');
-                }
+            if ($is_class_workshop) {
+                $value = twmp_get_class_workshop_schedule_days($product_id);
             } else {
-                $end_value = function_exists('get_field') ? get_field('ath_end_datetime', $product_id) : '';
-                $value = twmp_format_event_datetime_range($value, $end_value);
+                $upcoming_ranges = function_exists('twmp_get_upcoming_event_datetime_ranges') ? twmp_get_upcoming_event_datetime_ranges($product_id) : [];
+
+                if (! empty($upcoming_ranges)) {
+                    $button_link = function_exists('get_field') ? get_field('ath_google_link', $product_id) : '';
+                    $button_name = function_exists('get_field') ? get_field('ath_google_name', $product_id) : '';
+                    $disable_book = function_exists('get_field') ? get_field('ath_disable_book_ticket', $product_id) : false;
+                    $can_select_show_time = empty($button_link) && empty($disable_book) && function_exists('twmp_is_event_bookable') && twmp_is_event_bookable($product_id);
+
+                    if ($can_select_show_time && count($upcoming_ranges) > 1 && function_exists('twmp_get_event_datetime_select_html')) {
+                        $value_is_html = true;
+                        $form_id = function_exists('twmp_get_show_datetime_form_id') ? twmp_get_show_datetime_form_id($product_id) : '';
+                        $value = twmp_get_event_datetime_select_html($product_id, $form_id);
+                    } else {
+                        $range = $upcoming_ranges[0] ?? [];
+                        $value = twmp_format_event_datetime_range($range['start'] ?? '', $range['end'] ?? '');
+                    }
+                } else {
+                    $end_value = function_exists('get_field') ? get_field('ath_end_datetime', $product_id) : '';
+                    $value = twmp_format_event_datetime_range($value, $end_value);
+                }
             }
         } elseif ('ath_venue' === $field_key) {
             $terms = wp_get_post_terms($product_id, 'ath_venue');
@@ -728,9 +828,14 @@ function product_details_meta() {
             $value = twmp_get_taxonomy_term_names($product_id, 'ath_age_group');
         }
 
-        echo '<div class="product-details-meta__item '. $field_key .'">';
+        $item_classes = ['product-details-meta__item', $field_key];
+        if ('ath_start_datetime' === $field_key && $is_class_workshop) {
+            $item_classes[] = 'is-class-workshop-time';
+        }
+
+        echo '<div class="' . esc_attr(implode(' ', $item_classes)) . '">';
         echo twmp_get_svg_icon($icon[0]);
-        echo '<div><span class="product-details-meta__item-label">' . esc_html($icon[1]) . '</span>: <span class="product-details-meta__item-text">';
+        echo '<div><span class="product-details-meta__item-label">' . esc_html($icon[1]) . ':</span> <span class="product-details-meta__item-text">';
         $raw = twmp_field_to_string($value);
         if (!empty($value_is_html)) {
             echo wp_kses(

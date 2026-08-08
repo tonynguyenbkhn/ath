@@ -254,13 +254,7 @@
             "choices": {
                 "english": "English",
                 "vietnamese": "Vietnamese",
-                "french": "French",
-                "english-vi": "Tiếng Anh",
-                "vietnamese-vi": "Tiếng Việt",
-                "french-vi": "Tiếng Pháp",
-                "english-fr": "Anglais",
-                "vietnamese-fr": "Vietnamien",
-                "french-fr": "Français"
+                "french": "French"
             },
             "return_format": "value",
             "layout": "vertical",
@@ -277,6 +271,27 @@
             "name": "ath_format",
             "type": "text",
             "instructions": "Ví dụ: ??? như trong mockup.",
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_ath_poster_event",
+                        "operator": "==",
+                        "value": "0"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            }
+        },
+        {
+            "key": "field_ath_demonstration",
+            "label": "Demonstration",
+            "name": "ath_demonstration",
+            "type": "text",
+            "instructions": "Ví dụ: Presented by ATH's Drama & Improv class.",
             "conditional_logic": [
                 [
                     {

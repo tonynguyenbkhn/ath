@@ -350,7 +350,8 @@ function twmp_render_cart_button($product_id = 0, $button_text = '', $button_cla
 	$button_html = '';
 
 	if (! $is_class_workshop && ! empty($icon_name) && function_exists('twmp_get_svg_icon')) {
-		$button_html = twmp_get_svg_icon($icon_name);
+		// $button_html = twmp_get_svg_icon($icon_name);
+		$button_html = '';
 	}
 
 	// Use GET to checkout so add-to-cart happens and we land on checkout (handles buy-now flow reliably)

@@ -54,6 +54,17 @@
                 }
             }
 
+            .twmp-product-price-suffix {
+                color: var(--system-content-2);
+                font-size: 20px;
+                font-weight: 500;
+                margin-left: 8px;
+
+                @media (max-width: 1199px) {
+                    font-size: 16px;
+                }
+            }
+
             ins {
                 text-decoration: none;
                 order: 1;
@@ -109,8 +120,18 @@
                 font-family: var(--font-archivo);
                 @include typo-token(18, 28, 400);
 
-                &.ath_start_datetime {
+                &.ath_start_datetime.is-class-workshop-time {
+                    display: flex;
+                }
+
+                &.ath_demonstration {
                     display: none;
+                }
+
+                &.ath_language {
+                    .product-details-meta__item-text {
+                        text-transform: capitalize;
+                    }
                 }
 
                 > div {
@@ -118,6 +139,10 @@
                     display: flex;
                     align-items: center;
                 }
+            }
+
+            &__item-label {
+                margin-right: 8px;
             }
 
             &__item-text {

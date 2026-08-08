@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Twmp ATH\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-10 08:09+0000\n"
-"PO-Revision-Date: 2026-06-10 08:24+0000\n"
+"POT-Creation-Date: 2026-08-07 23:37+0000\n"
+"PO-Revision-Date: 2026-08-07 23:38+0000\n"
 "Last-Translator: \n"
 "Language-Team: Vietnamese\n"
 "Language: vi\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.4; wp-7.0; php-8.4.21\n"
+"X-Loco-Version: 2.8.4; wp-7.0.3; php-8.4.23\n"
 "X-Domain: twmp-ath"
 
 #: inc/helpers/utility.php:62
@@ -72,10 +72,6 @@ msgstr ""
 msgid "- Order value does not include shipping costs."
 msgstr ""
 
-#: inc/woocommerces/checkout.php:999
-msgid "/ Ticket"
-msgstr ""
-
 #: inc/classes/class-breadcrumbs.php:179
 msgid "404 Not Found"
 msgstr ""
@@ -85,35 +81,23 @@ msgstr ""
 msgid "<cite class=\"fn\">%s</cite> <span class=\"says\">says:</span>"
 msgstr ""
 
-#: inc/woocommerces/single.php:173
+#: inc/woocommerces/single.php:172
 msgid "About"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1927
-msgid "Account name"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1930
-msgid "Account number"
 msgstr ""
 
 #: woocommerce/order/order-details.php:97
 msgid "Actions"
 msgstr ""
 
-#: inc/woocommerces/single.php:773
+#: inc/woocommerces/single.php:911
 msgid "Add to cart"
 msgstr ""
 
-#: inc/woocommerces/archive.php:771
+#: inc/woocommerces/archive.php:858
 msgid "Age group"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:1751
-msgid "Age:"
-msgstr ""
-
-#: inc/woocommerces/single.php:458
+#: inc/woocommerces/single.php:457
 msgid "All"
 msgstr ""
 
@@ -157,14 +141,6 @@ msgstr ""
 msgid "Average"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:331
-msgid "Awaiting bill upload"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1795
-msgid "Awaiting payment proof upload."
-msgstr ""
-
 #: woocommerce/single-product/product-image.php:57
 msgid "Awaiting product image"
 msgstr ""
@@ -173,44 +149,16 @@ msgstr ""
 msgid "Back Home"
 msgstr ""
 
-#: inc/woocommerces/thank-you.php:145
+#: inc/woocommerces/thank-you.php:161
 msgid "Back to home page"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1919
-msgid "Bank"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1923
-msgid "Bank account name"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:2408
-msgid "Bill file is too large. Maximum size is 10MB."
-msgstr ""
-
-#: inc/woocommerces/checkout.php:496
-msgid "Bill rejected"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:2463
-msgid "Bill uploaded successfully. Waiting for confirmation."
 msgstr ""
 
 #: search.php:8
 msgid "Blog"
 msgstr ""
 
-#: inc/woocommerces/archive.php:687
+#: inc/woocommerces/archive.php:723
 msgid "Book Ticket"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:294
-msgid "Booking information"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1933
-msgid "Branch"
 msgstr ""
 
 #: templates/page-calendar.php:65
@@ -251,7 +199,7 @@ msgid "Cart total"
 msgstr ""
 
 #. Name of the template
-#: templates/page-checkout.php:3 woocommerce/checkout/form-checkout.php:44
+#: templates/page-checkout.php:3 woocommerce/checkout/form-checkout.php:46
 msgid "Checkout"
 msgstr ""
 
@@ -259,12 +207,11 @@ msgstr ""
 msgid "Class/Workshop"
 msgstr ""
 
-#: inc/woocommerces/archive.php:755
+#: inc/woocommerces/archive.php:842
 msgid "Clear all"
 msgstr ""
 
-#: inc/woocommerces/archive.php:796 inc/woocommerces/checkout.php:1977
-#: template-parts/footers/slideout-menu.php:8
+#: inc/woocommerces/archive.php:883 template-parts/footers/slideout-menu.php:8
 msgid "Close"
 msgstr ""
 
@@ -313,13 +260,9 @@ msgstr ""
 msgid "Complete order"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:332
-msgid "Complete transfer and upload the bill to continue."
-msgstr ""
-
 #: header.php:216 404.php:31 inc/woocommerces/single.php:23
 msgid "Contact Us"
-msgstr "Liên hệ"
+msgstr "Lien he"
 
 #: comments.php:87
 msgid "Content"
@@ -341,10 +284,6 @@ msgstr ""
 msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:2447
-msgid "Could not save the uploaded file."
-msgstr ""
-
 #: woocommerce/cart/cart.php:318
 msgid "Coupon code"
 msgstr ""
@@ -353,12 +292,7 @@ msgstr ""
 msgid "Coupon:"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:2459
-#, php-format
-msgid "Customer uploaded payment proof (attachment #%s)."
-msgstr ""
-
-#: inc/woocommerces/thank-you.php:117
+#: inc/woocommerces/thank-you.php:133
 #, php-format
 msgid "Cảm ơn bạn %1$s đã đặt hàng tại Nam Linh Digital."
 msgstr ""
@@ -368,23 +302,11 @@ msgctxt "daily archives date format"
 msgid "j"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:117 inc/woocommerces/checkout.php:118
-msgid "Date of birth"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:121
-msgid "Date of birth of the student"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1728
-msgid "Date of birth:"
-msgstr ""
-
-#: inc/woocommerces/archive.php:765
+#: inc/woocommerces/archive.php:852
 msgid "Date of week"
 msgstr ""
 
-#: inc/woocommerces/archive.php:759
+#: inc/woocommerces/archive.php:846
 msgid "Date Time"
 msgstr ""
 
@@ -392,21 +314,20 @@ msgstr ""
 msgid "Date:"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:1010
-msgid "Decrease quantity"
-msgstr ""
-
 #: woocommerce/cart/cart.php:265
 msgid "Delete"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:1937
 #: woocommerce/single-product/tabs/description.php:23
 msgid "Description"
 msgstr ""
 
-#: relevanssi-live-ajax-search/search-results.php:134
+#: relevanssi-live-ajax-search/search-results.php:135
 msgid "Did you mean"
+msgstr ""
+
+#: inc/woocommerces/archive.php:864
+msgid "Disciplines"
 msgstr ""
 
 #: woocommerce/archive-product.php:51 woocommerce/archive-product.php:72
@@ -439,8 +360,7 @@ msgstr ""
 msgid "Edit <span class=\"screen-reader-text\">%s</span>"
 msgstr ""
 
-#: woocommerce/single-product-reviews.php:128 inc/woocommerces/checkout.php:104
-#: inc/woocommerces/checkout.php:105
+#: woocommerce/single-product-reviews.php:128
 msgid "Email"
 msgstr ""
 
@@ -452,28 +372,8 @@ msgstr ""
 msgid "End Date Time"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:134 inc/woocommerces/checkout.php:1738
-msgid "English"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1045
-msgid "Enter the %dnd person's name"
-msgstr ""
-
-#: inc/woocommerces/archive.php:777
-msgid "Event status"
-msgstr ""
-
-#: inc/woocommerces/archive.php:783
-msgid "Event type"
-msgstr ""
-
-#: inc/woocommerces/single.php:628
+#: inc/woocommerces/single.php:627
 msgid "Facebook"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:523
-msgid "Failed"
 msgstr ""
 
 #: inc/classes/class-download-theme.php:156
@@ -484,16 +384,12 @@ msgstr ""
 msgid "File URL is not defined."
 msgstr ""
 
-#: inc/woocommerces/archive.php:754
+#: inc/woocommerces/archive.php:841
 msgid "Filter"
 msgstr ""
 
-#: inc/woocommerces/single.php:452
+#: inc/woocommerces/single.php:451
 msgid "Filter events by year"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:75 inc/woocommerces/checkout.php:76
-msgid "First name"
 msgstr ""
 
 #. Name of the template
@@ -511,10 +407,6 @@ msgstr ""
 
 #: inc/classes/class-sidebars-theme.php:39
 msgid "Footer Top"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:135 inc/woocommerces/checkout.php:1741
-msgid "French"
 msgstr ""
 
 #. Name of the template
@@ -555,11 +447,16 @@ msgstr ""
 msgid "Hero Simple"
 msgstr ""
 
+#: templates/sections/hero-video/section.php:125
+msgid "Hero video"
+msgstr ""
+
 #: inc/classes/class-blocks-theme.php:44
 msgid "Highlight"
 msgstr ""
 
-#: templates/page-calendar.php:68 inc/classes/class-breadcrumbs.php:178
+#: templates/page-calendar.php:68 inc/woocommerces/global.php:55
+#: inc/woocommerces/global.php:71 inc/classes/class-breadcrumbs.php:178
 msgid "Home"
 msgstr ""
 
@@ -581,16 +478,8 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: inc/woocommerces/single.php:167
+#: inc/woocommerces/single.php:166
 msgid "Images"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1020
-msgid "Increase quantity"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:2352
-msgid "Invalid order verification token."
 msgstr ""
 
 #: template-parts/content-none.php:41
@@ -604,16 +493,8 @@ msgctxt "label"
 msgid "Search for:"
 msgstr ""
 
-#: header.php:174 header.php:179 inc/woocommerces/checkout.php:127
+#: header.php:174 header.php:179
 msgid "Language"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1747
-msgid "Language:"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:85 inc/woocommerces/checkout.php:86
-msgid "Last name"
 msgstr ""
 
 #. %s is product title
@@ -622,9 +503,9 @@ msgstr ""
 msgid "Leave a Reply to %s"
 msgstr ""
 
-#: templates/page-calendar.php:104 inc/woocommerces/archive.php:789
+#: templates/page-calendar.php:104 inc/woocommerces/archive.php:876
 msgid "Location"
-msgstr ""
+msgstr "Dia diem"
 
 #: template-parts/headers/icon-login.php:16
 msgid "Log In"
@@ -665,6 +546,10 @@ msgctxt "monthly archives date format"
 msgid "F"
 msgstr ""
 
+#: templates/sections/hero-video/section.php:136
+msgid "Mute"
+msgstr ""
+
 #: woocommerce/checkout/thankyou.php:39
 msgid "My account"
 msgstr ""
@@ -683,6 +568,10 @@ msgstr ""
 
 #: template-parts/singles/prev-next-post.php:40
 msgid "Next post:"
+msgstr ""
+
+#: templates/sections/artist-single-slider/section.php:103
+msgid "Next slide"
 msgstr ""
 
 #. Author of the theme
@@ -709,11 +598,11 @@ msgstr ""
 msgid "No products in the cart."
 msgstr ""
 
-#: inc/woocommerces/single.php:496
+#: inc/woocommerces/single.php:495
 msgid "No related events found."
 msgstr ""
 
-#: relevanssi-live-ajax-search/search-results.php:127
+#: relevanssi-live-ajax-search/search-results.php:128
 msgid "No results found."
 msgstr ""
 
@@ -737,10 +626,6 @@ msgstr ""
 msgid "On Sale"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:255
-msgid "One or more events in your cart are no longer available for booking."
-msgstr ""
-
 #: woocommerce/single-product-reviews.php:176
 msgid ""
 "Only logged in customers who have purchased this product may leave a review."
@@ -750,7 +635,7 @@ msgstr ""
 msgid "Open a search form"
 msgstr ""
 
-#: inc/woocommerces/single.php:390
+#: inc/woocommerces/single.php:389
 msgid "Open image"
 msgstr ""
 
@@ -771,12 +656,16 @@ msgstr ""
 msgid "Order number:"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:2347
-msgid "Order session is missing."
-msgstr ""
-
 #: woocommerce/cart/cart.php:33 woocommerce/cart/cart.php:76
 msgid "Order summary"
+msgstr ""
+
+#: single-artists.php:21
+msgid "Other Member"
+msgstr ""
+
+#: single-artists.php:22
+msgid "Other Partner Artists & Practitioners"
 msgstr ""
 
 #: templates/sections/product-cat-grid/section.php:60
@@ -803,19 +692,20 @@ msgstr ""
 msgid "Pages:"
 msgstr ""
 
+#: templates/sections/hero-video/section.php:133
+#: templates/sections/hero-video/section.php:134
+msgid "Pause"
+msgstr ""
+
+#: templates/sections/hero-video/section.php:133
+msgid "Pause video"
+msgstr ""
+
 #: woocommerce/checkout/thankyou.php:37
 msgid "Pay"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:296 inc/woocommerces/checkout.php:1895
-msgid "Payment"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:495
-msgid "Payment confirmed"
-msgstr ""
-
-#: woocommerce/checkout/form-checkout.php:68
+#: woocommerce/checkout/form-checkout.php:70
 msgid "Payment method"
 msgstr ""
 
@@ -823,24 +713,8 @@ msgstr ""
 msgid "Payment method:"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:1907
-msgid "Payment QR code"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:2316
-msgid "Payment status loaded."
-msgstr ""
-
 #: woocommerce/single-product-reviews.php:160
 msgid "Perfect"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1716
-msgid "Performance:"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:95 inc/woocommerces/checkout.php:96
-msgid "Phone"
 msgstr ""
 
 #: inc/helpers/utility.php:40
@@ -852,24 +726,12 @@ msgctxt "placeholder"
 msgid "Search &hellip;"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:2402
-msgid "Please choose a bill file first."
+#: templates/sections/hero-video/section.php:133
+msgid "Play"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:1589
-msgid "Please enter the name for ticket holder %d."
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1556
-msgid "Please select a performance date."
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1562
-msgid "Please select a ticket type."
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1033
-msgid "Please write down all of their name. *"
+#: inc/woocommerces/thank-you.php:108
+msgid "Please complete the payment directly at the counter."
 msgstr ""
 
 #: relevanssi-live-ajax-search/search-results.php:36
@@ -888,6 +750,10 @@ msgstr ""
 msgid "Previous post:"
 msgstr ""
 
+#: templates/sections/artist-single-slider/section.php:100
+msgid "Previous slide"
+msgstr ""
+
 #: woocommerce/cart/cart.php:168
 msgid "Price"
 msgstr ""
@@ -901,7 +767,7 @@ msgstr ""
 msgid "Product"
 msgstr ""
 
-#: inc/woocommerces/single.php:378
+#: inc/woocommerces/single.php:377
 msgid "Product gallery"
 msgstr ""
 
@@ -913,11 +779,7 @@ msgstr ""
 msgid "Published %d posts"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:1910
-msgid "QR code"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1008 woocommerce/global/quantity-input.php:25
+#: woocommerce/global/quantity-input.php:25
 #: woocommerce/global/quantity-input.php:37 woocommerce/cart/cart.php:169
 msgid "Quantity"
 msgstr ""
@@ -951,7 +813,7 @@ msgstr ""
 msgid "Register Account"
 msgstr ""
 
-#: inc/woocommerces/single.php:54
+#: inc/woocommerces/single.php:55
 msgid "Register Camp"
 msgstr ""
 
@@ -999,20 +861,12 @@ msgstr ""
 msgid "Search Results for: %s"
 msgstr ""
 
-#: inc/woocommerces/single.php:161 inc/woocommerces/single.php:177
+#: inc/woocommerces/single.php:160 inc/woocommerces/single.php:176
 msgid "Section"
 msgstr ""
 
-#: header.php:169 inc/woocommerces/checkout.php:132
+#: header.php:169
 msgid "Select language"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:958
-msgid "Select Performance date *"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:986
-msgid "Select type of ticket"
 msgstr ""
 
 #: templates/page-calendar.php:164
@@ -1051,8 +905,12 @@ msgstr ""
 msgid "Sidebar Category"
 msgstr ""
 
-#: html/similar-product.php:99 inc/woocommerces/single.php:877
+#: html/similar-product.php:99 inc/woocommerces/single.php:1015
 msgid "Similar Show/ Event"
+msgstr ""
+
+#: woocommerce/checkout/review-order.php:36
+msgid "SL: %d"
 msgstr ""
 
 #: template-parts/content-none.php:34
@@ -1066,6 +924,11 @@ msgstr ""
 msgid "Sorry, something went wrong. Please refresh this page and try again!"
 msgstr ""
 
+#: templates/sections/hero-video/section.php:136
+#: templates/sections/hero-video/section.php:137
+msgid "Sound"
+msgstr ""
+
 #: woocommerce/single-product-reviews.php:70
 msgid "Star"
 msgstr ""
@@ -1074,7 +937,7 @@ msgstr ""
 msgid "Start Date Time"
 msgstr ""
 
-#: templates/page-calendar.php:124
+#: templates/page-calendar.php:124 inc/woocommerces/archive.php:870
 msgid "Status"
 msgstr ""
 
@@ -1088,46 +951,30 @@ msgstr ""
 msgid "Subtotal"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:519
-msgid "Success"
-msgstr ""
-
 #: inc/classes/class-assets-theme.php:100
 msgid "System error, please try again."
+msgstr ""
+
+#: inc/woocommerces/global.php:60 inc/woocommerces/global.php:76
+msgid "Teams"
+msgstr ""
+
+#: inc/woocommerces/thank-you.php:110
+msgid "Thank you. Your first lesson payment confirmation has been received."
 msgstr ""
 
 #: woocommerce/checkout/order-received.php:35
 msgid "Thank you. Your order has been received."
 msgstr ""
 
-#: inc/woocommerces/checkout.php:15
-msgid "The first name of the customer"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:33
-msgid "The first name of the student"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:16
-msgid "The last name of the customer"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:34
-msgid "The last name of the student"
+#: inc/woocommerces/thank-you.php:107
+msgid "Thank you. Your registration has been received."
 msgstr ""
 
 #: 404.php:26
 msgid ""
 "The page you are looking for may have been removed, renamed, or never "
 "existed."
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1558
-msgid "The selected performance date is invalid."
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1564
-msgid "The selected ticket type is invalid."
 msgstr ""
 
 #: woocommerce/cart/cart.php:161
@@ -1143,42 +990,17 @@ msgstr ""
 msgid "There is no theme to display."
 msgstr ""
 
-#: inc/woocommerces/checkout.php:194
-msgid "This event is no longer available for booking."
-msgstr ""
-
 #. Description of the theme
 msgid ""
 "This is a modern and customizable theme for blogs and personal websites."
-msgstr ""
-
-#: inc/woocommerces/checkout.php:2398
-msgid "This order was already approved."
 msgstr ""
 
 #: woocommerce/cart/cart.php:166
 msgid "Thumbnail image"
 msgstr ""
 
-#: woocommerce/checkout/form-checkout.php:52
+#: woocommerce/checkout/form-checkout.php:54
 msgid "Ticket booking information"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:952 inc/woocommerces/checkout.php:1713
-msgid "Ticket detail"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1764
-#, php-format
-msgid "Ticket holder %d: %s"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1755 inc/woocommerces/checkout.php:1768
-msgid "Ticket holders:"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1720
-msgid "Ticket type:"
 msgstr ""
 
 #: woocommerce/cart/cart-totals.php:24 woocommerce/cart/cart-totals.php:40
@@ -1189,10 +1011,6 @@ msgstr ""
 
 #: woocommerce/checkout/thankyou.php:67
 msgid "Total:"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:506 inc/woocommerces/checkout.php:512
-msgid "Transfer to the account below and upload the bill."
 msgstr ""
 
 #. Name of the theme
@@ -1214,20 +1032,12 @@ msgid ""
 "again."
 msgstr ""
 
-#: inc/woocommerces/checkout.php:2422
-msgid "Unsupported file type. Please upload image or PDF."
+#: templates/sections/hero-video/section.php:136
+msgid "Unmute video"
 msgstr ""
 
 #: woocommerce/cart/cart.php:323
 msgid "Update cart"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:461
-msgid "Upload bill"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1963
-msgid "Upload confirmation receipt."
 msgstr ""
 
 #: woocommerce/cart/cart-totals.php:30
@@ -1238,28 +1048,24 @@ msgstr ""
 msgid "Very poor"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:133 inc/woocommerces/checkout.php:1735
-msgid "Vietnamese"
+#: templates/sections/hero-video/section.php:132
+msgid "Video controls"
 msgstr ""
 
-#: inc/woocommerces/archive.php:699 templates/sections/fs-class/item.php:133
+#: inc/woocommerces/archive.php:735 templates/sections/fs-class/item.php:133
 #: templates/sections/class-workshop/item.php:134
 #: templates/sections/show-event/item.php:133
 #: templates/sections/fc-class-workshop/item.php:133
 msgid "View Detail"
 msgstr ""
 
-#: inc/woocommerces/archive.php:696
+#: inc/woocommerces/archive.php:732
 #, php-format
 msgid "View Detail %s"
 msgstr ""
 
 #: inc/woocommerces/disable.php:54
 msgid "View product"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:1984
-msgid "View status"
 msgstr ""
 
 #: inc/classes/class-views-theme.php:176
@@ -1270,7 +1076,7 @@ msgstr ""
 msgid "View Y"
 msgstr ""
 
-#: inc/woocommerces/single.php:626
+#: inc/woocommerces/single.php:625
 msgid "Visit our social networks:"
 msgstr ""
 
@@ -1278,26 +1084,18 @@ msgstr ""
 msgid "Viết đánh giá"
 msgstr ""
 
-#: inc/woocommerces/thank-you.php:124
+#: inc/woocommerces/thank-you.php:140
 #, php-format
 msgid ""
 "Vui lòng thanh toán số tiền %s cho nhân viên giao hàng khi nhận được hàng."
 msgstr ""
 
-#: inc/woocommerces/checkout.php:526
-msgid "Waiting"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:493 inc/woocommerces/checkout.php:499
-msgid "Waiting for bill upload"
-msgstr ""
-
-#: inc/woocommerces/checkout.php:494 woocommerce/cart/cart-totals.php:29
+#: woocommerce/cart/cart-totals.php:29
 msgid "Waiting for confirmation"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:507
-msgid "We have received your bill. Please wait for admin review."
+#: inc/woocommerces/thank-you.php:111
+msgid "We will review your payment proof and confirm your registration."
 msgstr ""
 
 #. Weekly archive title. %s is the week date format.
@@ -1315,7 +1113,7 @@ msgstr ""
 msgid "Welcome to ATH"
 msgstr ""
 
-#: inc/woocommerces/archive.php:891
+#: inc/woocommerces/archive.php:977
 msgid "What People Say About Us"
 msgstr ""
 
@@ -1352,10 +1150,6 @@ msgstr ""
 msgid "You not login"
 msgstr ""
 
-#: inc/woocommerces/checkout.php:509
-msgid "Your bill was rejected. Please upload a clearer file."
-msgstr ""
-
 #: woocommerce/cart/cart.php:147
 msgid "Your cart is empty."
 msgstr ""
@@ -1368,10 +1162,6 @@ msgstr ""
 msgid "Your order is ready for payment proof review."
 msgstr ""
 
-#: inc/woocommerces/checkout.php:508
-msgid "Your payment was approved."
-msgstr ""
-
-#: inc/woocommerces/single.php:631
+#: inc/woocommerces/single.php:630
 msgid "YouTube"
 msgstr ""

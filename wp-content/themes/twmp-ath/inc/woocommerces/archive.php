@@ -861,13 +861,13 @@ function twmp_render_shop_sidebar_main()
                     ?>
                 </div>
                 <div class="filter-item">
-                    <span class="filter-item__label"><?php echo esc_html__('Event status', 'twmp-ath'); ?></span>
+                    <span class="filter-item__label"><?php echo esc_html__('Disciplines', 'twmp-ath'); ?></span>
                     <?php
                     echo do_shortcode('[facetwp facet="event_status"]');
                     ?>
                 </div>
                 <div class="filter-item">
-                    <span class="filter-item__label"><?php echo esc_html__('Event type', 'twmp-ath'); ?></span>
+                    <span class="filter-item__label"><?php echo esc_html__('Status', 'twmp-ath'); ?></span>
                     <?php
                     echo do_shortcode('[facetwp facet="event_type"]');
                     ?>

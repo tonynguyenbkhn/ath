@@ -364,14 +364,14 @@ add_filter('woocommerce_available_payment_gateways', function ($gateways) {
   if (isset($gateways['bacs'])) {
     $gateways['bacs']->title = esc_html__('Pay first lesson', 'twmp-ath');
     $gateways['bacs']->method_title = esc_html__('Pay first lesson', 'twmp-ath');
-    $gateways['bacs']->description = esc_html__('Pay the first lesson now.', 'twmp-ath');
+    $gateways['bacs']->description = esc_html__('Pay for your trial session to reserve your place.', 'twmp-ath');
     $class_workshop_gateways['bacs'] = $gateways['bacs'];
   }
 
   if (isset($gateways['cod'])) {
     $gateways['cod']->title = esc_html__('Pay at counter', 'twmp-ath');
     $gateways['cod']->method_title = esc_html__('Pay at counter', 'twmp-ath');
-    $gateways['cod']->description = esc_html__('Complete your registration now and pay directly at the counter.', 'twmp-ath');
+    $gateways['cod']->description = esc_html__('Register now and pay later', 'twmp-ath');
     $class_workshop_gateways['cod'] = $gateways['cod'];
   }
 
@@ -460,7 +460,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
   if (isset($fields['billing']['billing_phone'])) {
     $fields['billing']['billing_phone']['type'] = 'tel';
     $fields['billing']['billing_phone']['label'] = esc_html__('Phone', 'twmp-ath');
-    $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone', 'twmp-ath');
+    $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone number of Adult student/ Parents', 'twmp-ath');
     $fields['billing']['billing_phone']['required'] = true;
     $fields['billing']['billing_phone']['class'] = array('form-row-wide', 'twmp-checkout-field');
     $fields['billing']['billing_phone']['priority'] = 30;
