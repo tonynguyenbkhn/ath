@@ -24,6 +24,10 @@ if ( $data['term_slug'] === 'for-companies' ) {
 	$product_cat_link = home_url('/for-companies/');
 } else if ( $data['term_slug'] === 'for-schools' ) {
 	$product_cat_link = home_url('/for-schools/');
+} else if ( $data['term_slug'] === 'giao-duc' ) {
+	$product_cat_link = home_url('/giao-duc/');
+} else if ( $data['term_slug'] === 'to-chuc' ) {
+	$product_cat_link = home_url('/to-chuc/');
 } else {
 	$product_cat_link = get_term_link($data['term_id']);
 }

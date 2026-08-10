@@ -120,7 +120,7 @@ function twmp_checkout_order_has_product_category($order, $category_slug)
 
 function twmp_checkout_get_class_workshop_category_slugs()
 {
-  return array('class-workshop', 'class-workshop-vi', 'class-workshop-fr');
+  return array('class-workshop', 'class-workshop-vi', 'class-workshop-fr', 'cours-et-atelier');
 }
 
 function twmp_checkout_product_has_class_workshop_category($product_id)
