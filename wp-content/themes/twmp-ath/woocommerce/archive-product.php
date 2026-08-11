@@ -50,9 +50,6 @@ if ($is_empty_search) {
 		<h1 class="woocommerce-products-header__title page-title">
 			<?php echo esc_html__("Don't have Result", 'twmp-ath'); ?>
 		</h1>
-		<p class="twmp-shop-search-empty__description">
-			<?php echo esc_html__('No results were found for you. Here are some products you may like.', 'twmp-ath'); ?>
-		</p>
 	</header>
 <?php
 	do_action('woocommerce_shop_loop_header');
@@ -71,9 +68,6 @@ if ($is_empty_search) {
 		<h1 class="woocommerce-products-header__title page-title">
 			<?php echo esc_html__("Don't have Result", 'twmp-ath'); ?>
 		</h1>
-		<p class="twmp-shop-search-empty__description">
-			<?php echo esc_html__('No results were found for you. Here are some products you may like.', 'twmp-ath'); ?>
-		</p>
 	</header>
 <?php
 	do_action('woocommerce_shop_loop_header');

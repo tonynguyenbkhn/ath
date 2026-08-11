@@ -842,12 +842,14 @@ function twmp_render_shop_sidebar_main()
                 <button class="filter-item__reset button-text d-flex items-center gap-8" onclick="FWP.reset()"><?php echo esc_html__('Clear all', 'twmp-ath'); ?> <?php echo twmp_get_svg_icon('clear-all'); ?></button>
             </div>
             <div class="filter-item__body">
+                <?php /**
                 <div class="filter-item filter-item--date-time<?php echo $has_date_time ? '' : ' d-none'; ?>" data-facet-wrapper="date_time">
                     <span class="filter-item__label"><?php echo esc_html__('Date Time', 'twmp-ath'); ?></span>
                     <?php
                     echo do_shortcode('[facetwp facet="date_time"]');
                     ?>
                 </div>
+                */ ?>
                 <div class="filter-item">
                     <span class="filter-item__label"><?php echo esc_html__('Date of week', 'twmp-ath'); ?></span>
                     <?php
