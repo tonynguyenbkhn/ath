@@ -503,6 +503,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     $fields['billing']['billing_phone']['type'] = 'tel';
     $fields['billing']['billing_phone']['label'] = esc_html__('Phone', 'twmp-ath');
     $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone number of Adult student/ Parents', 'twmp-ath');
+    $fields['billing']['billing_phone']['description'] = esc_html__('The phone of the student', 'twmp-ath');
     $fields['billing']['billing_phone']['required'] = true;
     $fields['billing']['billing_phone']['class'] = array('form-row-wide', 'twmp-checkout-field');
     $fields['billing']['billing_phone']['priority'] = 30;
@@ -3166,7 +3167,12 @@ function twmp_checkout_handle_payment_proof_upload()
   $order->update_meta_data('_twmp_checkout_payment_reviewed_by', 0);
   $order->update_meta_data('_twmp_checkout_payment_review_note', '');
   $order->add_order_note(sprintf(esc_html__('Customer uploaded payment proof (attachment #%s).', 'twmp-ath'), absint($attachment_id)));
-  $order->save();
+
+  if (!$order->has_status('processing')) {
+    $order->update_status('processing', esc_html__('Payment proof uploaded. Order moved to processing.', 'twmp-ath'));
+  } else {
+    $order->save();
+  }
 
   wp_send_json_success(array(
     'message' => esc_html__('Bill uploaded successfully. Waiting for confirmation.', 'twmp-ath'),

@@ -1083,7 +1083,7 @@ function twmp_woocommerce_output_related_products()
 							'title_class'       => 'relate-product-section__title',
 							'description_class' => 'relate-product-section__description',
 							'class'             => 'relate-product-section__heading',
-							'title'             => esc_html__('Similar Show/ Event', 'twmp-ath'),
+							'title'             => esc_html__('Similar Event/ Class', 'twmp-ath'),
 							'description'       => '',
 						]
 					);

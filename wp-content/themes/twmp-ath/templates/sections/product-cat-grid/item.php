@@ -25,9 +25,13 @@ if ( $data['term_slug'] === 'for-companies' ) {
 } else if ( $data['term_slug'] === 'for-schools' ) {
 	$product_cat_link = home_url('/for-schools/');
 } else if ( $data['term_slug'] === 'giao-duc' ) {
-	$product_cat_link = home_url('/giao-duc/');
+	$product_cat_link = home_url('/vi/giao-duc/');
 } else if ( $data['term_slug'] === 'to-chuc' ) {
-	$product_cat_link = home_url('/to-chuc/');
+	$product_cat_link = home_url('/vi/to-chuc/');
+} else if ( $data['term_slug'] === 'entreprises' ) {
+	$product_cat_link = home_url('/fr/pour-les-entreprises/');
+ }else if ( $data['term_slug'] === 'ecoles' ) {
+	$product_cat_link = home_url('/fr/pour-les-ecoles/');
 } else {
 	$product_cat_link = get_term_link($data['term_id']);
 }
