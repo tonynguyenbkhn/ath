@@ -514,11 +514,51 @@
         },
         {
             "key": "field_class_workshop_commitment_pdf",
-            "label": "Commitment PDF",
+            "label": "Commitment PDF (English)",
             "name": "class_workshop_commitment_pdf",
             "aria-label": "",
             "type": "file",
-            "instructions": "PDF linked from the required class-workshop commitment checkbox during checkout.",
+            "instructions": "Default English PDF linked from the required class-workshop commitment checkbox during checkout.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "pdf"
+        },
+        {
+            "key": "field_class_workshop_commitment_pdf_vi",
+            "label": "Commitment PDF (Vietnamese)",
+            "name": "class_workshop_commitment_pdf_vi",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "Vietnamese PDF linked from the required class-workshop commitment checkbox during checkout.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "pdf"
+        },
+        {
+            "key": "field_class_workshop_commitment_pdf_fr",
+            "label": "Commitment PDF (French)",
+            "name": "class_workshop_commitment_pdf_fr",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "French PDF linked from the required class-workshop commitment checkbox during checkout.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -798,5 +838,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1752556385
+    "modified": 1786518518
 }

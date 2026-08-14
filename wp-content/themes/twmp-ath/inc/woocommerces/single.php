@@ -180,15 +180,24 @@ add_filter('woocommerce_product_tabs', function ($tabs) {
 	global $product;
 
 	if (!$product) {
-		return;
+		return $tabs;
 	}
 
 	$product_id = $product->get_id();
 
+	$tabs['description'] = array_merge(
+		[
+			'title'    => __('About', 'twmp-ath'),
+			'priority' => 10,
+			'callback' => 'woocommerce_product_description_tab',
+		],
+		isset($tabs['description']) && is_array($tabs['description']) ? $tabs['description'] : []
+	);
+	$tabs['description']['title'] = __('About', 'twmp-ath');
+
 	$is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
 
 	if ($is_poster_event) {
-		unset($tabs['description']);
 		$tabs['section_poster_event'] = [
 			'title'    => __('Section', 'twmp-ath'),
 			'priority' => 25,
@@ -201,10 +210,6 @@ add_filter('woocommerce_product_tabs', function ($tabs) {
 			'callback' => 'render_product_image_tab',
 		];
 	} else {
-		if (isset($tabs['description'])) {
-			$tabs['description']['title'] = __('About', 'twmp-ath');
-		}
-
 		$tabs['section'] = [
 			'title'    => __('Section', 'twmp-ath'),
 			'priority' => 25,
@@ -800,9 +805,8 @@ function product_details_meta() {
     $is_class_workshop = twmp_single_product_has_category($product_id, [
         'class-workshop',
         'class-workshop-vi',
-        'cours-et-atelier',
+        'cours-et-stages',
     ]);
-
 
     $is_poster_event = function_exists('get_field') ? get_field('ath_poster_event', $product_id) : false;
 

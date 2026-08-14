@@ -114,6 +114,8 @@ function twmp_get_fallback_product_ids()
 
 function twmp_flag_empty_product_search_query($query)
 {
+    return;
+
     if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || !$query->is_search()) {
         return;
     }
@@ -177,6 +179,8 @@ add_action('pre_get_posts', 'twmp_flag_empty_product_search_query', 20);
 // Nếu vào danh mục sản phẩm mà danh mục không có sản phẩm, bật fallback tương tự search
 function twmp_flag_empty_product_category_query($query)
 {
+    return;
+
     if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || !$query->is_product_category()) {
         return;
     }
@@ -226,6 +230,8 @@ add_action('pre_get_posts', 'twmp_flag_empty_product_category_query', 9);
 
 function twmp_expand_empty_product_search_results($posts, $query)
 {
+    return $posts;
+
     if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || (!$query->is_search() && !$query->is_product_category())) {
         return $posts;
     }
@@ -306,6 +312,8 @@ add_filter('the_posts', 'twmp_expand_empty_product_search_results', 20, 2);
 
 function twmp_force_facetwp_fallback_ids($post_ids, $renderer)
 {
+    return $post_ids;
+
     // If not already flagged, detect empty product category pages directly
     if (!twmp_is_product_search_fallback()) {
         if (is_product_category()) {
@@ -336,6 +344,8 @@ add_filter('facetwp_pre_filtered_post_ids', 'twmp_force_facetwp_fallback_ids', 2
 
 function twmp_force_facetwp_filtered_fallback_ids($post_ids, $renderer)
 {
+    return $post_ids;
+
     $normalized_post_ids = array_values((array) $post_ids);
     $is_empty_post_ids = empty($normalized_post_ids) || (1 === count($normalized_post_ids) && 0 === (int) $normalized_post_ids[0]);
 
@@ -408,6 +418,8 @@ add_filter('facetwp_query_args', 'twmp_remove_current_product_category_when_cate
 
 function twmp_adjust_facetwp_product_search_query_args($query_args, $renderer)
 {
+    return $query_args;
+
     $post_type = $query_args['post_type'] ?? '';
     $is_product_search = false;
 
@@ -478,6 +490,8 @@ add_action('woocommerce_before_shop_loop', 'twmp_log_woocommerce_loop_state', 5)
 // After WC sets up its loop (usually priority 10), re-apply our fallback loop props
 function twmp_apply_fallback_loop_props_after_setup()
 {
+    return;
+
     $should_apply = false;
     if (function_exists('twmp_is_product_search_fallback') && twmp_is_product_search_fallback()) {
         $should_apply = true;
@@ -777,7 +791,9 @@ function twmp_render_shop_header_end()
 add_action('woocommerce_after_main_content', 'twmp_render_shop_sidebar_start', 2);
 function twmp_render_shop_sidebar_start()
 {
-    echo '<div class="twmp-shop-layout__right"><div class="twmp-shop-layout__right-innner">';
+    $has_products    = woocommerce_product_loop();
+    $right_class     = 'twmp-shop-layout__right' . (!$has_products ? ' no-product' : '');
+    echo '<div class="' . esc_attr($right_class) . '"><div class="twmp-shop-layout__right-innner">';
 }
 
 add_action('woocommerce_after_main_content', 'twmp_render_shop_sidebar_main', 5);

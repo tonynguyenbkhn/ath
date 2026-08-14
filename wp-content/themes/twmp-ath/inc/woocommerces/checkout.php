@@ -120,7 +120,7 @@ function twmp_checkout_order_has_product_category($order, $category_slug)
 
 function twmp_checkout_get_class_workshop_category_slugs()
 {
-  return array('class-workshop', 'class-workshop-vi', 'class-workshop-fr', 'cours-et-atelier');
+  return array('class-workshop', 'class-workshop-vi', 'class-workshop-fr', 'cours-et-stages');
 }
 
 function twmp_checkout_product_has_class_workshop_category($product_id)
@@ -271,50 +271,88 @@ function twmp_checkout_get_class_workshop_first_lesson_price($product_id = 0)
   return $cache[$product_id];
 }
 
+function twmp_checkout_get_current_language_slug()
+{
+  $language = '';
+
+  if (function_exists('pll_current_language')) {
+    $language = sanitize_key((string) pll_current_language('slug'));
+  } elseif (defined('ICL_LANGUAGE_CODE')) {
+    $language = sanitize_key((string) ICL_LANGUAGE_CODE);
+  } else {
+    $language = sanitize_key(substr((string) get_locale(), 0, 2));
+  }
+
+  return in_array($language, array('vi', 'fr'), true) ? $language : 'en';
+}
+
+function twmp_checkout_get_class_workshop_commitment_pdf_field_names()
+{
+  $language = twmp_checkout_get_current_language_slug();
+
+  if ('vi' === $language) {
+    return array('class_workshop_commitment_pdf_vi', 'class_workshop_commitment_pdf');
+  }
+
+  if ('fr' === $language) {
+    return array('class_workshop_commitment_pdf_fr', 'class_workshop_commitment_pdf');
+  }
+
+  return array('class_workshop_commitment_pdf');
+}
+
 function twmp_checkout_get_class_workshop_commitment_pdf_url($product_id = 0)
 {
   static $cache = array();
 
   $product_id = absint($product_id);
+  $cache_key = $product_id . ':' . twmp_checkout_get_current_language_slug();
 
   if (!$product_id) {
     $product_id = twmp_checkout_get_class_workshop_product_id();
+    $cache_key = $product_id . ':' . twmp_checkout_get_current_language_slug();
   }
 
-  if (array_key_exists($product_id, $cache)) {
-    return $cache[$product_id];
+  if (array_key_exists($cache_key, $cache)) {
+    return $cache[$cache_key];
   }
 
   $value = '';
 
   if (function_exists('get_field')) {
-    if ($product_id) {
-      $value = get_field('class_workshop_commitment_pdf', $product_id);
+    foreach (twmp_checkout_get_class_workshop_commitment_pdf_field_names() as $field_name) {
+      if ($product_id) {
+        $value = get_field($field_name, $product_id);
+
+        if (empty($value)) {
+          $parent_id = wp_get_post_parent_id($product_id);
+          $value = $parent_id ? get_field($field_name, $parent_id) : $value;
+        }
+      }
 
       if (empty($value)) {
-        $parent_id = wp_get_post_parent_id($product_id);
-        $value = $parent_id ? get_field('class_workshop_commitment_pdf', $parent_id) : $value;
+        $value = get_field($field_name, 'option');
       }
-    }
 
-    if (empty($value)) {
-      $value = get_field('class_workshop_commitment_pdf', 'option');
+      if (!empty($value)) {
+        break;
+      }
     }
   }
 
   if (is_array($value) && !empty($value['url'])) {
-    $cache[$product_id] = esc_url_raw($value['url']);
-    return $cache[$product_id];
+    $cache[$cache_key] = esc_url_raw($value['url']);
+    return $cache[$cache_key];
   }
 
   if (is_numeric($value)) {
-    $cache[$product_id] = esc_url_raw(wp_get_attachment_url(absint($value)));
-    return $cache[$product_id];
+    $cache[$cache_key] = esc_url_raw(wp_get_attachment_url(absint($value)));
+    return $cache[$cache_key];
   }
 
-  $cache[$product_id] = is_string($value) ? esc_url_raw($value) : '';
+  $cache[$cache_key] = is_string($value) ? esc_url_raw($value) : '';
 
-  return $cache[$product_id];
+  return $cache[$cache_key];
 }
 
 function twmp_checkout_is_class_workshop_counter_order($order)
@@ -502,8 +540,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
   if (isset($fields['billing']['billing_phone'])) {
     $fields['billing']['billing_phone']['type'] = 'tel';
     $fields['billing']['billing_phone']['label'] = esc_html__('Phone', 'twmp-ath');
-    $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone number of Adult student/ Parents', 'twmp-ath');
-    $fields['billing']['billing_phone']['description'] = esc_html__('The phone of the student', 'twmp-ath');
+    $fields['billing']['billing_phone']['placeholder'] = esc_html__('Phone Number', 'twmp-ath');
+    $fields['billing']['billing_phone']['description'] = esc_html__('Phone number of Adult student/ Parents', 'twmp-ath');
     $fields['billing']['billing_phone']['required'] = true;
     $fields['billing']['billing_phone']['class'] = array('form-row-wide', 'twmp-checkout-field');
     $fields['billing']['billing_phone']['priority'] = 30;
@@ -586,9 +624,11 @@ add_action('woocommerce_after_checkout_billing_form', function () {
         value="1"
         required>
       <span>
-        <?php echo esc_html__('I have read and agree to the school\'s terms and conditions.', 'twmp-ath'); ?>
         <?php if ($pdf_url) : ?>
-          <a href="<?php echo esc_url($pdf_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('View PDF', 'twmp-ath'); ?></a>
+          <?php echo esc_html__('I have read and agree to the school\'s', 'twmp-ath'); ?>
+          <a href="<?php echo esc_url($pdf_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('terms and conditions', 'twmp-ath'); ?></a>.
+        <?php else : ?>
+          <?php echo esc_html__('I have read and agree to the school\'s terms and conditions.', 'twmp-ath'); ?>
         <?php endif; ?>
       </span>
     </label>

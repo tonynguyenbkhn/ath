@@ -89,13 +89,13 @@
   @media (min-width: 992px) {
     float: left;
     width: calc(100% - 498px);
-    padding-top: 18px;
   }
 }
 
 .single-artist__title {
   color: var(--system-white);
   margin: 0 0 28px;
+  margin-top: -20px;
   @include typo-display-lg(400);
 
   @media (max-width: 767px) {

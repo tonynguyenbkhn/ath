@@ -21,15 +21,6 @@ defined('ABSPATH') || exit;
 get_header('shop');
 
 $has_products    = woocommerce_product_loop();
-// Consider category-empty as fallback source as well (covers cases where the global flag isn't set)
-$is_fallback_flag = (function_exists('twmp_is_product_search_fallback') && twmp_is_product_search_fallback()) || (
-	is_product_category() && function_exists('get_queried_object') &&
-	($term = get_queried_object()) instanceof WP_Term && isset($term->count) && 0 === absint($term->count)
-);
-// If fallback is active (search or category fallback), ensure loop renders fallback products
-if ($is_fallback_flag) {
-	$has_products = true;
-}
 // Treat empty product category like empty search so we show the "Don't have Result" header
 $is_empty_search = (function_exists('twmp_is_empty_product_search_page') && twmp_is_empty_product_search_page()) || (
 	is_product_category() && function_exists('get_queried_object') &&
@@ -52,7 +43,6 @@ if ($is_empty_search) {
 		</h1>
 	</header>
 <?php
-	do_action('woocommerce_shop_loop_header');
 } elseif ($has_products) {
 	/**
 	 * Hook: woocommerce_shop_loop_header.
@@ -70,7 +60,6 @@ if ($is_empty_search) {
 		</h1>
 	</header>
 <?php
-	do_action('woocommerce_shop_loop_header');
 }
 
 if ($has_products) {
@@ -119,12 +108,14 @@ if ($has_products) {
 	 */
 	do_action('woocommerce_after_shop_loop');
 } else {
-	/**
-	 * Hook: woocommerce_no_products_found.
-	 *
-	 * @hooked wc_no_products_found - 10
-	 */
-	do_action('woocommerce_no_products_found');
+	if (!$is_empty_search) {
+		/**
+		 * Hook: woocommerce_no_products_found.
+		 *
+		 * @hooked wc_no_products_found - 10
+		 */
+		do_action('woocommerce_no_products_found');
+	}
 }
 
 /**
