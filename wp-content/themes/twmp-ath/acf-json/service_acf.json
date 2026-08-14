@@ -160,7 +160,7 @@
                 ]
             ],
             "wrapper": {
-                "width": "33",
+                "width": "50",
                 "class": "",
                 "id": ""
             }
@@ -235,7 +235,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -244,32 +244,6 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
-        },
-        {
-            "key": "field_ath_language",
-            "label": "Language",
-            "name": "ath_language",
-            "type": "checkbox",
-            "instructions": "Dùng cho filter Language.",
-            "choices": {
-                "english": "English",
-                "vietnamese": "Vietnamese",
-                "french": "French",
-                "english-vi": "Tiếng Anh",
-                "vietnamese-vi": "Tiếng Việt",
-                "french-vi": "Tiếng Pháp",
-                "english-fr": "Anglais",
-                "vietnamese-fr": "Vietnamien",
-                "french-fr": "Français"
-            },
-            "return_format": "value",
-            "layout": "vertical",
-            "toggle": 0,
-            "wrapper": {
-                "width": "33",
-                "class": "",
-                "id": ""
-            }
         },
         {
             "key": "field_ath_format",

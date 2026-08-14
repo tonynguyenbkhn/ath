@@ -869,7 +869,14 @@ function twmp_render_shop_sidebar_main()
                 <div class="filter-item">
                     <span class="filter-item__label"><?php echo esc_html__('Date of week', 'twmp-ath'); ?></span>
                     <?php
-                    echo do_shortcode('[facetwp facet="date_of_week"]');
+                    $current_language_symbol = mb_strtolower(twmp_checkout_get_current_language_slug());
+                    if ( $current_language_symbol === 'vi' ) {
+                        echo do_shortcode('[facetwp facet="date_of_the_week_vietnam"]');
+                    } elseif ( $current_language_symbol === 'fr' ) {
+                        echo do_shortcode('[facetwp facet="date_of_the_week_french"]');
+                    } else {
+                        echo do_shortcode('[facetwp facet="date_of_the_week_english"]');
+                    }
                     ?>
                 </div>
                 <div class="filter-item">
@@ -894,6 +901,12 @@ function twmp_render_shop_sidebar_main()
                     <span class="filter-item__label"><?php echo esc_html__('Location', 'twmp-ath'); ?></span>
                     <?php
                     echo do_shortcode('[facetwp facet="location"]');
+                    ?>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-item__label"><?php echo esc_html__('Language', 'twmp-ath'); ?></span>
+                    <?php
+                    echo do_shortcode('[facetwp facet="language_1"]');
                     ?>
                 </div>
             </div>
