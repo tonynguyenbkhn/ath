@@ -129,6 +129,7 @@ if ($image_id) {
         aria-hidden="true"
         tabindex="-1"
       ></iframe>
+    <?php /**
       <div class="hero-video__controls" aria-label="<?php echo esc_attr__('Video controls', 'twmp-ath'); ?>">
         <button class="hero-video__control" type="button" data-hero-video-toggle-play aria-label="<?php echo esc_attr__('Pause video', 'twmp-ath'); ?>" data-label-play="<?php echo esc_attr__('Play', 'twmp-ath'); ?>" data-label-pause="<?php echo esc_attr__('Pause', 'twmp-ath'); ?>">
           <span data-hero-video-play-label><?php echo esc_html__('Pause', 'twmp-ath'); ?></span>
@@ -137,6 +138,7 @@ if ($image_id) {
           <span data-hero-video-mute-label><?php echo esc_html__('Sound', 'twmp-ath'); ?></span>
         </button>
       </div>
+        */ ?>
     <?php elseif ($image_id): ?>
       <?php get_template_part('templates/components/images', null, [
         'id' => $image_id,
