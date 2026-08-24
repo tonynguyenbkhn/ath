@@ -79,34 +79,22 @@ function twmp_field_to_string($value)
 /**
  * Convert ACF choice values to their configured labels.
  */
-function twmp_get_acf_choice_labels($field_name, $post_id, $value)
+function twmp_get_language_name_labels($post_id)
 {
-	$values = is_array($value) ? $value : [$value];
-	$labels = [];
-	$choices = [];
 
-	if (function_exists('get_field_object')) {
-		$field = get_field_object($field_name, $post_id);
-		if (is_array($field) && !empty($field['choices']) && is_array($field['choices'])) {
-			$choices = $field['choices'];
-		}
-	}
+    $terms = get_the_terms( $post_id, 'ath_language' );
 
-	foreach ($values as $item) {
-		if (is_array($item) && isset($item['label'])) {
-			$labels[] = sanitize_text_field($item['label']);
-			continue;
-		}
+    if ( $terms && ! is_wp_error( $terms ) ) {
 
-		$key = is_scalar($item) ? (string) $item : '';
-		if ('' === $key) {
-			continue;
-		}
+    $term_names = wp_list_pluck( $terms, 'name' );
 
-		$labels[] = sanitize_text_field($choices[$key] ?? $key);
-	}
+    $string_names = implode( ', ', $term_names );
 
-	return implode(', ', $labels);
+        return esc_html( $string_names );
+
+    } else {
+        return '';
+    }
 }
 
 /**
@@ -891,7 +879,7 @@ function product_details_meta() {
                 $value_is_html = true;
             }
         } elseif ('ath_language' === $field_key) {
-            $value = twmp_get_acf_choice_labels($field_key, $product_id, $value);
+            $value = twmp_get_language_name_labels($product_id);
         } elseif ('ath_age_group' === $field_key) {
             $value = twmp_get_taxonomy_term_names($product_id, 'ath_age_group');
         }

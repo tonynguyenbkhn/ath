@@ -43,9 +43,6 @@ $wrapper_classes   = apply_filters(
 <div class="<?php echo esc_attr(implode(' ', array_map('sanitize_html_class', $wrapper_classes))); ?>" data-columns="<?php echo esc_attr($columns); ?>" style="opacity: 0; transition: opacity .25s ease-in-out;">
 	<div class="woocommerce-product-gallery__wrapper">
 		<?php
-		if (function_exists('twmp_render_product_video_gallery_item')) {
-			twmp_render_product_video_gallery_item($product_id, 'main');
-		}
 
 		if ($post_thumbnail_id) {
 			$html = wc_get_gallery_image_html($post_thumbnail_id, true);
@@ -59,6 +56,10 @@ $wrapper_classes   = apply_filters(
 		}
 
 		echo apply_filters('woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+
+        if (function_exists('twmp_render_product_video_gallery_item')) {
+            twmp_render_product_video_gallery_item($product_id, 'main');
+        }
 
 		do_action('woocommerce_product_thumbnails');
 		?>

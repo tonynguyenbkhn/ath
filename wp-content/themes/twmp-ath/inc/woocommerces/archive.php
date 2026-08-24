@@ -849,6 +849,7 @@ function twmp_shop_facet_has_indexed_values($facet_name, array $product_ids = []
 function twmp_render_shop_sidebar_main()
 {
     if (class_exists('WooCommerce') && twmp_is_shop_catalog_page()) {
+        $allowed_slugs = array('class-workshop', 'class-workshop-vi', 'class-workshop-fr', 'cours-et-stages');
         $shop_product_ids = twmp_get_current_shop_product_ids();
         $has_date_time = twmp_shop_facet_has_indexed_values('date_time', $shop_product_ids);
     ?>
@@ -891,12 +892,21 @@ function twmp_render_shop_sidebar_main()
                     echo do_shortcode('[facetwp facet="event_status"]');
                     ?>
                 </div>
+                <?php if ( is_product_category( $allowed_slugs ) ) { ?>
                 <div class="filter-item">
-                    <span class="filter-item__label"><?php echo esc_html__('Status', 'twmp-ath'); ?></span>
+                    <span class="filter-item__label"><?php echo esc_html__('Type of Class', 'twmp-ath'); ?></span>
                     <?php
-                    echo do_shortcode('[facetwp facet="event_type"]');
+                    echo do_shortcode('[facetwp facet="type_of_class"]');
                     ?>
-                </div>
+                <?php } ?>
+                    <?php if ( !is_product_category( $allowed_slugs ) ) { ?>
+                    <div class="filter-item">
+                        <span class="filter-item__label"><?php echo esc_html__('Status', 'twmp-ath'); ?></span>
+                        <?php
+                        echo do_shortcode('[facetwp facet="event_type"]');
+                        ?>
+                    </div>
+                    <?php } ?>
                 <div class="filter-item">
                     <span class="filter-item__label"><?php echo esc_html__('Location', 'twmp-ath'); ?></span>
                     <?php

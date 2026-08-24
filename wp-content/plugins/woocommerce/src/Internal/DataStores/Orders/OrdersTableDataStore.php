@@ -733,6 +733,11 @@ class OrdersTableDataStore extends \Abstract_WC_Order_Data_Store_CPT implements 
 	 * @return bool Whether the order was updated.
 	 */
 	public function update_order_from_object( $order ) {
+
+        echo '<pre>';
+        print_r($order);
+        echo '</pre>';
+
 		$hpos_order = new \WC_Order();
 		$hpos_order->set_id( $order->get_id() );
 		$this->read( $hpos_order );
@@ -1265,6 +1270,9 @@ WHERE
 	 * @throws \Exception If passed order is invalid.
 	 */
 	public function read( &$order ) {
+        echo '<pre>';
+        print_r($order);
+        echo '</pre>';
 		$orders_array = array( $order->get_id() => $order );
 		$this->read_multiple( $orders_array );
 	}
@@ -1277,7 +1285,11 @@ WHERE
 	 * @throws \Exception If passed an invalid order.
 	 */
 	public function read_multiple( &$orders ) {
+
 		$order_ids = array_keys( $orders );
+        echo '<pre>';
+        print_r($order_ids);
+        echo '</pre>';
 		$data      = $this->get_order_data_for_ids( $order_ids );
 
 		if ( count( $data ) !== count( $order_ids ) ) {
@@ -1761,6 +1773,10 @@ WHERE
 		if ( empty( $ids ) ) {
 			return array();
 		}
+
+		echo '<pre>';
+        print_r($ids);
+        echo '</pre>';
 
 		$using_datastore_cache = OrderUtil::custom_orders_table_datastore_cache_enabled();
 		$order_data            = array();

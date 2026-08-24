@@ -274,55 +274,57 @@ function twmp_render_artists_grid($artists)
 				// Generate unique ID for accessibility.
 				$artist_unique_id = 'artist-' . (! empty($artist_id) ? $artist_id : uniqid());
 				?>
-				<div class="twmp-artist-card" id="<?php echo esc_attr($artist_unique_id); ?>">
-					<?php
-					// Display artist image.
-					if ($image_id > 0) {
-						// Use WordPress native image function for optimization.
-						echo wp_get_attachment_image($image_id, 'full', false, array('class' => 'twmp-artist-image'));
-					} elseif (! empty($image_url)) {
-						// Fallback to direct URL if image ID unavailable.
-						printf(
-							'<img src="%s" alt="%s" class="twmp-artist-image" loading="lazy" decoding="async" />',
-							esc_url($image_url),
-							esc_attr(! empty($image_alt) ? $image_alt : $name)
-						);
-					}
-					?>
+                <a href="<?php echo esc_url( get_permalink($artist_id) ) ?>">
+                    <div class="twmp-artist-card" id="<?php echo esc_attr($artist_unique_id); ?>">
+                        <?php
+                        // Display artist image.
+                        if ($image_id > 0) {
+                            // Use WordPress native image function for optimization.
+                            echo wp_get_attachment_image($image_id, 'full', false, array('class' => 'twmp-artist-image'));
+                        } elseif (! empty($image_url)) {
+                            // Fallback to direct URL if image ID unavailable.
+                            printf(
+                                '<img src="%s" alt="%s" class="twmp-artist-image" loading="lazy" decoding="async" />',
+                                esc_url($image_url),
+                                esc_attr(! empty($image_alt) ? $image_alt : $name)
+                            );
+                        }
+                        ?>
 
-					<div class="twmp-artist-content">
-						<?php if (! empty($name)) : ?>
-							<h3 class="twmp-artist-name">
-								<?php
-								if (! empty($url)) {
-									printf(
-										'<a href="%s" title="%s">%s</a>',
-										esc_url($url),
-										esc_attr($name),
-										esc_html($name)
-									);
-								} else {
-									echo esc_html($name);
-								}
-								?>
-							</h3>
-						<?php endif; ?>
+                        <div class="twmp-artist-content">
+                            <?php if (! empty($name)) : ?>
+                                <h3 class="twmp-artist-name">
+                                    <?php
+                                    if (! empty($url)) {
+                                        printf(
+                                            '<a href="%s" title="%s">%s</a>',
+                                            esc_url($url),
+                                            esc_attr($name),
+                                            esc_html($name)
+                                        );
+                                    } else {
+                                        echo esc_html($name);
+                                    }
+                                    ?>
+                                </h3>
+                            <?php endif; ?>
 
-						<?php if (! empty($position)) : ?>
-							<p class="twmp-artist-position">
-								<?php echo esc_html($position); ?>
-							</p>
-						<?php endif; ?>
+                            <?php if (! empty($position)) : ?>
+                                <p class="twmp-artist-position">
+                                    <?php echo esc_html($position); ?>
+                                </p>
+                            <?php endif; ?>
 
-						<?php if (! empty($description)) : ?>
-							<div class="twmp-artist-description">
-								<?php
-								echo esc_html(wp_trim_words(wp_strip_all_tags($description), 30, '...'));
-								?>
-							</div>
-						<?php endif; ?>
-					</div>
-				</div>
+                            <?php if (! empty($description)) : ?>
+                                <div class="twmp-artist-description">
+                                    <?php
+                                    echo esc_html(wp_trim_words(wp_strip_all_tags($description), 30, '...'));
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </a>
 			<?php endforeach; ?>
 		</div>
 	</div>
