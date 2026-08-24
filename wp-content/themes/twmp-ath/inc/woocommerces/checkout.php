@@ -1499,15 +1499,18 @@ function twmp_checkout_get_ticket_attendee_state_from_session($product_id = 0)
     return array();
   }
 
-  $state = twmp_checkout_parse_ticket_attendee_state(WC()->session->get('twmp_ticket_attendees', array()));
+  $raw_attendees = WC()->session->get('twmp_ticket_attendees', array());
 
-  $stored_state = WC()->session->get('twmp_ticket_attendees_state', array());
-  $stored_state = twmp_checkout_parse_ticket_attendee_state($stored_state);
-  if (!empty($stored_state)) {
-    $state = array_merge($state, $stored_state);
+  // Guard: nếu session bị corrupt (quá lớn), xóa cả hai key và trả về rỗng
+  $raw_size = strlen(serialize($raw_attendees));
+  if ($raw_size > 100000) { // > 100KB là bất thường
+    error_log('[ATH] session corrupt detected, size=' . $raw_size . ' bytes, clearing session.');
+    WC()->session->set('twmp_ticket_attendees', array());
+    WC()->session->set('twmp_ticket_attendees_state', array());
+    return array();
   }
 
-  return twmp_checkout_normalize_ticket_attendee_state($state);
+  return twmp_checkout_parse_ticket_attendee_state($raw_attendees);
 }
 
 function twmp_checkout_get_ticket_quantity_state($product_id = 0)
