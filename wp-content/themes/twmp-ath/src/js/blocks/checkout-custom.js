@@ -38,29 +38,29 @@ export default el => {
 	}
 
 	const validateCommitmentField = () => {
-		const input = getCommitmentInput()
+		// const input = getCommitmentInput()
+		//
+		// if (!input || input.checked) {
+		// 	clearCommitmentError()
+		// 	return true
+		// }
 
-		if (!input || input.checked) {
-			clearCommitmentError()
-			return true
-		}
-
-		const field = getCommitmentField()
+		// const field = getCommitmentField()
 
 		input.setAttribute('aria-invalid', 'true')
 
-		if (field) {
-			field.classList.add('woocommerce-invalid')
-
-			if (!field.querySelector('.checkout-inline-error-message')) {
-				const message = document.createElement('span')
-				message.className = 'checkout-inline-error-message'
-				message.textContent = 'Vui lòng đồng ý với bản cam kết trước khi thanh toán.'
-				field.appendChild(message)
-			}
-
-			field.scrollIntoView({ behavior: 'smooth', block: 'center' })
-		}
+		// if (field) {
+		// 	field.classList.add('woocommerce-invalid')
+		//
+		// 	if (!field.querySelector('.checkout-inline-error-message')) {
+		// 		const message = document.createElement('span')
+		// 		message.className = 'checkout-inline-error-message'
+		// 		message.textContent = 'Vui lòng đồng ý với bản cam kết trước khi thanh toán.'
+		// 		field.appendChild(message)
+		// 	}
+		//
+		// 	field.scrollIntoView({ behavior: 'smooth', block: 'center' })
+		// }
 
 		if (typeof input.focus === 'function') {
 			input.focus({ preventScroll: true })
@@ -233,10 +233,10 @@ export default el => {
 	// Delegate click events inside `checkoutBlock` to handle proceed-to-payment
 	on('click', handleProceedToPayment, checkoutBlock)
 
-	const commitmentInput = getCommitmentInput()
-	if (commitmentInput) {
-		commitmentInput.addEventListener('change', clearCommitmentError)
-	}
+	// const commitmentInput = getCommitmentInput()
+	// if (commitmentInput) {
+	// 	commitmentInput.addEventListener('change', clearCommitmentError)
+	// }
 
 	if (window.jQuery) {
 		window.jQuery(document.body).on('checkout_place_order', () => {

@@ -605,7 +605,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 
   return $fields;
 }, 20);
-
+/**
 add_action('woocommerce_after_checkout_billing_form', function () {
 //  if (!twmp_checkout_is_class_workshop_context()) {
 //    return;
@@ -635,7 +635,7 @@ add_action('woocommerce_after_checkout_billing_form', function () {
   </p>
   <?php
 }, 20);
-
+*/
 /**
  * Persist custom checkout fields:
  * - billing_date_of_birth
@@ -663,7 +663,7 @@ add_action('woocommerce_checkout_create_order', function ($order, $data) {
   if ($class_workshop_payment_type) {
     $order->update_meta_data('_twmp_class_workshop_payment_method', $class_workshop_payment_method);
     $order->update_meta_data('_twmp_class_workshop_payment_type', $class_workshop_payment_type);
-    $order->update_meta_data('_twmp_class_workshop_commitment_accepted', !empty($_POST['twmp_class_workshop_commitment']) ? 'yes' : 'no');
+    // $order->update_meta_data('_twmp_class_workshop_commitment_accepted', !empty($_POST['twmp_class_workshop_commitment']) ? 'yes' : 'no');
 
     if (null !== $first_lesson_price) {
       $order->update_meta_data('_twmp_first_lesson_price', $first_lesson_price);
@@ -854,9 +854,9 @@ add_action('woocommerce_checkout_process', function () {
     return;
   }
 
-  if (empty($_POST['twmp_class_workshop_commitment'])) {
-    wc_add_notice(__('Please agree to the course commitment before continuing.', 'twmp-ath'), 'error');
-  }
+//  if (empty($_POST['twmp_class_workshop_commitment'])) {
+//    wc_add_notice(__('Please agree to the course commitment before continuing.', 'twmp-ath'), 'error');
+//  }
 
   $payment_method = twmp_checkout_get_class_workshop_payment_method_from_request();
 
@@ -1160,7 +1160,7 @@ function twmp_checkout_is_event_show_product($product_id)
   }
 
   if (!array_key_exists($product_id, $cache)) {
-    $cache[$product_id] = has_term('event-show', 'product_cat', $product_id);
+    $cache[$product_id] = has_term(array('event-show', 'event-show-vi', 'evenements-spectacles'), 'product_cat', $product_id);
   }
 
   return $cache[$product_id];
@@ -2032,7 +2032,7 @@ JS;
 }
 if (
   isset($_GET['category']) &&
-  'event-show' === sanitize_key(wp_unslash($_GET['category']))
+  in_array(sanitize_key(wp_unslash($_GET['category'])), array('event-show', 'event-show-vi', 'evenements-spectacles'), true)
 ) {
   add_action('woocommerce_checkout_after_customer_details', 'twmp_checkout_render_ticket_detail_section', 20);
 }
@@ -2414,10 +2414,11 @@ add_action('woocommerce_admin_order_data_after_billing_address', function ($orde
   $ticket_attendee_names = $order->get_meta('_twmp_ticket_attendee_names');
   $ticket_attendee_names_list = $order->get_meta('_twmp_ticket_attendee_names_list');
   $class_workshop_payment_type = $order->get_meta('_twmp_class_workshop_payment_type');
-  $class_workshop_commitment_accepted = $order->get_meta('_twmp_class_workshop_commitment_accepted');
+  // $class_workshop_commitment_accepted = $order->get_meta('_twmp_class_workshop_commitment_accepted');
   $first_lesson_price = $order->get_meta('_twmp_first_lesson_price');
 
-  if (!$billing_date_of_birth && '' === (string) $billing_age && !$billing_language && !$ticket_product_id && !$ticket_performance && !$ticket_price_label && empty($ticket_attendee_names) && !$class_workshop_payment_type && !$class_workshop_commitment_accepted) {
+//  if (!$billing_date_of_birth && '' === (string) $billing_age && !$billing_language && !$ticket_product_id && !$ticket_performance && !$ticket_price_label && empty($ticket_attendee_names) && !$class_workshop_payment_type && !$class_workshop_commitment_accepted) {
+  if (!$billing_date_of_birth && '' === (string) $billing_age && !$billing_language && !$ticket_product_id && !$ticket_performance && !$ticket_price_label && empty($ticket_attendee_names) && !$class_workshop_payment_type) {
     return;
   }
 
